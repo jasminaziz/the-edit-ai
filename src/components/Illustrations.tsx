@@ -28,21 +28,6 @@ export function SpinningSun() {
   );
 }
 
-export function PulsingBolt() {
-  return (
-    <svg
-      width="80"
-      height="120"
-      viewBox="0 0 80 120"
-      className="animate-pulse-scale hover:scale-[1.2] hover:[animation-duration:0.6s] transition-transform duration-150"
-    >
-      <path
-        d="M48 4L16 56h20L28 116l44-64H48L60 4z"
-        fill="#C8F04A"
-      />
-    </svg>
-  );
-}
 
 export function StackedBars() {
   return (
