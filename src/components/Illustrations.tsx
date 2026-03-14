@@ -1,32 +1,3 @@
-export function SpinningSun() {
-  return (
-    <svg
-      width="120"
-      height="120"
-      viewBox="0 0 120 120"
-      className="animate-spin-slow hover:scale-110 hover:[animation-duration:3s] transition-transform duration-200"
-    >
-      {/* Rays */}
-      {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle) => (
-        <line
-          key={angle}
-          x1="60"
-          y1="10"
-          x2="60"
-          y2="22"
-          stroke="#FAF8F4"
-          strokeWidth="3"
-          strokeLinecap="round"
-          transform={`rotate(${angle} 60 60)`}
-        />
-      ))}
-      {/* Sun body */}
-      <circle cx="60" cy="60" r="24" fill="#C8F04A" />
-      {/* Inner circle */}
-      <circle cx="60" cy="60" r="12" fill="#2D35C9" />
-    </svg>
-  );
-}
 
 
 

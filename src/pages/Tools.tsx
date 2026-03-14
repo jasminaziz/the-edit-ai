@@ -4,7 +4,7 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
-import { SpinningSun } from "@/components/Illustrations";
+
 import { Search } from "lucide-react";
 
 const STATUS_FILTERS = ["ALL", "in_stack", "trialling", "queued", "watch", "know_about"];
@@ -49,7 +49,7 @@ const Tools = () => {
 
   return (
     <>
-      <CobaltZone heading="Tools" illustration={<SpinningSun />} />
+      <CobaltZone heading="Tools" />
 
       {/* Filter Bar */}
       <section className="sticky top-16 z-40 bg-background py-5 px-6 sm:px-12 border-b border-border">
