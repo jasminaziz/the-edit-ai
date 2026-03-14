@@ -5,7 +5,7 @@ export function StatusBadge({ status }: { status: string }) {
   if (!config) return null;
   return (
     <span
-      className="inline-block px-2.5 py-0.5 text-xs font-bold rounded-full uppercase tracking-wide"
+      className="inline-block px-2.5 py-1 font-body text-[11px] font-semibold rounded-full uppercase tracking-[0.05em]"
       style={{ backgroundColor: config.bg, color: config.text }}
     >
       {config.label}
@@ -18,7 +18,7 @@ export function RelevanceBadge({ level }: { level: string }) {
   if (!config) return null;
   return (
     <span
-      className="inline-block px-2.5 py-0.5 text-xs font-bold rounded-full uppercase tracking-wide"
+      className="inline-block px-2.5 py-1 font-body text-[11px] font-semibold rounded-full uppercase tracking-[0.05em]"
       style={{ backgroundColor: config.bg, color: config.text }}
     >
       {config.label}

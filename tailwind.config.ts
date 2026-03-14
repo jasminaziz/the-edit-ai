@@ -9,13 +9,13 @@ export default {
       center: true,
       padding: "2rem",
       screens: {
-        "2xl": "1400px",
+        "2xl": "1280px",
       },
     },
     extend: {
       fontFamily: {
-        heading: ["Figtree", "sans-serif"],
-        body: ["Inter", "sans-serif"],
+        heading: ["Chillax", "sans-serif"],
+        body: ["'Plus Jakarta Sans'", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -54,6 +54,8 @@ export default {
         hero: "hsl(var(--hero))",
         footer: "hsl(var(--footer))",
         "footer-foreground": "hsl(var(--footer-foreground))",
+        "category-badge": "hsl(var(--category-badge))",
+        "verdict-bg": "hsl(var(--verdict-bg))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -79,10 +81,46 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "spin-slow": {
+          from: { transform: "rotate(0deg)" },
+          to: { transform: "rotate(360deg)" },
+        },
+        "ticker": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-100%)" },
+        },
+        "float-down": {
+          from: { transform: "translateY(0)" },
+          to: { transform: "translateY(-50%)" },
+        },
+        "pulse-scale": {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.12)" },
+        },
+        "slide-in-left": {
+          from: { transform: "translateX(-20px)", opacity: "0" },
+          to: { transform: "translateX(0)", opacity: "1" },
+        },
+        "page-fan": {
+          "0%, 100%": { transform: "rotate(0deg)" },
+          "50%": { transform: "rotate(-15deg)" },
+        },
+        "float-arrow": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(8px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "spin-slow": "spin-slow 12s linear infinite",
+        "ticker": "ticker 35s linear infinite",
+        "pulse-scale": "pulse-scale 2s ease-in-out infinite",
+        "slide-in-1": "slide-in-left 0.4s ease-out forwards",
+        "slide-in-2": "slide-in-left 0.4s ease-out 0.2s forwards",
+        "slide-in-3": "slide-in-left 0.4s ease-out 0.4s forwards",
+        "page-fan": "page-fan 3s ease-in-out infinite",
+        "float-arrow": "float-arrow 2s ease-in-out infinite",
       },
     },
   },
