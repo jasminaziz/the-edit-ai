@@ -1,5 +1,5 @@
 import { CobaltZone } from "@/components/CobaltZone";
-import { OpenBook } from "@/components/Illustrations";
+
 
 const resources = [
   {
