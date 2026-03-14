@@ -75,17 +75,17 @@ export async function fetchWhatsNew(): Promise<WhatsNew[]> {
     const rows: string[][] = data.values || [];
     if (rows.length < 2) return [];
     return rows.slice(1).filter(r => r.length > 0 && r[0]).map(r => ({
-      name: r[0] || '',
-      developer: r[1] || '',
-      launched: r[2] || '',
-      what_it_is: r[3] || '',
-      key_integrations: r[4] || '',
-      watch_out_for: r[5] || '',
-      relevance: r[6] || '',
-      status: r[7] || '',
-      verdict: r[8] || '',
+      name: stripEmoji(r[0] || ''),
+      developer: stripEmoji(r[1] || ''),
+      launched: stripEmoji(r[2] || ''),
+      what_it_is: stripEmoji(r[3] || ''),
+      key_integrations: stripEmoji(r[4] || ''),
+      watch_out_for: stripEmoji(r[5] || ''),
+      relevance: stripEmoji(r[6] || ''),
+      status: stripEmoji(r[7] || ''),
+      verdict: stripEmoji(r[8] || ''),
       relevance_level: (r[9] || 'know_about') as WhatsNew['relevance_level'],
-      batch: r[10] || '',
+      batch: stripEmoji(r[10] || ''),
     }));
   } catch {
     return [];
