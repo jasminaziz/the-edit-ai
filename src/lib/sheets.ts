@@ -48,17 +48,17 @@ export async function fetchTools(): Promise<Tool[]> {
     const rows: string[][] = data.values || [];
     if (rows.length < 2) return [];
     return rows.slice(1).filter(r => r.length > 0 && r[0]).map(r => ({
-      name: r[0] || '',
-      category: r[1] || '',
-      what_it_does: r[2] || '',
-      my_use_case: r[3] || '',
-      free_tier: r[4] || '',
-      cost: r[5] || '',
+      name: stripEmoji(r[0] || ''),
+      category: stripEmoji(r[1] || ''),
+      what_it_does: stripEmoji(r[2] || ''),
+      my_use_case: stripEmoji(r[3] || ''),
+      free_tier: stripEmoji(r[4] || ''),
+      cost: stripEmoji(r[5] || ''),
       status: (r[6] || 'know_about') as Tool['status'],
-      credibility: r[7] || '',
-      quick_notes: r[8] || '',
-      key_integrations: r[9] || '',
-      verdict: r[10] || '',
+      credibility: stripEmoji(r[7] || ''),
+      quick_notes: stripEmoji(r[8] || ''),
+      key_integrations: stripEmoji(r[9] || ''),
+      verdict: stripEmoji(r[10] || ''),
       url: r[11] || '',
     }));
   } catch {
