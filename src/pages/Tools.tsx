@@ -4,7 +4,7 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
-import { SpinningSun } from "@/components/Illustrations";
+
 import { Search } from "lucide-react";
 
 const STATUS_FILTERS = ["ALL", "in_stack", "trialling", "queued", "watch", "know_about"];
