@@ -81,12 +81,7 @@ export function Layout({ children }: { children: ReactNode }) {
       >
         <div className="max-w-[1280px] mx-auto px-6 sm:px-12">
           <div className="flex items-center justify-between h-16">
-            <NavLink
-              to="/"
-              className={`font-heading font-semibold text-lg ${textColor} hover:text-accent transition-colors duration-150`}
-            >
-              The Edit
-            </NavLink>
+            <div className="w-16" />
             <div ref={navContainerRef} className="relative flex items-center gap-2 sm:gap-[40px]">
               {/* Sliding active pill */}
               <div
