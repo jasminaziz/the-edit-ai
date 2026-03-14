@@ -53,7 +53,7 @@ const Index = () => {
             marginTop: "-0.02em",
           }}
         >
-          Edit
+          Edit.
         </h1>
 
         {/* Tagline — lime accent, right-aligned under the 't' */}
