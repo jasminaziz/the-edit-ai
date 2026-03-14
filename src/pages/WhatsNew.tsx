@@ -4,7 +4,7 @@ import { RelevanceBadge } from "@/components/StatusBadge";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
-import { PulsingBolt } from "@/components/Illustrations";
+
 
 const COLOR_FIELDS = ["#7B7FD4", "#2D35C9", "#C8F04A", "#9B7B3A", "#2D6A4F", "#4A4A9A"];
 
