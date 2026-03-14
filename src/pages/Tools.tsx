@@ -121,16 +121,17 @@ const Tools = () => {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filtered.map((tool) => {
-                const isSelected = selectedCard === tool.name;
+                const isSelected = hoveredCard === tool.name;
                 const isExpanded = expandedVerdicts.has(tool.name);
-                const isDimmed = selectedCard && !isSelected;
+                const isDimmed = hoveredCard && !isSelected;
                 const statusConfig = STATUS_MAP[tool.status];
 
                 return (
                   <div
                     key={tool.name}
-                    onClick={() => handleCardClick(tool.name)}
-                    className={`rounded-xl border p-5 flex flex-col cursor-pointer transition-all duration-200 ${
+                    onMouseEnter={() => setHoveredCard(tool.name)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                    className={`rounded-xl border p-5 flex flex-col transition-all duration-200 ${
                       isDimmed ? "opacity-70 scale-[0.98]" : ""
                     }`}
                     style={
@@ -139,30 +140,13 @@ const Tools = () => {
                             backgroundColor: "#2D35C9",
                             borderColor: "#2D35C9",
                             color: "#FAF8F4",
+                            boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
                           }
                         : {
                             backgroundColor: "#FFFFFF",
                             borderColor: "#E8E2D8",
                           }
                     }
-                    onMouseEnter={(e) => {
-                      if (!isSelected) {
-                        e.currentTarget.style.borderLeftWidth = "4px";
-                        e.currentTarget.style.borderLeftColor = statusConfig?.bg || "#2D35C9";
-                        e.currentTarget.style.borderTopWidth = "3px";
-                        e.currentTarget.style.borderTopColor = "#C8F04A";
-                        e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.08)";
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isSelected) {
-                        e.currentTarget.style.borderLeftWidth = "1px";
-                        e.currentTarget.style.borderLeftColor = "#E8E2D8";
-                        e.currentTarget.style.borderTopWidth = "1px";
-                        e.currentTarget.style.borderTopColor = "#E8E2D8";
-                        e.currentTarget.style.boxShadow = "none";
-                      }
-                    }}
                   >
                     {/* Tool name as link */}
                     {tool.url ? (
