@@ -5,7 +5,6 @@ import { RelevanceBadge } from "@/components/StatusBadge";
 
 
 
-const TICKER_TEXT = "Honest verdicts · No affiliate links · Built for comms leaders · Updated regularly · No hype · ";
 
 const Index = () => {
   const [tools, setTools] = useState<Tool[]>([]);
