@@ -27,25 +27,42 @@ const Index = () => {
       {/* Hero */}
       {/* Hero */}
       <section
-        className="relative min-h-[70vh] sm:min-h-[85vh] flex flex-col justify-center overflow-hidden px-6 sm:px-12 md:px-[100px] pt-20 sm:pt-[120px] pb-12 sm:pb-20"
+        className="relative min-h-[100vh] flex flex-col justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16"
         style={{ backgroundColor: "#7B7FD4" }}
       >
+        {/* THE — full-width, pushed to edges */}
         <h1
-          className="font-heading font-bold leading-[0.85]"
+          className="font-heading font-black leading-[0.82] w-full"
           style={{
-            fontSize: "clamp(72px, 20vw, 320px)",
+            fontSize: "clamp(120px, 28vw, 420px)",
             color: "#2D35C9",
-            letterSpacing: "-0.03em",
+            letterSpacing: "-0.04em",
+            marginLeft: "-0.04em",
           }}
         >
-          The Edit
+          The
+        </h1>
+        {/* EDIT — even bigger, commanding */}
+        <h1
+          className="font-heading font-black leading-[0.78] w-full"
+          style={{
+            fontSize: "clamp(160px, 38vw, 560px)",
+            color: "#2D35C9",
+            letterSpacing: "-0.05em",
+            marginLeft: "-0.05em",
+            marginTop: "-0.02em",
+          }}
+        >
+          Edit
         </h1>
 
+        {/* Tagline — lime accent, tucked underneath */}
         <p
-          className="font-body font-semibold mt-6 sm:mt-8"
+          className="font-body font-semibold mt-2 sm:mt-4"
           style={{
-            fontSize: "clamp(24px, 4.4vw, 56px)",
+            fontSize: "clamp(18px, 3vw, 48px)",
             color: "#C8F04A",
+            letterSpacing: "0.01em",
           }}
         >
           Honest verdicts only.
