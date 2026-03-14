@@ -29,27 +29,6 @@ export function SpinningSun() {
 }
 
 
-export function StackedBars() {
-  return (
-    <svg width="120" height="80" viewBox="0 0 120 80" className="group">
-      <rect
-        x="0" y="8" width="100" height="16" rx="4" fill="#C8F04A"
-        className="animate-slide-in-1 group-hover:translate-x-2 transition-transform duration-200"
-        style={{ opacity: 0 }}
-      />
-      <rect
-        x="0" y="32" width="80" height="16" rx="4" fill="#C8F04A"
-        className="animate-slide-in-2 group-hover:translate-x-2 transition-transform duration-200"
-        style={{ opacity: 0 }}
-      />
-      <rect
-        x="0" y="56" width="60" height="16" rx="4" fill="#C8F04A"
-        className="animate-slide-in-3 group-hover:translate-x-2 transition-transform duration-200"
-        style={{ opacity: 0 }}
-      />
-    </svg>
-  );
-}
 
 export function OpenBook() {
   return (
