@@ -258,6 +258,42 @@ const Tools = () => {
                         {tool.verdict}
                       </div>
                     )}
+
+                    {/* Visit tool button */}
+                    {tool.url && (
+                      <a
+                        href={tool.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex items-center justify-center gap-[6px] w-full rounded-lg font-body font-semibold text-[13px] transition-all duration-150"
+                        style={{
+                          height: 40,
+                          marginTop: 12,
+                          letterSpacing: "0.02em",
+                          border: isSelected ? "1px solid rgba(250,248,244,0.4)" : "1px solid #E8E2D8",
+                          color: isSelected ? "rgba(250,248,244,0.7)" : "#9A8F82",
+                          backgroundColor: "transparent",
+                        }}
+                        onMouseEnter={(e) => {
+                          if (isSelected) {
+                            e.currentTarget.style.backgroundColor = "rgba(250,248,244,0.1)";
+                            e.currentTarget.style.color = "#FAF8F4";
+                          } else {
+                            e.currentTarget.style.backgroundColor = "#FAF8F4";
+                            e.currentTarget.style.borderColor = "#2D35C9";
+                            e.currentTarget.style.color = "#2D35C9";
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = "transparent";
+                          e.currentTarget.style.borderColor = isSelected ? "rgba(250,248,244,0.4)" : "#E8E2D8";
+                          e.currentTarget.style.color = isSelected ? "rgba(250,248,244,0.7)" : "#9A8F82";
+                        }}
+                      >
+                        Visit tool →
+                      </a>
+                    )}
                   </div>
                 );
               })}
