@@ -3,7 +3,7 @@ import { fetchTools, type Tool } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
-import { StackedBars } from "@/components/Illustrations";
+
 
 const MyStack = () => {
   const [tools, setTools] = useState<Tool[]>([]);
