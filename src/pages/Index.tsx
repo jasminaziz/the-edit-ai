@@ -199,7 +199,7 @@ const Index = () => {
         </Link>
       </section>
 
-      <StampBadge />
+      
     </>
   );
 };
