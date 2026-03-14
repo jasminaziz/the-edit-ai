@@ -69,7 +69,7 @@ export function Layout({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("resize", updatePill);
   }, [updatePill]);
 
-  const navBg = isHome && !scrolled ? "bg-transparent" : "bg-primary";
+  const navBg = isHome && !scrolled ? "bg-transparent" : "bg-secondary";
   const textColor = "text-primary-foreground";
   const pillBg = isHome && !scrolled ? "bg-primary" : "bg-white";
   const pillText = isHome && !scrolled ? "text-white" : "text-primary";
