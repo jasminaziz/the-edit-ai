@@ -54,17 +54,6 @@ const Index = () => {
         </p>
       </section>
 
-      {/* Wavy Ticker Strip */}
-      <div className="relative overflow-hidden" style={{ height: 56, backgroundColor: "#C8F04A" }}>
-        <div className="absolute inset-0 flex items-center">
-          <div className="flex whitespace-nowrap">
-            <span className="inline-block animate-ticker font-body font-medium text-[13px] tracking-[0.03em] text-foreground">
-              {TICKER_TEXT.repeat(8)}
-            </span>
-          </div>
-        </div>
-      </div>
-
       {/* Dashboard Preview Strip */}
       <section className="bg-background py-16 px-6 sm:px-12">
         <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
