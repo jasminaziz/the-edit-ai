@@ -12,7 +12,7 @@ const navItems = [
 
 export function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const isHome = location.pathname === "/";
   const navRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const navContainerRef = useRef<HTMLDivElement>(null);
   const [pillStyle, setPillStyle] = useState<{ left: number; width: number }>({ left: 0, width: 0 });
