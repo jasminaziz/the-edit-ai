@@ -30,29 +30,6 @@ export function SpinningSun() {
 
 
 
-export function OpenBook() {
-  return (
-    <svg
-      width="120"
-      height="90"
-      viewBox="0 0 120 90"
-      className="group"
-    >
-      {/* Left page */}
-      <path d="M60 15 L15 20 L15 80 L60 75 Z" stroke="#C8F04A" strokeWidth="3" fill="none" />
-      {/* Right page with fan animation */}
-      <path
-        d="M60 15 L105 20 L105 80 L60 75 Z"
-        stroke="#C8F04A"
-        strokeWidth="3"
-        fill="none"
-        className="animate-page-fan origin-[60px_75px] group-hover:[animation-duration:1s] group-hover:scale-110 transition-transform duration-200"
-      />
-      {/* Spine */}
-      <line x1="60" y1="12" x2="60" y2="78" stroke="#C8F04A" strokeWidth="3" />
-    </svg>
-  );
-}
 
 export function FloatingArrow() {
   return (
