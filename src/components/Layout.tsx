@@ -12,11 +12,7 @@ const navItems = [
 function NavIllustration({ label, cobalt }: { label: string; cobalt: boolean }) {
   const color = cobalt ? "#FAF8F4" : "#C8F04A";
   if (label === "Tools") {
-    return (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="absolute -bottom-4 left-1/2 -translate-x-1/2">
-        <path d="M8 1l1.5 3 3.5.5-2.5 2.5.5 3.5L8 9l-3 1.5.5-3.5L3 4.5 6.5 4z" fill={color} />
-      </svg>
-    );
+    return null;
   }
   if (label === "What's New") {
     return (
