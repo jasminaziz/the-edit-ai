@@ -42,23 +42,6 @@ const Index = () => {
           The Edit
         </h1>
 
-        {/* Double squiggle */}
-        <div className="mt-8 max-w-[600px] self-end">
-          <svg viewBox="0 0 600 40" fill="none" className="w-full">
-            <path
-              d="M0 10 Q75 -10 150 10 T300 10 T450 10 T600 10"
-              stroke="#C8F04A"
-              strokeWidth="6"
-              fill="none"
-            />
-            <path
-              d="M0 28 Q75 8 150 28 T300 28 T450 28 T600 28"
-              stroke="#C8F04A"
-              strokeWidth="6"
-              fill="none"
-            />
-          </svg>
-        </div>
 
         <p
           className="font-body font-semibold mt-8 text-left"
