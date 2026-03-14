@@ -117,7 +117,7 @@ export function Layout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </nav>
-      <main className="flex-1 pt-16">{children}</main>
+      <main className="flex-1">{children}</main>
       <footer className="h-16 flex items-center px-6 sm:px-12" style={{ backgroundColor: "#1A1510" }}>
         <div className="max-w-[1280px] mx-auto w-full flex items-center justify-between">
           <span className="font-body font-semibold text-[13px] text-primary-foreground">
