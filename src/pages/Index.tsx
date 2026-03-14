@@ -25,15 +25,15 @@ const Index = () => {
   return (
     <>
       {/* Hero */}
+      {/* Hero */}
       <section
-        className="relative min-h-[85vh] flex flex-col justify-center overflow-hidden"
-        style={{ backgroundColor: "#7B7FD4", padding: "120px 100px 80px" }}
+        className="relative min-h-[70vh] sm:min-h-[85vh] flex flex-col justify-center overflow-hidden px-6 sm:px-12 md:px-[100px] pt-20 sm:pt-[120px] pb-12 sm:pb-20"
+        style={{ backgroundColor: "#7B7FD4" }}
       >
-        
         <h1
-          className="font-heading font-bold leading-[0.85] whitespace-nowrap"
+          className="font-heading font-bold leading-[0.85]"
           style={{
-            fontSize: "clamp(160px, 28vw, 320px)",
+            fontSize: "clamp(72px, 20vw, 320px)",
             color: "#2D35C9",
             letterSpacing: "-0.03em",
           }}
@@ -41,11 +41,10 @@ const Index = () => {
           The Edit
         </h1>
 
-
         <p
-          className="font-body font-semibold mt-8"
+          className="font-body font-semibold mt-6 sm:mt-8"
           style={{
-            fontSize: "clamp(32px, 4.4vw, 56px)",
+            fontSize: "clamp(24px, 4.4vw, 56px)",
             color: "#C8F04A",
           }}
         >
@@ -155,16 +154,16 @@ const Index = () => {
       </section>
 
       {/* CTA Strip */}
-      <section className="flex items-center justify-center gap-12 py-6" style={{ backgroundColor: "#2D35C9", height: 80 }}>
+      <section className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-12 py-6 px-6" style={{ backgroundColor: "#2D35C9" }}>
         <Link
           to="/tools"
-          className="font-heading font-semibold text-xl text-primary-foreground hover:text-accent transition-colors duration-150"
+          className="font-heading font-semibold text-base sm:text-xl text-primary-foreground hover:text-accent transition-colors duration-150 text-center"
         >
           Browse the full stack →
         </Link>
         <Link
           to="/whats-new"
-          className="font-heading font-semibold text-xl text-primary-foreground hover:text-accent transition-colors duration-150"
+          className="font-heading font-semibold text-base sm:text-xl text-primary-foreground hover:text-accent transition-colors duration-150 text-center"
         >
           What's new this week →
         </Link>
