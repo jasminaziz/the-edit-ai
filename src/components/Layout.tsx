@@ -30,23 +30,11 @@ function NavIllustration({ label, cobalt }: { label: string; cobalt: boolean }) 
 
 export function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
-  const isHome = location.pathname === "/";
-  const [scrolled, setScrolled] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const navRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const navContainerRef = useRef<HTMLDivElement>(null);
   const [pillStyle, setPillStyle] = useState<{ left: number; width: number }>({ left: 0, width: 0 });
 
-  useEffect(() => {
-    if (!isHome) {
-      setScrolled(true);
-      return;
-    }
-    const onScroll = () => setScrolled(window.scrollY > 400);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [isHome]);
 
   const updatePill = useCallback(() => {
     const activeItem = navItems.find((item) =>
@@ -69,15 +57,14 @@ export function Layout({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("resize", updatePill);
   }, [updatePill]);
 
-  const navBg = isHome && !scrolled ? "bg-transparent" : "bg-primary";
   const textColor = "text-primary-foreground";
-  const pillBg = isHome && !scrolled ? "bg-primary" : "bg-white";
-  const pillText = isHome && !scrolled ? "text-white" : "text-primary";
+  const pillBg = "bg-white";
+  const pillText = "text-primary";
 
   return (
     <div className="min-h-screen flex flex-col">
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-[250ms] ease-in-out ${navBg}`}
+        className="absolute top-0 left-0 right-0 z-50 bg-transparent"
       >
         <div className="max-w-[1280px] mx-auto px-6 sm:px-12">
           <div className="flex items-center justify-between h-16">
@@ -109,7 +96,7 @@ export function Layout({ children }: { children: ReactNode }) {
                   >
                     {item.label}
                     {hoveredItem === item.to && !isActive && (
-                      <NavIllustration label={item.label} cobalt={!isHome || scrolled} />
+                      <NavIllustration label={item.label} cobalt={true} />
                     )}
                   </NavLink>
                 );
@@ -118,7 +105,7 @@ export function Layout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </nav>
-      <main className="flex-1 pt-16">{children}</main>
+      <main className="flex-1">{children}</main>
       <footer className="h-16 flex items-center px-6 sm:px-12" style={{ backgroundColor: "#1A1510" }}>
         <div className="max-w-[1280px] mx-auto w-full flex items-center justify-between">
           <span className="font-body font-semibold text-[13px] text-primary-foreground">
