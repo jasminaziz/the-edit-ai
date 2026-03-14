@@ -35,8 +35,8 @@ const Tools = () => {
     });
   };
 
-  const handleCardClick = (name: string) => {
-    setSelectedCard((prev) => (prev === name ? null : name));
+  const handleCardClick = (_name: string) => {
+    // Card click no longer selects — cobalt state is hover-only
   };
 
   const filtered = tools.filter((t) => {
