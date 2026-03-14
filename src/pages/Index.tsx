@@ -43,9 +43,9 @@ const Index = () => {
 
 
         <p
-          className="font-body font-semibold mt-8 text-left"
+          className="font-body font-semibold mt-8"
           style={{
-            fontSize: "clamp(16px, 2.2vw, 28px)",
+            fontSize: "clamp(32px, 4.4vw, 56px)",
             color: "#C8F04A",
           }}
         >
