@@ -154,16 +154,16 @@ const Index = () => {
       </section>
 
       {/* CTA Strip */}
-      <section className="flex items-center justify-center gap-12 py-6" style={{ backgroundColor: "#2D35C9", height: 80 }}>
+      <section className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-12 py-6 px-6" style={{ backgroundColor: "#2D35C9" }}>
         <Link
           to="/tools"
-          className="font-heading font-semibold text-xl text-primary-foreground hover:text-accent transition-colors duration-150"
+          className="font-heading font-semibold text-base sm:text-xl text-primary-foreground hover:text-accent transition-colors duration-150 text-center"
         >
           Browse the full stack →
         </Link>
         <Link
           to="/whats-new"
-          className="font-heading font-semibold text-xl text-primary-foreground hover:text-accent transition-colors duration-150"
+          className="font-heading font-semibold text-base sm:text-xl text-primary-foreground hover:text-accent transition-colors duration-150 text-center"
         >
           What's new this week →
         </Link>
