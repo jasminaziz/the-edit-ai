@@ -12,7 +12,7 @@ export function CobaltZone({ heading, subheading, bodyText, illustration, twoLin
   return (
     <section
       className="relative w-full overflow-hidden"
-      style={{ backgroundColor: "#2D35C9", padding: "64px 48px 48px" }}
+      style={{ backgroundColor: "#2D35C9", padding: "96px 48px 48px" }}
     >
       <div className="max-w-[1280px] mx-auto relative">
         {twoLineHeading ? (
