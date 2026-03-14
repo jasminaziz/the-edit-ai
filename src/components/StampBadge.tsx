@@ -21,7 +21,7 @@ export function StampBadge() {
           fontFamily="'Plus Jakarta Sans', sans-serif"
           fontWeight="600"
           letterSpacing="0.14em"
-          textTransform="uppercase"
+          style={{ textTransform: "uppercase" }}
         >
           <textPath href="#stamp-text-path">
             THE EDIT · JASMIN AZIZ · THE EDIT · JASMIN AZIZ ·
