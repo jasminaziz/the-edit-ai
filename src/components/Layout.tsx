@@ -30,23 +30,10 @@ function NavIllustration({ label, cobalt }: { label: string; cobalt: boolean }) 
 
 export function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
-  const isHome = location.pathname === "/";
-  const [scrolled, setScrolled] = useState(false);
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const navRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const navContainerRef = useRef<HTMLDivElement>(null);
   const [pillStyle, setPillStyle] = useState<{ left: number; width: number }>({ left: 0, width: 0 });
 
-  useEffect(() => {
-    if (!isHome) {
-      setScrolled(true);
-      return;
-    }
-    const onScroll = () => setScrolled(window.scrollY > 400);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [isHome]);
 
   const updatePill = useCallback(() => {
     const activeItem = navItems.find((item) =>
