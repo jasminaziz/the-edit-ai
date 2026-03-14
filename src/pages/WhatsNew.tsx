@@ -40,7 +40,6 @@ const WhatsNewPage = () => {
         heading=""
         twoLineHeading={{ line1: "What's New —", line2: "in AI" }}
         bodyText="Model updates, new releases, and changes to this directory. Updated regularly."
-        illustration={<PulsingBolt />}
       />
 
       <section className="bg-background py-10 px-6 sm:px-12">
