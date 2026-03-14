@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { fetchTools, fetchWhatsNew, type Tool, type WhatsNew } from "@/lib/sheets";
 import { RelevanceBadge } from "@/components/StatusBadge";
 import { StampBadge } from "@/components/StampBadge";
-import { GeometricRain } from "@/components/GeometricRain";
+
 
 const TICKER_TEXT = "Honest verdicts · No affiliate links · Built for comms leaders · Updated regularly · No hype · ";
 
@@ -30,7 +30,7 @@ const Index = () => {
         className="relative min-h-[85vh] flex flex-col justify-center overflow-hidden"
         style={{ backgroundColor: "#7B7FD4", padding: "120px 100px 80px" }}
       >
-        <GeometricRain />
+        
         <h1
           className="font-heading font-bold leading-[0.85] whitespace-nowrap"
           style={{
