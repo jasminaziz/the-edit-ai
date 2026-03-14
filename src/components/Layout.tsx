@@ -12,6 +12,7 @@ const navItems = [
 
 export function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
+  const isHome = location.pathname === "/";
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const navRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const navContainerRef = useRef<HTMLDivElement>(null);
@@ -46,7 +47,8 @@ export function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col">
       <nav
-        className="fixed top-0 left-0 right-0 z-50 bg-transparent"
+        className="fixed top-0 left-0 right-0 z-50"
+        style={{ backgroundColor: isHome ? "#7B7FD4" : "#2D35C9" }}
       >
         <div className="max-w-[1280px] mx-auto px-6 sm:px-12">
           <div className="flex items-center justify-between h-16">
