@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchTools, fetchWhatsNew, type Tool, type WhatsNew } from "@/lib/sheets";
 import { RelevanceBadge } from "@/components/StatusBadge";
-import { StampBadge } from "@/components/StampBadge";
+
 
 
 const TICKER_TEXT = "Honest verdicts · No affiliate links · Built for comms leaders · Updated regularly · No hype · ";
@@ -199,7 +199,7 @@ const Index = () => {
         </Link>
       </section>
 
-      <StampBadge />
+      
     </>
   );
 };
