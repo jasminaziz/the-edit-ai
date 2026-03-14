@@ -9,20 +9,6 @@ const navItems = [
   { to: "/learning", label: "Learning" },
 ];
 
-function NavIllustration({ label, cobalt }: { label: string; cobalt: boolean }) {
-  const color = cobalt ? "#FAF8F4" : "#C8F04A";
-  if (label === "Tools") {
-    return null;
-  }
-  if (label === "What's New") {
-    return (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="absolute -bottom-4 left-1/2 -translate-x-1/2">
-        <path d="M8 0l2 5h5l-4 3 1.5 5L8 10l-4.5 3L5 8 1 5h5z" fill={color} />
-      </svg>
-    );
-  }
-  return null;
-}
 
 export function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
@@ -91,9 +77,6 @@ export function Layout({ children }: { children: ReactNode }) {
                     }`}
                   >
                     {item.label}
-                    {hoveredItem === item.to && !isActive && (
-                      <NavIllustration label={item.label} cobalt={true} />
-                    )}
                   </NavLink>
                 );
               })}
