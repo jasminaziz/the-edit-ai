@@ -4,40 +4,54 @@
 
 @layer base {
   :root {
-    --background: 60 14% 95.3%;
-    --foreground: 0 0% 4%;
+    /* Warm cream background */
+    --background: 40 33% 97%;
+    /* Primary text #1A1510 */
+    --foreground: 30 20% 8%;
 
+    /* Card white #FFFFFF */
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 4%;
+    --card-foreground: 30 20% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 4%;
+    --popover-foreground: 30 20% 8%;
 
-    --primary: 240 74% 54%;
-    --primary-foreground: 0 0% 100%;
+    /* Cobalt #2D35C9 */
+    --primary: 237 64% 48%;
+    --primary-foreground: 40 33% 97%;
 
-    --secondary: 237 39% 65%;
+    /* Periwinkle #7B7FD4 */
+    --secondary: 237 46% 66%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 60 14% 90%;
-    --muted-foreground: 0 0% 40%;
+    /* Muted #9A8F82 */
+    --muted: 30 11% 55%;
+    --muted-foreground: 30 11% 55%;
 
-    --accent: 73 89% 58%;
-    --accent-foreground: 0 0% 4%;
+    /* Electric lime #C8F04A */
+    --accent: 72 85% 61%;
+    --accent-foreground: 30 20% 8%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 14 78% 44%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 60 5% 85%;
-    --input: 60 5% 85%;
-    --ring: 240 74% 54%;
+    /* Card border #E8E2D8 */
+    --border: 33 25% 88%;
+    --input: 33 25% 88%;
+    --ring: 237 64% 48%;
 
-    --radius: 0.5rem;
+    --radius: 12px;
 
-    --hero: 237 39% 65%;
-    --footer: 0 0% 4%;
-    --footer-foreground: 0 0% 100%;
-    --content-bg: 60 14% 95.3%;
+    /* Hero periwinkle */
+    --hero: 237 46% 66%;
+    /* Footer #1A1510 */
+    --footer: 30 20% 8%;
+    --footer-foreground: 40 33% 97%;
+
+    /* Category badge bg #EEF0FB */
+    --category-badge: 233 60% 96%;
+    /* Verdict bg #F0EBFF */
+    --verdict-bg: 255 100% 96%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -47,28 +61,6 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 0 0% 4%;
-    --foreground: 60 14% 95.3%;
-    --card: 0 0% 8%;
-    --card-foreground: 60 14% 95.3%;
-    --popover: 0 0% 8%;
-    --popover-foreground: 60 14% 95.3%;
-    --primary: 240 74% 54%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 237 39% 65%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 65%;
-    --accent: 73 89% 58%;
-    --accent-foreground: 0 0% 4%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
-    --ring: 240 74% 54%;
   }
 }
 
@@ -82,6 +74,6 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Figtree', sans-serif;
+    font-family: 'Chillax', sans-serif;
   }
 }

@@ -1,5 +1,5 @@
-import { NavLink } from "react-router-dom";
-import { ReactNode } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { ReactNode, useEffect, useState, useRef, useCallback } from "react";
 
 const navItems = [
   { to: "/", label: "Home" },
@@ -9,41 +9,134 @@ const navItems = [
   { to: "/learning", label: "Learning" },
 ];
 
+function NavIllustration({ label, cobalt }: { label: string; cobalt: boolean }) {
+  const color = cobalt ? "#FAF8F4" : "#C8F04A";
+  if (label === "Tools") {
+    return (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="absolute -bottom-4 left-1/2 -translate-x-1/2">
+        <path d="M8 1l1.5 3 3.5.5-2.5 2.5.5 3.5L8 9l-3 1.5.5-3.5L3 4.5 6.5 4z" fill={color} />
+      </svg>
+    );
+  }
+  if (label === "What's New") {
+    return (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="absolute -bottom-4 left-1/2 -translate-x-1/2">
+        <path d="M8 0l2 5h5l-4 3 1.5 5L8 10l-4.5 3L5 8 1 5h5z" fill={color} />
+      </svg>
+    );
+  }
+  return null;
+}
+
 export function Layout({ children }: { children: ReactNode }) {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+  const [scrolled, setScrolled] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const navRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
+  const navContainerRef = useRef<HTMLDivElement>(null);
+  const [pillStyle, setPillStyle] = useState<{ left: number; width: number }>({ left: 0, width: 0 });
+
+  useEffect(() => {
+    if (!isHome) {
+      setScrolled(true);
+      return;
+    }
+    const onScroll = () => setScrolled(window.scrollY > 400);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isHome]);
+
+  const updatePill = useCallback(() => {
+    const activeItem = navItems.find((item) =>
+      item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to)
+    );
+    if (!activeItem || !navContainerRef.current) return;
+    const el = navRefs.current[activeItem.to];
+    if (!el) return;
+    const containerRect = navContainerRef.current.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    setPillStyle({
+      left: elRect.left - containerRect.left,
+      width: elRect.width,
+    });
+  }, [location.pathname]);
+
+  useEffect(() => {
+    updatePill();
+    window.addEventListener("resize", updatePill);
+    return () => window.removeEventListener("resize", updatePill);
+  }, [updatePill]);
+
+  const navBg = isHome && !scrolled ? "bg-transparent" : "bg-primary";
+  const textColor = "text-primary-foreground";
+  const pillBg = isHome && !scrolled ? "bg-primary" : "bg-white";
+  const pillText = isHome && !scrolled ? "text-white" : "text-primary";
+
   return (
     <div className="min-h-screen flex flex-col">
-      <nav className="bg-card border-b border-border sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-14">
-            <NavLink to="/" className="font-heading font-black text-lg text-primary">
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-[250ms] ease-in-out ${navBg}`}
+      >
+        <div className="max-w-[1280px] mx-auto px-6 sm:px-12">
+          <div className="flex items-center justify-between h-16">
+            <NavLink
+              to="/"
+              className={`font-heading font-semibold text-lg ${textColor} hover:text-accent transition-colors duration-150`}
+            >
               The Edit
             </NavLink>
-            <div className="flex items-center gap-1 sm:gap-4 overflow-x-auto">
-              {navItems.map((item) => (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  end={item.to === "/"}
-                  className={({ isActive }) =>
-                    `text-sm font-medium px-2 py-1 rounded-md whitespace-nowrap transition-colors ${
+            <div ref={navContainerRef} className="relative flex items-center gap-2 sm:gap-[40px]">
+              {/* Sliding active pill */}
+              <div
+                className={`absolute top-1/2 -translate-y-1/2 h-8 rounded-[20px] ${pillBg} transition-all duration-[250ms]`}
+                style={{
+                  left: pillStyle.left,
+                  width: pillStyle.width,
+                  transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+                }}
+              />
+              {navItems.map((item) => {
+                const isActive = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
+                return (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    ref={(el) => { navRefs.current[item.to] = el; }}
+                    onMouseEnter={() => setHoveredItem(item.to)}
+                    onMouseLeave={() => setHoveredItem(null)}
+                    className={`relative z-10 font-body text-sm font-medium px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-colors duration-150 ${
                       isActive
-                        ? "bg-primary text-primary-foreground"
-                        : "text-foreground hover:bg-muted"
-                    }`
-                  }
-                >
-                  {item.label}
-                </NavLink>
-              ))}
+                        ? pillText
+                        : `${textColor} hover:bg-white/[0.15]`
+                    }`}
+                  >
+                    {item.label}
+                    {hoveredItem === item.to && !isActive && (
+                      <NavIllustration label={item.label} cobalt={!isHome || scrolled} />
+                    )}
+                  </NavLink>
+                );
+              })}
             </div>
           </div>
         </div>
       </nav>
-      <main className="flex-1">{children}</main>
-      <footer className="bg-footer text-footer-foreground py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
-          <span>The Edit — built by Jasmin</span>
-          <span>Built with Lovable</span>
+      <main className="flex-1 pt-16">{children}</main>
+      <footer className="h-16 flex items-center px-6 sm:px-12" style={{ backgroundColor: "#1A1510" }}>
+        <div className="max-w-[1280px] mx-auto w-full flex items-center justify-between">
+          <span className="font-body font-semibold text-[13px] text-primary-foreground">
+            The Edit — built by Jasmin
+          </span>
+          <div className="flex items-center gap-6">
+            <span className="font-body text-[13px] text-primary-foreground/40">
+              Built with Lovable
+            </span>
+            <span className="font-body text-[13px] text-primary-foreground/40">
+              © 2026
+            </span>
+          </div>
         </div>
       </footer>
     </div>

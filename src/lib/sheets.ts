@@ -88,18 +88,18 @@ export async function fetchWhatsNew(): Promise<WhatsNew[]> {
 }
 
 export const STATUS_MAP: Record<string, { label: string; bg: string; text: string }> = {
-  in_stack: { label: 'IN STACK', bg: '#1a4d2e', text: '#ffffff' },
-  trialling: { label: 'TRIALLING', bg: '#2D2DE5', text: '#ffffff' },
-  queued: { label: 'QUEUED', bg: '#4a4a9a', text: '#ffffff' },
-  watch: { label: 'WATCH', bg: '#7a6500', text: '#ffffff' },
-  know_about: { label: 'KNOW ABOUT', bg: '#555555', text: '#ffffff' },
+  in_stack: { label: 'IN STACK', bg: '#2D6A4F', text: '#ffffff' },
+  trialling: { label: 'TRIALLING', bg: '#2D35C9', text: '#ffffff' },
+  queued: { label: 'QUEUED', bg: '#4A4A9A', text: '#ffffff' },
+  watch: { label: 'WATCH', bg: '#9B7B3A', text: '#ffffff' },
+  know_about: { label: 'KNOW ABOUT', bg: '#9A8F82', text: '#ffffff' },
 };
 
 export const RELEVANCE_MAP: Record<string, { label: string; bg: string; text: string }> = {
-  high: { label: 'HIGH', bg: '#1a4d2e', text: '#ffffff' },
-  worth_knowing: { label: 'WORTH KNOWING', bg: '#555555', text: '#ffffff' },
-  watch: { label: 'WATCH', bg: '#7a6500', text: '#ffffff' },
-  know_about: { label: 'KNOW ABOUT', bg: '#999999', text: '#ffffff' },
+  high: { label: 'HIGH', bg: '#2D6A4F', text: '#ffffff' },
+  worth_knowing: { label: 'WORTH KNOWING', bg: '#2D35C9', text: '#ffffff' },
+  watch: { label: 'WATCH', bg: '#9B7B3A', text: '#ffffff' },
+  know_about: { label: 'CAUTION', bg: '#C4461E', text: '#ffffff' },
 };
 
 export const CATEGORIES = [
