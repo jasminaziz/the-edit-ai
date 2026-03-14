@@ -49,7 +49,7 @@ const Tools = () => {
 
   return (
     <>
-      <CobaltZone heading="Tools" illustration={<SpinningSun />} />
+      <CobaltZone heading="Tools" />
 
       {/* Filter Bar */}
       <section className="sticky top-16 z-40 bg-background py-5 px-6 sm:px-12 border-b border-border">
