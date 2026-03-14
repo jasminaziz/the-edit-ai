@@ -77,9 +77,6 @@ export function Layout({ children }: { children: ReactNode }) {
                     }`}
                   >
                     {item.label}
-                    {hoveredItem === item.to && !isActive && (
-                      <NavIllustration label={item.label} cobalt={true} />
-                    )}
                   </NavLink>
                 );
               })}
