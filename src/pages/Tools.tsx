@@ -16,7 +16,7 @@ const Tools = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("ALL");
   const [statusFilter, setStatusFilter] = useState("ALL");
-  const [selectedCard, setSelectedCard] = useState<string | null>(null);
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [expandedVerdicts, setExpandedVerdicts] = useState<Set<string>>(new Set());
 
   useEffect(() => {
