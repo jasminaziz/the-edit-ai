@@ -33,7 +33,7 @@ const Index = () => {
         <h1
           className="font-heading font-bold leading-[0.85] whitespace-nowrap"
           style={{
-            fontSize: "clamp(80px, 14vw, 160px)",
+            fontSize: "clamp(160px, 28vw, 320px)",
             color: "#2D35C9",
             letterSpacing: "-0.03em",
           }}
