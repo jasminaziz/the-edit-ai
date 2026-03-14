@@ -30,6 +30,11 @@ export interface WhatsNew {
 const SPREADSHEET_ID = import.meta.env.VITE_GOOGLE_SHEETS_ID || '';
 const API_KEY = import.meta.env.VITE_GOOGLE_SHEETS_API_KEY || '';
 
+/** Strip emoji characters from text — keep only standard text, punctuation, and symbols */
+function stripEmoji(str: string): string {
+  return str.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s{2,}/g, ' ').trim();
+}
+
 function sheetsUrl(tab: string): string {
   return `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(tab)}?key=${API_KEY}`;
 }
