@@ -69,25 +69,6 @@ const Index = () => {
         </p>
       </section>
 
-      {/* Lime Squiggle Divider */}
-      <div className="w-full overflow-hidden" style={{ height: 18 }}>
-        <svg
-          className="w-full animate-squiggle-ripple"
-          viewBox="0 0 1200 18"
-          preserveAspectRatio="none"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{ display: "block", width: "200%", height: 18 }}
-        >
-          <path
-            d="M0 9 Q15 2,30 9 T60 9 T90 9 T120 9 T150 9 T180 9 T210 9 T240 9 T270 9 T300 9 T330 9 T360 9 T390 9 T420 9 T450 9 T480 9 T510 9 T540 9 T570 9 T600 9 T630 9 T660 9 T690 9 T720 9 T750 9 T780 9 T810 9 T840 9 T870 9 T900 9 T930 9 T960 9 T990 9 T1020 9 T1050 9 T1080 9 T1110 9 T1140 9 T1170 9 T1200 9"
-            stroke="#C8F04A"
-            strokeWidth="4"
-            strokeLinecap="round"
-          />
-        </svg>
-      </div>
-
       {/* Dashboard Preview Strip */}
       <section className="bg-background py-16 px-6 sm:px-12">
         <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">

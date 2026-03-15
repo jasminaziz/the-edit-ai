@@ -77,16 +77,3 @@
     font-family: 'Chillax', sans-serif;
   }
 }
-
-@keyframes squiggle-ripple {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-squiggle-ripple {
-  animation: squiggle-ripple 2s linear infinite;
-}
