@@ -58,7 +58,7 @@ const Index = () => {
 
         {/* Tagline — lime accent, right-aligned under the 't' */}
         <p
-          className="font-body font-semibold mt-2 sm:mt-4 text-right"
+          className="font-body font-semibold mt-2 sm:mt-4 text-left"
           style={{
             fontSize: "clamp(18px, 3vw, 48px)",
             color: "#C8F04A",
