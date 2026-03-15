@@ -69,6 +69,9 @@ const Index = () => {
         </p>
       </section>
 
+      {/* Lime Divider */}
+      <div className="w-full h-[3px] bg-accent" />
+
       {/* Dashboard Preview Strip */}
       <section className="bg-background py-16 px-6 sm:px-12">
         <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
