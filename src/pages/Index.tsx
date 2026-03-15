@@ -69,17 +69,6 @@ const Index = () => {
         </p>
       </section>
 
-      {/* Wave Band */}
-      <section className="w-full h-[112px] relative" style={{ backgroundColor: "#2D35C9" }}>
-        <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 960 112">
-          <path d="M0 0 L0 56 C60 28,120 28,180 56 C240 84,300 84,360 56 C420 28,480 28,540 56 C600 84,660 84,720 56 C780 28,840 28,900 56 C960 84,960 84,960 56 L960 0 Z" fill="#7B7FD4" />
-          <path d="M0 56 C60 28,120 28,180 56 C240 84,300 84,360 56 C420 28,480 28,540 56 C600 84,660 84,720 56 C780 28,840 28,900 56 C960 84,960 84,960 56" fill="none" stroke="#C8F04A" strokeWidth="4" />
-        </svg>
-      </section>
-
-      {/* Lime Divider */}
-      <div className="w-full h-[3px]" style={{ backgroundColor: "#C8F04A" }} />
-
       {/* Dashboard Preview Strip */}
       <section className="bg-background py-16 px-6 sm:px-12">
         <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
