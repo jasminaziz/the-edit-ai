@@ -41,10 +41,16 @@ function sheetsUrl(tab: string): string {
 export async function fetchTools(): Promise<Tool[]> {
   try {
     const res = await fetch(sheetsUrl('tools'));
-    if (!res.ok) return [];
+    if (!res.ok) {
+      const { MOCK_TOOLS } = await import('./mockData');
+      return MOCK_TOOLS;
+    }
     const data = await res.json();
     const rows: string[][] = data.values || [];
-    if (rows.length < 2) return [];
+    if (rows.length < 2) {
+      const { MOCK_TOOLS } = await import('./mockData');
+      return MOCK_TOOLS;
+    }
     return rows.slice(1).filter(r => r.length > 0 && r[0]).map(r => ({
       name: stripEmoji(r[0] || ''),
       category: stripEmoji(r[1] || ''),
@@ -60,7 +66,8 @@ export async function fetchTools(): Promise<Tool[]> {
       url: r[11] || '',
     }));
   } catch {
-    return [];
+    const { MOCK_TOOLS } = await import('./mockData');
+    return MOCK_TOOLS;
   }
 }
 
