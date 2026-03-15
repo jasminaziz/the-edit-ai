@@ -74,10 +74,16 @@ export async function fetchTools(): Promise<Tool[]> {
 export async function fetchWhatsNew(): Promise<WhatsNew[]> {
   try {
     const res = await fetch(sheetsUrl('whats_new'));
-    if (!res.ok) return [];
+    if (!res.ok) {
+      const { MOCK_WHATS_NEW } = await import('./mockData');
+      return MOCK_WHATS_NEW;
+    }
     const data = await res.json();
     const rows: string[][] = data.values || [];
-    if (rows.length < 2) return [];
+    if (rows.length < 2) {
+      const { MOCK_WHATS_NEW } = await import('./mockData');
+      return MOCK_WHATS_NEW;
+    }
     return rows.slice(1).filter(r => r.length > 0 && r[0]).map(r => ({
       name: stripEmoji(r[0] || ''),
       developer: stripEmoji(r[1] || ''),
@@ -92,7 +98,8 @@ export async function fetchWhatsNew(): Promise<WhatsNew[]> {
       batch: stripEmoji(r[10] || ''),
     }));
   } catch {
-    return [];
+    const { MOCK_WHATS_NEW } = await import('./mockData');
+    return MOCK_WHATS_NEW;
   }
 }
 
