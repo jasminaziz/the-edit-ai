@@ -27,28 +27,42 @@ const Index = () => {
       {/* Hero */}
       {/* Hero */}
       <section
-        className="relative overflow-hidden flex items-center justify-center"
-        style={{ backgroundColor: "#7B7FD4", height: "100dvh" }}
+        className="relative min-h-[100vh] flex flex-col justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16"
+        style={{ backgroundColor: "#7B7FD4" }}
       >
+        {/* THE — full-width, pushed to edges */}
         <h1
-          className="font-heading font-bold w-full px-[2vw]"
+          className="font-heading font-black leading-[0.82] w-full"
           style={{
-            fontSize: "clamp(18vw, 22vw, 26vw)",
+            fontSize: "clamp(120px, 28vw, 420px)",
             color: "#2D35C9",
-            lineHeight: "0.85",
             letterSpacing: "-0.04em",
+            marginLeft: "-0.04em",
           }}
         >
-          The<br />Edit.
+          The
+        </h1>
+        {/* EDIT — even bigger, commanding */}
+        <h1
+          className="font-heading font-black leading-[0.78] w-full"
+          style={{
+            fontSize: "clamp(160px, 38vw, 560px)",
+            color: "#2D35C9",
+            letterSpacing: "-0.05em",
+            marginLeft: "-0.05em",
+            marginTop: "-0.02em",
+          }}
+        >
+          Edit.
         </h1>
 
+        {/* Tagline — lime accent, right-aligned under the 't' */}
         <p
-          className="absolute font-body font-semibold"
+          className="font-body font-semibold mt-2 sm:mt-4 text-right"
           style={{
-            bottom: "24px",
-            right: "24px",
-            fontSize: "clamp(16px, 2.5vw, 26px)",
+            fontSize: "clamp(18px, 3vw, 48px)",
             color: "#C8F04A",
+            letterSpacing: "0.01em",
           }}
         >
           Honest verdicts only.
