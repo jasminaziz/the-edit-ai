@@ -123,7 +123,7 @@ function NewsCard({
 
   return (
     <div
-      className={`rounded-xl overflow-hidden border border-border group hover:translate-x-1.5 transition-all duration-200 ${className}`}
+      className={`rounded-xl overflow-hidden border border-border group sm:hover:translate-x-1.5 transition-all duration-200 ${className}`}
       style={{
         transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
         boxShadow: "none",
