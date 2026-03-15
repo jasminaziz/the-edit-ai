@@ -66,7 +66,7 @@ export function Layout({ children }: { children: ReactNode }) {
             {isMobile ? (
               <>
                 <div className="w-10" />
-                <span className="font-heading font-bold text-primary-foreground text-lg">The Edit</span>
+                <div className="flex-1" />
                 <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
                   <SheetTrigger asChild>
                     <button className="p-2 text-primary-foreground" aria-label="Open menu">
