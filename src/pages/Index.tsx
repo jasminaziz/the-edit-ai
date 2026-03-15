@@ -53,7 +53,32 @@ const Index = () => {
             marginTop: "-0.02em",
           }}
         >
-          Edit.
+          Ed
+          {/* dotless ı with animated overlay dot */}
+          <span className="relative inline-block">
+            <span>ı</span>
+            <span
+              className="absolute block rounded-full"
+              style={{
+                width: "0.105em",
+                height: "0.105em",
+                backgroundColor: "#2D35C9",
+                top: "0.02em",
+                left: "50%",
+                transform: "translateX(-50%)",
+                animation: "hero-dot-bounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both",
+              }}
+            />
+          </span>
+          t
+          <span
+            style={{
+              display: "inline-block",
+              animation: "hero-stop-rise 0.4s cubic-bezier(0.25, 0, 0, 1) 0.8s both",
+            }}
+          >
+            .
+          </span>
         </h1>
 
         {/* Tagline — lime accent, right-aligned under the 't' */}
