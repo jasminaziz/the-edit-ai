@@ -25,6 +25,7 @@ export function Layout({ children }: { children: ReactNode }) {
   // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
+    window.scrollTo(0, 0);
   }, [location.pathname]);
 
   const updatePill = useCallback(() => {
