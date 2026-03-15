@@ -53,7 +53,7 @@ const Index = () => {
             marginTop: "-0.02em",
           }}
         >
-          Ed<span style={{ color: "#C8F04A" }}>i</span>t.
+          Ed<span className="relative inline-block" style={{ width: '0.48em' }}>ı<span className="absolute left-1/2 -translate-x-1/2" style={{ top: '0.08em', width: '0.11em', height: '0.11em', borderRadius: '50%', backgroundColor: '#C8F04A' }} /></span>t.
         </h1>
 
         {/* Tagline — lime accent, right-aligned under the 't' */}
