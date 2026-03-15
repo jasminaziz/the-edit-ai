@@ -27,39 +27,30 @@ const Index = () => {
       {/* Hero */}
       {/* Hero */}
       <section
-        className="relative min-h-[70vh] sm:min-h-[100vh] flex flex-col justify-end overflow-hidden -mt-14 sm:-mt-16"
-        style={{
-          backgroundColor: "#7B7FD4",
-          paddingLeft: "48px",
-          paddingRight: "48px",
-          paddingBottom: "clamp(40px, 5vw, 64px)",
-          // @ts-ignore CSS custom property
-          "--edit-size": "clamp(120px, 22vw, 280px)",
-          "--the-size": "calc(var(--edit-size) * 0.4)",
-        } as React.CSSProperties}
+        className="relative min-h-[40vh] sm:min-h-[100vh] flex flex-col justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
+        style={{ backgroundColor: "#7B7FD4" }}
       >
+        {/* THE — full-width, pushed to edges */}
         <h1
-          className="font-heading font-bold"
+          className="font-heading font-black leading-[0.82] w-full"
           style={{
-            fontSize: "var(--the-size)",
+            fontSize: "clamp(120px, 28vw, 420px)",
             color: "#2D35C9",
-            letterSpacing: "-0.02em",
-            lineHeight: "0.9",
-            margin: 0,
-            padding: 0,
+            letterSpacing: "-0.04em",
+            marginLeft: "-0.04em",
           }}
         >
           The
         </h1>
+        {/* EDIT — even bigger, commanding */}
         <h1
-          className="font-heading font-bold"
+          className="font-heading font-black leading-[0.78] w-full"
           style={{
-            fontSize: "var(--edit-size)",
+            fontSize: "clamp(160px, 38vw, 560px)",
             color: "#2D35C9",
-            letterSpacing: "-0.02em",
-            lineHeight: "0.9",
-            margin: 0,
-            padding: 0,
+            letterSpacing: "-0.05em",
+            marginLeft: "-0.05em",
+            marginTop: "-0.02em",
           }}
         >
           Edit.
