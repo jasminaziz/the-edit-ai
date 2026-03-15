@@ -32,27 +32,25 @@ const Index = () => {
       >
         {/* THE — full-width, pushed to edges */}
         <h1
-          className="font-heading font-black leading-[0.82] w-full animate-hero-word"
+          className="font-heading font-black leading-[0.82] w-full"
           style={{
             fontSize: "clamp(120px, 28vw, 420px)",
             color: "#2D35C9",
             letterSpacing: "-0.04em",
             marginLeft: "-0.04em",
-            animationDelay: "0s",
           }}
         >
           The
         </h1>
         {/* EDIT — even bigger, commanding */}
         <h1
-          className="font-heading font-black leading-[0.78] w-full animate-hero-word"
+          className="font-heading font-black leading-[0.78] w-full"
           style={{
             fontSize: "clamp(160px, 38vw, 560px)",
             color: "#2D35C9",
             letterSpacing: "-0.05em",
             marginLeft: "-0.05em",
             marginTop: "-0.02em",
-            animationDelay: "0.12s",
           }}
         >
           Edit.
@@ -60,12 +58,11 @@ const Index = () => {
 
         {/* Tagline — lime accent, right-aligned under the 't' */}
         <p
-          className="font-body font-semibold mt-2 sm:mt-4 text-right animate-hero-tagline"
+          className="font-body font-semibold mt-2 sm:mt-4 text-right"
           style={{
             fontSize: "clamp(18px, 3vw, 48px)",
             color: "#C8F04A",
             letterSpacing: "0.01em",
-            animationDelay: "0.47s",
           }}
         >
           Honest verdicts only.

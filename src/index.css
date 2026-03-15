@@ -98,35 +98,3 @@
     font-family: 'Chillax', sans-serif;
   }
 }
-
-@keyframes hero-word-reveal {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes hero-tagline-reveal {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-hero-word {
-  opacity: 0;
-  animation: hero-word-reveal 0.5s cubic-bezier(0.0, 0.0, 0.2, 1.0) forwards;
-}
-
-.animate-hero-tagline {
-  opacity: 0;
-  animation: hero-tagline-reveal 0.4s cubic-bezier(0.0, 0.0, 0.2, 1.0) forwards;
-}
