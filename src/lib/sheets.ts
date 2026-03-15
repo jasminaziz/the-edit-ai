@@ -27,8 +27,7 @@ export interface WhatsNew {
   batch: string;
 }
 
-const SPREADSHEET_ID = import.meta.env.VITE_GOOGLE_SHEETS_ID || '';
-const API_KEY = import.meta.env.VITE_GOOGLE_SHEETS_API_KEY || '';
+const SUPABASE_PROJECT_ID = import.meta.env.VITE_SUPABASE_PROJECT_ID || '';
 
 /** Strip emoji characters from text — keep only standard text, punctuation, and symbols */
 function stripEmoji(str: string): string {
@@ -36,12 +35,11 @@ function stripEmoji(str: string): string {
 }
 
 function sheetsUrl(tab: string): string {
-  return `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(tab)}?key=${API_KEY}`;
+  return `https://${SUPABASE_PROJECT_ID}.supabase.co/functions/v1/sheets?tab=${encodeURIComponent(tab)}`;
 }
 
 export async function fetchTools(): Promise<Tool[]> {
   try {
-    if (!SPREADSHEET_ID || !API_KEY) return [];
     const res = await fetch(sheetsUrl('tools'));
     if (!res.ok) return [];
     const data = await res.json();
@@ -68,7 +66,6 @@ export async function fetchTools(): Promise<Tool[]> {
 
 export async function fetchWhatsNew(): Promise<WhatsNew[]> {
   try {
-    if (!SPREADSHEET_ID || !API_KEY) return [];
     const res = await fetch(sheetsUrl('whats_new'));
     if (!res.ok) return [];
     const data = await res.json();
