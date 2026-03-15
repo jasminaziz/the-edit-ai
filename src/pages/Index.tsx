@@ -63,6 +63,7 @@ const Index = () => {
             fontSize: "clamp(18px, 3vw, 48px)",
             color: "#C8F04A",
             letterSpacing: "0.01em",
+            marginLeft: "-0.04em",
           }}
         >
           Honest verdicts only.
