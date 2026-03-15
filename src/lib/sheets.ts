@@ -27,15 +27,15 @@ export interface WhatsNew {
   batch: string;
 }
 
-const SUPABASE_PROJECT_ID = import.meta.env.VITE_SUPABASE_PROJECT_ID || '';
-
 /** Strip emoji characters from text — keep only standard text, punctuation, and symbols */
 function stripEmoji(str: string): string {
   return str.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').replace(/\s{2,}/g, ' ').trim();
 }
 
 function sheetsUrl(tab: string): string {
-  return `https://${SUPABASE_PROJECT_ID}.supabase.co/functions/v1/sheets?tab=${encodeURIComponent(tab)}`;
+  const sheetId = import.meta.env.VITE_GOOGLE_SHEETS_ID || '';
+  const apiKey = import.meta.env.VITE_GOOGLE_SHEETS_API_KEY || '';
+  return `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(tab)}?key=${apiKey}`;
 }
 
 export async function fetchTools(): Promise<Tool[]> {
