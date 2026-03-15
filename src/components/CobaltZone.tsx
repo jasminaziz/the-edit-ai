@@ -11,8 +11,8 @@ interface CobaltZoneProps {
 export function CobaltZone({ heading, subheading, bodyText, illustration, twoLineHeading }: CobaltZoneProps) {
   return (
     <section
-      className="relative w-full overflow-hidden"
-      style={{ backgroundColor: "#2D35C9", padding: "clamp(72px, 10vw, 96px) clamp(20px, 5vw, 48px) clamp(32px, 5vw, 48px)" }}
+      className="relative w-full overflow-hidden -mt-14 sm:-mt-16"
+      style={{ backgroundColor: "#2D35C9", padding: "clamp(72px, 10vw, 96px) clamp(20px, 5vw, 48px) clamp(32px, 5vw, 48px)", paddingTop: "calc(clamp(72px, 10vw, 96px) + 4rem)" }}
     >
       <div className="max-w-[1280px] mx-auto relative">
         {twoLineHeading ? (
