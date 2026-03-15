@@ -83,3 +83,20 @@
     font-family: 'Chillax', sans-serif;
   }
 }
+
+.i-lime-dot {
+  position: relative;
+  display: inline-block;
+}
+
+.i-lime-dot::after {
+  content: '';
+  position: absolute;
+  top: 0.08em;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0.14em;
+  height: 0.14em;
+  border-radius: 50%;
+  background-color: hsl(var(--accent));
+}
