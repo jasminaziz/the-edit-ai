@@ -55,7 +55,7 @@ export function Layout({ children }: { children: ReactNode }) {
   const pillText = "text-primary";
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col overflow-x-hidden">
       <nav
         className="fixed top-0 left-0 right-0 z-50"
         style={{ backgroundColor: navBg }}
