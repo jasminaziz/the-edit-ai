@@ -53,7 +53,7 @@ const Index = () => {
             marginTop: "-0.02em",
           }}
         >
-          Edit.
+          Ed<span style={{ color: "#C8F04A" }}>i</span>t.
         </h1>
 
         {/* Tagline — lime accent, right-aligned under the 't' */}
