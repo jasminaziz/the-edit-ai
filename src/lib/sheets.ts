@@ -66,7 +66,7 @@ export async function fetchTools(): Promise<Tool[]> {
 
 export async function fetchWhatsNew(): Promise<WhatsNew[]> {
   try {
-    if (!SPREADSHEET_ID || !API_KEY) return [];
+    const res = await fetch(sheetsUrl('whats_new'));
     const res = await fetch(sheetsUrl('whats_new'));
     if (!res.ok) return [];
     const data = await res.json();
