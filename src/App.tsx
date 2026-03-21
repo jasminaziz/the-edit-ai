@@ -29,6 +29,7 @@ const App = () => (
             <Route path="/my-stack" element={<MyStack />} />
             <Route path="/learning" element={<Learning />} />
             <Route path="/submit" element={<Submit />} />
+            <Route path="/design-kit" element={<DesignKit />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
