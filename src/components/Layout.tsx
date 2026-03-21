@@ -6,10 +6,11 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/s
 
 const navItems = [
   { to: "/", label: "Home" },
-  { to: "/tools", label: "Tools" },
-  { to: "/whats-new", label: "What's New" },
   { to: "/my-stack", label: "My Stack" },
+  { to: "/tools", label: "Tools" },
+  { to: "/design-kit", label: "Design" },
   { to: "/learning", label: "Learning" },
+  { to: "/whats-new", label: "What's New" },
 ];
 
 export function Layout({ children }: { children: ReactNode }) {
