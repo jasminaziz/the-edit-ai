@@ -7,7 +7,7 @@ import { CobaltZone } from "@/components/CobaltZone";
 
 import { Search } from "lucide-react";
 
-const STATUS_FILTERS = ["ALL", "in_stack", "trialling", "queued", "watch", "know_about"];
+const STATUS_FILTERS = ["in_stack", "on_radar"] as const;
 
 const Tools = () => {
   const [tools, setTools] = useState<Tool[]>([]);
@@ -15,7 +15,7 @@ const Tools = () => {
   const [error, setError] = useState(false);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("ALL");
-  const [statusFilter, setStatusFilter] = useState("ALL");
+  const [activeStatuses, setActiveStatuses] = useState<Set<string>>(new Set(["in_stack", "on_radar"]));
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [expandedVerdicts, setExpandedVerdicts] = useState<Set<string>>(new Set());
 
