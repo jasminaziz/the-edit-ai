@@ -89,6 +89,37 @@ export async function fetchWhatsNew(): Promise<WhatsNew[]> {
   }
 }
 
+export interface DesignKitItem {
+  name: string;
+  category: string;
+  url: string;
+  what_it_does: string;
+  when_to_use: string;
+  cost: string;
+  verdict: string;
+}
+
+export async function fetchDesignKit(): Promise<DesignKitItem[]> {
+  try {
+    const res = await fetch(sheetsUrl('design_kit'));
+    if (!res.ok) return [];
+    const data = await res.json();
+    const rows: string[][] = data.values || [];
+    if (rows.length < 2) return [];
+    return rows.slice(1).filter(r => r.length > 0 && r[0]).map(r => ({
+      name: stripEmoji(r[0] || ''),
+      category: stripEmoji(r[1] || ''),
+      url: r[2] || '',
+      what_it_does: stripEmoji(r[3] || ''),
+      when_to_use: stripEmoji(r[4] || ''),
+      cost: stripEmoji(r[5] || ''),
+      verdict: stripEmoji(r[6] || ''),
+    }));
+  } catch {
+    return [];
+  }
+}
+
 export const STATUS_MAP: Record<string, { label: string; bg: string; text: string }> = {
   in_stack: { label: 'IN MY STACK', bg: '#2D6A4F', text: '#ffffff' },
   on_radar: { label: 'ON MY RADAR', bg: '#2D35C9', text: '#ffffff' },

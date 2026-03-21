@@ -10,6 +10,7 @@ import WhatsNew from "./pages/WhatsNew";
 import MyStack from "./pages/MyStack";
 import Learning from "./pages/Learning";
 import Submit from "./pages/Submit";
+import DesignKit from "./pages/DesignKit";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
