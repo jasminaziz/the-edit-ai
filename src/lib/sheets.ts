@@ -5,7 +5,7 @@ export interface Tool {
   my_use_case: string;
   free_tier: string;
   cost: string;
-  status: 'in_stack' | 'trialling' | 'queued' | 'watch' | 'know_about';
+  status: 'in_stack' | 'on_radar';
   credibility: string;
   quick_notes: string;
   key_integrations: string;
@@ -90,11 +90,8 @@ export async function fetchWhatsNew(): Promise<WhatsNew[]> {
 }
 
 export const STATUS_MAP: Record<string, { label: string; bg: string; text: string }> = {
-  in_stack: { label: 'IN STACK', bg: '#2D6A4F', text: '#ffffff' },
-  trialling: { label: 'TRIALLING', bg: '#2D35C9', text: '#ffffff' },
-  queued: { label: 'QUEUED', bg: '#4A4A9A', text: '#ffffff' },
-  watch: { label: 'WATCH', bg: '#9B7B3A', text: '#ffffff' },
-  know_about: { label: 'KNOW ABOUT', bg: '#9A8F82', text: '#ffffff' },
+  in_stack: { label: 'IN MY STACK', bg: '#2D6A4F', text: '#ffffff' },
+  on_radar: { label: 'ON MY RADAR', bg: '#2D35C9', text: '#ffffff' },
 };
 
 export const RELEVANCE_MAP: Record<string, { label: string; bg: string; text: string }> = {
@@ -106,15 +103,10 @@ export const RELEVANCE_MAP: Record<string, { label: string; bg: string; text: st
 
 export const CATEGORIES = [
   'ALL',
-  'Writing & Strategy',
-  'Research & Knowledge',
-  'Design & Image',
-  'Video & Audio',
-  'Automation & CRM',
-  'Building & Deployment',
-  'App Infrastructure',
-  'Claude & AI Skills',
-  'Productivity & Voice',
-  'API & Developer Tools',
-  'CV & Prior Experience',
+  'Writing',
+  'Research',
+  'Design',
+  'Video',
+  'Automation',
+  'Building',
 ];

@@ -7,7 +7,7 @@ import { CobaltZone } from "@/components/CobaltZone";
 
 import { Search } from "lucide-react";
 
-const STATUS_FILTERS = ["ALL", "in_stack", "trialling", "queued", "watch", "know_about"];
+const STATUS_FILTERS = ["in_stack", "on_radar"] as const;
 
 const Tools = () => {
   const [tools, setTools] = useState<Tool[]>([]);
@@ -15,7 +15,7 @@ const Tools = () => {
   const [error, setError] = useState(false);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("ALL");
-  const [statusFilter, setStatusFilter] = useState("ALL");
+  const [activeStatuses, setActiveStatuses] = useState<Set<string>>(new Set(["in_stack", "on_radar"]));
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [expandedVerdicts, setExpandedVerdicts] = useState<Set<string>>(new Set());
 
@@ -39,11 +39,27 @@ const Tools = () => {
     // Card click no longer selects — cobalt state is hover-only
   };
 
+  const toggleStatus = (s: string) => {
+    setActiveStatuses((prev) => {
+      const next = new Set(prev);
+      if (next.has(s)) {
+        next.delete(s);
+        // If none active, re-activate both (show all)
+        if (next.size === 0) return new Set(["in_stack", "on_radar"]);
+      } else {
+        next.add(s);
+      }
+      return next;
+    });
+  };
+
+  const allStatusesActive = activeStatuses.size === STATUS_FILTERS.length;
+
   const filtered = tools.filter((t) => {
     const q = search.toLowerCase();
     const matchSearch = !q || t.name.toLowerCase().includes(q) || t.category.toLowerCase().includes(q) || t.what_it_does.toLowerCase().includes(q);
     const matchCat = category === "ALL" || t.category === category;
-    const matchStatus = statusFilter === "ALL" || t.status === statusFilter;
+    const matchStatus = allStatusesActive || activeStatuses.has(t.status);
     return matchSearch && matchCat && matchStatus;
   });
 
@@ -88,17 +104,17 @@ const Tools = () => {
           <div className="flex flex-wrap gap-2">
             {STATUS_FILTERS.map((s) => {
               const config = STATUS_MAP[s];
-              const label = s === "ALL" ? "ALL" : config?.label || s;
-              const isActive = statusFilter === s;
+              const label = config?.label || s;
+              const isActive = activeStatuses.has(s);
               return (
                 <button
                   key={s}
-                  onClick={() => setStatusFilter(s)}
+                  onClick={() => toggleStatus(s)}
                   className="px-3.5 py-1.5 font-body text-xs font-medium uppercase tracking-[0.04em] rounded-full border transition-colors duration-150"
                   style={
                     isActive
-                      ? { backgroundColor: config?.bg || "#2D35C9", color: "#FFFFFF", borderColor: "transparent" }
-                      : { backgroundColor: "transparent", color: config?.bg || "#1A1510", borderColor: config ? `${config.bg}80` : "#E8E2D8" }
+                      ? { backgroundColor: config?.bg, color: "#FFFFFF", borderColor: "transparent" }
+                      : { backgroundColor: "transparent", color: config?.bg, borderColor: `${config?.bg}80` }
                   }
                 >
                   {label}
