@@ -94,6 +94,13 @@ export const STATUS_MAP: Record<string, { label: string; bg: string; text: strin
   on_radar: { label: 'ON MY RADAR', bg: '#2D35C9', text: '#ffffff' },
 };
 
+export const RELEVANCE_MAP: Record<string, { label: string; bg: string; text: string }> = {
+  high: { label: 'HIGH', bg: '#2D6A4F', text: '#ffffff' },
+  worth_knowing: { label: 'WORTH KNOWING', bg: '#2D35C9', text: '#ffffff' },
+  watch: { label: 'WATCH', bg: '#9B7B3A', text: '#ffffff' },
+  know_about: { label: 'CAUTION', bg: '#C4461E', text: '#ffffff' },
+};
+
 export const CATEGORIES = [
   'ALL',
   'Writing',
