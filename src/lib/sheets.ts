@@ -120,6 +120,72 @@ export async function fetchDesignKit(): Promise<DesignKitItem[]> {
   }
 }
 
+export interface LearningItem {
+  name: string;
+  category: string;
+  type: string;
+  provider: string;
+  what_it_is: string;
+  why_it_matters: string;
+  time: string;
+  cost: string;
+  url: string;
+}
+
+export async function fetchLearning(): Promise<LearningItem[]> {
+  try {
+    const res = await fetch(sheetsUrl('learning'));
+    if (!res.ok) return [];
+    const data = await res.json();
+    const rows: string[][] = data.values || [];
+    if (rows.length < 2) return [];
+    return rows.slice(1).filter(r => r.length > 0 && r[0]).map(r => ({
+      name: stripEmoji(r[0] || ''),
+      category: stripEmoji(r[1] || ''),
+      type: stripEmoji(r[2] || ''),
+      provider: stripEmoji(r[3] || ''),
+      what_it_is: stripEmoji(r[4] || ''),
+      why_it_matters: stripEmoji(r[5] || ''),
+      time: stripEmoji(r[6] || ''),
+      cost: stripEmoji(r[7] || ''),
+      url: r[8] || '',
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export interface MyStackItem {
+  name: string;
+  category: string;
+  what_it_does: string;
+  my_use_case: string;
+  cost: string;
+  url: string;
+  verdict: string;
+}
+
+export async function fetchMyStack(): Promise<MyStackItem[]> {
+  try {
+    const res = await fetch(sheetsUrl('my_stack'));
+    if (!res.ok) return [];
+    const data = await res.json();
+    const rows: string[][] = data.values || [];
+    if (rows.length < 2) return [];
+    return rows.slice(1).filter(r => r.length > 0 && r[0]).map(r => ({
+      name: stripEmoji(r[0] || ''),
+      category: stripEmoji(r[1] || ''),
+      what_it_does: stripEmoji(r[2] || ''),
+      my_use_case: stripEmoji(r[3] || ''),
+      cost: stripEmoji(r[4] || ''),
+      url: r[5] || '',
+      verdict: stripEmoji(r[6] || ''),
+    }));
+  } catch {
+    return [];
+  }
+}
+
 export const STATUS_MAP: Record<string, { label: string; bg: string; text: string }> = {
   in_stack: { label: 'IN MY STACK', bg: '#2D6A4F', text: '#ffffff' },
   on_radar: { label: 'ON MY RADAR', bg: '#2D35C9', text: '#ffffff' },
