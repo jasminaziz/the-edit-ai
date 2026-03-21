@@ -104,17 +104,17 @@ const Tools = () => {
           <div className="flex flex-wrap gap-2">
             {STATUS_FILTERS.map((s) => {
               const config = STATUS_MAP[s];
-              const label = s === "ALL" ? "ALL" : config?.label || s;
-              const isActive = statusFilter === s;
+              const label = config?.label || s;
+              const isActive = activeStatuses.has(s);
               return (
                 <button
                   key={s}
-                  onClick={() => setStatusFilter(s)}
+                  onClick={() => toggleStatus(s)}
                   className="px-3.5 py-1.5 font-body text-xs font-medium uppercase tracking-[0.04em] rounded-full border transition-colors duration-150"
                   style={
                     isActive
-                      ? { backgroundColor: config?.bg || "#2D35C9", color: "#FFFFFF", borderColor: "transparent" }
-                      : { backgroundColor: "transparent", color: config?.bg || "#1A1510", borderColor: config ? `${config.bg}80` : "#E8E2D8" }
+                      ? { backgroundColor: config?.bg, color: "#FFFFFF", borderColor: "transparent" }
+                      : { backgroundColor: "transparent", color: config?.bg, borderColor: `${config?.bg}80` }
                   }
                 >
                   {label}
