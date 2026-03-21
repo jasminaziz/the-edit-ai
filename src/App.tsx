@@ -10,6 +10,7 @@ import WhatsNew from "./pages/WhatsNew";
 import MyStack from "./pages/MyStack";
 import Learning from "./pages/Learning";
 import Submit from "./pages/Submit";
+import DesignKit from "./pages/DesignKit";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="/my-stack" element={<MyStack />} />
             <Route path="/learning" element={<Learning />} />
             <Route path="/submit" element={<Submit />} />
+            <Route path="/design-kit" element={<DesignKit />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
