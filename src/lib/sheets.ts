@@ -5,7 +5,7 @@ export interface Tool {
   my_use_case: string;
   free_tier: string;
   cost: string;
-  status: 'in_stack' | 'trialling' | 'queued' | 'watch' | 'know_about';
+  status: 'in_stack' | 'on_radar';
   credibility: string;
   quick_notes: string;
   key_integrations: string;
