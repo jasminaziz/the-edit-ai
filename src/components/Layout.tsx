@@ -146,9 +146,6 @@ export function Layout({ children }: { children: ReactNode }) {
           </span>
           <div className="flex items-center gap-4 sm:gap-6">
             <span className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40">
-              Built with Lovable
-            </span>
-            <span className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40">
               © 2026
             </span>
           </div>
