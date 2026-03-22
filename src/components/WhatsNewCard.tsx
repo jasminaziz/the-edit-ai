@@ -55,7 +55,7 @@ export function WhatsNewCard({ item }: { item: WhatsNew }) {
         </h3>
 
         <p
-          className="font-body leading-relaxed line-clamp-3 mb-3"
+          className="font-body leading-relaxed line-clamp-5 mb-3"
           style={{ fontSize: 15, color: "rgba(26, 21, 16, 0.7)" }}
         >
           {item.what_it_is}
