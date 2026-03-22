@@ -104,8 +104,22 @@ export function WhatsNewCard({
 
         <button
           onClick={onToggle}
-          className="block font-body font-medium text-[14px] hover:underline mt-auto text-left"
-          style={{ color: "#2D35C9" }}
+          className="inline-block font-body font-medium text-[13px] mt-auto self-start transition-colors duration-200 ease-out"
+          style={{
+            backgroundColor: "hsl(72 85% 61%)",
+            color: "hsl(30 20% 8%)",
+            borderRadius: 20,
+            padding: "12px 20px",
+            border: "none",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = "hsl(237 64% 48%)";
+            e.currentTarget.style.color = "#FFFFFF";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = "hsl(72 85% 61%)";
+            e.currentTarget.style.color = "hsl(30 20% 8%)";
+          }}
         >
           {expanded ? "← Less" : "Read more →"}
         </button>
