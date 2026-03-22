@@ -10,11 +10,23 @@ function formatDate(raw: string): string {
   return `${day} ${month} ${year}`;
 }
 
+/** Parse a date string, handling range formats like "Feb 17–18, 2026" */
+export function parseDate(dateStr: string): Date | null {
+  if (!dateStr) return null;
+  // Try direct parse first
+  let d = new Date(dateStr);
+  if (!isNaN(d.getTime())) return d;
+  // Handle range formats: take everything before en-dash/hyphen + keep year
+  const cleaned = dateStr.replace(/[–—-]\s*\d+/, "");
+  d = new Date(cleaned);
+  if (!isNaN(d.getTime())) return d;
+  return null;
+}
+
 /** Extract MMMM YYYY from a date string for grouping */
-export function monthYearKey(dateStr: string): string {
-  if (!dateStr) return "Unknown";
-  const d = new Date(dateStr);
-  if (isNaN(d.getTime())) return "Unknown";
+export function monthYearKey(dateStr: string): string | null {
+  const d = parseDate(dateStr);
+  if (!d) return null;
   return d.toLocaleString("en-GB", { month: "long", year: "numeric" });
 }
 
