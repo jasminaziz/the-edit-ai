@@ -1,17 +1,6 @@
 import { type WhatsNew } from "@/lib/sheets";
 import { RelevanceBadge } from "@/components/StatusBadge";
 
-const CATEGORY_COLORS: Record<string, string> = {
-  "Writing & Strategy": "#2D35C9",
-  "Research & Knowledge": "#7B7FD4",
-  "Design & Image": "#C8F04A",
-  "Video & Audio": "#4A4A9A",
-  "Automation & CRM": "#2D6A4F",
-  "Claude & AI Skills": "#2D35C9",
-};
-
-const DEFAULT_COLOR = "#9A8F82";
-
 function formatDate(raw: string): string {
   if (!raw) return "";
   const d = new Date(raw);
@@ -22,9 +11,35 @@ function formatDate(raw: string): string {
   return `${day} ${month} ${year}`;
 }
 
-function getCategoryColor(category: string | undefined): string {
-  if (!category) return DEFAULT_COLOR;
-  return CATEGORY_COLORS[category] || DEFAULT_COLOR;
+export function formatDateWithFallback(date: string, batch: string): string {
+  if (date) {
+    const parsed = new Date(date);
+    if (!isNaN(parsed.getTime())) {
+      return formatDate(date);
+    }
+  }
+  // Fallback: try to extract month from batch
+  if (batch) {
+    const parsed = new Date(batch);
+    if (!isNaN(parsed.getTime())) {
+      return parsed.toLocaleString("en-GB", { month: "short", year: "numeric" });
+    }
+  }
+  return "";
+}
+
+export function normaliseBatch(batch: string): string {
+  if (!batch || !batch.trim()) {
+    const now = new Date();
+    return now.toLocaleString("en-GB", { month: "long", year: "numeric" });
+  }
+  // Try parsing as date
+  const d = new Date(batch);
+  if (!isNaN(d.getTime())) {
+    return d.toLocaleString("en-GB", { month: "long", year: "numeric" });
+  }
+  // Already a readable string like "March 2026" — return as-is
+  return batch.trim();
 }
 
 export function WhatsNewCard({
@@ -36,12 +51,14 @@ export function WhatsNewCard({
   expanded: boolean;
   onToggle: () => void;
 }) {
-  const fieldColor = getCategoryColor(item.status);
+  const displayDate = formatDateWithFallback(item.launched, item.batch);
 
   return (
     <div
-      className="rounded-xl overflow-hidden border border-border flex flex-col transition-all duration-200 ease-out hover:-translate-y-1"
+      className="rounded-xl overflow-hidden flex flex-col transition-all duration-200 ease-out hover:-translate-y-1"
       style={{
+        background: "#FFFFFF",
+        border: "1px solid #E8E2D8",
         boxShadow: "none",
       }}
       onMouseEnter={(e) => {
@@ -51,32 +68,28 @@ export function WhatsNewCard({
         e.currentTarget.style.boxShadow = "none";
       }}
     >
-      {/* Zone A - Color field */}
-      <div
-        className="shrink-0"
-        style={{ backgroundColor: fieldColor, height: 180 }}
-      />
+      {/* Top band */}
+      <div className="shrink-0 w-full" style={{ height: 8, backgroundColor: "#2D35C9" }} />
 
-      {/* Zone B - Cobalt header band */}
-      <div
-        className="flex items-center justify-between px-4 shrink-0"
-        style={{ backgroundColor: "#2D35C9", height: 36 }}
-      >
-        <span className="font-body text-[11px]" style={{ color: "rgba(250,248,244,0.7)" }}>
-          {item.developer} · {formatDate(item.launched)}
-        </span>
-        <RelevanceBadge level={item.relevance_level} />
-      </div>
+      {/* Card body */}
+      <div className="p-6 flex flex-col flex-1">
+        {displayDate && (
+          <span className="font-body text-[13px] mb-2" style={{ color: "#9A8F82" }}>
+            {displayDate}
+          </span>
+        )}
 
-      {/* Zone C - Card body */}
-      <div className="bg-card p-5 flex flex-col flex-1" style={{ borderTop: "none" }}>
         <h3
-          className="font-heading font-semibold leading-tight mb-2"
-          style={{ fontSize: 16, color: "#1A1510" }}
+          className="font-heading font-semibold leading-tight mb-2 line-clamp-2"
+          style={{ fontSize: 24, color: "#1A1510", fontWeight: 700 }}
         >
           {item.name}
         </h3>
-        <p className="font-body text-sm leading-relaxed text-foreground line-clamp-3 mb-3">
+
+        <p
+          className="font-body leading-relaxed line-clamp-3 mb-3"
+          style={{ fontSize: 15, color: "rgba(26, 21, 16, 0.7)" }}
+        >
           {item.what_it_is}
         </p>
 
@@ -91,9 +104,10 @@ export function WhatsNewCard({
 
         <button
           onClick={onToggle}
-          className="block font-body font-medium text-[13px] text-primary hover:underline mt-auto"
+          className="block font-body font-medium text-[14px] hover:underline mt-auto text-left"
+          style={{ color: "#2D35C9" }}
         >
-          {expanded ? "← Less" : "→ Read more"}
+          {expanded ? "← Less" : "Read more →"}
         </button>
 
         {expanded && (
