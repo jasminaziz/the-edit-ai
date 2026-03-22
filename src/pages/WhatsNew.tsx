@@ -3,12 +3,12 @@ import { fetchWhatsNew, type WhatsNew } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
-import { WhatsNewCard } from "@/components/WhatsNewCard";
+import { WhatsNewCard, normaliseBatch } from "@/components/WhatsNewCard";
 
 function groupByBatch(items: WhatsNew[]): { batch: string; items: WhatsNew[] }[] {
   const map = new Map<string, WhatsNew[]>();
   for (const item of items) {
-    const key = item.batch || "Other";
+    const key = normaliseBatch(item.batch);
     if (!map.has(key)) map.set(key, []);
     map.get(key)!.push(item);
   }
