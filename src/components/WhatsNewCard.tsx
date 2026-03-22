@@ -2,8 +2,8 @@ import { type WhatsNew } from "@/lib/sheets";
 
 function formatDate(raw: string): string {
   if (!raw) return "";
-  const d = new Date(raw);
-  if (isNaN(d.getTime())) return raw;
+  const d = parseDate(raw);
+  if (!d) return raw;
   const day = d.getDate().toString().padStart(2, "0");
   const month = d.toLocaleString("en-GB", { month: "short" });
   const year = d.getFullYear();
