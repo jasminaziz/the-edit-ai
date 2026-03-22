@@ -69,7 +69,7 @@ export function WhatsNewCard({
       }}
     >
       {/* Top band */}
-      <div className="shrink-0 w-full" style={{ height: 8, backgroundColor: "#2D35C9" }} />
+      <div className="shrink-0 w-full" style={{ height: 8, backgroundColor: "hsl(72 85% 61%)" }} />
 
       {/* Card body */}
       <div className="p-6 flex flex-col flex-1">
