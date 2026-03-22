@@ -25,6 +25,7 @@ export interface WhatsNew {
   verdict: string;
   relevance_level: 'high' | 'worth_knowing' | 'watch' | 'know_about';
   batch: string;
+  url: string;
 }
 
 /** Strip emoji characters from text — keep only standard text, punctuation, and symbols */
@@ -83,6 +84,7 @@ export async function fetchWhatsNew(): Promise<WhatsNew[]> {
       verdict: stripEmoji(r[8] || ''),
       relevance_level: (r[9] || 'know_about') as WhatsNew['relevance_level'],
       batch: stripEmoji(r[10] || ''),
+      url: r[11] || '',
     }));
   } catch {
     return [];

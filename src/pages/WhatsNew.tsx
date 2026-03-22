@@ -3,41 +3,39 @@ import { fetchWhatsNew, type WhatsNew } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
-import { WhatsNewCard, normaliseBatch } from "@/components/WhatsNewCard";
+import { WhatsNewCard, monthYearKey } from "@/components/WhatsNewCard";
 
-function groupByBatch(items: WhatsNew[]): { batch: string; items: WhatsNew[] }[] {
+function groupByMonth(items: WhatsNew[]): { month: string; items: WhatsNew[] }[] {
+  // Sort all items newest first
+  const sorted = [...items].sort((a, b) => {
+    const da = new Date(a.launched).getTime() || 0;
+    const db = new Date(b.launched).getTime() || 0;
+    return db - da;
+  });
+
   const map = new Map<string, WhatsNew[]>();
-  for (const item of items) {
-    const key = normaliseBatch(item.batch);
+  for (const item of sorted) {
+    const key = monthYearKey(item.launched);
     if (!map.has(key)) map.set(key, []);
     map.get(key)!.push(item);
   }
-  return Array.from(map.entries()).map(([batch, items]) => ({ batch, items }));
+  return Array.from(map.entries()).map(([month, items]) => ({ month, items }));
 }
 
 const WhatsNewPage = () => {
   const [items, setItems] = useState<WhatsNew[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     fetchWhatsNew().then((n) => {
       if (n.length === 0 && import.meta.env.VITE_GOOGLE_SHEETS_ID) setError(true);
-      setItems(n.reverse());
+      setItems(n);
       setLoading(false);
     });
   }, []);
 
-  const toggle = (name: string) => {
-    setExpanded((prev) => {
-      const next = new Set(prev);
-      next.has(name) ? next.delete(name) : next.add(name);
-      return next;
-    });
-  };
-
-  const groups = groupByBatch(items);
+  const groups = groupByMonth(items);
 
   return (
     <>
@@ -58,23 +56,18 @@ const WhatsNewPage = () => {
           ) : (
             <div>
               {groups.map((group, gi) => (
-                <div key={group.batch} style={{ marginTop: gi === 0 ? 48 : 64 }}>
+                <div key={group.month} style={{ marginTop: gi === 0 ? 48 : 64 }}>
                   <h2
                     className="font-heading"
                     style={{ fontWeight: 700, fontSize: 32, color: "#2D35C9" }}
                   >
-                    {group.batch}
+                    {group.month}
                   </h2>
                   <hr className="mt-2 mb-6" style={{ borderColor: "#E8E2D8" }} />
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" style={{ alignItems: "stretch" }}>
                     {group.items.map((item) => (
-                      <WhatsNewCard
-                        key={item.name}
-                        item={item}
-                        expanded={expanded.has(item.name)}
-                        onToggle={() => toggle(item.name)}
-                      />
+                      <WhatsNewCard key={item.name} item={item} />
                     ))}
                   </div>
                 </div>

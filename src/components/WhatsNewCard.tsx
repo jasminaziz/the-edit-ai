@@ -1,5 +1,4 @@
 import { type WhatsNew } from "@/lib/sheets";
-import { RelevanceBadge } from "@/components/StatusBadge";
 
 function formatDate(raw: string): string {
   if (!raw) return "";
@@ -11,47 +10,16 @@ function formatDate(raw: string): string {
   return `${day} ${month} ${year}`;
 }
 
-export function formatDateWithFallback(date: string, batch: string): string {
-  if (date) {
-    const parsed = new Date(date);
-    if (!isNaN(parsed.getTime())) {
-      return formatDate(date);
-    }
-  }
-  // Fallback: try to extract month from batch
-  if (batch) {
-    const parsed = new Date(batch);
-    if (!isNaN(parsed.getTime())) {
-      return parsed.toLocaleString("en-GB", { month: "short", year: "numeric" });
-    }
-  }
-  return "";
+/** Extract MMMM YYYY from a date string for grouping */
+export function monthYearKey(dateStr: string): string {
+  if (!dateStr) return "Unknown";
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return "Unknown";
+  return d.toLocaleString("en-GB", { month: "long", year: "numeric" });
 }
 
-export function normaliseBatch(batch: string): string {
-  if (!batch || !batch.trim()) {
-    const now = new Date();
-    return now.toLocaleString("en-GB", { month: "long", year: "numeric" });
-  }
-  // Try parsing as date
-  const d = new Date(batch);
-  if (!isNaN(d.getTime())) {
-    return d.toLocaleString("en-GB", { month: "long", year: "numeric" });
-  }
-  // Already a readable string like "March 2026" — return as-is
-  return batch.trim();
-}
-
-export function WhatsNewCard({
-  item,
-  expanded,
-  onToggle,
-}: {
-  item: WhatsNew;
-  expanded: boolean;
-  onToggle: () => void;
-}) {
-  const displayDate = formatDateWithFallback(item.launched, item.batch);
+export function WhatsNewCard({ item }: { item: WhatsNew }) {
+  const displayDate = formatDate(item.launched);
 
   return (
     <div
@@ -69,7 +37,7 @@ export function WhatsNewCard({
       }}
     >
       {/* Top band */}
-      <div className="shrink-0 w-full" style={{ height: 8, backgroundColor: "hsl(72 85% 61%)" }} />
+      <div className="shrink-0 w-full" style={{ height: 8, backgroundColor: "#C8F04A" }} />
 
       {/* Card body */}
       <div className="p-6 flex flex-col flex-1">
@@ -102,40 +70,31 @@ export function WhatsNewCard({
           </span>
         )}
 
-        <button
-          onClick={onToggle}
-          className="inline-block font-body font-medium text-[13px] mt-auto self-start transition-colors duration-200 ease-out"
-          style={{
-            backgroundColor: "hsl(72 85% 61%)",
-            color: "hsl(30 20% 8%)",
-            borderRadius: 20,
-            padding: "12px 20px",
-            border: "none",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "hsl(237 64% 48%)";
-            e.currentTarget.style.color = "#FFFFFF";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "hsl(72 85% 61%)";
-            e.currentTarget.style.color = "hsl(30 20% 8%)";
-          }}
-        >
-          {expanded ? "← Less" : "Read more →"}
-        </button>
-
-        {expanded && (
-          <div className="mt-3 space-y-2 font-body text-sm bg-background p-4 rounded-lg">
-            {item.verdict && (
-              <p><strong className="text-foreground">Verdict:</strong> {item.verdict}</p>
-            )}
-            {item.watch_out_for && (
-              <p><strong className="text-foreground">Watch out for:</strong> {item.watch_out_for}</p>
-            )}
-            {item.key_integrations && (
-              <p><strong className="text-foreground">Key integrations:</strong> {item.key_integrations}</p>
-            )}
-          </div>
+        {item.url && (
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block font-body font-medium text-[13px] mt-auto self-start transition-colors duration-200 ease-out"
+            style={{
+              backgroundColor: "#C8F04A",
+              color: "#1A1510",
+              borderRadius: 20,
+              padding: "12px 20px",
+              border: "none",
+              textDecoration: "none",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#2D35C9";
+              e.currentTarget.style.color = "#FFFFFF";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "#C8F04A";
+              e.currentTarget.style.color = "#1A1510";
+            }}
+          >
+            Read more →
+          </a>
         )}
       </div>
     </div>
