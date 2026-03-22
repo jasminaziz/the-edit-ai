@@ -2,19 +2,31 @@ import { type WhatsNew } from "@/lib/sheets";
 
 function formatDate(raw: string): string {
   if (!raw) return "";
-  const d = new Date(raw);
-  if (isNaN(d.getTime())) return raw;
+  const d = parseDate(raw);
+  if (!d) return raw;
   const day = d.getDate().toString().padStart(2, "0");
   const month = d.toLocaleString("en-GB", { month: "short" });
   const year = d.getFullYear();
   return `${day} ${month} ${year}`;
 }
 
+/** Parse a date string, handling range formats like "Feb 17–18, 2026" */
+export function parseDate(dateStr: string): Date | null {
+  if (!dateStr) return null;
+  // Try direct parse first
+  let d = new Date(dateStr);
+  if (!isNaN(d.getTime())) return d;
+  // Handle range formats: take everything before en-dash/hyphen + keep year
+  const cleaned = dateStr.replace(/[–—-]\s*\d+/, "");
+  d = new Date(cleaned);
+  if (!isNaN(d.getTime())) return d;
+  return null;
+}
+
 /** Extract MMMM YYYY from a date string for grouping */
-export function monthYearKey(dateStr: string): string {
-  if (!dateStr) return "Unknown";
-  const d = new Date(dateStr);
-  if (isNaN(d.getTime())) return "Unknown";
+export function monthYearKey(dateStr: string): string | null {
+  const d = parseDate(dateStr);
+  if (!d) return null;
   return d.toLocaleString("en-GB", { month: "long", year: "numeric" });
 }
 

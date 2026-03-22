@@ -3,22 +3,36 @@ import { fetchWhatsNew, type WhatsNew } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
-import { WhatsNewCard, monthYearKey } from "@/components/WhatsNewCard";
+import { WhatsNewCard, monthYearKey, parseDate } from "@/components/WhatsNewCard";
 
 function groupByMonth(items: WhatsNew[]): { month: string; items: WhatsNew[] }[] {
-  // Sort all items newest first
+  // Sort all items newest first, unparseable dates last
   const sorted = [...items].sort((a, b) => {
-    const da = new Date(a.launched).getTime() || 0;
-    const db = new Date(b.launched).getTime() || 0;
+    const da = parseDate(a.launched)?.getTime() || 0;
+    const db = parseDate(b.launched)?.getTime() || 0;
     return db - da;
   });
 
   const map = new Map<string, WhatsNew[]>();
+  let mostRecentKey: string | null = null;
+  const orphans: WhatsNew[] = [];
+
   for (const item of sorted) {
     const key = monthYearKey(item.launched);
-    if (!map.has(key)) map.set(key, []);
-    map.get(key)!.push(item);
+    if (key) {
+      if (!mostRecentKey) mostRecentKey = key;
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push(item);
+    } else {
+      orphans.push(item);
+    }
   }
+
+  // Assign orphans to most recent valid group
+  if (orphans.length > 0 && mostRecentKey && map.has(mostRecentKey)) {
+    map.get(mostRecentKey)!.push(...orphans);
+  }
+
   return Array.from(map.entries()).map(([month, items]) => ({ month, items }));
 }
 
