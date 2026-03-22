@@ -17,7 +17,7 @@ const WhatsNewPage = () => {
   useEffect(() => {
     fetchWhatsNew().then((n) => {
       if (n.length === 0 && import.meta.env.VITE_GOOGLE_SHEETS_ID) setError(true);
-      setItems(n);
+      setItems(n.reverse());
       setLoading(false);
     });
   }, []);
