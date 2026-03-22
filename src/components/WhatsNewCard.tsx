@@ -82,30 +82,6 @@ export function WhatsNewCard({ item }: { item: WhatsNew }) {
           </span>
         )}
 
-        <a
-          href={item.url || "#"}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block font-body font-medium text-[13px] mt-auto self-start transition-colors duration-200 ease-out"
-          style={{
-            backgroundColor: "#C8F04A",
-            color: "#1A1510",
-            borderRadius: 20,
-            padding: "12px 20px",
-            border: "none",
-            textDecoration: "none",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#2D35C9";
-            e.currentTarget.style.color = "#FFFFFF";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "#C8F04A";
-            e.currentTarget.style.color = "#1A1510";
-          }}
-        >
-          Read more →
-        </a>
       </div>
     </div>
   );
