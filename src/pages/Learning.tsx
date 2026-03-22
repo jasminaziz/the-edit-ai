@@ -32,7 +32,7 @@ const Learning = () => {
     <>
       <CobaltZone
         heading="Learning"
-        subheading="How I'm staying sharp as things change fast."
+        subheading="How I'm staying sharp."
         bodyText="The resources actually worth your time. Not a complete list — a curated one."
       />
 
