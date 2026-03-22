@@ -42,8 +42,9 @@ const DesignKitPage = () => {
   return (
     <>
       <CobaltZone
-        heading="Design Kit"
-        subheading="What I reach for at the start of any visual project."
+        heading=""
+        twoLineHeading={{ line1: "Design Kit", line2: "" }}
+        bodyText="The resources I reach for at the start of any visual project. Moodboarding, colour, type, icons, photography, mockups."
       />
 
       <section className="bg-background py-10 px-6 sm:px-12">
