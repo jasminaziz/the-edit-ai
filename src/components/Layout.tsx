@@ -142,7 +142,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <footer className="py-4 px-4 sm:px-12" style={{ backgroundColor: "#1A1510" }}>
         <div className="max-w-[1280px] mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-2">
           <span className="font-body font-semibold text-[13px] text-primary-foreground">
-            The Edit — built by Jasmin
+            The Edit — curated by Jasmin Aziz
           </span>
           <div className="flex items-center gap-4 sm:gap-6">
             <span className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40">
