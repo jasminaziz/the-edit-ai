@@ -114,27 +114,15 @@ export default function Subscribe() {
         style={{ backgroundColor: "#2D35C9" }}
       >
         <h1
-          className="font-heading font-black leading-[0.82] w-full"
-          style={{
-            fontSize: "clamp(80px, 20vw, 300px)",
-            color: "#7B7FD4",
-            letterSpacing: "-0.04em",
-            marginLeft: "-0.04em",
-          }}
-        >
-          Sub
-        </h1>
-        <h1
           className="font-heading font-black leading-[0.78] w-full"
           style={{
             fontSize: "clamp(100px, 28vw, 420px)",
             color: "#7B7FD4",
             letterSpacing: "-0.05em",
             marginLeft: "-0.05em",
-            marginTop: "-0.02em",
           }}
         >
-          scribe.
+          Subscribe.
         </h1>
         <p
           className="font-body font-semibold mt-2 sm:mt-4 text-left"
