@@ -44,7 +44,6 @@ function getCategoryColour(category: string): string {
 function CategoryBadge({ category }: { category: string }) {
   if (!category) return null;
   const bg = getCategoryColour(category);
-  const isLime = category === "Tool Launch";
   return (
     <span
       className="inline-block uppercase"
@@ -56,7 +55,7 @@ function CategoryBadge({ category }: { category: string }) {
         borderRadius: 4,
         padding: "3px 8px",
         backgroundColor: bg,
-        color: isLime ? "#1A1510" : "#FFFFFF",
+        color: "#FFFFFF",
       }}
     >
       {category}
