@@ -32,8 +32,8 @@ function formatDate(raw: string): string {
 const CATEGORY_COLOURS: Record<string, string> = {
   "New Release": "#2D35C9",
   "Model Update": "#7B7FD4",
-  "Tool Launch": "#C8F04A",
-  "Integration": "#1A6B5A",
+  "Tool Launch": "#2D6A4F",
+  "Integration": "#4A4A9A",
   "AI in the News": "#E8572A",
 };
 

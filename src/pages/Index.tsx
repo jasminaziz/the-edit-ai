@@ -5,9 +5,9 @@ import { fetchTools, fetchWhatsNew, type Tool, type WhatsNew } from "@/lib/sheet
 const CATEGORY_COLOURS: Record<string, { bg: string; text: string }> = {
   "New Release": { bg: "#2D35C9", text: "#FFFFFF" },
   "Model Update": { bg: "#7B7FD4", text: "#FFFFFF" },
-  "Tool Launch": { bg: "#C8F04A", text: "#1A1510" },
-  "Integration": { bg: "#1A1510", text: "#FFFFFF" },
-  "AI in the News": { bg: "#9A8F82", text: "#FFFFFF" },
+  "Tool Launch": { bg: "#2D6A4F", text: "#FFFFFF" },
+  "Integration": { bg: "#4A4A9A", text: "#FFFFFF" },
+  "AI in the News": { bg: "#E8572A", text: "#FFFFFF" },
 };
 
 
