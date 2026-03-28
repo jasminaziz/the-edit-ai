@@ -28,7 +28,7 @@ const Index = () => {
   }, []);
 
   const stackTools = tools.filter((t) => t.status === "in_stack").slice(0, 4);
-  const latestNews = news.slice(0, 2);
+  const latestNews = news.slice(0, 1);
 
   return (
     <>
