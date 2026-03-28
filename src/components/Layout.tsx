@@ -22,7 +22,7 @@ export function Layout({ children }: { children: ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const navRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const navContainerRef = useRef<HTMLDivElement>(null);
-  const [pillStyle, setPillStyle] = useState<{ left: number; width: number }>({ left: 0, width: 0 });
+  const [pillStyle, setPillStyle] = useState<{ left: number; width: number; visible: boolean }>({ left: 0, width: 0, visible: false });
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -34,7 +34,10 @@ export function Layout({ children }: { children: ReactNode }) {
     const activeItem = navItems.find((item) =>
       item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to)
     );
-    if (!activeItem || !navContainerRef.current) return;
+    if (!activeItem || !navContainerRef.current) {
+      setPillStyle((prev) => ({ ...prev, visible: false }));
+      return;
+    }
     const el = navRefs.current[activeItem.to];
     if (!el) return;
     const containerRect = navContainerRef.current.getBoundingClientRect();
@@ -42,6 +45,7 @@ export function Layout({ children }: { children: ReactNode }) {
     setPillStyle({
       left: elRect.left - containerRect.left,
       width: elRect.width,
+      visible: true,
     });
   }, [location.pathname]);
 
@@ -116,6 +120,7 @@ export function Layout({ children }: { children: ReactNode }) {
                     style={{
                       left: pillStyle.left,
                       width: pillStyle.width,
+                      opacity: pillStyle.visible ? 1 : 0,
                       transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
                     }}
                   />
