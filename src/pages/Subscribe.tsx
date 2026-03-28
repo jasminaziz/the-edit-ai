@@ -45,7 +45,7 @@ function SuccessMessage() {
         className="font-body"
         style={{ fontWeight: 400, fontSize: 15, color: "#9A8F82", marginTop: 8 }}
       >
-        First edition coming soon.
+        Next edition coming soon.
       </p>
     </div>
   );
