@@ -114,16 +114,17 @@ export function Layout({ children }: { children: ReactNode }) {
               <>
                 <div className="w-16" />
                 <div ref={navContainerRef} className="relative flex items-center gap-1 sm:gap-2">
-                  {/* Sliding active pill */}
-                  <div
-                    className={`absolute top-1/2 -translate-y-1/2 h-8 rounded-[20px] ${pillBg} transition-all duration-[250ms]`}
-                    style={{
-                      left: pillStyle.left,
-                      width: pillStyle.width,
-                      opacity: pillStyle.visible ? 1 : 0,
-                      transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
-                    }}
-                  />
+                  {/* Sliding active pill — only rendered when a nav item is active */}
+                  {pillStyle.visible && (
+                    <div
+                      className={`absolute top-1/2 -translate-y-1/2 h-8 rounded-[20px] ${pillBg} transition-all duration-[250ms]`}
+                      style={{
+                        left: pillStyle.left,
+                        width: pillStyle.width,
+                        transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+                      }}
+                    />
+                  )}
                   {navItems.map((item) => {
                     const isActive = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
                     return (
