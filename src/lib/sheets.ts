@@ -16,15 +16,9 @@ export interface Tool {
 export interface WhatsNew {
   name: string;
   developer: string;
-  launched: string;
+  date: string;
   what_it_is: string;
-  key_integrations: string;
-  watch_out_for: string;
-  relevance: string;
-  status: string;
-  verdict: string;
-  relevance_level: 'high' | 'worth_knowing' | 'watch' | 'know_about';
-  batch: string;
+  category: string;
   url: string;
 }
 
@@ -75,16 +69,10 @@ export async function fetchWhatsNew(): Promise<WhatsNew[]> {
     return rows.slice(1).filter(r => r.length > 0 && r[0]).map(r => ({
       name: stripEmoji(r[0] || ''),
       developer: stripEmoji(r[1] || ''),
-      launched: stripEmoji(r[2] || ''),
+      date: stripEmoji(r[2] || ''),
       what_it_is: stripEmoji(r[3] || ''),
-      key_integrations: stripEmoji(r[4] || ''),
-      watch_out_for: stripEmoji(r[5] || ''),
-      relevance: stripEmoji(r[6] || ''),
-      status: stripEmoji(r[7] || ''),
-      verdict: stripEmoji(r[8] || ''),
-      relevance_level: (r[9] || 'know_about') as WhatsNew['relevance_level'],
-      batch: stripEmoji(r[10] || ''),
-      url: r[11] || '',
+      category: stripEmoji(r[4] || ''),
+      url: r[5] || '',
     }));
   } catch {
     return [];
