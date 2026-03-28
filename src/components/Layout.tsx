@@ -34,7 +34,10 @@ export function Layout({ children }: { children: ReactNode }) {
     const activeItem = navItems.find((item) =>
       item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to)
     );
-    if (!activeItem || !navContainerRef.current) return;
+    if (!activeItem || !navContainerRef.current) {
+      setPillStyle((prev) => ({ ...prev, visible: false }));
+      return;
+    }
     const el = navRefs.current[activeItem.to];
     if (!el) return;
     const containerRect = navContainerRef.current.getBoundingClientRect();
@@ -42,6 +45,7 @@ export function Layout({ children }: { children: ReactNode }) {
     setPillStyle({
       left: elRect.left - containerRect.left,
       width: elRect.width,
+      visible: true,
     });
   }, [location.pathname]);
 
