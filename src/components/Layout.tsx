@@ -109,7 +109,7 @@ export function Layout({ children }: { children: ReactNode }) {
             ) : (
               <>
                 <div className="w-16" />
-                <div ref={navContainerRef} className="relative flex items-center gap-2 sm:gap-[40px]">
+                <div ref={navContainerRef} className="relative flex items-center gap-1 sm:gap-2">
                   {/* Sliding active pill */}
                   <div
                     className={`absolute top-1/2 -translate-y-1/2 h-8 rounded-[20px] ${pillBg} transition-all duration-[250ms]`}
@@ -138,13 +138,13 @@ export function Layout({ children }: { children: ReactNode }) {
                       </NavLink>
                     );
                   })}
+                  <Link
+                    to="/subscribe"
+                    className={`relative z-10 font-body text-sm font-medium px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-all duration-150 ${textColor} hover:bg-white hover:text-primary`}
+                  >
+                    Get the digest →
+                  </Link>
                 </div>
-                <Link
-                  to="/subscribe"
-                  className={`relative z-10 font-body text-sm font-medium px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-all duration-150 ml-4 ${textColor} hover:bg-white hover:text-primary`}
-                >
-                  Get the digest →
-                </Link>
               </>
             )}
           </div>
