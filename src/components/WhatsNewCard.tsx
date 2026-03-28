@@ -33,12 +33,12 @@ const CATEGORY_COLOURS: Record<string, string> = {
   "New Release": "#2D35C9",
   "Model Update": "#7B7FD4",
   "Tool Launch": "#C8F04A",
-  "Integration": "#1A1510",
-  "AI in the News": "#9A8F82",
+  "Integration": "#1A6B5A",
+  "AI in the News": "#E8572A",
 };
 
 function getCategoryColour(category: string): string {
-  return CATEGORY_COLOURS[category] || "#9A8F82";
+  return CATEGORY_COLOURS[category] || "#7B7FD4";
 }
 
 function CategoryBadge({ category }: { category: string }) {
