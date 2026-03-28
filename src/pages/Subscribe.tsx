@@ -36,24 +36,14 @@ function SuccessMessage() {
         <Check size={28} color="#1A1510" strokeWidth={3} />
       </div>
       <h2
-        style={{
-          fontFamily: "'Chillax', sans-serif",
-          fontWeight: 700,
-          fontSize: 36,
-          color: "#2D35C9",
-          margin: 0,
-        }}
+        className="font-heading"
+        style={{ fontWeight: 700, fontSize: 36, color: "#2D35C9", margin: 0 }}
       >
         You're in.
       </h2>
       <p
-        style={{
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-          fontWeight: 400,
-          fontSize: 15,
-          color: "#9A8F82",
-          marginTop: 8,
-        }}
+        className="font-body"
+        style={{ fontWeight: 400, fontSize: 15, color: "#9A8F82", marginTop: 8 }}
       >
         First edition coming soon.
       </p>
@@ -117,106 +107,62 @@ export default function Subscribe() {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        width: "100%",
-        display: "flex",
-        flexDirection: "row",
-        WebkitFontSmoothing: "antialiased",
-      }}
-    >
-      {/* Left column — cobalt */}
-      <div
-        className="subscribe-left"
-        style={{
-          background: "#2D35C9",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "relative",
-          overflow: "hidden",
-        }}
+    <>
+      {/* Hero — mirrors homepage style */}
+      <section
+        className="relative min-h-[40vh] sm:min-h-[70vh] flex flex-col justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
+        style={{ backgroundColor: "#2D35C9" }}
       >
-        {/* Decorative ampersand */}
-        <span
+        <h1
+          className="font-heading font-black leading-[0.82] w-full"
           style={{
-            position: "absolute",
-            fontFamily: "'Chillax', sans-serif",
-            fontWeight: 700,
-            fontSize: 120,
-            color: "#C8F04A",
-            opacity: 0.15,
-            userSelect: "none",
-            lineHeight: 1,
+            fontSize: "clamp(80px, 20vw, 300px)",
+            color: "#7B7FD4",
+            letterSpacing: "-0.04em",
+            marginLeft: "-0.04em",
           }}
         >
-          &amp;
-        </span>
+          Sub
+        </h1>
+        <h1
+          className="font-heading font-black leading-[0.78] w-full"
+          style={{
+            fontSize: "clamp(100px, 28vw, 420px)",
+            color: "#7B7FD4",
+            letterSpacing: "-0.05em",
+            marginLeft: "-0.05em",
+            marginTop: "-0.02em",
+          }}
+        >
+          scribe.
+        </h1>
+        <p
+          className="font-body font-semibold mt-2 sm:mt-4 text-left"
+          style={{
+            fontSize: "clamp(16px, 2.5vw, 36px)",
+            color: "#C8F04A",
+            letterSpacing: "0.01em",
+            marginLeft: "-0.04em",
+          }}
+        >
+          The tools worth knowing about. Weekly.
+        </p>
+      </section>
 
-        <div style={{ position: "relative", zIndex: 1, textAlign: "center", padding: "0 32px" }}>
-          <p
-            style={{
-              fontFamily: "'Chillax', sans-serif",
-              fontWeight: 700,
-              fontSize: 28,
-              color: "#FFFFFF",
-              margin: 0,
-            }}
-          >
-            The Edit
-          </p>
-          <p
-            style={{
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 400,
-              fontSize: 15,
-              color: "#FFFFFF",
-              opacity: 0.7,
-              marginTop: 4,
-              marginBottom: 0,
-            }}
-          >
-            Honest verdicts only.
-          </p>
-
-          <div
-            style={{
-              marginTop: 32,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 400,
-              fontSize: 13,
-              color: "#FFFFFF",
-              opacity: 0.6,
-              lineHeight: 1.8,
-            }}
-          >
-            <p style={{ margin: 0 }}>68 tools reviewed and counting.</p>
-            <p style={{ margin: 0 }}>Updated every week.</p>
-            <p style={{ margin: 0 }}>No affiliate links. No sponsored content.</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Right column — cream */}
-      <div
-        className="subscribe-right"
-        style={{
-          background: "#FAF8F4",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+      {/* Form section — cream */}
+      <section
+        style={{ backgroundColor: "#FAF8F4" }}
+        className="px-4 sm:px-10 md:px-16 py-16 sm:py-24"
       >
-        <div style={{ maxWidth: 440, width: "100%" }}>
+        <div className="max-w-[520px]">
           {formState === "success" ? (
             <SuccessMessage />
           ) : (
             <>
               {/* Eyebrow */}
               <p
+                className="font-body"
                 style={{
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
                   fontWeight: 600,
                   fontSize: 10,
                   textTransform: "uppercase",
@@ -229,11 +175,11 @@ export default function Subscribe() {
               </p>
 
               {/* Heading */}
-              <h1
+              <h2
+                className="font-heading"
                 style={{
-                  fontFamily: "'Chillax', sans-serif",
                   fontWeight: 700,
-                  fontSize: "clamp(28px, 4vw, 40px)",
+                  fontSize: "clamp(24px, 3.5vw, 36px)",
                   color: "#1A1510",
                   textWrap: "balance",
                   lineHeight: 1.1,
@@ -242,12 +188,12 @@ export default function Subscribe() {
                 }}
               >
                 Get the tools worth knowing about.
-              </h1>
+              </h2>
 
               {/* Subheading */}
               <p
+                className="font-body"
                 style={{
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
                   fontWeight: 400,
                   fontSize: 15,
                   color: "#9A8F82",
@@ -258,9 +204,24 @@ export default function Subscribe() {
                 Curated. Direct. No noise.
               </p>
 
+              {/* Proof points */}
+              <div
+                className="font-body"
+                style={{
+                  fontWeight: 400,
+                  fontSize: 13,
+                  color: "#9A8F82",
+                  lineHeight: 1.8,
+                  marginBottom: 32,
+                }}
+              >
+                <p style={{ margin: 0 }}>68 tools reviewed and counting.</p>
+                <p style={{ margin: 0 }}>Updated every week.</p>
+                <p style={{ margin: 0 }}>No affiliate links. No sponsored content.</p>
+              </div>
+
               {/* Form */}
               <form onSubmit={handleSubmit}>
-                {/* First name */}
                 <input
                   type="text"
                   value={firstName}
@@ -271,7 +232,6 @@ export default function Subscribe() {
                   onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E2D8")}
                 />
 
-                {/* Email */}
                 <input
                   type="email"
                   required
@@ -286,47 +246,21 @@ export default function Subscribe() {
                   onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E2D8")}
                 />
 
-                {/* Inline messages */}
                 {formState === "duplicate" && (
-                  <p
-                    style={{
-                      fontFamily: "'Plus Jakarta Sans', sans-serif",
-                      fontWeight: 400,
-                      fontSize: 13,
-                      color: "#9A8F82",
-                      marginTop: 8,
-                      marginBottom: 0,
-                    }}
-                  >
+                  <p className="font-body" style={{ fontWeight: 400, fontSize: 13, color: "#9A8F82", marginTop: 8, marginBottom: 0 }}>
                     You're already on the list.
                   </p>
                 )}
                 {formState === "error" && (
-                  <p
-                    style={{
-                      fontFamily: "'Plus Jakarta Sans', sans-serif",
-                      fontWeight: 400,
-                      fontSize: 13,
-                      color: "#E8572A",
-                      marginTop: 8,
-                      marginBottom: 0,
-                    }}
-                  >
+                  <p className="font-body" style={{ fontWeight: 400, fontSize: 13, color: "#E8572A", marginTop: 8, marginBottom: 0 }}>
                     Something went wrong — please try again.
                   </p>
                 )}
 
-                {/* Context dropdown */}
                 <div style={{ marginTop: 12, marginBottom: 24 }}>
                   <label
-                    style={{
-                      fontFamily: "'Plus Jakarta Sans', sans-serif",
-                      fontWeight: 400,
-                      fontSize: 12,
-                      color: "#9A8F82",
-                      display: "block",
-                      marginBottom: 6,
-                    }}
+                    className="font-body"
+                    style={{ fontWeight: 400, fontSize: 12, color: "#9A8F82", display: "block", marginBottom: 6 }}
                   >
                     I'm mainly...
                   </label>
@@ -345,18 +279,13 @@ export default function Subscribe() {
                     onFocus={(e) => (e.currentTarget.style.borderColor = "#2D35C9")}
                     onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E2D8")}
                   >
-                    <option value="" style={{ color: "#9A8F82" }}>
-                      Select one — optional
-                    </option>
+                    <option value="" style={{ color: "#9A8F82" }}>Select one — optional</option>
                     <option value="using AI at work">using AI at work</option>
-                    <option value="building something on the side">
-                      building something on the side
-                    </option>
+                    <option value="building something on the side">building something on the side</option>
                     <option value="both">both</option>
                   </select>
                 </div>
 
-                {/* Submit */}
                 <button
                   type="submit"
                   disabled={formState === "submitting"}
@@ -371,8 +300,7 @@ export default function Subscribe() {
                     padding: "16px 24px",
                     border: "none",
                     cursor: formState === "submitting" ? "wait" : "pointer",
-                    transition:
-                      "background 200ms ease-out, color 200ms ease-out, transform 100ms ease",
+                    transition: "background 200ms ease-out, color 200ms ease-out, transform 100ms ease",
                     opacity: formState === "submitting" ? 0.7 : 1,
                   }}
                   onMouseEnter={(e) => {
@@ -392,35 +320,7 @@ export default function Subscribe() {
             </>
           )}
         </div>
-      </div>
-
-      {/* Responsive styles */}
-      <style>{`
-        .subscribe-left {
-          width: 45%;
-          min-height: 100vh;
-        }
-        .subscribe-right {
-          width: 55%;
-          min-height: 100vh;
-          padding: 64px 48px;
-        }
-        @media (max-width: 768px) {
-          div:has(> .subscribe-left) {
-            flex-direction: column !important;
-          }
-          .subscribe-left {
-            width: 100% !important;
-            min-height: 200px !important;
-            height: 200px;
-          }
-          .subscribe-right {
-            width: 100% !important;
-            min-height: auto !important;
-            padding: 40px 24px !important;
-          }
-        }
-      `}</style>
-    </div>
+      </section>
+    </>
   );
 }
