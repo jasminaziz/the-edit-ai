@@ -147,6 +147,7 @@ export default function Subscribe() {
             <SuccessMessage />
           ) : (
             <>
+              <form onSubmit={handleSubmit}>
                 <input
                   type="text"
                   value={firstName}
