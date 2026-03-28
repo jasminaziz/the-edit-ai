@@ -141,10 +141,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 </div>
                 <Link
                   to="/subscribe"
-                  className="font-body text-[13px] font-normal whitespace-nowrap transition-colors duration-150 ml-4"
-                  style={{ color: "#9A8F82" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#2D35C9")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#9A8F82")}
+                  className={`relative z-10 font-body text-sm font-medium px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-all duration-150 ml-4 ${textColor} hover:bg-white hover:text-primary`}
                 >
                   Get the digest →
                 </Link>
