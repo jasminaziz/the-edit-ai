@@ -2,6 +2,14 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchTools, fetchWhatsNew, type Tool, type WhatsNew } from "@/lib/sheets";
 
+const CATEGORY_COLOURS: Record<string, { bg: string; text: string }> = {
+  "New Release": { bg: "#2D35C9", text: "#FFFFFF" },
+  "Model Update": { bg: "#7B7FD4", text: "#FFFFFF" },
+  "Tool Launch": { bg: "#C8F04A", text: "#1A1510" },
+  "Integration": { bg: "#1A1510", text: "#FFFFFF" },
+  "AI in the News": { bg: "#9A8F82", text: "#FFFFFF" },
+};
+
 
 
 
@@ -108,10 +116,10 @@ const Index = () => {
             </Link>
           </div>
 
-          {/* Latest What's New */}
+          {/* What's New in AI */}
           <div className="space-y-4">
             <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-muted">
-              Just dropped
+              What's new in AI
             </h2>
             {loading ? (
               <div className="space-y-3">
@@ -121,14 +129,32 @@ const Index = () => {
               </div>
             ) : (
               <div className="space-y-3">
-                {latestNews.map((n) => (
-                  <div key={n.name} className="bg-card rounded-lg border border-border p-3.5">
-                    <div className="flex items-start justify-between gap-2 mb-1">
-                      <h3 className="font-heading font-semibold text-base text-foreground">{n.name}</h3>
+                {latestNews.map((n) => {
+                  const cat = CATEGORY_COLOURS[n.category];
+                  return (
+                    <div key={n.name} className="bg-card rounded-lg border border-border p-3.5">
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <h3 className="font-heading font-semibold text-base" style={{ color: "#1A1510" }}>{n.name}</h3>
+                        {cat && (
+                          <span
+                            className="font-body font-semibold uppercase shrink-0"
+                            style={{
+                              fontSize: 10,
+                              letterSpacing: "0.06em",
+                              borderRadius: 4,
+                              padding: "3px 8px",
+                              backgroundColor: cat.bg,
+                              color: cat.text,
+                            }}
+                          >
+                            {n.category}
+                          </span>
+                        )}
+                      </div>
+                      <p className="font-body text-[11px] uppercase" style={{ color: "#9A8F82", letterSpacing: "0.06em" }}>{n.developer}</p>
                     </div>
-                    <p className="font-body text-[13px] text-muted">{n.developer}</p>
-                  </div>
-                ))}
+                  );
+                })}
                 {latestNews.length === 0 && (
                   <p className="text-muted text-sm font-body">No news yet.</p>
                 )}
@@ -157,7 +183,7 @@ const Index = () => {
                 >
                   {tools.length}
                 </p>
-                <p className="font-body text-[15px] text-muted">across 11 categories</p>
+                <p className="font-body text-[15px] text-muted">AI tools in the directory</p>
               </>
             )}
             <Link
