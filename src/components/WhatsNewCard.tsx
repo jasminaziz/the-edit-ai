@@ -38,7 +38,7 @@ const CATEGORY_COLOURS: Record<string, string> = {
 };
 
 function getCategoryColour(category: string): string {
-  return CATEGORY_COLOURS[category] || "#9A8F82";
+  return CATEGORY_COLOURS[category] || "#7B7FD4";
 }
 
 function CategoryBadge({ category }: { category: string }) {
