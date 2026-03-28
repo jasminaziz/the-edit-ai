@@ -133,7 +133,7 @@ export default function Subscribe() {
             marginLeft: "-0.04em",
           }}
         >
-          The tools worth knowing about. Weekly.
+          The tools and news worth knowing about. Weekly.
         </p>
       </section>
 
