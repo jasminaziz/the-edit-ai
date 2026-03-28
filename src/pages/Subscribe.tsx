@@ -116,7 +116,7 @@ export default function Subscribe() {
         <h1
           className="font-heading font-black leading-[0.78] w-full"
           style={{
-            fontSize: "clamp(100px, 28vw, 420px)",
+            fontSize: "clamp(60px, 18vw, 420px)",
             color: "#7B7FD4",
             letterSpacing: "-0.05em",
             marginLeft: "-0.05em",
