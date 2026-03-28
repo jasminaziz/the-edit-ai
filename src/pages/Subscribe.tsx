@@ -147,6 +147,20 @@ export default function Subscribe() {
             <SuccessMessage />
           ) : (
             <>
+              <h2
+                className="font-heading"
+                style={{
+                  fontWeight: 700,
+                  fontSize: "clamp(24px, 3.5vw, 36px)",
+                  color: "#1A1510",
+                  textWrap: "balance",
+                  lineHeight: 1.1,
+                  margin: 0,
+                  marginBottom: 32,
+                }}
+              >
+                Straight to your inbox.
+              </h2>
               <form onSubmit={handleSubmit}>
                 <input
                   type="text"
