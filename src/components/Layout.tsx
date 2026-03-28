@@ -120,6 +120,7 @@ export function Layout({ children }: { children: ReactNode }) {
                     style={{
                       left: pillStyle.left,
                       width: pillStyle.width,
+                      opacity: pillStyle.visible ? 1 : 0,
                       transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
                     }}
                   />
