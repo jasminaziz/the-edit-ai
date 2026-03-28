@@ -3,13 +3,12 @@ import { fetchWhatsNew, type WhatsNew } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
-import { WhatsNewCard, monthYearKey, parseDate } from "@/components/WhatsNewCard";
+import { LeadCard, GridCard, monthYearKey, parseDate } from "@/components/WhatsNewCard";
 
 function groupByMonth(items: WhatsNew[]): { month: string; items: WhatsNew[] }[] {
-  // Sort all items newest first, unparseable dates last
   const sorted = [...items].sort((a, b) => {
-    const da = parseDate(a.launched)?.getTime() || 0;
-    const db = parseDate(b.launched)?.getTime() || 0;
+    const da = parseDate(a.date)?.getTime() || 0;
+    const db = parseDate(b.date)?.getTime() || 0;
     return db - da;
   });
 
@@ -18,7 +17,7 @@ function groupByMonth(items: WhatsNew[]): { month: string; items: WhatsNew[] }[]
   const orphans: WhatsNew[] = [];
 
   for (const item of sorted) {
-    const key = monthYearKey(item.launched);
+    const key = monthYearKey(item.date);
     if (key) {
       if (!mostRecentKey) mostRecentKey = key;
       if (!map.has(key)) map.set(key, []);
@@ -28,7 +27,6 @@ function groupByMonth(items: WhatsNew[]): { month: string; items: WhatsNew[] }[]
     }
   }
 
-  // Assign orphans to most recent valid group
   if (orphans.length > 0 && mostRecentKey && map.has(mostRecentKey)) {
     map.get(mostRecentKey)!.push(...orphans);
   }
@@ -52,7 +50,7 @@ const WhatsNewPage = () => {
   const groups = groupByMonth(items);
 
   return (
-    <>
+    <div style={{ WebkitFontSmoothing: "antialiased" }}>
       <CobaltZone
         heading=""
         twoLineHeading={{ line1: "What's New —", line2: "in AI" }}
@@ -69,28 +67,46 @@ const WhatsNewPage = () => {
             <EmptyState />
           ) : (
             <div>
-              {groups.map((group, gi) => (
-                <div key={group.month} style={{ marginTop: gi === 0 ? 48 : 64 }}>
-                  <h2
-                    className="font-heading"
-                    style={{ fontWeight: 700, fontSize: 32, color: "#2D35C9" }}
-                  >
-                    {group.month}
-                  </h2>
-                  <hr className="mt-2 mb-6" style={{ borderColor: "#E8E2D8" }} />
+              {groups.map((group, gi) => {
+                const [lead, ...rest] = group.items;
+                return (
+                  <div key={group.month} style={{ marginTop: gi === 0 ? 48 : 64 }}>
+                    {/* Section header */}
+                    <h2
+                      className="font-heading"
+                      style={{
+                        fontWeight: 700,
+                        fontSize: "clamp(28px, 3.5vw, 42px)",
+                        color: "#2D35C9",
+                        marginBottom: 24,
+                        textWrap: "balance",
+                      }}
+                    >
+                      {group.month}
+                    </h2>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" style={{ alignItems: "stretch" }}>
-                    {group.items.map((item) => (
-                      <WhatsNewCard key={item.name} item={item} />
-                    ))}
+                    {/* Lead card */}
+                    {lead && <LeadCard item={lead} />}
+
+                    {/* Grid cards */}
+                    {rest.length > 0 && (
+                      <div
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-6"
+                        style={{ gap: 24 }}
+                      >
+                        {rest.map((item) => (
+                          <GridCard key={item.name} item={item} />
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

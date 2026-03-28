@@ -125,7 +125,6 @@ const Index = () => {
                   <div key={n.name} className="bg-card rounded-lg border border-border p-3.5">
                     <div className="flex items-start justify-between gap-2 mb-1">
                       <h3 className="font-heading font-semibold text-base text-foreground">{n.name}</h3>
-                      <RelevanceBadge level={n.relevance_level} />
                     </div>
                     <p className="font-body text-[13px] text-muted">{n.developer}</p>
                   </div>
