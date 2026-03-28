@@ -147,68 +147,6 @@ export default function Subscribe() {
             <SuccessMessage />
           ) : (
             <>
-              {/* Eyebrow */}
-              <p
-                className="font-body"
-                style={{
-                  fontWeight: 600,
-                  fontSize: 10,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.12em",
-                  color: "#9A8F82",
-                  marginBottom: 16,
-                }}
-              >
-                THE EDIT DIGEST
-              </p>
-
-              {/* Heading */}
-              <h2
-                className="font-heading"
-                style={{
-                  fontWeight: 700,
-                  fontSize: "clamp(24px, 3.5vw, 36px)",
-                  color: "#1A1510",
-                  textWrap: "balance",
-                  lineHeight: 1.1,
-                  margin: 0,
-                  marginBottom: 8,
-                }}
-              >
-                Get the tools worth knowing about.
-              </h2>
-
-              {/* Subheading */}
-              <p
-                className="font-body"
-                style={{
-                  fontWeight: 400,
-                  fontSize: 15,
-                  color: "#9A8F82",
-                  marginBottom: 40,
-                  marginTop: 0,
-                }}
-              >
-                Curated. Direct. No noise.
-              </p>
-
-              {/* Proof points */}
-              <div
-                className="font-body"
-                style={{
-                  fontWeight: 400,
-                  fontSize: 13,
-                  color: "#9A8F82",
-                  lineHeight: 1.8,
-                  marginBottom: 32,
-                }}
-              >
-                <p style={{ margin: 0 }}>68 tools reviewed and counting.</p>
-                <p style={{ margin: 0 }}>Updated every week.</p>
-                <p style={{ margin: 0 }}>No affiliate links. No sponsored content.</p>
-              </div>
-
-              {/* Form */}
               <form onSubmit={handleSubmit}>
                 <input
                   type="text"
