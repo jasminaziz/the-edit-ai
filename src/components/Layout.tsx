@@ -1,8 +1,9 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, Link } from "react-router-dom";
 import { ReactNode, useEffect, useState, useRef, useCallback } from "react";
 import { Menu, X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import { FooterEmailCapture } from "@/components/FooterEmailCapture";
 
 const navItems = [
   { to: "/", label: "Home" },
