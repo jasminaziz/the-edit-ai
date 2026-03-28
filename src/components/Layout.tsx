@@ -91,10 +91,17 @@ export function Layout({ children }: { children: ReactNode }) {
                                 : "text-white/70 hover:text-white hover:bg-white/10"
                             }`}
                           >
-                            {item.label}
+                          {item.label}
                           </NavLink>
                         );
                       })}
+                      <Link
+                        to="/subscribe"
+                        onClick={() => setMobileOpen(false)}
+                        className="font-body text-base font-medium px-4 py-3 rounded-lg transition-colors text-white/70 hover:text-white hover:bg-white/10"
+                      >
+                        Get the digest →
+                      </Link>
                     </div>
                   </SheetContent>
                 </Sheet>
@@ -132,6 +139,15 @@ export function Layout({ children }: { children: ReactNode }) {
                     );
                   })}
                 </div>
+                <Link
+                  to="/subscribe"
+                  className="font-body text-[13px] font-normal whitespace-nowrap transition-colors duration-150 ml-4"
+                  style={{ color: "#9A8F82" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#2D35C9")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#9A8F82")}
+                >
+                  Get the digest →
+                </Link>
               </>
             )}
           </div>
@@ -140,15 +156,18 @@ export function Layout({ children }: { children: ReactNode }) {
 
       <main className="flex-1 pt-14 sm:pt-16">{children}</main>
 
-      <footer className="py-4 px-4 sm:px-12" style={{ backgroundColor: "#1A1510" }}>
-        <div className="max-w-[1280px] mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span className="font-body font-semibold text-[13px] text-primary-foreground">
-            The Edit — curated by Jasmin Aziz
-          </span>
-          <div className="flex items-center gap-4 sm:gap-6">
-            <span className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40">
-              © 2026
+      <footer className="px-4 sm:px-12" style={{ backgroundColor: "#1A1510" }}>
+        <div className="max-w-[1280px] mx-auto w-full">
+          <FooterEmailCapture />
+          <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <span className="font-body font-semibold text-[13px] text-primary-foreground">
+              The Edit — curated by Jasmin Aziz
             </span>
+            <div className="flex items-center gap-4 sm:gap-6">
+              <span className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40">
+                © 2026
+              </span>
+            </div>
           </div>
         </div>
       </footer>
