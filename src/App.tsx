@@ -11,6 +11,7 @@ import MyStack from "./pages/MyStack";
 import Learning from "./pages/Learning";
 import Submit from "./pages/Submit";
 import DesignKit from "./pages/DesignKit";
+import Subscribe from "./pages/Subscribe";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
