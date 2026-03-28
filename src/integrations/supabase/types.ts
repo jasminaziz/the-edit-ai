@@ -16,19 +16,31 @@ export type Database = {
     Tables: {
       subscribers: {
         Row: {
+          context: string | null
           created_at: string
           email: string
+          first_name: string | null
           id: string
+          source: string | null
+          status: string | null
         }
         Insert: {
+          context?: string | null
           created_at?: string
           email: string
+          first_name?: string | null
           id?: string
+          source?: string | null
+          status?: string | null
         }
         Update: {
+          context?: string | null
           created_at?: string
           email?: string
+          first_name?: string | null
           id?: string
+          source?: string | null
+          status?: string | null
         }
         Relationships: []
       }
