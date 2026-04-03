@@ -87,6 +87,7 @@ export interface DesignKitItem {
   when_to_use: string;
   cost: string;
   verdict: string;
+  phase: string;
 }
 
 export async function fetchDesignKit(): Promise<DesignKitItem[]> {
