@@ -149,12 +149,10 @@ function PhaseSection({
           }}
         >
           <div
+            className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6"
             style={{
               maxWidth: 1280,
               margin: "0 auto",
-              display: "flex",
-              alignItems: "baseline",
-              gap: 24,
             }}
           >
             {/* Phase number */}
