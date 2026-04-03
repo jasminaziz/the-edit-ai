@@ -313,7 +313,7 @@ function DesignCard({ item }: { item: DesignKitItem }) {
 
       <div
         className="px-5 py-3 font-body text-[13px] font-medium"
-        style={{ backgroundColor: "#2D35C9", color: "#ffffff" }}
+        style={{ backgroundColor: "#7B7FD4", color: "#ffffff" }}
       >
         Open →
       </div>
