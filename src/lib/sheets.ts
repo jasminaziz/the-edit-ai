@@ -105,6 +105,7 @@ export async function fetchDesignKit(): Promise<DesignKitItem[]> {
       when_to_use: stripEmoji(r[4] || ''),
       cost: stripEmoji(r[5] || ''),
       verdict: stripEmoji(r[6] || ''),
+      phase: stripEmoji(r[7] || ''),
     }));
   } catch {
     return [];
