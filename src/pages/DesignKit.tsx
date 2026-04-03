@@ -384,7 +384,7 @@ const DesignKitPage = () => {
       <CobaltZone
         heading=""
         twoLineHeading={{ line1: "Design Workflow", line2: "" }}
-        subheading="Step by step, from blank page to build-ready."
+        subheading="From blank page to build-ready."
       />
 
       <section className="bg-background px-0" style={{ paddingTop: 0, paddingBottom: 40 }}>
