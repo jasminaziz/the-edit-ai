@@ -136,9 +136,11 @@ function PhaseSection({
       {/* Header band */}
       {phase && (
         <div
+          className="px-6 sm:px-12"
           style={{
             backgroundColor: "#2D35C9",
-            padding: "32px 48px",
+            paddingTop: 32,
+            paddingBottom: 32,
             borderRadius: 0,
             WebkitFontSmoothing: "antialiased",
             opacity: visible ? 1 : 0,
