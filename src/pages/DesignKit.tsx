@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { fetchDesignKit, type DesignKitItem } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
@@ -15,154 +15,264 @@ function costStyle(cost: string) {
   return COST_STYLES[key] || COST_STYLES.paid;
 }
 
-const PHASE_ORDER = ["Brainstorm", "Design", "Build", "Review"];
+interface PhaseConfig {
+  name: string;
+  explainer: string;
+}
+
+const PHASES: PhaseConfig[] = [
+  {
+    name: "Discover",
+    explainer:
+      "Where you find your visual language. Gather references, study what works, and build the brief before any decisions are made.",
+  },
+  {
+    name: "Define",
+    explainer:
+      "Lock the building blocks. Colour, type, and icons decided here travel through everything you build.",
+  },
+  {
+    name: "Design",
+    explainer:
+      "Map the structure, design the screens, reference the components. Everything before a single prompt is written.",
+  },
+  {
+    name: "Present",
+    explainer:
+      "Show the work properly. Device frames and scene mockups turn screenshots into convincing client deliverables.",
+  },
+  {
+    name: "Check",
+    explainer:
+      "Sign off before building. Contrast, accessibility, and real photography confirmed before anything goes live.",
+  },
+];
 
 function groupByPhase(items: DesignKitItem[]) {
   const groups: Record<string, DesignKitItem[]> = {};
 
   for (const item of items) {
-    const phase = item.phase?.trim() || "Other";
-    if (!groups[phase]) groups[phase] = [];
-    groups[phase].push(item);
+    const phase = item.phase?.trim() || "";
+    const key = phase || "__other__";
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(item);
   }
 
-  // Build ordered list: known phases first, then "Other" if present
-  const sections: { phase: string; number: string; items: DesignKitItem[] }[] = [];
-  let idx = 1;
-  for (const phase of PHASE_ORDER) {
-    if (groups[phase]) {
-      sections.push({ phase, number: String(idx).padStart(2, "0"), items: groups[phase] });
-      idx++;
+  const sections: { phase: PhaseConfig | null; number: string; items: DesignKitItem[] }[] = [];
+
+  PHASES.forEach((p, i) => {
+    if (groups[p.name]) {
+      sections.push({
+        phase: p,
+        number: String(i + 1).padStart(2, "0"),
+        items: groups[p.name],
+      });
+    }
+  });
+
+  // Any phase values not in PHASES (excluding empty)
+  for (const key of Object.keys(groups)) {
+    if (key !== "__other__" && !PHASES.some((p) => p.name === key)) {
+      sections.push({
+        phase: { name: key, explainer: "" },
+        number: String(sections.length + 1).padStart(2, "0"),
+        items: groups[key],
+      });
     }
   }
 
-  // Remaining phases not in PHASE_ORDER (excluding "Other")
-  for (const phase of Object.keys(groups)) {
-    if (!PHASE_ORDER.includes(phase) && phase !== "Other") {
-      sections.push({ phase, number: String(idx).padStart(2, "0"), items: groups[phase] });
-      idx++;
-    }
-  }
-
-  // "Other" last
-  if (groups["Other"]) {
-    sections.push({ phase: "Other", number: String(idx).padStart(2, "0"), items: groups["Other"] });
+  // Empty phase → "Other" at the bottom with no header band
+  if (groups["__other__"]) {
+    sections.push({
+      phase: null,
+      number: "",
+      items: groups["__other__"],
+    });
   }
 
   return sections;
 }
 
-const DesignKitPage = () => {
-  const [items, setItems] = useState<DesignKitItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+/* ─── Scroll entrance hook ─── */
+function useScrollReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    fetchDesignKit().then((data) => {
-      if (data.length === 0 && import.meta.env.VITE_GOOGLE_SHEETS_ID) setError(true);
-      setItems(data);
-      setLoading(false);
-    });
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
-  const sections = useMemo(() => groupByPhase(items), [items]);
+  return { ref, visible };
+}
+
+/* ─── Phase Section ─── */
+function PhaseSection({
+  phase,
+  number,
+  items,
+  isFirst,
+}: {
+  phase: PhaseConfig | null;
+  number: string;
+  items: DesignKitItem[];
+  isFirst: boolean;
+}) {
+  const { ref, visible } = useScrollReveal();
 
   return (
-    <>
-      <CobaltZone
-        heading=""
-        twoLineHeading={{ line1: "Design Kit", line2: "" }}
-        bodyText="The resources I reach for at the start of any visual project. Moodboarding, colour, type, icons, photography, mockups."
-      />
+    <div ref={ref} style={{ marginTop: isFirst ? 0 : 48 }}>
+      {/* Header band */}
+      {phase && (
+        <div
+          style={{
+            backgroundColor: "#2D35C9",
+            padding: "32px 48px",
+            borderRadius: 0,
+            WebkitFontSmoothing: "antialiased",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(16px)",
+            transitionProperty: "opacity, transform",
+            transitionDuration: "400ms",
+            transitionTimingFunction: "ease-out",
+          }}
+        >
+          <div
+            style={{
+              maxWidth: 1280,
+              margin: "0 auto",
+              display: "flex",
+              alignItems: "baseline",
+              gap: 24,
+            }}
+          >
+            {/* Phase number */}
+            <span
+              className="font-heading"
+              style={{
+                fontSize: 80,
+                fontWeight: 700,
+                color: "#C8F04A",
+                lineHeight: 1,
+                letterSpacing: "-0.03em",
+                WebkitFontSmoothing: "antialiased",
+                flexShrink: 0,
+              }}
+            >
+              {number}
+            </span>
 
-      <section className="bg-background py-10 px-6 sm:px-12">
-        <div className="max-w-[1280px] mx-auto">
-          {loading ? (
-            <LoadingSpinner />
-          ) : error ? (
-            <ErrorState />
-          ) : items.length === 0 ? (
-            <EmptyState />
-          ) : (
+            {/* Name + explainer */}
             <div>
-              {sections.map((section, i) => (
-                <div key={section.phase} style={{ paddingTop: i === 0 ? 0 : 80 }}>
-                  {/* Phase number */}
-                  <span
-                    className="block font-heading"
-                    style={{
-                      fontSize: 11,
-                      fontWeight: 700,
-                      color: "#9A8F82",
-                      letterSpacing: "0.1em",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {section.number}
-                  </span>
-
-                  {/* Phase name */}
-                  <h2
-                    className="font-heading"
-                    style={{
-                      fontSize: 32,
-                      fontWeight: 700,
-                      color: "#1A1510",
-                      marginBottom: 8,
-                      marginTop: 4,
-                    }}
-                  >
-                    {section.phase}
-                  </h2>
-
-                  {/* Horizontal rule */}
-                  <hr
-                    style={{
-                      border: "none",
-                      borderTop: "1px solid #E8E2D8",
-                      marginBottom: 32,
-                    }}
-                  />
-
-                  {/* Cards grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {section.items.map((item) => (
-                      <DesignCard key={item.name + item.url} item={item} />
-                    ))}
-                  </div>
-                </div>
-              ))}
+              <span
+                className="font-heading"
+                style={{
+                  display: "block",
+                  fontSize: 36,
+                  fontWeight: 700,
+                  color: "#FFFFFF",
+                  letterSpacing: "-0.02em",
+                  textWrap: "balance",
+                }}
+              >
+                {phase.name}
+              </span>
+              {phase.explainer && (
+                <span
+                  className="font-body"
+                  style={{
+                    display: "block",
+                    fontSize: 16,
+                    fontWeight: 400,
+                    color: "rgba(255,255,255,0.65)",
+                    marginTop: 6,
+                    textWrap: "pretty",
+                  }}
+                >
+                  {phase.explainer}
+                </span>
+              )}
             </div>
-          )}
+          </div>
         </div>
-      </section>
-    </>
-  );
-};
+      )}
 
+      {/* Card body */}
+      <div
+        style={{
+          backgroundColor: "#FFFFFF",
+          padding: "48px 48px 64px",
+        }}
+      >
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          style={{ maxWidth: 1280, margin: "0 auto" }}
+        >
+          {items.map((item, i) => (
+            <div
+              key={item.name + item.url}
+              style={{
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(16px)",
+                transitionProperty: "opacity, transform",
+                transitionDuration: "400ms",
+                transitionTimingFunction: "ease-out",
+                transitionDelay: visible ? `${400 + i * 60}ms` : "0ms",
+              }}
+            >
+              <DesignCard item={item} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Card (unchanged internals) ─── */
 function DesignCard({ item }: { item: DesignKitItem }) {
   const style = costStyle(item.cost);
+
+  const handleMouseEnter = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.style.boxShadow = "-4px 4px 16px rgba(0,0,0,0.10)";
+  }, []);
+
+  const handleMouseLeave = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.style.boxShadow = "none";
+  }, []);
 
   return (
     <a
       href={item.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="rounded-xl overflow-hidden border border-border bg-card flex flex-col hover:translate-x-1.5 transition-all duration-200 no-underline"
+      className="rounded-xl overflow-hidden border border-border bg-card flex flex-col no-underline"
       style={{
+        transitionProperty: "transform, box-shadow",
+        transitionDuration: "200ms",
         transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
         boxShadow: "none",
       }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.boxShadow = "-4px 4px 16px rgba(0,0,0,0.10)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.boxShadow = "none";
-      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <div className="p-5 flex flex-col flex-1">
         <div className="flex items-start justify-between gap-2 mb-2">
-          <h3 className="font-heading font-semibold text-base leading-tight" style={{ color: "#1A1510" }}>
+          <h3
+            className="font-heading font-semibold text-base leading-tight"
+            style={{ color: "#1A1510" }}
+          >
             {item.name}
           </h3>
           <span
@@ -208,5 +318,62 @@ function DesignCard({ item }: { item: DesignKitItem }) {
     </a>
   );
 }
+
+/* ─── Page ─── */
+const DesignKitPage = () => {
+  const [items, setItems] = useState<DesignKitItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    fetchDesignKit().then((data) => {
+      if (data.length === 0 && import.meta.env.VITE_GOOGLE_SHEETS_ID) setError(true);
+      setItems(data);
+      setLoading(false);
+    });
+  }, []);
+
+  const sections = useMemo(() => groupByPhase(items), [items]);
+
+  return (
+    <>
+      <CobaltZone
+        heading=""
+        twoLineHeading={{ line1: "Design Kit", line2: "" }}
+        bodyText="The workflow I follow at the start of every visual project. Step by step, from blank page to build-ready."
+      />
+
+      <section className="bg-background py-10 px-0">
+        <div className="mx-auto" style={{ maxWidth: "100%" }}>
+          {loading ? (
+            <div className="px-6 sm:px-12">
+              <LoadingSpinner />
+            </div>
+          ) : error ? (
+            <div className="px-6 sm:px-12">
+              <ErrorState />
+            </div>
+          ) : items.length === 0 ? (
+            <div className="px-6 sm:px-12">
+              <EmptyState />
+            </div>
+          ) : (
+            <div>
+              {sections.map((section, i) => (
+                <PhaseSection
+                  key={section.phase?.name || "other"}
+                  phase={section.phase}
+                  number={section.number}
+                  items={section.items}
+                  isFirst={i === 0}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    </>
+  );
+};
 
 export default DesignKitPage;
