@@ -136,9 +136,11 @@ function PhaseSection({
       {/* Header band */}
       {phase && (
         <div
+          className="px-6 sm:px-12"
           style={{
             backgroundColor: "#2D35C9",
-            padding: "32px 48px",
+            paddingTop: 32,
+            paddingBottom: 32,
             borderRadius: 0,
             WebkitFontSmoothing: "antialiased",
             opacity: visible ? 1 : 0,
@@ -149,12 +151,10 @@ function PhaseSection({
           }}
         >
           <div
+            className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6"
             style={{
               maxWidth: 1280,
               margin: "0 auto",
-              display: "flex",
-              alignItems: "baseline",
-              gap: 24,
             }}
           >
             {/* Phase number */}
@@ -210,9 +210,11 @@ function PhaseSection({
 
       {/* Card body */}
       <div
+        className="px-6 sm:px-12"
         style={{
           backgroundColor: "#FFFFFF",
-          padding: "48px 48px 64px",
+          paddingTop: 48,
+          paddingBottom: 64,
         }}
       >
         <div
