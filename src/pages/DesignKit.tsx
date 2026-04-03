@@ -212,7 +212,7 @@ function PhaseSection({
       <div
         className="px-6 sm:px-12"
         style={{
-          backgroundColor: "#FFFFFF",
+          backgroundColor: "#FAF8F4",
           paddingTop: 48,
           paddingBottom: 64,
         }}
