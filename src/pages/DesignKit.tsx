@@ -210,9 +210,11 @@ function PhaseSection({
 
       {/* Card body */}
       <div
+        className="px-6 sm:px-12"
         style={{
           backgroundColor: "#FFFFFF",
-          padding: "48px 48px 64px",
+          paddingTop: 48,
+          paddingBottom: 64,
         }}
       >
         <div
