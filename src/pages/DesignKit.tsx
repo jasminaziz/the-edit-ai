@@ -345,7 +345,7 @@ const DesignKitPage = () => {
         bodyText="The workflow I follow at the start of every visual project. Step by step, from blank page to build-ready."
       />
 
-      <section className="bg-background py-10 px-0">
+      <section className="bg-background px-0" style={{ paddingTop: 0, paddingBottom: 40 }}>
         <div className="mx-auto" style={{ maxWidth: "100%" }}>
           {loading ? (
             <div className="px-6 sm:px-12">
