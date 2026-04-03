@@ -269,10 +269,10 @@ function DesignCard({ item }: { item: DesignKitItem }) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="p-5 flex flex-col flex-1">
+      <div className="p-5 flex flex-col flex-1" style={{ minHeight: 220 }}>
         <div className="flex items-start justify-between gap-2 mb-2">
           <h3
-            className="font-heading font-semibold text-base leading-tight"
+            className="font-heading font-semibold text-base leading-tight line-clamp-2"
             style={{ color: "#1A1510" }}
           >
             {item.name}
@@ -294,21 +294,23 @@ function DesignCard({ item }: { item: DesignKitItem }) {
           </span>
         )}
 
-        <p className="font-body text-sm leading-relaxed text-foreground mb-3">
+        <p className="font-body text-sm leading-relaxed text-foreground mb-3 line-clamp-3">
           {item.what_it_does}
         </p>
 
         {item.when_to_use && (
-          <p className="font-body text-xs text-muted-foreground mb-3">
+          <p className="font-body text-xs text-muted-foreground mb-3 line-clamp-2">
             <strong>When to use:</strong> {item.when_to_use}
           </p>
         )}
 
-        {item.verdict && (
-          <div className="mt-auto bg-background rounded-lg p-3 font-body text-sm italic text-foreground/80">
-            {item.verdict}
-          </div>
-        )}
+        <div className="mt-auto">
+          {item.verdict && (
+            <div className="bg-background rounded-lg p-3 font-body text-sm italic text-foreground/80 line-clamp-2">
+              {item.verdict}
+            </div>
+          )}
+        </div>
       </div>
 
       <div
