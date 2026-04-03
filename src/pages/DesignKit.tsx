@@ -242,24 +242,24 @@ function PhaseSection({
   );
 }
 
-/* ─── Card (unchanged internals) ─── */
+/* ─── Card with uniform height + read more/less ─── */
 function DesignCard({ item }: { item: DesignKitItem }) {
   const style = costStyle(item.cost);
+  const [expanded, setExpanded] = useState(false);
 
-  const handleMouseEnter = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleMouseEnter = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     e.currentTarget.style.boxShadow = "-4px 4px 16px rgba(0,0,0,0.10)";
   }, []);
 
-  const handleMouseLeave = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleMouseLeave = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     e.currentTarget.style.boxShadow = "none";
   }, []);
 
+  const hasExtra = !!(item.when_to_use || item.verdict);
+
   return (
-    <a
-      href={item.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="rounded-xl overflow-hidden border border-border bg-card flex flex-col no-underline"
+    <div
+      className="rounded-xl overflow-hidden border border-border bg-card flex flex-col h-full"
       style={{
         transitionProperty: "transform, box-shadow",
         transitionDuration: "200ms",
@@ -270,6 +270,7 @@ function DesignCard({ item }: { item: DesignKitItem }) {
       onMouseLeave={handleMouseLeave}
     >
       <div className="p-5 flex flex-col flex-1">
+        {/* Header row */}
         <div className="flex items-start justify-between gap-2 mb-2">
           <h3
             className="font-heading font-semibold text-base leading-tight"
@@ -285,6 +286,7 @@ function DesignCard({ item }: { item: DesignKitItem }) {
           </span>
         </div>
 
+        {/* Category badge */}
         {item.category && (
           <span
             className="inline-block self-start px-2 py-0.5 rounded-full font-body text-[11px] mb-3"
@@ -294,30 +296,69 @@ function DesignCard({ item }: { item: DesignKitItem }) {
           </span>
         )}
 
-        <p className="font-body text-sm leading-relaxed text-foreground mb-3">
+        {/* Description – always visible, clamped when collapsed */}
+        <p
+          className="font-body text-sm leading-relaxed text-foreground mb-3"
+          style={
+            !expanded
+              ? {
+                  display: "-webkit-box",
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                }
+              : undefined
+          }
+        >
           {item.what_it_does}
         </p>
 
-        {item.when_to_use && (
-          <p className="font-body text-xs text-muted-foreground mb-3">
-            <strong>When to use:</strong> {item.when_to_use}
-          </p>
-        )}
-
-        {item.verdict && (
-          <div className="mt-auto bg-background rounded-lg p-3 font-body text-sm italic text-foreground/80">
-            {item.verdict}
+        {/* Expandable extra content */}
+        {hasExtra && expanded && (
+          <div className="space-y-3 mb-3">
+            {item.when_to_use && (
+              <p className="font-body text-xs text-muted-foreground">
+                <strong>When to use:</strong> {item.when_to_use}
+              </p>
+            )}
+            {item.verdict && (
+              <div className="bg-background rounded-lg p-3 font-body text-sm italic text-foreground/80">
+                {item.verdict}
+              </div>
+            )}
           </div>
         )}
+
+        {/* Read more / less toggle */}
+        {hasExtra && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setExpanded((prev) => !prev);
+            }}
+            className="mt-auto self-start font-body text-xs font-medium hover:underline"
+            style={{ color: "#2D35C9", background: "none", border: "none", padding: 0, cursor: "pointer" }}
+          >
+            {expanded ? "Read less ↑" : "Read more ↓"}
+          </button>
+        )}
+
+        {/* Spacer when no extra content */}
+        {!hasExtra && <div className="mt-auto" />}
       </div>
 
-      <div
-        className="px-5 py-3 font-body text-[13px] font-medium"
+      {/* Open link */}
+      <a
+        href={item.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block px-5 py-3 font-body text-[13px] font-medium no-underline"
         style={{ backgroundColor: "#7B7FD4", color: "#ffffff" }}
       >
         Open →
-      </div>
-    </a>
+      </a>
+    </div>
   );
 }
 
