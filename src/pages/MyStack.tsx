@@ -27,7 +27,7 @@ const MyStack = () => {
     <>
       <CobaltZone
         heading="My Stack"
-        subheading="What I'm actually using."
+        subheading="What I'm actually using and why."
         bodyText="The AI tools I open every day and what I use them for."
       />
 
