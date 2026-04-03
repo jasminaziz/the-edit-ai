@@ -383,7 +383,7 @@ const DesignKitPage = () => {
     <>
       <CobaltZone
         heading=""
-        twoLineHeading={{ line1: "Design Kit", line2: "" }}
+        twoLineHeading={{ line1: "Design Workflow", line2: "" }}
         bodyText="The workflow I follow at the start of every visual project. Step by step, from blank page to build-ready."
       />
 
