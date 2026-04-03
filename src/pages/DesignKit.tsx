@@ -1,136 +1,61 @@
-import { useEffect, useState, useMemo, useRef, useCallback } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { fetchDesignKit, type DesignKitItem } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
-import { DesignCard } from "@/components/DesignCard";
 
-interface PhaseConfig {
-  key: string;
-  number: string;
-  name: string;
-  explainer: string;
+const COST_STYLES: Record<string, { bg: string; text: string }> = {
+  free: { bg: "#2D6A4F", text: "#ffffff" },
+  freemium: { bg: "#9B7B3A", text: "#ffffff" },
+  paid: { bg: "#6B7280", text: "#ffffff" },
+};
+
+function costStyle(cost: string) {
+  const key = cost.toLowerCase().trim();
+  return COST_STYLES[key] || COST_STYLES.paid;
 }
 
-const PHASES: PhaseConfig[] = [
-  {
-    key: "Discover",
-    number: "01",
-    name: "Discover",
-    explainer:
-      "Where you find your visual language. Gather references, study what works, and build the brief before any decisions are made.",
-  },
-  {
-    key: "Define",
-    number: "02",
-    name: "Define",
-    explainer:
-      "Lock the building blocks. Colour, type, and icons decided here travel through everything you build.",
-  },
-  {
-    key: "Design",
-    number: "03",
-    name: "Design",
-    explainer:
-      "Map the structure, design the screens, reference the components. Everything before a single prompt is written.",
-  },
-  {
-    key: "Present",
-    number: "04",
-    name: "Present",
-    explainer:
-      "Show the work properly. Device frames and scene mockups turn screenshots into convincing client deliverables.",
-  },
-  {
-    key: "Check",
-    number: "05",
-    name: "Check",
-    explainer:
-      "Sign off before building. Contrast, accessibility, and real photography confirmed before anything goes live.",
-  },
-];
+const PHASE_ORDER = ["Brainstorm", "Design", "Build", "Review"];
 
 function groupByPhase(items: DesignKitItem[]) {
   const groups: Record<string, DesignKitItem[]> = {};
+
   for (const item of items) {
-    const phase = item.phase?.trim() || "__other__";
+    const phase = item.phase?.trim() || "Other";
     if (!groups[phase]) groups[phase] = [];
     groups[phase].push(item);
   }
 
-  const sections: { config: PhaseConfig | null; items: DesignKitItem[] }[] = [];
-  for (const phase of PHASES) {
-    if (groups[phase.key]) {
-      sections.push({ config: phase, items: groups[phase.key] });
+  // Build ordered list: known phases first, then "Other" if present
+  const sections: { phase: string; number: string; items: DesignKitItem[] }[] = [];
+  let idx = 1;
+  for (const phase of PHASE_ORDER) {
+    if (groups[phase]) {
+      sections.push({ phase, number: String(idx).padStart(2, "0"), items: groups[phase] });
+      idx++;
     }
   }
 
-  // Remaining phases not in PHASES list (excluding __other__)
-  for (const key of Object.keys(groups)) {
-    if (key !== "__other__" && !PHASES.find((p) => p.key === key)) {
-      sections.push({
-        config: { key, number: "", name: key, explainer: "" },
-        items: groups[key],
-      });
+  // Remaining phases not in PHASE_ORDER (excluding "Other")
+  for (const phase of Object.keys(groups)) {
+    if (!PHASE_ORDER.includes(phase) && phase !== "Other") {
+      sections.push({ phase, number: String(idx).padStart(2, "0"), items: groups[phase] });
+      idx++;
     }
   }
 
-  // "Other" last — no header band
-  if (groups["__other__"]) {
-    sections.push({ config: null, items: groups["__other__"] });
+  // "Other" last
+  if (groups["Other"]) {
+    sections.push({ phase: "Other", number: String(idx).padStart(2, "0"), items: groups["Other"] });
   }
 
   return sections;
-}
-
-function useScrollReveal() {
-  const refs = useRef<Map<number, HTMLDivElement>>(new Map());
-
-  const setRef = useCallback((index: number, el: HTMLDivElement | null) => {
-    if (el) refs.current.set(index, el);
-    else refs.current.delete(index);
-  }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const el = entry.target as HTMLElement;
-            el.style.opacity = "1";
-            el.style.transform = "translateY(0)";
-
-            // Stagger cards
-            const cards = el.querySelectorAll<HTMLElement>("[data-card]");
-            cards.forEach((card, i) => {
-              setTimeout(() => {
-                card.style.opacity = "1";
-                card.style.transform = "translateY(0)";
-              }, 400 + i * 60);
-            });
-
-            observer.unobserve(el);
-          }
-        }
-      },
-      { threshold: 0.15 }
-    );
-
-    for (const el of refs.current.values()) {
-      observer.observe(el);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  return setRef;
 }
 
 const DesignKitPage = () => {
   const [items, setItems] = useState<DesignKitItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const setRef = useScrollReveal();
 
   useEffect(() => {
     fetchDesignKit().then((data) => {
@@ -147,7 +72,7 @@ const DesignKitPage = () => {
       <CobaltZone
         heading=""
         twoLineHeading={{ line1: "Design Kit", line2: "" }}
-        bodyText="The workflow I follow at the start of every visual project. Step by step, from blank page to build-ready."
+        bodyText="The resources I reach for at the start of any visual project. Moodboarding, colour, type, icons, photography, mockups."
       />
 
       <section className="bg-background py-10 px-6 sm:px-12">
@@ -159,98 +84,51 @@ const DesignKitPage = () => {
           ) : items.length === 0 ? (
             <EmptyState />
           ) : (
-            <div className="flex flex-col" style={{ gap: 48 }}>
+            <div>
               {sections.map((section, i) => (
-                <div
-                  key={section.config?.key ?? "other"}
-                  ref={(el) => setRef(i, el)}
-                  style={{
-                    opacity: 0,
-                    transform: "translateY(16px)",
-                    transition: "opacity 400ms ease-out, transform 400ms ease-out",
-                  }}
-                >
-                  {/* Phase header band */}
-                  {section.config && section.config.number && (
-                    <div
-                      className="rounded-none"
-                      style={{
-                        background: "hsl(var(--primary))",
-                        padding: "32px 48px",
-                        WebkitFontSmoothing: "antialiased",
-                      }}
-                    >
-                      <div
-                        className="flex items-baseline"
-                        style={{ gap: 24 }}
-                      >
-                        <span
-                          className="font-heading shrink-0"
-                          style={{
-                            fontSize: 80,
-                            fontWeight: 700,
-                            color: "hsl(var(--accent))",
-                            lineHeight: 1,
-                            letterSpacing: "-0.03em",
-                            WebkitFontSmoothing: "antialiased",
-                          }}
-                        >
-                          {section.config.number}
-                        </span>
-                        <div>
-                          <h2
-                            className="font-heading"
-                            style={{
-                              fontSize: 36,
-                              fontWeight: 700,
-                              color: "hsl(var(--primary-foreground))",
-                              letterSpacing: "-0.02em",
-                              textWrap: "balance",
-                              margin: 0,
-                            }}
-                          >
-                            {section.config.name}
-                          </h2>
-                          {section.config.explainer && (
-                            <p
-                              className="font-body"
-                              style={{
-                                fontSize: 16,
-                                fontWeight: 400,
-                                color: "rgba(255,255,255,0.65)",
-                                marginTop: 6,
-                                textWrap: "pretty",
-                                margin: "6px 0 0",
-                              }}
-                            >
-                              {section.config.explainer}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Phase body — cards */}
-                  <div
-                    className="bg-card"
-                    style={{ padding: "48px 48px 64px" }}
+                <div key={section.phase} style={{ paddingTop: i === 0 ? 0 : 80 }}>
+                  {/* Phase number */}
+                  <span
+                    className="block font-heading"
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 700,
+                      color: "#9A8F82",
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                    }}
                   >
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {section.items.map((item) => (
-                        <div
-                          key={item.name + item.url}
-                          data-card
-                          style={{
-                            opacity: 0,
-                            transform: "translateY(12px)",
-                            transition: "opacity 300ms ease-out, transform 300ms ease-out",
-                          }}
-                        >
-                          <DesignCard item={item} />
-                        </div>
-                      ))}
-                    </div>
+                    {section.number}
+                  </span>
+
+                  {/* Phase name */}
+                  <h2
+                    className="font-heading"
+                    style={{
+                      fontSize: 32,
+                      fontWeight: 700,
+                      color: "#1A1510",
+                      marginBottom: 8,
+                      marginTop: 4,
+                    }}
+                  >
+                    {section.phase}
+                  </h2>
+
+                  {/* Horizontal rule */}
+                  <hr
+                    style={{
+                      border: "none",
+                      borderTop: "1px solid #E8E2D8",
+                      marginBottom: 32,
+                    }}
+                  />
+
+                  {/* Cards grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {section.items.map((item) => (
+                      <DesignCard key={item.name + item.url} item={item} />
+                    ))}
                   </div>
                 </div>
               ))}
@@ -261,5 +139,74 @@ const DesignKitPage = () => {
     </>
   );
 };
+
+function DesignCard({ item }: { item: DesignKitItem }) {
+  const style = costStyle(item.cost);
+
+  return (
+    <a
+      href={item.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="rounded-xl overflow-hidden border border-border bg-card flex flex-col hover:translate-x-1.5 transition-all duration-200 no-underline"
+      style={{
+        transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+        boxShadow: "none",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = "-4px 4px 16px rgba(0,0,0,0.10)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = "none";
+      }}
+    >
+      <div className="p-5 flex flex-col flex-1">
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <h3 className="font-heading font-semibold text-base leading-tight" style={{ color: "#1A1510" }}>
+            {item.name}
+          </h3>
+          <span
+            className="shrink-0 px-2 py-0.5 rounded-full font-body text-[11px] font-medium"
+            style={{ backgroundColor: style.bg, color: style.text }}
+          >
+            {item.cost}
+          </span>
+        </div>
+
+        {item.category && (
+          <span
+            className="inline-block self-start px-2 py-0.5 rounded-full font-body text-[11px] mb-3"
+            style={{ backgroundColor: "#EEF0FB", color: "#2D35C9" }}
+          >
+            {item.category}
+          </span>
+        )}
+
+        <p className="font-body text-sm leading-relaxed text-foreground mb-3">
+          {item.what_it_does}
+        </p>
+
+        {item.when_to_use && (
+          <p className="font-body text-xs text-muted-foreground mb-3">
+            <strong>When to use:</strong> {item.when_to_use}
+          </p>
+        )}
+
+        {item.verdict && (
+          <div className="mt-auto bg-background rounded-lg p-3 font-body text-sm italic text-foreground/80">
+            {item.verdict}
+          </div>
+        )}
+      </div>
+
+      <div
+        className="px-5 py-3 font-body text-[13px] font-medium"
+        style={{ backgroundColor: "#2D35C9", color: "#ffffff" }}
+      >
+        Open →
+      </div>
+    </a>
+  );
+}
 
 export default DesignKitPage;
