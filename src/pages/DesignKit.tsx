@@ -15,11 +15,47 @@ function costStyle(cost: string) {
   return COST_STYLES[key] || COST_STYLES.paid;
 }
 
+const PHASE_ORDER = ["Brainstorm", "Design", "Build", "Review"];
+
+function groupByPhase(items: DesignKitItem[]) {
+  const groups: Record<string, DesignKitItem[]> = {};
+
+  for (const item of items) {
+    const phase = item.phase?.trim() || "Other";
+    if (!groups[phase]) groups[phase] = [];
+    groups[phase].push(item);
+  }
+
+  // Build ordered list: known phases first, then "Other" if present
+  const sections: { phase: string; number: string; items: DesignKitItem[] }[] = [];
+  let idx = 1;
+  for (const phase of PHASE_ORDER) {
+    if (groups[phase]) {
+      sections.push({ phase, number: String(idx).padStart(2, "0"), items: groups[phase] });
+      idx++;
+    }
+  }
+
+  // Remaining phases not in PHASE_ORDER (excluding "Other")
+  for (const phase of Object.keys(groups)) {
+    if (!PHASE_ORDER.includes(phase) && phase !== "Other") {
+      sections.push({ phase, number: String(idx).padStart(2, "0"), items: groups[phase] });
+      idx++;
+    }
+  }
+
+  // "Other" last
+  if (groups["Other"]) {
+    sections.push({ phase: "Other", number: String(idx).padStart(2, "0"), items: groups["Other"] });
+  }
+
+  return sections;
+}
+
 const DesignKitPage = () => {
   const [items, setItems] = useState<DesignKitItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [activeCategory, setActiveCategory] = useState("ALL");
 
   useEffect(() => {
     fetchDesignKit().then((data) => {
@@ -29,15 +65,7 @@ const DesignKitPage = () => {
     });
   }, []);
 
-  const categories = useMemo(() => {
-    const cats = Array.from(new Set(items.map((i) => i.category).filter(Boolean)));
-    return ["ALL", ...cats];
-  }, [items]);
-
-  const filtered = useMemo(() => {
-    if (activeCategory === "ALL") return items;
-    return items.filter((i) => i.category === activeCategory);
-  }, [items, activeCategory]);
+  const sections = useMemo(() => groupByPhase(items), [items]);
 
   return (
     <>
@@ -49,26 +77,6 @@ const DesignKitPage = () => {
 
       <section className="bg-background py-10 px-6 sm:px-12">
         <div className="max-w-[1280px] mx-auto">
-          {/* Category filters */}
-          {!loading && !error && items.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-8">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className="px-4 py-1.5 rounded-full font-body text-sm font-medium transition-colors"
-                  style={{
-                    backgroundColor: activeCategory === cat ? "#2D35C9" : "transparent",
-                    color: activeCategory === cat ? "#ffffff" : "#1A1510",
-                    border: `1px solid ${activeCategory === cat ? "#2D35C9" : "#D1D5DB"}`,
-                  }}
-                >
-                  {cat === "ALL" ? "All" : cat}
-                </button>
-              ))}
-            </div>
-          )}
-
           {loading ? (
             <LoadingSpinner />
           ) : error ? (
@@ -76,9 +84,53 @@ const DesignKitPage = () => {
           ) : items.length === 0 ? (
             <EmptyState />
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map((item) => (
-                <DesignCard key={item.name + item.url} item={item} />
+            <div>
+              {sections.map((section, i) => (
+                <div key={section.phase} style={{ paddingTop: i === 0 ? 0 : 80 }}>
+                  {/* Phase number */}
+                  <span
+                    className="block font-heading"
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 700,
+                      color: "#9A8F82",
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {section.number}
+                  </span>
+
+                  {/* Phase name */}
+                  <h2
+                    className="font-heading"
+                    style={{
+                      fontSize: 32,
+                      fontWeight: 700,
+                      color: "#1A1510",
+                      marginBottom: 8,
+                      marginTop: 4,
+                    }}
+                  >
+                    {section.phase}
+                  </h2>
+
+                  {/* Horizontal rule */}
+                  <hr
+                    style={{
+                      border: "none",
+                      borderTop: "1px solid #E8E2D8",
+                      marginBottom: 32,
+                    }}
+                  />
+
+                  {/* Cards grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {section.items.map((item) => (
+                      <DesignCard key={item.name + item.url} item={item} />
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           )}
