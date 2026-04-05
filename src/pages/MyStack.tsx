@@ -45,7 +45,7 @@ const MyStack = () => {
                 <div key={cat}>
                   <div className="flex items-center gap-2 mb-4">
                     <span style={{ width: "8px", height: "8px", backgroundColor: "#C8F04A", borderRadius: "50%", flexShrink: 0 }} />
-                    <h2 className="font-heading" style={{ fontWeight: 700, fontSize: "18px", color: "#1A1510", letterSpacing: "-0.02em" }}>
+                    <h2 className="font-heading" style={{ fontWeight: 700, fontSize: "22px", color: "#1A1510", letterSpacing: "-0.02em" }}>
                       {cat}
                     </h2>
                   </div>
