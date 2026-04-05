@@ -33,7 +33,6 @@ const Learning = () => {
       <CobaltZone
         heading="Learning"
         subheading="How I'm staying sharp."
-        bodyText="The resources actually worth your time. Not a complete list — a curated one."
       />
 
       <section className="bg-background py-10 px-6 sm:px-12">
