@@ -72,14 +72,14 @@ const MyStack = () => {
                             <h3 className="font-heading font-semibold text-xl text-foreground">
                               {tool.name}
                             </h3>
-                            <p className="font-body text-sm text-muted mt-1">
-                              {tool.what_it_does}
-                            </p>
                             {tool.my_use_case && (
                               <p className="font-body text-xs text-muted-foreground mt-1">
                                 <strong>My use case:</strong> {tool.my_use_case}
                               </p>
                             )}
+                            <p className="font-body text-sm text-muted mt-1">
+                              {tool.what_it_does}
+                            </p>
                             <p className="font-body text-[13px] mt-2" style={{ color: "#9A8F82" }}>
                               {tool.cost}
                             </p>
