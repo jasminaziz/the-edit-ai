@@ -89,11 +89,11 @@ const MyStack = () => {
                               )}
                             </div>
                             {tool.my_use_case && (
-                              <p className="font-body text-xs text-muted-foreground mt-1">
-                                <strong>My use case:</strong> {tool.my_use_case}
+                              <p className="font-body mt-1" style={{ fontSize: "14px", color: "#1A1510", fontWeight: 400 }}>
+                                {tool.my_use_case}
                               </p>
                             )}
-                            <p className="font-body text-sm text-muted mt-1">
+                            <p className="font-body mt-1" style={{ fontSize: "13px", color: "#9A8F82", fontWeight: 400 }}>
                               {tool.what_it_does}
                             </p>
                           </div>
