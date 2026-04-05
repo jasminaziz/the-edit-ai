@@ -69,9 +69,25 @@ const MyStack = () => {
                       >
                         <div className="flex flex-col md:flex-row gap-6">
                           <div className="md:w-[40%]">
-                            <h3 className="font-heading font-semibold text-xl text-foreground">
-                              {tool.name}
-                            </h3>
+                            <div className="flex items-center gap-2">
+                              <h3 className="font-heading font-semibold text-xl text-foreground">
+                                {tool.name}
+                              </h3>
+                              {tool.cost && (
+                                <span
+                                  className="font-body whitespace-nowrap"
+                                  style={{
+                                    backgroundColor: "#E8E2D8",
+                                    color: "#1A1510",
+                                    fontSize: "11px",
+                                    borderRadius: "20px",
+                                    padding: "3px 10px",
+                                  }}
+                                >
+                                  {tool.cost}
+                                </span>
+                              )}
+                            </div>
                             {tool.my_use_case && (
                               <p className="font-body text-xs text-muted-foreground mt-1">
                                 <strong>My use case:</strong> {tool.my_use_case}
@@ -79,9 +95,6 @@ const MyStack = () => {
                             )}
                             <p className="font-body text-sm text-muted mt-1">
                               {tool.what_it_does}
-                            </p>
-                            <p className="font-body text-[13px] mt-2" style={{ color: "#9A8F82" }}>
-                              {tool.cost}
                             </p>
                           </div>
 
