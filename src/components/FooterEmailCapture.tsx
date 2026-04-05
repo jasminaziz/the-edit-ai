@@ -41,7 +41,7 @@ export function FooterEmailCapture() {
           style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontWeight: 600,
-            fontSize: 14,
+            fontSize: 18,
             color: "#FFFFFF",
             margin: 0,
           }}
