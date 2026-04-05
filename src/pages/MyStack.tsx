@@ -96,7 +96,7 @@ const MyStack = () => {
 
                           {/* Open link */}
                           {tool.url && (
-                            <div className="mt-3">
+                            <div className="mt-3 flex justify-end">
                               <a
                                 href={tool.url}
                                 target="_blank"
