@@ -96,15 +96,32 @@ const MyStack = () => {
 
                           {/* Open link */}
                           {tool.url && (
-                            <div className="flex justify-end mt-3">
+                            <div className="mt-3">
                               <a
                                 href={tool.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="font-body font-medium hover:underline"
-                                style={{ fontSize: "13px", color: "#2D35C9" }}
+                                className="font-body inline-block"
+                                style={{
+                                  fontSize: "13px",
+                                  fontWeight: 500,
+                                  color: "#1A1510",
+                                  backgroundColor: "#C8F04A",
+                                  borderRadius: "20px",
+                                  padding: "10px 20px",
+                                  transition: "background-color 0.2s ease-out, color 0.2s ease-out",
+                                  textDecoration: "none",
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.backgroundColor = "#2D35C9";
+                                  e.currentTarget.style.color = "#FFFFFF";
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.backgroundColor = "#C8F04A";
+                                  e.currentTarget.style.color = "#1A1510";
+                                }}
                               >
-                                Open →
+                                Open tool →
                               </a>
                             </div>
                           )}
