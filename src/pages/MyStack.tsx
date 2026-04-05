@@ -57,78 +57,63 @@ const MyStack = () => {
                     {catTools.map((tool) => (
                       <div
                         key={tool.name}
-                        className="bg-card rounded-xl border border-border p-6 group hover:shadow-lg transition-all duration-150"
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.borderLeftWidth = "4px";
-                          e.currentTarget.style.borderLeftColor = "#C8F04A";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.borderLeftWidth = "1px";
-                          e.currentTarget.style.borderLeftColor = "#E8E2D8";
+                        className="group hover:shadow-lg transition-all duration-150 overflow-hidden"
+                        style={{
+                          backgroundColor: "#FFFFFF",
+                          border: "0.5px solid #E8E2D8",
+                          borderRadius: "12px",
                         }}
                       >
-                        <div className="flex flex-col md:flex-row gap-6">
-                          <div className="md:w-[40%]">
-                            <div className="flex items-center gap-2">
-                              <h3 className="font-heading font-semibold text-xl text-foreground">
-                                {tool.name}
-                              </h3>
-                              {tool.cost && (
-                                <span
-                                  className="font-body whitespace-nowrap"
-                                  style={{
-                                    backgroundColor: "#E8E2D8",
-                                    color: "#1A1510",
-                                    fontSize: "11px",
-                                    borderRadius: "20px",
-                                    padding: "3px 10px",
-                                  }}
-                                >
-                                  {tool.cost}
-                                </span>
-                              )}
-                            </div>
-                            {tool.my_use_case && (
-                              <p className="font-body mt-1" style={{ fontSize: "14px", color: "#1A1510", fontWeight: 400 }}>
-                                {tool.my_use_case}
-                              </p>
+                        {/* Lime top band */}
+                        <div style={{ height: "4px", backgroundColor: "#C8F04A" }} />
+
+                        <div style={{ padding: "20px" }}>
+                          {/* Name + Cost */}
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-heading" style={{ fontSize: "16px", fontWeight: 500, color: "#1A1510" }}>
+                              {tool.name}
+                            </h3>
+                            {tool.cost && (
+                              <span className="font-body" style={{ fontSize: "12px", color: "#9A8F82" }}>
+                                {tool.cost}
+                              </span>
                             )}
-                            <p className="font-body mt-1" style={{ fontSize: "13px", color: "#9A8F82", fontWeight: 400 }}>
-                              {tool.what_it_does}
-                            </p>
                           </div>
 
-                          <div className="md:w-[60%]">
-                            {tool.verdict && (
-                              <div
-                                className="rounded-lg p-4 font-body text-[15px] leading-[1.7] text-foreground"
-                                style={{ backgroundColor: "#F0EBFF" }}
-                              >
+                          {/* Use case */}
+                          {tool.my_use_case && (
+                            <p className="font-body mt-2" style={{ fontSize: "14px", color: "#1A1510", lineHeight: 1.5 }}>
+                              {tool.my_use_case}
+                            </p>
+                          )}
+
+                          {/* Divider + Verdict */}
+                          {tool.verdict && (
+                            <>
+                              <hr style={{ border: "none", borderTop: "0.5px solid #E8E2D8", margin: "16px 0" }} />
+                              <p className="font-body" style={{ fontSize: "14px", color: "#1A1510", lineHeight: 1.6 }}>
                                 {tool.verdict}
-                              </div>
-                            )}
-                            {tool.url && (
+                              </p>
+                            </>
+                          )}
+
+                          {/* Open link */}
+                          {tool.url && (
+                            <div className="flex justify-end mt-3">
                               <a
                                 href={tool.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-block mt-3 font-body text-[13px] font-medium text-primary hover:underline"
+                                className="font-body font-medium hover:underline"
+                                style={{ fontSize: "13px", color: "#2D35C9" }}
                               >
                                 Open →
                               </a>
-                            )}
-                          </div>
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
       <section className="py-12 px-6 sm:px-12" style={{ backgroundColor: "#C8F04A" }}>
         <div className="max-w-[1280px] mx-auto">
           <h2 className="font-heading font-bold text-[28px] text-foreground mb-3">How I built this</h2>
