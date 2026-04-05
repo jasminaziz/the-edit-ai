@@ -114,6 +114,14 @@ const MyStack = () => {
                         </div>
                       </div>
                     ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
       <section className="py-12 px-6 sm:px-12" style={{ backgroundColor: "#C8F04A" }}>
         <div className="max-w-[1280px] mx-auto">
           <h2 className="font-heading font-bold text-[28px] text-foreground mb-3">How I built this</h2>
