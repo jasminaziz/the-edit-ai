@@ -43,15 +43,12 @@ const MyStack = () => {
             <div className="space-y-10">
               {Object.entries(grouped).map(([cat, catTools]) => (
                 <div key={cat}>
-                  <h2
-                    className="font-body font-semibold text-[11px] uppercase tracking-[0.06em] mb-4 pl-3"
-                    style={{
-                      color: "#9A8F82",
-                      borderLeft: "3px solid #2D35C9",
-                    }}
-                  >
-                    {cat}
-                  </h2>
+                  <div className="flex items-center gap-2 mb-4">
+                    <span style={{ width: "8px", height: "8px", backgroundColor: "#C8F04A", borderRadius: "50%", flexShrink: 0 }} />
+                    <h2 className="font-heading" style={{ fontWeight: 700, fontSize: "18px", color: "#1A1510", letterSpacing: "-0.02em" }}>
+                      {cat}
+                    </h2>
+                  </div>
 
                   <div className="space-y-4">
                     {catTools.map((tool) => (
