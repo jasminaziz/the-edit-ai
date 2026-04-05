@@ -96,9 +96,6 @@ const MyStack = () => {
                             <p className="font-body text-sm text-muted mt-1">
                               {tool.what_it_does}
                             </p>
-                            <p className="font-body text-[13px] mt-2" style={{ color: "#9A8F82" }}>
-                              {tool.cost}
-                            </p>
                           </div>
 
                           <div className="md:w-[60%]">
