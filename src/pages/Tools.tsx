@@ -191,7 +191,7 @@ const Tools = () => {
                         toggleVerdict(tool.name);
                       }}
                       className="mt-auto pt-3 text-left font-body font-medium text-[13px] transition-colors"
-                      style={{ color: "#C8F04A" }}
+                      style={{ color: isSelected ? "#C8F04A" : "#9B9FE0" }}
                     >
                       {isExpanded ? "Honest verdict ↑" : "Honest verdict ↓"}
                     </button>
