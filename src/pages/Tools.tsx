@@ -40,7 +40,11 @@ const Tools = () => {
 
   return (
     <>
-      <CobaltZone heading="Tools" subheading="Things on my radar." />
+      <CobaltZone
+        heading="Tools"
+        subheading="Things on my radar."
+        bodyText="The tools worth knowing. Breadth matters. You should be trying things, watching things, forming views."
+      />
 
       {/* Filter Bar */}
       <section className="sticky top-16 z-40 bg-background py-5 px-6 sm:px-12 border-b border-border">
