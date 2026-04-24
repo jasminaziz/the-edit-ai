@@ -39,10 +39,10 @@ export async function fetchTools(): Promise<Tool[]> {
       name: stripEmoji(r[0] || ''),
       category: stripEmoji(r[1] || ''),
       status: (r[2] || 'on_radar') as Tool['status'],
-      what_it_does: stripEmoji(r[3] || ''),
-      pricing: stripEmoji(r[4] || ''),
-      verdict: stripEmoji(r[5] || ''),
-      url: r[6] || '',
+      what_it_does: '',
+      pricing: stripEmoji(r[3] || ''),
+      verdict: stripEmoji(r[4] || ''),
+      url: r[5] || '',
     }));
   } catch {
     return [];
