@@ -347,6 +347,8 @@ export default function Subscribe() {
                 </p>
                 <a
                   href="https://jasminaziz.substack.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="font-body"
                   style={{
                     fontWeight: 500,

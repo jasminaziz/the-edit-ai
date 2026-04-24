@@ -196,6 +196,8 @@ export function Layout({ children }: { children: ReactNode }) {
               </a>
               <a
                 href="https://jasminaziz.substack.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
               >
                 Read the Substack →
