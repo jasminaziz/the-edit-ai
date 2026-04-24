@@ -101,6 +101,15 @@ export function Layout({ children }: { children: ReactNode }) {
                           </NavLink>
                         );
                       })}
+                      <a
+                        href={WORK_WITH_me_placeholder_replaced_below}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setMobileOpen(false)}
+                        className="font-body text-base font-medium px-4 py-3 rounded-lg transition-colors text-white/70 hover:text-white hover:bg-white/10"
+                      >
+                        Work with me ↗
+                      </a>
                       <Link
                         to="/subscribe"
                         onClick={() => setMobileOpen(false)}
