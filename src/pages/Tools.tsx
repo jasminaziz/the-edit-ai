@@ -219,17 +219,10 @@ const Tools = () => {
                       {tool.what_it_does}
                     </p>
 
-                    {/* Cost */}
-                    <p className="mt-2 font-body text-[13px]" style={{ color: isSelected ? "rgba(250,248,244,0.6)" : "#9A8F82" }}>
-                      {tool.free_tier && <span>Free tier: {tool.free_tier}</span>}
-                      {tool.free_tier && tool.cost && <span> · </span>}
-                      {tool.cost && <span>{tool.cost}</span>}
-                    </p>
-
-                    {/* Credibility */}
-                    {tool.credibility && (
-                      <p className="mt-2 font-body font-semibold text-[13px]" style={{ color: "#C8F04A" }}>
-                        {tool.credibility}
+                    {/* Pricing */}
+                    {tool.pricing && (
+                      <p className="mt-2 font-body text-[13px]" style={{ color: isSelected ? "rgba(250,248,244,0.6)" : "#9A8F82" }}>
+                        {tool.pricing}
                       </p>
                     )}
 
