@@ -14,6 +14,8 @@ const navItems = [
   { to: "/whats-new", label: "What's New" },
 ];
 
+const WORK_WITH_ME_URL = "#";
+
 export function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
   const isHome = location.pathname === "/";
