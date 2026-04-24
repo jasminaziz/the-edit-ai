@@ -192,7 +192,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 rel="noopener noreferrer"
                 className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
               >
-                Work with me ↗
+                Work with me →
               </a>
               <span className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40">
                 © 2026
