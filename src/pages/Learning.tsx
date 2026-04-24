@@ -122,7 +122,7 @@ const Learning = () => {
 
                   {r.why_it_matters && (
                     <p className="font-body text-xs text-muted-foreground mb-4">
-                      <strong>Why it matters:</strong> {r.why_it_matters}
+                      <strong>Why I put it here:</strong> {r.why_it_matters}
                     </p>
                   )}
 
