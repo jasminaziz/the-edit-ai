@@ -210,40 +210,47 @@ const Tools = () => {
                       </div>
                     )}
 
-                    {/* Visit tool button */}
+                    {/* Visit tool button — lime pill */}
                     {tool.url && (
-                      <a
-                        href={tool.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="flex items-center justify-center gap-[6px] w-full rounded-lg font-body font-semibold text-[13px] transition-all duration-150"
-                        style={{
-                          height: 40,
-                          marginTop: 12,
-                          letterSpacing: "0.02em",
-                          border: isSelected ? "1px solid rgba(250,248,244,0.4)" : "1px solid #E8E2D8",
-                          color: isSelected ? "rgba(250,248,244,0.7)" : "#9A8F82",
-                          backgroundColor: "transparent",
-                        }}
-                        onMouseEnter={(e) => {
-                          if (isSelected) {
-                            e.currentTarget.style.backgroundColor = "rgba(250,248,244,0.1)";
-                            e.currentTarget.style.color = "#FAF8F4";
-                          } else {
-                            e.currentTarget.style.backgroundColor = "#FAF8F4";
-                            e.currentTarget.style.borderColor = "#2D35C9";
-                            e.currentTarget.style.color = "#2D35C9";
-                          }
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = "transparent";
-                          e.currentTarget.style.borderColor = isSelected ? "rgba(250,248,244,0.4)" : "#E8E2D8";
-                          e.currentTarget.style.color = isSelected ? "rgba(250,248,244,0.7)" : "#9A8F82";
-                        }}
-                      >
-                        Visit tool →
-                      </a>
+                      <div className="mt-3 flex justify-end">
+                        <a
+                          href={tool.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="font-body inline-block"
+                          style={{
+                            fontSize: "13px",
+                            fontWeight: 500,
+                            color: isSelected ? "#2D35C9" : "#1A1510",
+                            backgroundColor: isSelected ? "#FAF8F4" : "#C8F04A",
+                            borderRadius: "20px",
+                            padding: "10px 20px",
+                            transition: "background-color 0.2s ease-out, color 0.2s ease-out",
+                            textDecoration: "none",
+                          }}
+                          onMouseEnter={(e) => {
+                            if (isSelected) {
+                              e.currentTarget.style.backgroundColor = "#C8F04A";
+                              e.currentTarget.style.color = "#1A1510";
+                            } else {
+                              e.currentTarget.style.backgroundColor = "#2D35C9";
+                              e.currentTarget.style.color = "#FFFFFF";
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            if (isSelected) {
+                              e.currentTarget.style.backgroundColor = "#FAF8F4";
+                              e.currentTarget.style.color = "#2D35C9";
+                            } else {
+                              e.currentTarget.style.backgroundColor = "#C8F04A";
+                              e.currentTarget.style.color = "#1A1510";
+                            }
+                          }}
+                        >
+                          Visit tool →
+                        </a>
+                      </div>
                     )}
                   </div>
                 );
