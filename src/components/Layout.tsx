@@ -155,22 +155,20 @@ export function Layout({ children }: { children: ReactNode }) {
                       </NavLink>
                     );
                   })}
-                  <div className="relative z-10 flex flex-col gap-1 ml-2">
-                    <Link
-                      to="/subscribe"
-                      className={`font-body text-[11px] font-medium leading-none px-3 py-1 rounded-full whitespace-nowrap border border-white/60 transition-all duration-150 ${textColor} hover:bg-white hover:text-primary hover:border-white`}
-                    >
-                      Get the digest →
-                    </Link>
-                    <a
-                      href={WORK_WITH_ME_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`font-body text-[11px] font-medium leading-none px-3 py-1 rounded-full whitespace-nowrap border border-white/60 transition-all duration-150 ${textColor} hover:bg-white hover:text-primary hover:border-white`}
-                    >
-                      Work with me →
-                    </a>
-                  </div>
+                  <a
+                    href={WORK_WITH_ME_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`relative z-10 font-body text-sm font-medium px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-all duration-150 ${textColor} hover:bg-white hover:text-primary`}
+                  >
+                    Work with me →
+                  </a>
+                  <Link
+                    to="/subscribe"
+                    className={`relative z-10 font-body text-sm font-medium px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-all duration-150 ${textColor} hover:bg-white hover:text-primary`}
+                  >
+                    Get the digest →
+                  </Link>
                 </div>
               </>
             )}
