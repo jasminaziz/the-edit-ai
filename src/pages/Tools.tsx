@@ -95,7 +95,48 @@ const Tools = () => {
                 const isDimmed = hoveredCard && !isSelected;
 
                 return (
-...
+                  <div
+                    key={tool.name}
+                    onMouseEnter={() => setHoveredCard(tool.name)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                    className={`rounded-xl border p-5 flex flex-col transition-all duration-200 ${
+                      isDimmed ? "opacity-70 scale-[0.98]" : ""
+                    }`}
+                    style={
+                      isSelected
+                        ? {
+                            backgroundColor: "#2D35C9",
+                            borderColor: "#2D35C9",
+                            color: "#FAF8F4",
+                            boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
+                          }
+                        : {
+                            backgroundColor: "#FFFFFF",
+                            borderColor: "#E8E2D8",
+                          }
+                    }
+                  >
+                    {/* Tool name as link */}
+                    {tool.url ? (
+                      <a
+                        href={tool.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-heading font-semibold text-xl no-underline"
+                        style={{ color: isSelected ? "#FAF8F4" : "#1A1510" }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {tool.name}
+                      </a>
+                    ) : (
+                      <h3
+                        className="font-heading font-semibold text-xl"
+                        style={{ color: isSelected ? "#FAF8F4" : "#1A1510" }}
+                      >
+                        {tool.name}
+                      </h3>
+                    )}
+
                     {/* Category badge */}
                     <span
                       className="inline-block self-start mt-2 px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full"
