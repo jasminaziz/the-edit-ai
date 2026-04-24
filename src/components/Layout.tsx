@@ -102,7 +102,7 @@ export function Layout({ children }: { children: ReactNode }) {
                         );
                       })}
                       <a
-                        href={WORK_WITH_me_placeholder_replaced_below}
+                        href={WORK_WITH_ME_URL}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={() => setMobileOpen(false)}
