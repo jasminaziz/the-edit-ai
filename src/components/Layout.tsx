@@ -155,6 +155,14 @@ export function Layout({ children }: { children: ReactNode }) {
                       </NavLink>
                     );
                   })}
+                  <a
+                    href={WORK_WITH_ME_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`relative z-10 font-body text-sm font-medium px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-all duration-150 ${textColor} hover:bg-white/[0.15]`}
+                  >
+                    Work with me ↗
+                  </a>
                   <Link
                     to="/subscribe"
                     className={`relative z-10 font-body text-sm font-medium px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-all duration-150 ${textColor} hover:bg-white hover:text-primary`}
