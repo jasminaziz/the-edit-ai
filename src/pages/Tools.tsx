@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
-import { fetchTools, type Tool, CATEGORIES, STATUS_MAP } from "@/lib/sheets";
-import { StatusBadge } from "@/components/StatusBadge";
+import { fetchTools, type Tool, CATEGORIES } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
 
 import { Search } from "lucide-react";
-
-const STATUS_FILTERS = ["in_stack", "on_radar"] as const;
 
 const Tools = () => {
   const [tools, setTools] = useState<Tool[]>([]);
@@ -15,7 +12,6 @@ const Tools = () => {
   const [error, setError] = useState(false);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("ALL");
-  const [activeStatuses, setActiveStatuses] = useState<Set<string>>(new Set(["in_stack", "on_radar"]));
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [expandedVerdicts, setExpandedVerdicts] = useState<Set<string>>(new Set());
 
@@ -35,32 +31,11 @@ const Tools = () => {
     });
   };
 
-  const handleCardClick = (_name: string) => {
-    // Card click no longer selects — cobalt state is hover-only
-  };
-
-  const toggleStatus = (s: string) => {
-    setActiveStatuses((prev) => {
-      const next = new Set(prev);
-      if (next.has(s)) {
-        next.delete(s);
-        // If none active, re-activate both (show all)
-        if (next.size === 0) return new Set(["in_stack", "on_radar"]);
-      } else {
-        next.add(s);
-      }
-      return next;
-    });
-  };
-
-  const allStatusesActive = activeStatuses.size === STATUS_FILTERS.length;
-
   const filtered = tools.filter((t) => {
     const q = search.toLowerCase();
     const matchSearch = !q || t.name.toLowerCase().includes(q) || t.category.toLowerCase().includes(q) || t.what_it_does.toLowerCase().includes(q);
     const matchCat = category === "ALL" || t.category === category;
-    const matchStatus = allStatusesActive || activeStatuses.has(t.status);
-    return matchSearch && matchCat && matchStatus;
+    return matchSearch && matchCat;
   });
 
   return (
@@ -100,28 +75,6 @@ const Tools = () => {
             ))}
           </div>
 
-          {/* Status pills */}
-          <div className="flex flex-wrap gap-2">
-            {STATUS_FILTERS.map((s) => {
-              const config = STATUS_MAP[s];
-              const label = config?.label || s;
-              const isActive = activeStatuses.has(s);
-              return (
-                <button
-                  key={s}
-                  onClick={() => toggleStatus(s)}
-                  className="px-3.5 py-1.5 font-body text-xs font-medium uppercase tracking-[0.04em] rounded-full border transition-colors duration-150"
-                  style={
-                    isActive
-                      ? { backgroundColor: config?.bg, color: "#FFFFFF", borderColor: "transparent" }
-                      : { backgroundColor: "transparent", color: config?.bg, borderColor: `${config?.bg}80` }
-                  }
-                >
-                  {label}
-                </button>
-              );
-            })}
-          </div>
         </div>
       </section>
 
@@ -140,7 +93,6 @@ const Tools = () => {
                 const isSelected = hoveredCard === tool.name;
                 const isExpanded = expandedVerdicts.has(tool.name);
                 const isDimmed = hoveredCard && !isSelected;
-                const statusConfig = STATUS_MAP[tool.status];
 
                 return (
                   <div
@@ -184,20 +136,6 @@ const Tools = () => {
                         {tool.name}
                       </h3>
                     )}
-
-                    {/* Status badge */}
-                    <div className="mt-2">
-                      {isSelected ? (
-                        <span
-                          className="inline-block px-2.5 py-1 font-body text-[11px] font-semibold rounded-full uppercase tracking-[0.05em]"
-                          style={{ backgroundColor: "rgba(255,255,255,0.2)", color: "#FAF8F4" }}
-                        >
-                          {statusConfig?.label}
-                        </span>
-                      ) : (
-                        <StatusBadge status={tool.status} />
-                      )}
-                    </div>
 
                     {/* Category badge */}
                     <span
