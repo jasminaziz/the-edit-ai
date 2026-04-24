@@ -194,6 +194,12 @@ export function Layout({ children }: { children: ReactNode }) {
               >
                 Work with me →
               </a>
+              <a
+                href="https://jasminaziz.substack.com"
+                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+              >
+                Read the Substack →
+              </a>
               <span className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40">
                 © 2026
               </span>
