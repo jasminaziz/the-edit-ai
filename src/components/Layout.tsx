@@ -108,7 +108,7 @@ export function Layout({ children }: { children: ReactNode }) {
                         onClick={() => setMobileOpen(false)}
                         className="font-body text-base font-medium px-4 py-3 rounded-lg transition-colors text-white/70 hover:text-white hover:bg-white/10"
                       >
-                        Work with me ↗
+                        Work with me →
                       </a>
                       <Link
                         to="/subscribe"
@@ -161,7 +161,7 @@ export function Layout({ children }: { children: ReactNode }) {
                     rel="noopener noreferrer"
                     className={`relative z-10 font-body text-sm font-medium px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-all duration-150 ${textColor} hover:bg-white hover:text-primary`}
                   >
-                    Work with me ↗
+                    Work with me →
                   </a>
                   <Link
                     to="/subscribe"
@@ -192,7 +192,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 rel="noopener noreferrer"
                 className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
               >
-                Work with me ↗
+                Work with me →
               </a>
               <span className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40">
                 © 2026
