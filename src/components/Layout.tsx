@@ -14,6 +14,8 @@ const navItems = [
   { to: "/whats-new", label: "What's New" },
 ];
 
+const WORK_WITH_ME_URL = "#";
+
 export function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
   const isHome = location.pathname === "/";
@@ -99,6 +101,15 @@ export function Layout({ children }: { children: ReactNode }) {
                           </NavLink>
                         );
                       })}
+                      <a
+                        href={WORK_WITH_ME_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setMobileOpen(false)}
+                        className="font-body text-base font-medium px-4 py-3 rounded-lg transition-colors text-white/70 hover:text-white hover:bg-white/10"
+                      >
+                        Work with me ↗
+                      </a>
                       <Link
                         to="/subscribe"
                         onClick={() => setMobileOpen(false)}
@@ -144,6 +155,14 @@ export function Layout({ children }: { children: ReactNode }) {
                       </NavLink>
                     );
                   })}
+                  <a
+                    href={WORK_WITH_ME_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`relative z-10 font-body text-sm font-medium px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-all duration-150 ${textColor} hover:bg-white/[0.15]`}
+                  >
+                    Work with me ↗
+                  </a>
                   <Link
                     to="/subscribe"
                     className={`relative z-10 font-body text-sm font-medium px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-all duration-150 ${textColor} hover:bg-white hover:text-primary`}
@@ -167,6 +186,14 @@ export function Layout({ children }: { children: ReactNode }) {
               The Edit — curated by Jasmin Aziz
             </span>
             <div className="flex items-center gap-4 sm:gap-6">
+              <a
+                href={WORK_WITH_ME_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+              >
+                Work with me ↗
+              </a>
               <span className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40">
                 © 2026
               </span>
