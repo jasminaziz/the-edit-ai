@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
-import { fetchTools, type Tool, CATEGORIES, STATUS_MAP } from "@/lib/sheets";
-import { StatusBadge } from "@/components/StatusBadge";
+import { fetchTools, type Tool, CATEGORIES } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
 
 import { Search } from "lucide-react";
-
-const STATUS_FILTERS = ["in_stack", "on_radar"] as const;
 
 const Tools = () => {
   const [tools, setTools] = useState<Tool[]>([]);
