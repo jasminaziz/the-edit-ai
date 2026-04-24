@@ -141,17 +141,33 @@ const Tools = () => {
                       </h3>
                     )}
 
-                    {/* Category badge */}
-                    <span
-                      className="inline-block self-start mt-2 px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full"
-                      style={
-                        isSelected
-                          ? { backgroundColor: "#9B9FE0", color: "#FFFFFF" }
-                          : { backgroundColor: "#EEF0FB", color: "#2D35C9" }
-                      }
-                    >
-                      {tool.category}
-                    </span>
+                    {/* Category + Status badges */}
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      <span
+                        className="inline-block px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full"
+                        style={
+                          isSelected
+                            ? { backgroundColor: "#9B9FE0", color: "#FFFFFF" }
+                            : { backgroundColor: "#EEF0FB", color: "#2D35C9" }
+                        }
+                      >
+                        {tool.category}
+                      </span>
+                      {tool.status && (
+                        <span
+                          className="inline-block px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full"
+                          style={
+                            isSelected
+                              ? { backgroundColor: "rgba(250,248,244,0.15)", color: "#FAF8F4" }
+                              : tool.status === "in_stack"
+                              ? { backgroundColor: "#2D6A4F", color: "#FFFFFF" }
+                              : { backgroundColor: "#2D35C9", color: "#FFFFFF" }
+                          }
+                        >
+                          {tool.status === "in_stack" ? "IN MY STACK" : "ON MY RADAR"}
+                        </span>
+                      )}
+                    </div>
 
                     {/* Description */}
                     <p
