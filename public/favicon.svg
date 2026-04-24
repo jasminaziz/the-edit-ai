@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="4" fill="#2D35C9"/>
-  <text x="16" y="17" text-anchor="middle" dominant-baseline="central" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="700" font-size="22" fill="#FFFFFF">E</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" fill="#2D35C9"></rect>
+  <rect x="4" y="5" width="24" height="6" rx="3" fill="#C8F04A"></rect>
+  <rect x="9" y="13" width="19" height="6" rx="3" fill="#C8F04A"></rect>
+  <rect x="4" y="21" width="24" height="6" rx="3" fill="#C8F04A"></rect>
 </svg>
