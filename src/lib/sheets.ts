@@ -1,14 +1,9 @@
 export interface Tool {
   name: string;
   category: string;
-  what_it_does: string;
-  my_use_case: string;
-  free_tier: string;
-  cost: string;
   status: 'in_stack' | 'on_radar';
-  credibility: string;
-  quick_notes: string;
-  key_integrations: string;
+  what_it_does: string;
+  pricing: string;
   verdict: string;
   url: string;
 }
