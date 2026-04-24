@@ -151,16 +151,67 @@ export default function Subscribe() {
                 className="font-heading"
                 style={{
                   fontWeight: 700,
-                  fontSize: "clamp(24px, 3.5vw, 36px)",
+                  fontSize: 48,
                   color: "#1A1510",
                   textWrap: "balance",
                   lineHeight: 1.1,
                   margin: 0,
+                  marginBottom: 16,
+                }}
+              >
+                The fortnightly digest
+              </h2>
+              <p
+                className="font-body"
+                style={{
+                  fontWeight: 500,
+                  fontSize: 20,
+                  lineHeight: 1.4,
+                  color: "#4A4440",
+                  margin: 0,
+                  marginBottom: 24,
+                }}
+              >
+                Three to five things worth reading, trying, or watching in AI right now. Curated, not aggregated.
+              </p>
+              <p
+                className="font-body"
+                style={{
+                  fontWeight: 400,
+                  fontSize: 17,
+                  lineHeight: 1.7,
+                  color: "#1A1510",
+                  margin: 0,
+                  marginBottom: 16,
+                }}
+              >
+                Every other Friday. No hot takes, no doom loops, no forty-link roundups. Just a short, opinionated read from someone who is using this stuff properly and telling you what is actually worth your attention.
+              </p>
+              <p
+                className="font-body"
+                style={{
+                  fontWeight: 400,
+                  fontSize: 17,
+                  lineHeight: 1.7,
+                  color: "#1A1510",
+                  margin: 0,
                   marginBottom: 32,
                 }}
               >
-                Straight to your inbox.
-              </h2>
+                Free to subscribe. You can unsubscribe in one click at any time.
+              </p>
+              <p
+                className="font-body"
+                style={{
+                  fontWeight: 500,
+                  fontSize: 14,
+                  color: "#9A8F82",
+                  margin: 0,
+                  marginBottom: 16,
+                }}
+              >
+                Takes a moment. Saves you hours of scrolling later.
+              </p>
               <form onSubmit={handleSubmit}>
                 <input
                   type="text"
