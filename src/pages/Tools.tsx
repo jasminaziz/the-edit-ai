@@ -12,7 +12,6 @@ const Tools = () => {
   const [error, setError] = useState(false);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("ALL");
-  const [activeStatuses, setActiveStatuses] = useState<Set<string>>(new Set(["in_stack", "on_radar"]));
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [expandedVerdicts, setExpandedVerdicts] = useState<Set<string>>(new Set());
 
@@ -32,32 +31,11 @@ const Tools = () => {
     });
   };
 
-  const handleCardClick = (_name: string) => {
-    // Card click no longer selects — cobalt state is hover-only
-  };
-
-  const toggleStatus = (s: string) => {
-    setActiveStatuses((prev) => {
-      const next = new Set(prev);
-      if (next.has(s)) {
-        next.delete(s);
-        // If none active, re-activate both (show all)
-        if (next.size === 0) return new Set(["in_stack", "on_radar"]);
-      } else {
-        next.add(s);
-      }
-      return next;
-    });
-  };
-
-  const allStatusesActive = activeStatuses.size === STATUS_FILTERS.length;
-
   const filtered = tools.filter((t) => {
     const q = search.toLowerCase();
     const matchSearch = !q || t.name.toLowerCase().includes(q) || t.category.toLowerCase().includes(q) || t.what_it_does.toLowerCase().includes(q);
     const matchCat = category === "ALL" || t.category === category;
-    const matchStatus = allStatusesActive || activeStatuses.has(t.status);
-    return matchSearch && matchCat && matchStatus;
+    return matchSearch && matchCat;
   });
 
   return (
