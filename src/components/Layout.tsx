@@ -161,7 +161,7 @@ export function Layout({ children }: { children: ReactNode }) {
                     rel="noopener noreferrer"
                     className={`relative z-10 font-body text-sm font-medium px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-all duration-150 ${textColor} hover:bg-white hover:text-primary`}
                   >
-                    Work with me ↗
+                    Work with me →
                   </a>
                   <Link
                     to="/subscribe"
