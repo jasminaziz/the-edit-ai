@@ -38,16 +38,11 @@ export async function fetchTools(): Promise<Tool[]> {
     return rows.slice(1).filter(r => r.length > 0 && r[0]).map(r => ({
       name: stripEmoji(r[0] || ''),
       category: stripEmoji(r[1] || ''),
-      what_it_does: stripEmoji(r[2] || ''),
-      my_use_case: stripEmoji(r[3] || ''),
-      free_tier: stripEmoji(r[4] || ''),
-      cost: stripEmoji(r[5] || ''),
-      status: (r[6] || 'know_about') as Tool['status'],
-      credibility: stripEmoji(r[7] || ''),
-      quick_notes: stripEmoji(r[8] || ''),
-      key_integrations: stripEmoji(r[9] || ''),
-      verdict: stripEmoji(r[10] || ''),
-      url: r[11] || '',
+      status: (r[2] || 'on_radar') as Tool['status'],
+      what_it_does: stripEmoji(r[3] || ''),
+      pricing: stripEmoji(r[4] || ''),
+      verdict: stripEmoji(r[5] || ''),
+      url: r[6] || '',
     }));
   } catch {
     return [];
