@@ -4,7 +4,6 @@ import { Menu, X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { FooterEmailCapture } from "@/components/FooterEmailCapture";
-import { ScrollProgressBar } from "@/components/ScrollProgressBar";
 
 const navItems = [
   { to: "/", label: "Home" },
@@ -179,8 +178,6 @@ export function Layout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </nav>
-
-      <ScrollProgressBar />
 
       <main className="flex-1 pt-14 sm:pt-16">{children}</main>
 
