@@ -34,58 +34,42 @@ const Index = () => {
   return (
     <>
       {/* Hero */}
-      {/* Hero */}
       <section
         className="relative min-h-[40vh] sm:min-h-[100vh] flex flex-col justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
         style={{ backgroundColor: "#7B7FD4" }}
       >
-        {/* THE — full-width, pushed to edges */}
-        <h1
-          className="font-heading font-black leading-[0.82] w-full"
-          style={{
-            fontSize: "clamp(120px, 28vw, 420px)",
-            color: "#2D35C9",
-            letterSpacing: "-0.04em",
-            marginLeft: "-0.04em",
-          }}
-        >
-          The
-        </h1>
-        {/* EDIT — even bigger, commanding */}
-        <h1
-          className="font-heading font-black leading-[0.78] w-full"
-          style={{
-            fontSize: "clamp(160px, 38vw, 560px)",
-            color: "#2D35C9",
-            letterSpacing: "-0.05em",
-            marginLeft: "-0.05em",
-            marginTop: "-0.02em",
-          }}
-        >
-          Edit.
-        </h1>
+        {/* Pills layer — sits behind the headlines, fills the hero */}
+        <div className="absolute inset-0 z-0">
+          {!loading && <HomeGravity tools={tools} variant="hero" />}
+        </div>
 
-        {/* Tagline — lime accent, right-aligned under the 't' */}
-        <p
-          className="font-body font-semibold mt-2 sm:mt-4 text-left"
-          style={{
-            fontSize: "clamp(18px, 3vw, 48px)",
-            color: "#C8F04A",
-            letterSpacing: "0.01em",
-            marginLeft: "-0.04em",
-          }}
-        >
-          Honest verdicts only.
-        </p>
-      </section>
-
-      {/* Gravity playground */}
-      <section className="bg-background pt-12 pb-4 px-6 sm:px-12">
-        <div className="max-w-[1280px] mx-auto">
-          <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-muted mb-4">
-            A little playground
-          </h2>
-          {!loading && <HomeGravity tools={tools} />}
+        {/* Typography layer — pointer-events-none so pills are draggable through it */}
+        <div className="relative z-10 pointer-events-none">
+          {/* THE — full-width, pushed to edges */}
+          <h1
+            className="font-heading font-black leading-[0.82] w-full"
+            style={{
+              fontSize: "clamp(120px, 28vw, 420px)",
+              color: "#2D35C9",
+              letterSpacing: "-0.04em",
+              marginLeft: "-0.04em",
+            }}
+          >
+            The
+          </h1>
+          {/* EDIT — even bigger, commanding */}
+          <h1
+            className="font-heading font-black leading-[0.78] w-full"
+            style={{
+              fontSize: "clamp(160px, 38vw, 560px)",
+              color: "#2D35C9",
+              letterSpacing: "-0.05em",
+              marginLeft: "-0.05em",
+              marginTop: "-0.02em",
+            }}
+          >
+            Edit.
+          </h1>
         </div>
       </section>
 
@@ -222,8 +206,6 @@ const Index = () => {
           What's new this week →
         </Link>
       </section>
-
-      
     </>
   );
 };
