@@ -46,7 +46,7 @@ export function FooterEmailCapture() {
             margin: 0,
           }}
         >
-          Get <em style={{ fontStyle: "italic" }}>The Edit</em> in your inbox
+          Get The Edit in your inbox
         </p>
         <div style={{ marginTop: 16 }}>
           {formState === "success" ? (
