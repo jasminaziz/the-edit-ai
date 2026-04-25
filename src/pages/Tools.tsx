@@ -3,6 +3,7 @@ import { fetchTools, type Tool, CATEGORIES } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
+import { StaggerGrid, RevealItem } from "@/components/Reveal";
 
 import { Search } from "lucide-react";
 
@@ -92,18 +93,18 @@ const Tools = () => {
           ) : filtered.length === 0 ? (
             <EmptyState />
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <StaggerGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filtered.map((tool) => {
                 const isSelected = hoveredCard === tool.name;
                 const isExpanded = expandedVerdicts.has(tool.name);
                 const isDimmed = hoveredCard && !isSelected;
 
                 return (
+                  <RevealItem key={tool.name}>
                   <div
-                    key={tool.name}
                     onMouseEnter={() => setHoveredCard(tool.name)}
                     onMouseLeave={() => setHoveredCard(null)}
-                    className={`rounded-xl border p-5 flex flex-col transition-all duration-200 ${
+                    className={`rounded-xl border p-5 flex flex-col h-full transition-all duration-200 ${
                       isDimmed ? "opacity-70 scale-[0.98]" : ""
                     }`}
                     style={
