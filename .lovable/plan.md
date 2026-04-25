@@ -1,75 +1,43 @@
 ## Goal
+Replace the static `tools.length` number in the "In the directory" dashboard card with an animated rolling-digit counter that ticks from 0 up to the final count once the Google Sheets fetch resolves.
 
-Pull the gravity pill component **into** the lilac hero section so the falling/draggable pills become part of the "The Edit." moment. Remove the lime "Honest verdicts only." tagline. Remove the standalone "A little playground" section underneath since it'd be redundant.
+## Scope
+- **One location only:** `src/pages/Index.tsx`, the third dashboard column ("In the directory").
+- Hero typography ("The / Edit.") is untouched.
+- Other pages untouched.
 
----
+## Files
 
-## What changes
+### 1. New: `src/components/ui/animated-counter.tsx`
+Reconstruct the component properly (the supplied snippet had stripped JSX). Implementation notes:
+- Use **`framer-motion`** (standard package), not `motion/react`. Adds one dep: `framer-motion`. `clsx` and `tailwind-merge` already installed.
+- Drop `"use client"` (Vite SPA, not Next).
+- Use shared `cn` from `@/lib/utils` — no local redefinition.
+- Fix the malformed `React.DetailedHTMLProps` type → use `React.HTMLAttributes<HTMLDivElement>`.
+- Props: `start = 0`, `end: number`, `duration = 1.2` (seconds), `fontSize = 80`, `className?`.
+- Re-trigger animation when `end` changes (so counter animates once Sheets data lands, not stuck at 0).
+- Replace the `setInterval`-keyed-by-`value` pattern with a `useSpring` driving the digit columns directly — smoother, no wasted intervals.
+- Render as many `<Digit>` columns as digits in `end` (no hardcoded ladder of `value >= 10`, `value >= 100`, etc.). Computed from `String(end).length`.
+- Each `<Digit>` is a fixed-height window with a `<motion.span>` per 0–9 numeral; `useTransform` rolls them based on the spring value and digit place.
 
-### 1. `src/pages/Index.tsx` — EDIT
+### 2. Edit: `src/pages/Index.tsx`
+In the "In the directory" block (currently lines ~170–180):
+- Keep the existing skeleton shimmer while `loading === true`.
+- Once loaded, swap the static `<p>{tools.length}</p>` for `<Counter end={tools.length} fontSize={80} />`.
+- Preserve the existing Chillax heading font, primary color (`text-primary`), and the "AI tools in the directory" subline.
+- Use a fixed `fontSize={80}` on desktop, `fontSize={56}` on mobile (via a small `useIsMobile` check, already used elsewhere in the codebase). Fixed pixel sizing is required because the rolling-digit effect depends on a fixed row height for `translateY` math — `clamp()` won't work.
 
-**Remove:**
-- The lime `<p>` tagline "Honest verdicts only." inside the hero `<section>`.
-- The entire standalone "Gravity playground" `<section>` that currently sits between hero and dashboard strip (including its "A little playground" small-caps label).
+### 3. Edit: `package.json`
+Add `framer-motion` (^11). One new dependency.
 
-**Add inside the hero `<section>`:**
-- An absolutely-positioned `<HomeGravity tools={tools} />` layer that fills the hero, sitting **behind** the "The / Edit." headlines so the typography stays the hero anchor and pills tumble around/behind it.
-- Render the pills only once `!loading` (same guard as before) so they don't pop in empty.
+## Behavior
+- On first paint: skeleton shimmer (existing behavior).
+- When `fetchTools()` resolves: counter mounts with `end = tools.length`, springs from 0 to that value over ~1.2s.
+- If `tools.length` ever changes (e.g. Sheets refetch), counter re-animates from current → new value smoothly via the spring.
 
-**Hero structure (conceptual):**
-```
-<section class="relative ... bg-lilac">
-  {/* Pills layer — absolute, full hero, z-0, pointer-events controlled */}
-  <div class="absolute inset-0 z-0">
-    {!loading && <HomeGravity tools={tools} />}
-  </div>
-
-  {/* Typography layer — relative, z-10, pointer-events-none so pills stay draggable */}
-  <div class="relative z-10 pointer-events-none">
-    <h1>The</h1>
-    <h1>Edit.</h1>
-  </div>
-</section>
-```
-
-The typography wrapper gets `pointer-events-none` so mouse drags hit the pill canvas underneath. The pill `<span>`s themselves remain interactive (Matter.js mouse constraint lives on its own canvas).
-
-### 2. `src/components/HomeGravity.tsx` — EDIT
-
-Currently hard-codes `h-[480px] w-full`. To fill the hero we need it to fill its parent instead.
-
-- Change desktop `<Gravity>` className from `h-[480px] w-full` to `h-full w-full`.
-- Mobile fallback: keep the static flex-wrap, but constrain it so it doesn't dominate the hero on small screens. Render it absolutely at the bottom of the hero (`absolute inset-x-0 bottom-6 px-4 flex flex-wrap gap-2 justify-center`) — the parent in `Index.tsx` controls positioning by passing through.
-
-Cleanest split: accept an optional `variant?: "section" | "hero"` prop, defaulting to current behaviour, and let `Index.tsx` pass `variant="hero"` so the component knows to fill its parent and use the centered mobile layout. This keeps the component reusable if you ever want the standalone section back.
-
-### 3. Pill colour palette — minor adjustment
-
-Hero background is Lilac `#7B7FD4`. Lilac is currently in the pill palette, so any lilac pills will disappear into the background.
-
-- Remove Lilac `#7B7FD4` from `PILL_COLOURS` in `HomeGravity.tsx`.
-- Remaining palette: Cobalt, Forest, Indigo, Orange. Still respects the no-Lime rule. Adds enough contrast against lilac.
-- Optional: add Cream `#F5EFE6` or white-outlined pills to lighten the mix — flagging as a follow-up, not doing it now unless you ask.
-
----
-
-## What is NOT changing
-
-- "The / Edit." typography — sizes, weight, colour `#2D35C9`, all preserved.
-- Hero height, padding, lilac background.
-- Dashboard preview strip, CTA strip, footer, nav.
-- Mobile fallback strategy (still no physics on mobile).
-- Lime accent rule — Lime is now fully removed from the hero, only used elsewhere as accent per memory.
-- `gravity.tsx`, dependencies, sheets logic.
-
----
-
-## Flags before building
-
-1. **Hero now has no tagline.** "The Edit." + falling pills carries the whole message. If you later want a small line back (e.g. "Honest verdicts only." in cobalt or cream instead of lime), it's a 2-line add.
-2. **Pointer events:** typography layer becomes `pointer-events-none` so pills are draggable through it. This means you cannot select the "The Edit." text with a cursor. Acceptable for a hero; flagging in case it matters for accessibility tooling.
-3. **Mobile hero gets shorter content.** With pills moved into the hero and the playground section deleted, mobile users see hero → dashboard strip directly. The static mobile pills will sit at the bottom of the hero. If the hero feels cramped on small phones, we can drop the mobile pills entirely and keep them desktop-only — let me know.
-4. **Lilac removed from pill palette** to avoid camouflage. If you want lilac pills back with a darker outline instead, say so before I build.
-5. **Z-index / stacking:** Matter.js renders to its own canvas inside the Gravity wrapper. Pills will visually appear behind "The Edit." headlines (z-0 vs z-10). If you want pills in front of the type, swap the z-index — flag your preference.
-
-Once approved I'll switch to default mode and ship.
+## Flags / decisions for you to confirm
+1. **Font size on mobile.** I'm planning fixed 56px mobile / 80px desktop. The current `clamp(56px, 8vw, 80px)` cannot survive the digit-roll math. OK to lose the fluid scaling on this one number?
+2. **Animation duration.** 1.2s feels editorial — long enough to notice, short enough not to annoy. Adjust if you want snappier (0.8s) or slower (2s).
+3. **Spring vs linear.** Spring gives a natural overshoot/settle. If you want a strict linear count-up (more "metric dashboard" feel), say so and I'll swap.
+4. **Scope creep risk.** The component supports any number, so it could later be reused (e.g. subscriber count, # of items in your stack). Not building those now — just flagging the option.
+5. **Bundle cost.** `framer-motion` is ~50KB gzipped. Acceptable for a single counter? If not, I can hand-roll the digit roll with CSS transforms + `requestAnimationFrame` and skip the dep entirely. Let me know.
