@@ -3,6 +3,7 @@ import { fetchLearning, type LearningItem } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
+import { RevealGroup, RevealItem } from "@/components/Reveal";
 
 const Learning = () => {
   const [items, setItems] = useState<LearningItem[]>([]);
@@ -64,22 +65,25 @@ const Learning = () => {
           ) : items.length === 0 ? (
             <EmptyState />
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <RevealGroup
+              key={activeCategory}
+              className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            >
               {filtered.map((r) => (
-                <div
-                  key={r.name + r.url}
-                  className="bg-card rounded-xl border border-border p-6 flex flex-col group transition-all duration-150"
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderLeftWidth = "4px";
-                    e.currentTarget.style.borderLeftColor = "#C8F04A";
-                    e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.06)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderLeftWidth = "1px";
-                    e.currentTarget.style.borderLeftColor = "#E8E2D8";
-                    e.currentTarget.style.boxShadow = "none";
-                  }}
-                >
+                <RevealItem key={r.name + r.url}>
+                  <div
+                    className="bg-card rounded-xl border border-border p-6 flex flex-col h-full group transition-all duration-150"
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderLeftWidth = "4px";
+                      e.currentTarget.style.borderLeftColor = "#C8F04A";
+                      e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.06)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderLeftWidth = "1px";
+                      e.currentTarget.style.borderLeftColor = "#E8E2D8";
+                      e.currentTarget.style.boxShadow = "none";
+                    }}
+                  >
                   <h3 className="font-heading font-semibold text-xl text-foreground">{r.name}</h3>
 
                   <div className="flex flex-wrap gap-2 mt-3">
