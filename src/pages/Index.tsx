@@ -175,12 +175,11 @@ const Index = () => {
               <div className="h-20 bg-border rounded animate-pulse" />
             ) : (
               <>
-                <p
-                  className="font-heading font-bold text-primary"
-                  style={{ fontSize: "clamp(56px, 8vw, 80px)" }}
-                >
-                  {tools.length}
-                </p>
+                <Counter
+                  end={tools.length}
+                  fontSize={isMobile ? 56 : 80}
+                  className="text-primary"
+                />
                 <p className="font-body text-[15px] text-muted">AI tools in the directory</p>
               </>
             )}
