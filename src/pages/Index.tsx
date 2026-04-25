@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchTools, fetchWhatsNew, type Tool, type WhatsNew } from "@/lib/sheets";
+import { HomeGravity } from "@/components/HomeGravity";
 
 const CATEGORY_COLOURS: Record<string, { bg: string; text: string }> = {
   "New Release": { bg: "#2D35C9", text: "#FFFFFF" },
