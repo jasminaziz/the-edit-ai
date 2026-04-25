@@ -182,19 +182,6 @@ export default function Subscribe() {
                   lineHeight: 1.7,
                   color: "#1A1510",
                   margin: 0,
-                  marginBottom: 16,
-                }}
-              >
-                Every other Friday. No hot takes, no doom loops, no forty-link roundups. Just a short, opinionated read from someone who is using this stuff properly and telling you what is actually worth your attention.
-              </p>
-              <p
-                className="font-body"
-                style={{
-                  fontWeight: 400,
-                  fontSize: 17,
-                  lineHeight: 1.7,
-                  color: "#1A1510",
-                  margin: 0,
                   marginBottom: 32,
                 }}
               >
