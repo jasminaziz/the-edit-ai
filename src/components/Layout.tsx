@@ -183,14 +183,14 @@ export function Layout({ children }: { children: ReactNode }) {
         <div className="max-w-[1280px] mx-auto w-full">
           <FooterEmailCapture />
           <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-            <div className="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
+            <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-start">
               <span className="font-body font-semibold text-[13px] text-primary-foreground">
-                The Edit — curated by Jasmin Aziz ·
+                The Edit — curated by Jasmin Aziz
               </span>
               <a
                 href={`mailto:${CONTACT_EMAIL}`}
-                className="font-body font-semibold text-[13px] no-underline hover:underline transition-colors"
-                style={{ color: "#9A8F82" }}
+                className="font-body text-[12px] sm:text-[13px] no-underline hover:underline transition-colors"
+                style={{ color: "#9A8F82", fontWeight: 400 }}
               >
                 {CONTACT_EMAIL}
               </a>
