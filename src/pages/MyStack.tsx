@@ -128,9 +128,10 @@ const MyStack = () => {
                           )}
                         </div>
                       </div>
+                      </RevealItem>
                     ))}
-                  </div>
-                </div>
+                  </StaggerGrid>
+                </Reveal>
               ))}
             </div>
           )}
