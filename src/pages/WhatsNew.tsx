@@ -3,6 +3,7 @@ import { fetchWhatsNew, type WhatsNew } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
+import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { LeadCard, GridCard, monthYearKey, parseDate } from "@/components/WhatsNewCard";
 
 function groupByMonth(items: WhatsNew[]): { month: string; items: WhatsNew[] }[] {
@@ -70,36 +71,40 @@ const WhatsNewPage = () => {
               {groups.map((group, gi) => {
                 const [lead, ...rest] = group.items;
                 return (
-                  <div key={group.month} style={{ marginTop: gi === 0 ? 48 : 64 }}>
-                    {/* Section header */}
-                    <h2
-                      className="font-heading"
-                      style={{
-                        fontWeight: 700,
-                        fontSize: "clamp(28px, 3.5vw, 42px)",
-                        color: "#2D35C9",
-                        marginBottom: 24,
-                        textWrap: "balance",
-                      }}
-                    >
-                      {group.month}
-                    </h2>
-
-                    {/* Lead card */}
-                    {lead && <LeadCard item={lead} />}
-
-                    {/* Grid cards */}
-                    {rest.length > 0 && (
-                      <div
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-6"
-                        style={{ gap: 24 }}
+                  <Reveal key={group.month}>
+                    <div style={{ marginTop: gi === 0 ? 48 : 64 }}>
+                      {/* Section header */}
+                      <h2
+                        className="font-heading"
+                        style={{
+                          fontWeight: 700,
+                          fontSize: "clamp(28px, 3.5vw, 42px)",
+                          color: "#2D35C9",
+                          marginBottom: 24,
+                          textWrap: "balance",
+                        }}
                       >
-                        {rest.map((item) => (
-                          <GridCard key={item.name} item={item} />
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                        {group.month}
+                      </h2>
+
+                      {/* Lead card */}
+                      {lead && <LeadCard item={lead} />}
+
+                      {/* Grid cards */}
+                      {rest.length > 0 && (
+                        <RevealGroup
+                          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-6"
+                          style={{ gap: 24 }}
+                        >
+                          {rest.map((item) => (
+                            <RevealItem key={item.name}>
+                              <GridCard item={item} />
+                            </RevealItem>
+                          ))}
+                        </RevealGroup>
+                      )}
+                    </div>
+                  </Reveal>
                 );
               })}
             </div>
