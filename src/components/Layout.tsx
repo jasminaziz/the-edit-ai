@@ -63,10 +63,7 @@ export function Layout({ children }: { children: ReactNode }) {
   const pillText = "text-primary";
 
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{ ["--nav-height" as string]: isMobile ? "56px" : "64px" }}
-    >
+    <div className="min-h-screen flex flex-col">
       <nav
         className="fixed top-0 left-0 right-0 z-50"
         style={{ backgroundColor: navBg }}

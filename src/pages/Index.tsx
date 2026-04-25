@@ -4,7 +4,6 @@ import { fetchTools, fetchWhatsNew, type Tool, type WhatsNew } from "@/lib/sheet
 import { HomeGravity } from "@/components/HomeGravity";
 import { Counter } from "@/components/ui/animated-counter";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 
 const CATEGORY_COLOURS: Record<string, { bg: string; text: string }> = {
   "New Release": { bg: "#2D35C9", text: "#FFFFFF" },
@@ -77,153 +76,121 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Dashboard Preview Strip — wrapped in a scroll-linked rotating container */}
-      <section className="bg-background">
-        <ContainerScroll
-          titleComponent={
-            <div className="px-6 sm:px-12 pb-4">
-              <h2
-                className="font-heading"
-                style={{
-                  fontWeight: 700,
-                  fontSize: "clamp(28px, 4vw, 48px)",
-                  color: "#2D35C9",
-                  letterSpacing: "-0.02em",
-                  textWrap: "balance",
-                  marginBottom: 8,
-                }}
-              >
-                The dashboard
-              </h2>
-              <p
-                className="font-body"
-                style={{
-                  fontSize: 16,
-                  color: "#9A8F82",
-                  textWrap: "pretty",
-                }}
-              >
-                A live snapshot — what I run, what's new, how deep the directory goes.
-              </p>
-            </div>
-          }
-        >
-          <div className="h-full w-full overflow-y-auto p-6 sm:p-10">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-              {/* My Stack Preview */}
-              <div className="space-y-4">
-                <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-muted">
-                  What I'm running
-                </h2>
-                {loading ? (
-                  <div className="flex flex-wrap gap-2">
-                    {[1, 2, 3, 4].map((i) => (
-                      <span key={i} className="px-3.5 py-1.5 rounded-full bg-border animate-pulse" style={{ width: 80, height: 30 }} />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="flex flex-wrap gap-2">
-                    {stackTools.map((t) => (
-                      <span
-                        key={t.name}
-                        className="px-3.5 py-1.5 rounded-full font-body font-medium text-[13px] text-primary-foreground"
-                        style={{ backgroundColor: "#1A1510" }}
-                      >
-                        {t.name}
-                      </span>
-                    ))}
-                    {stackTools.length === 0 && (
-                      <p className="text-muted text-sm font-body">No stack data yet.</p>
-                    )}
-                  </div>
-                )}
-                <Link
-                  to="/my-stack"
-                  className="inline-block font-body font-medium text-sm text-primary hover:underline"
-                >
-                  See full stack →
-                </Link>
+      {/* Dashboard Preview Strip */}
+      <section className="bg-background py-16 px-6 sm:px-12">
+        <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+          {/* My Stack Preview */}
+          <div className="space-y-4">
+            <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-muted">
+              What I'm running
+            </h2>
+            {loading ? (
+              <div className="flex flex-wrap gap-2">
+                {[1, 2, 3, 4].map((i) => (
+                  <span key={i} className="px-3.5 py-1.5 rounded-full bg-border animate-pulse" style={{ width: 80, height: 30 }} />
+                ))}
               </div>
-
-              {/* What's New in AI */}
-              <div className="space-y-4">
-                <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-muted">
-                  What's new in AI
-                </h2>
-                {loading ? (
-                  <div className="space-y-3">
-                    {[1, 2].map((i) => (
-                      <div key={i} className="bg-card rounded-lg border border-border p-4 animate-pulse h-16" />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {latestNews.map((n) => {
-                      const cat = CATEGORY_COLOURS[n.category];
-                      return (
-                        <div key={n.name} className="bg-card rounded-lg border border-border p-3.5">
-                          <div className="flex items-start justify-between gap-2 mb-1">
-                            <h3 className="font-heading font-semibold text-base" style={{ color: "#1A1510" }}>{n.name}</h3>
-                            {cat && (
-                              <span
-                                className="font-body font-semibold uppercase shrink-0"
-                                style={{
-                                  fontSize: 10,
-                                  letterSpacing: "0.06em",
-                                  borderRadius: 4,
-                                  padding: "3px 8px",
-                                  backgroundColor: cat.bg,
-                                  color: cat.text,
-                                }}
-                              >
-                                {n.category}
-                              </span>
-                            )}
-                          </div>
-                          <p className="font-body text-[11px] uppercase" style={{ color: "#9A8F82", letterSpacing: "0.06em" }}>{n.developer}</p>
-                        </div>
-                      );
-                    })}
-                    {latestNews.length === 0 && (
-                      <p className="text-muted text-sm font-body">No news yet.</p>
-                    )}
-                  </div>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {stackTools.map((t) => (
+                  <span
+                    key={t.name}
+                    className="px-3.5 py-1.5 rounded-full font-body font-medium text-[13px] text-primary-foreground"
+                    style={{ backgroundColor: "#1A1510" }}
+                  >
+                    {t.name}
+                  </span>
+                ))}
+                {stackTools.length === 0 && (
+                  <p className="text-muted text-sm font-body">No stack data yet.</p>
                 )}
-                <Link
-                  to="/whats-new"
-                  className="inline-block font-body font-medium text-sm text-primary hover:underline"
-                >
-                  See everything →
-                </Link>
               </div>
-
-              {/* Tools Count */}
-              <div className="space-y-4">
-                <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-muted">
-                  In the directory
-                </h2>
-                {loading ? (
-                  <div className="h-20 bg-border rounded animate-pulse" />
-                ) : (
-                  <>
-                    <Counter
-                      end={tools.length}
-                      fontSize={isMobile ? 56 : 80}
-                      className="text-primary"
-                    />
-                    <p className="font-body text-[15px] text-muted">AI tools in the directory</p>
-                  </>
-                )}
-                <Link
-                  to="/tools"
-                  className="inline-block font-body font-medium text-sm text-primary hover:underline"
-                >
-                  Browse tools →
-                </Link>
-              </div>
-            </div>
+            )}
+            <Link
+              to="/my-stack"
+              className="inline-block font-body font-medium text-sm text-primary hover:underline"
+            >
+              See full stack →
+            </Link>
           </div>
-        </ContainerScroll>
+
+          {/* What's New in AI */}
+          <div className="space-y-4">
+            <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-muted">
+              What's new in AI
+            </h2>
+            {loading ? (
+              <div className="space-y-3">
+                {[1, 2].map((i) => (
+                  <div key={i} className="bg-card rounded-lg border border-border p-4 animate-pulse h-16" />
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {latestNews.map((n) => {
+                  const cat = CATEGORY_COLOURS[n.category];
+                  return (
+                    <div key={n.name} className="bg-card rounded-lg border border-border p-3.5">
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <h3 className="font-heading font-semibold text-base" style={{ color: "#1A1510" }}>{n.name}</h3>
+                        {cat && (
+                          <span
+                            className="font-body font-semibold uppercase shrink-0"
+                            style={{
+                              fontSize: 10,
+                              letterSpacing: "0.06em",
+                              borderRadius: 4,
+                              padding: "3px 8px",
+                              backgroundColor: cat.bg,
+                              color: cat.text,
+                            }}
+                          >
+                            {n.category}
+                          </span>
+                        )}
+                      </div>
+                      <p className="font-body text-[11px] uppercase" style={{ color: "#9A8F82", letterSpacing: "0.06em" }}>{n.developer}</p>
+                    </div>
+                  );
+                })}
+                {latestNews.length === 0 && (
+                  <p className="text-muted text-sm font-body">No news yet.</p>
+                )}
+              </div>
+            )}
+            <Link
+              to="/whats-new"
+              className="inline-block font-body font-medium text-sm text-primary hover:underline"
+            >
+              See everything →
+            </Link>
+          </div>
+
+          {/* Tools Count */}
+          <div className="space-y-4">
+            <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-muted">
+              In the directory
+            </h2>
+            {loading ? (
+              <div className="h-20 bg-border rounded animate-pulse" />
+            ) : (
+              <>
+                <Counter
+                  end={tools.length}
+                  fontSize={isMobile ? 56 : 80}
+                  className="text-primary"
+                />
+                <p className="font-body text-[15px] text-muted">AI tools in the directory</p>
+              </>
+            )}
+            <Link
+              to="/tools"
+              className="inline-block font-body font-medium text-sm text-primary hover:underline"
+            >
+              Browse tools →
+            </Link>
+          </div>
+        </div>
       </section>
 
       {/* CTA Strip */}

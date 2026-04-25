@@ -1,9 +1,8 @@
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { fetchDesignKit, type DesignKitItem } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
-import { Reveal, StaggerGrid, RevealItem } from "@/components/Reveal";
 
 const COST_STYLES: Record<string, { bg: string; text: string }> = {
   free: { bg: "#2D6A4F", text: "#ffffff" },
@@ -94,6 +93,30 @@ function groupByPhase(items: DesignKitItem[]) {
   return sections;
 }
 
+/* ─── Scroll entrance hook ─── */
+function useScrollReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, visible };
+}
+
 /* ─── Phase Section ─── */
 function PhaseSection({
   phase,
@@ -106,78 +129,83 @@ function PhaseSection({
   items: DesignKitItem[];
   isFirst: boolean;
 }) {
+  const { ref, visible } = useScrollReveal();
+
   return (
-    <div style={{ marginTop: isFirst ? 0 : 48 }}>
+    <div ref={ref} style={{ marginTop: isFirst ? 0 : 48 }}>
       {/* Header band */}
       {phase && (
-        <Reveal>
+        <div
+          className="px-6 sm:px-12"
+          style={{
+            backgroundColor: "#2D35C9",
+            paddingTop: 32,
+            paddingBottom: 32,
+            borderRadius: 0,
+            WebkitFontSmoothing: "antialiased",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(16px)",
+            transitionProperty: "opacity, transform",
+            transitionDuration: "400ms",
+            transitionTimingFunction: "ease-out",
+          }}
+        >
           <div
-            className="px-6 sm:px-12"
+            className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6"
             style={{
-              backgroundColor: "#2D35C9",
-              paddingTop: 32,
-              paddingBottom: 32,
-              borderRadius: 0,
-              WebkitFontSmoothing: "antialiased",
+              maxWidth: 1280,
+              margin: "0 auto",
             }}
           >
-            <div
-              className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6"
+            {/* Phase number */}
+            <span
+              className="font-heading"
               style={{
-                maxWidth: 1280,
-                margin: "0 auto",
+                fontSize: 80,
+                fontWeight: 700,
+                color: "#C8F04A",
+                lineHeight: 1,
+                letterSpacing: "-0.03em",
+                WebkitFontSmoothing: "antialiased",
+                flexShrink: 0,
               }}
             >
-              {/* Phase number */}
+              {number}
+            </span>
+
+            {/* Name + explainer */}
+            <div>
               <span
                 className="font-heading"
                 style={{
-                  fontSize: 80,
+                  display: "block",
+                  fontSize: 36,
                   fontWeight: 700,
-                  color: "#C8F04A",
-                  lineHeight: 1,
-                  letterSpacing: "-0.03em",
-                  WebkitFontSmoothing: "antialiased",
-                  flexShrink: 0,
+                  color: "#FFFFFF",
+                  letterSpacing: "-0.02em",
+                  textWrap: "balance",
                 }}
               >
-                {number}
+                {phase.name}
               </span>
-
-              {/* Name + explainer */}
-              <div>
+              {phase.explainer && (
                 <span
-                  className="font-heading"
+                  className="font-body"
                   style={{
                     display: "block",
-                    fontSize: 36,
-                    fontWeight: 700,
-                    color: "#FFFFFF",
-                    letterSpacing: "-0.02em",
-                    textWrap: "balance",
+                    fontSize: 16,
+                    fontWeight: 400,
+                    color: "rgba(255,255,255,0.65)",
+                    marginTop: 6,
+                    textWrap: "pretty",
                   }}
                 >
-                  {phase.name}
+                  {phase.explainer}
                 </span>
-                {phase.explainer && (
-                  <span
-                    className="font-body"
-                    style={{
-                      display: "block",
-                      fontSize: 16,
-                      fontWeight: 400,
-                      color: "rgba(255,255,255,0.65)",
-                      marginTop: 6,
-                      textWrap: "pretty",
-                    }}
-                  >
-                    {phase.explainer}
-                  </span>
-                )}
-              </div>
+              )}
             </div>
           </div>
-        </Reveal>
+        </div>
       )}
 
       {/* Card body */}
@@ -189,16 +217,27 @@ function PhaseSection({
           paddingBottom: 64,
         }}
       >
-        <StaggerGrid
+        <div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           style={{ maxWidth: 1280, margin: "0 auto" }}
         >
-          {items.map((item) => (
-            <RevealItem key={item.name + item.url} className="h-full">
+          {items.map((item, i) => (
+            <div
+              key={item.name + item.url}
+              className="h-full"
+              style={{
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(16px)",
+                transitionProperty: "opacity, transform",
+                transitionDuration: "400ms",
+                transitionTimingFunction: "ease-out",
+                transitionDelay: visible ? `${400 + i * 60}ms` : "0ms",
+              }}
+            >
               <DesignCard item={item} />
-            </RevealItem>
+            </div>
           ))}
-        </StaggerGrid>
+        </div>
       </div>
     </div>
   );
