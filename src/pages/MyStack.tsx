@@ -3,6 +3,7 @@ import { fetchMyStack, type MyStackItem } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
+import { Reveal, StaggerGrid, RevealItem } from "@/components/Reveal";
 
 const MyStack = () => {
   const [items, setItems] = useState<MyStackItem[]>([]);
@@ -42,7 +43,7 @@ const MyStack = () => {
           ) : (
             <div className="space-y-10">
               {Object.entries(grouped).map(([cat, catTools]) => (
-                <div key={cat}>
+                <Reveal key={cat}>
                   <div className="flex items-center gap-2 mb-4">
                     <span style={{ width: "8px", height: "8px", backgroundColor: "#C8F04A", borderRadius: "50%", flexShrink: 0 }} />
                     <h2 className="font-heading" style={{ fontWeight: 700, fontSize: "22px", color: "#1A1510", letterSpacing: "-0.02em" }}>
@@ -50,8 +51,9 @@ const MyStack = () => {
                     </h2>
                   </div>
 
-                  <div className="space-y-4">
+                  <StaggerGrid className="space-y-4">
                     {catTools.map((tool) => (
+                      <RevealItem key={tool.name}>
                       <div
                         key={tool.name}
                         className="group hover:shadow-lg transition-all duration-150 overflow-hidden"
