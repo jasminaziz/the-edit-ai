@@ -41,12 +41,12 @@ export function FooterEmailCapture() {
           style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontWeight: 600,
-            fontSize: 28,
+            fontSize: 24,
             color: "#FFFFFF",
             margin: 0,
           }}
         >
-          Get The Edit in your inbox
+          Get <em style={{ fontStyle: "italic" }}>The Edit</em> in your inbox
         </p>
         <div style={{ marginTop: 16 }}>
           {formState === "success" ? (
