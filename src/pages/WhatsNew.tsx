@@ -55,7 +55,8 @@ const WhatsNewPage = () => {
       <CobaltZone
         heading=""
         twoLineHeading={{ line1: "What's New", line2: "in AI", inline: true }}
-        bodyText="Model updates, new releases, and general AI gossip. Updated regularly from The Rundown.ai."
+        subheading="Model updates, releases, and AI gossip."
+        bodyText="Updated regularly from The Rundown.ai."
       />
 
       <section className="bg-background py-10 px-6 sm:px-12">
