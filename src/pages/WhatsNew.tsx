@@ -54,7 +54,7 @@ const WhatsNewPage = () => {
     <div style={{ WebkitFontSmoothing: "antialiased" }}>
       <CobaltZone
         heading=""
-        twoLineHeading={{ line1: "What's New —", line2: "in AI" }}
+        twoLineHeading={{ line1: "What's New", line2: "in AI", inline: true }}
         bodyText="Model updates, new releases, and general AI gossip. Updated regularly from The Rundown.ai."
       />
 
