@@ -212,7 +212,7 @@ export default function Subscribe() {
               >
                 Takes a moment. Saves you hours of scrolling later.
               </p>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} style={{ maxWidth: 520 }}>
                 <input
                   type="text"
                   value={firstName}
