@@ -3,6 +3,7 @@ import { fetchLearning, type LearningItem } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
+import { StaggerGrid, RevealItem } from "@/components/Reveal";
 
 const Learning = () => {
   const [items, setItems] = useState<LearningItem[]>([]);
@@ -64,11 +65,11 @@ const Learning = () => {
           ) : items.length === 0 ? (
             <EmptyState />
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <StaggerGrid className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {filtered.map((r) => (
+                <RevealItem key={r.name + r.url} className="h-full">
                 <div
-                  key={r.name + r.url}
-                  className="bg-card rounded-xl border border-border p-6 flex flex-col group transition-all duration-150"
+                  className="bg-card rounded-xl border border-border p-6 flex flex-col h-full group transition-all duration-150"
                   onMouseEnter={(e) => {
                     e.currentTarget.style.borderLeftWidth = "4px";
                     e.currentTarget.style.borderLeftColor = "#C8F04A";
