@@ -82,9 +82,9 @@ export function Layout({ children }: { children: ReactNode }) {
                       <Menu className="h-5 w-5" />
                     </button>
                   </SheetTrigger>
-                  <SheetContent side="right" className="w-[260px] p-0" style={{ backgroundColor: "#2D35C9" }}>
+                  <SheetContent side="right" className="w-[260px] p-0 flex flex-col" style={{ backgroundColor: "#2D35C9" }}>
                     <SheetTitle className="sr-only">Navigation</SheetTitle>
-                    <div className="flex flex-col pt-16 px-6 gap-1">
+                    <div className="flex flex-col pt-16 px-6 gap-1 flex-1">
                       {navItems.map((item) => {
                         const isActive = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
                         return (
@@ -102,15 +102,6 @@ export function Layout({ children }: { children: ReactNode }) {
                           </NavLink>
                         );
                       })}
-                      <a
-                        href={WORK_WITH_ME_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => setMobileOpen(false)}
-                        className="font-body text-base font-medium px-4 py-3 rounded-lg transition-colors text-white/70 hover:text-white hover:bg-white/10"
-                      >
-                        Work with me →
-                      </a>
                       <Link
                         to="/subscribe"
                         onClick={() => setMobileOpen(false)}
@@ -118,13 +109,32 @@ export function Layout({ children }: { children: ReactNode }) {
                       >
                         Get the digest →
                       </Link>
+                      <a
+                        href="https://jasminaziz.substack.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setMobileOpen(false)}
+                        className="font-body text-base font-medium px-4 py-3 rounded-lg transition-colors text-white/70 hover:text-white hover:bg-white/10"
+                      >
+                        Read the Substack →
+                      </a>
+                    </div>
+                    <div className="px-6 pb-8">
+                      <a
+                        href={WORK_WITH_ME_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setMobileOpen(false)}
+                        className="block w-full text-center font-body text-base font-semibold rounded-full py-3 bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+                      >
+                        Work with me
+                      </a>
                     </div>
                   </SheetContent>
                 </Sheet>
               </>
             ) : (
               <>
-                <div className="w-16" />
                 <div ref={navContainerRef} className="relative flex items-center gap-1 sm:gap-2">
                   {/* Sliding active pill — only rendered when a nav item is active */}
                   {pillStyle.visible && (
@@ -156,20 +166,37 @@ export function Layout({ children }: { children: ReactNode }) {
                       </NavLink>
                     );
                   })}
+                </div>
+
+                {/* CTA cluster — secondary text links + primary pill */}
+                <div className="flex items-center gap-5">
+                  <div className="flex items-center gap-5">
+                    <a
+                      href="https://jasminaziz.substack.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`font-body text-sm font-medium whitespace-nowrap transition-colors text-primary-foreground/70 hover:text-primary-foreground`}
+                    >
+                      Read the Substack →
+                    </a>
+                    <Link
+                      to="/subscribe"
+                      className={`font-body text-sm font-medium whitespace-nowrap transition-colors text-primary-foreground/70 hover:text-primary-foreground`}
+                    >
+                      Get the digest →
+                    </Link>
+                  </div>
+                  <span aria-hidden="true" className="w-px h-5 bg-white/15" />
                   <a
                     href={WORK_WITH_ME_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`relative z-10 font-body text-sm font-medium px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-all duration-150 ${textColor} hover:bg-white hover:text-primary`}
+                    className={`font-body text-sm font-semibold px-5 py-2 rounded-full whitespace-nowrap transition-opacity hover:opacity-90 ${
+                      isHome ? "bg-white text-primary" : "bg-accent text-accent-foreground"
+                    }`}
                   >
-                    Work with me →
+                    Work with me
                   </a>
-                  <Link
-                    to="/subscribe"
-                    className={`relative z-10 font-body text-sm font-medium px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-all duration-150 ${textColor} hover:bg-white hover:text-primary`}
-                  >
-                    Get the digest →
-                  </Link>
                 </div>
               </>
             )}
