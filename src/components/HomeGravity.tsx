@@ -3,32 +3,24 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import type { Tool } from "@/lib/sheets";
 
 const PILL_COLOURS = [
-  "#2D35C9", // Cobalt
-  "#2D6A4F", // Forest
-  "#4A4A9A", // Indigo
-  "#E8572A", // Orange
-];
-
-const BRAND_WORDS = [
-  "Honest",
-  "Curated",
-  "Opinionated",
-  "No hot takes",
-  "No doom loops",
+  { bg: "#2D35C9", fg: "#FFFFFF" }, // Cobalt
+  { bg: "#2D6A4F", fg: "#FFFFFF" }, // Forest
+  { bg: "#4A4A9A", fg: "#FFFFFF" }, // Indigo
+  { bg: "#E8572A", fg: "#FFFFFF" }, // Orange
+  { bg: "#C8F04A", fg: "#1A1510" }, // Lime (dark text for contrast)
 ];
 
 function buildPills(tools: Tool[]): string[] {
-  const stackNames = tools
+  return tools
     .filter((t) => t.status === "in_stack")
-    .slice(0, 6)
     .map((t) => t.name);
-  return [...stackNames, ...BRAND_WORDS];
 }
 
 function pillStyle(index: number): React.CSSProperties {
+  const c = PILL_COLOURS[index % PILL_COLOURS.length];
   return {
-    backgroundColor: PILL_COLOURS[index % PILL_COLOURS.length],
-    color: "#FFFFFF",
+    backgroundColor: c.bg,
+    color: c.fg,
     fontFamily: "var(--font-body, 'Plus Jakarta Sans', sans-serif)",
     fontWeight: 600,
     fontSize: 15,
@@ -54,19 +46,8 @@ export function HomeGravity({
 
   if (pills.length === 0) return null;
 
-  // Mobile: static flex-wrap, no physics mounted
-  if (isMobile) {
-    if (variant === "hero") {
-      return (
-        <div className="absolute inset-x-0 bottom-6 px-4 flex flex-wrap gap-2 justify-center pointer-events-auto">
-          {pills.map((label, i) => (
-            <span key={`${label}-${i}`} style={pillStyle(i)}>
-              {label}
-            </span>
-          ))}
-        </div>
-      );
-    }
+  // Standalone section variant on mobile: keep static flex-wrap (no fixed height parent)
+  if (isMobile && variant === "section") {
     return (
       <div className="flex flex-wrap gap-2.5">
         {pills.map((label, i) => (
@@ -78,7 +59,7 @@ export function HomeGravity({
     );
   }
 
-  // Desktop: physics canvas
+  // Physics canvas — desktop everywhere, and mobile in hero variant
   const className = variant === "hero" ? "h-full w-full" : "h-[480px] w-full";
 
   return (
