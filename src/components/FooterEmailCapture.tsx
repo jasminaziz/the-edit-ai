@@ -48,18 +48,6 @@ export function FooterEmailCapture() {
         >
           Get The Edit in your inbox
         </p>
-        <p
-          style={{
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontWeight: 400,
-            fontSize: 12,
-            color: "rgba(255,255,255,0.5)",
-            margin: "4px 0 0",
-          }}
-        >
-          Weekly digest. No noise.
-        </p>
-
         <div style={{ marginTop: 16 }}>
           {formState === "success" ? (
             <p
