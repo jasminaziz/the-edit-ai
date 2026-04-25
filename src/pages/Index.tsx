@@ -55,11 +55,11 @@ const Index = () => {
 
         {/* Typography layer — pills sit on top, so type stays purely decorative */}
         <div className="relative z-10 pointer-events-none">
-          {/* THE — scales with both width AND height so it always fits the viewport */}
+          {/* THE — full-width, pushed to edges */}
           <h1
             className="font-heading font-black leading-[0.82] w-full"
             style={{
-              fontSize: "clamp(80px, min(26vw, 32vh), 420px)",
+              fontSize: "clamp(120px, 28vw, 420px)",
               color: "#2D35C9",
               letterSpacing: "-0.04em",
               marginLeft: "-0.04em",
@@ -71,39 +71,14 @@ const Index = () => {
           <h1
             className="font-heading font-black leading-[0.78] w-full"
             style={{
-              fontSize: "clamp(110px, min(36vw, 44vh), 560px)",
+              fontSize: "clamp(160px, 38vw, 560px)",
               color: "#2D35C9",
               letterSpacing: "-0.05em",
               marginLeft: "-0.05em",
               marginTop: "-0.02em",
             }}
           >
-            Ed<span className="relative inline-block">
-              {/* Mask the native tittle (dot) of the i in the hero background colour */}
-              <span
-                aria-hidden="true"
-                className="absolute"
-                style={{
-                  top: "0.04em",
-                  left: "0.18em",
-                  width: "0.22em",
-                  height: "0.22em",
-                  backgroundColor: "#7B7FD4",
-                }}
-              />
-              {/* Lime replacement dot */}
-              <span
-                aria-hidden="true"
-                className="absolute rounded-full"
-                style={{
-                  top: "0.06em",
-                  left: "0.21em",
-                  width: "0.18em",
-                  height: "0.18em",
-                  backgroundColor: "#C8F04A",
-                }}
-              />
-              i</span>t.
+            Edit.
           </h1>
         </div>
       </section>
