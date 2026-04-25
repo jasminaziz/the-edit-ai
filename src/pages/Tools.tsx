@@ -254,9 +254,10 @@ const Tools = () => {
                       </div>
                     )}
                   </div>
+                  </RevealItem>
                 );
               })}
-            </div>
+            </StaggerGrid>
           )}
         </div>
       </section>
