@@ -55,7 +55,6 @@ const MyStack = () => {
                     {catTools.map((tool) => (
                       <RevealItem key={tool.name}>
                       <div
-                        key={tool.name}
                         className="group hover:shadow-lg transition-all duration-150 overflow-hidden"
                         style={{
                           backgroundColor: "#FFFFFF",
