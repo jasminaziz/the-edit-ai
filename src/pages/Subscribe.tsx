@@ -159,7 +159,7 @@ export default function Subscribe() {
                   marginBottom: 16,
                 }}
               >
-                The fortnightly digest
+                Cut through the noise
               </h2>
               <p
                 className="font-body"
