@@ -43,8 +43,7 @@ const Tools = () => {
     <>
       <CobaltZone
         heading="Tools"
-        subheading="Things on my radar."
-        bodyText="The tools worth knowing. Breadth matters. You should be trying things, watching things, forming views."
+        subheading="Things on my radar. Breadth matters."
       />
 
       {/* Filter Bar */}
