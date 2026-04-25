@@ -22,6 +22,7 @@ const WORK_WITH_ME_URL = "#";
 export function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const showScrollProgress = SCROLL_PROGRESS_ROUTES.includes(location.pathname);
   const isMobile = useIsMobile();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
