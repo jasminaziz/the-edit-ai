@@ -362,6 +362,28 @@ export default function Subscribe() {
                   Read on Substack →
                 </a>
               </div>
+
+              <p
+                className="font-body"
+                style={{
+                  fontWeight: 400,
+                  fontSize: 15,
+                  lineHeight: 1.6,
+                  color: "#9A8F82",
+                  marginTop: 32,
+                  marginBottom: 0,
+                }}
+              >
+                Get in touch —{" "}
+                <a
+                  href="mailto:hello@jasminaziz.co.uk"
+                  style={{ color: "#9A8F82", textDecoration: "none" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.textDecoration = "underline")}
+                  onMouseLeave={(e) => (e.currentTarget.style.textDecoration = "none")}
+                >
+                  hello@jasminaziz.co.uk
+                </a>
+              </p>
             </>
           )}
         </div>
