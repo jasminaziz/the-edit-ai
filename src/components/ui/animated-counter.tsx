@@ -54,7 +54,7 @@ export const Counter = ({
     setIsSettled(false);
     const controls = animate(value, end, {
       duration,
-      ease: [0.16, 1, 0.3, 1], // editorial ease-out
+      ease: "easeOut", // strictly monotonic — no overshoot, no jump-back
       onComplete: () => {
         value.set(end);
         setIsSettled(true);
