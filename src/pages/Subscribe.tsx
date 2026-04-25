@@ -172,7 +172,7 @@ export default function Subscribe() {
                   marginBottom: 24,
                 }}
               >
-                Three to five things worth reading, trying, or watching in AI right now. Curated, not aggregated.
+                A curated round-up of things worth reading, trying, or watching in AI right now. Every other Friday. No hot takes, no doom loops, no forty-link roundups.
               </p>
               <p
                 className="font-body"
