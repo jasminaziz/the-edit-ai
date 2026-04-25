@@ -4,6 +4,7 @@ import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
 import { LeadCard, GridCard, monthYearKey, parseDate } from "@/components/WhatsNewCard";
+import { Reveal, StaggerGrid, RevealItem } from "@/components/Reveal";
 
 function groupByMonth(items: WhatsNew[]): { month: string; items: WhatsNew[] }[] {
   const sorted = [...items].sort((a, b) => {
@@ -72,32 +73,40 @@ const WhatsNewPage = () => {
                 return (
                   <div key={group.month} style={{ marginTop: gi === 0 ? 48 : 64 }}>
                     {/* Section header */}
-                    <h2
-                      className="font-heading"
-                      style={{
-                        fontWeight: 700,
-                        fontSize: "clamp(28px, 3.5vw, 42px)",
-                        color: "#2D35C9",
-                        marginBottom: 24,
-                        textWrap: "balance",
-                      }}
-                    >
-                      {group.month}
-                    </h2>
+                    <Reveal>
+                      <h2
+                        className="font-heading"
+                        style={{
+                          fontWeight: 700,
+                          fontSize: "clamp(28px, 3.5vw, 42px)",
+                          color: "#2D35C9",
+                          marginBottom: 24,
+                          textWrap: "balance",
+                        }}
+                      >
+                        {group.month}
+                      </h2>
+                    </Reveal>
 
                     {/* Lead card */}
-                    {lead && <LeadCard item={lead} />}
+                    {lead && (
+                      <Reveal delay={0.05}>
+                        <LeadCard item={lead} />
+                      </Reveal>
+                    )}
 
                     {/* Grid cards */}
                     {rest.length > 0 && (
-                      <div
+                      <StaggerGrid
                         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-6"
                         style={{ gap: 24 }}
                       >
                         {rest.map((item) => (
-                          <GridCard key={item.name} item={item} />
+                          <RevealItem key={item.name}>
+                            <GridCard item={item} />
+                          </RevealItem>
                         ))}
-                      </div>
+                      </StaggerGrid>
                     )}
                   </div>
                 );
