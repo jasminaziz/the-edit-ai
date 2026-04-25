@@ -127,10 +127,11 @@ const MyStack = () => {
                             </div>
                           )}
                         </div>
-                      </div>
+                        </div>
+                      </RevealItem>
                     ))}
-                  </div>
-                </div>
+                  </RevealGroup>
+                </Reveal>
               ))}
             </div>
           )}
