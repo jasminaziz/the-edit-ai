@@ -4,9 +4,6 @@ import { Menu, X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { FooterEmailCapture } from "@/components/FooterEmailCapture";
-import { ScrollProgress } from "@/components/ScrollProgress";
-
-const SCROLL_PROGRESS_ROUTES = ["/my-stack", "/tools", "/design-kit", "/learning", "/whats-new"];
 
 const navItems = [
   { to: "/", label: "Home" },
@@ -22,7 +19,6 @@ const WORK_WITH_ME_URL = "#";
 export function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
   const isHome = location.pathname === "/";
-  const showScrollProgress = SCROLL_PROGRESS_ROUTES.includes(location.pathname);
   const isMobile = useIsMobile();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -68,7 +64,6 @@ export function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {showScrollProgress && <ScrollProgress />}
       <nav
         className="fixed top-0 left-0 right-0 z-50"
         style={{ backgroundColor: navBg }}
