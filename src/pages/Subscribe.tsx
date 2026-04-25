@@ -142,7 +142,7 @@ export default function Subscribe() {
         style={{ backgroundColor: "#FAF8F4" }}
         className="px-4 sm:px-10 md:px-16 py-16 sm:py-24"
       >
-        <div className="max-w-[520px]">
+        <div className="max-w-[640px]">
           {formState === "success" ? (
             <SuccessMessage />
           ) : (
@@ -212,7 +212,7 @@ export default function Subscribe() {
               >
                 Takes a moment. Saves you hours of scrolling later.
               </p>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} style={{ maxWidth: 520 }}>
                 <input
                   type="text"
                   value={firstName}

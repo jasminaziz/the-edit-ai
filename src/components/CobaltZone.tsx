@@ -59,7 +59,7 @@ export function CobaltZone({ heading, subheading, bodyText, illustration, twoLin
           </p>
         )}
         {bodyText && (
-          <p className="font-body text-[16px] mt-4 max-w-lg" style={{ color: "rgba(250,248,244,0.6)" }}>
+          <p className="font-body text-[16px] mt-4 max-w-3xl" style={{ color: "rgba(250,248,244,0.6)" }}>
             {bodyText}
           </p>
         )}
