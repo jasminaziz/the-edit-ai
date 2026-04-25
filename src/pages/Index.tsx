@@ -41,12 +41,12 @@ const Index = () => {
         className="relative min-h-[40vh] sm:min-h-[100vh] flex flex-col justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
         style={{ backgroundColor: "#7B7FD4" }}
       >
-        {/* Pills layer — sits behind the headlines, fills the hero */}
-        <div className="absolute inset-0 z-0">
+        {/* Pills layer — sits IN FRONT of the headlines so they can be dragged across the type */}
+        <div className="absolute inset-0 z-20">
           {!loading && <HomeGravity tools={tools} variant="hero" />}
         </div>
 
-        {/* Typography layer — pointer-events-none so pills are draggable through it */}
+        {/* Typography layer — pills sit on top, so type stays purely decorative */}
         <div className="relative z-10 pointer-events-none">
           {/* THE — full-width, pushed to edges */}
           <h1
