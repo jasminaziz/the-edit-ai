@@ -155,13 +155,6 @@ const Learning = () => {
         </div>
       </section>
 
-      <section className="py-10 px-6 sm:px-12 text-center" style={{ backgroundColor: "#C8F04A" }}>
-        <p className="font-body font-medium text-base text-foreground max-w-xl mx-auto">
-          More resources are added as I find them worth recommending.
-          <br />
-          Quality over quantity.
-        </p>
-      </section>
     </>
   );
 };
