@@ -302,6 +302,20 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       });
 
       const mouse = Mouse.create(render.current.canvas);
+
+      // Matter.js Mouse attaches mousewheel + touchmove listeners that call
+      // preventDefault, which blocks page scroll over the canvas. Detach them
+      // so wheel/touch scroll passes through to the page. Drag still works
+      // via mousedown/mouseup/mousemove which we leave intact.
+      const canvasEl = render.current.canvas as HTMLCanvasElement & {
+        removeEventListener: HTMLCanvasElement["removeEventListener"];
+      };
+      canvasEl.removeEventListener("wheel", (mouse as unknown as { mousewheel: EventListener }).mousewheel);
+      canvasEl.removeEventListener("DOMMouseScroll", (mouse as unknown as { mousewheel: EventListener }).mousewheel);
+      canvasEl.removeEventListener("touchmove", (mouse as unknown as { mousemove: EventListener }).mousemove);
+      // Also let touch-action handle vertical scroll natively.
+      canvasEl.style.touchAction = "pan-y";
+
       mouseConstraint.current = MouseConstraint.create(engine.current, {
         mouse,
         constraint: {
