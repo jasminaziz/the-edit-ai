@@ -31,7 +31,9 @@ export const Counter = ({
   // Plain motion value — we drive it with `animate()` so it lands EXACTLY on `end`.
   const value = useMotionValue(start);
 
-  // Trigger animation only when the counter scrolls into view (once).
+  // Trigger animation only when the counter is well into view (once).
+  // rootMargin shrinks the viewport's bottom edge so the counter must scroll
+  // close to the bottom before the observer fires.
   useEffect(() => {
     if (hasAnimated || !containerRef.current) return;
     const observer = new IntersectionObserver(
@@ -41,7 +43,7 @@ export const Counter = ({
           observer.disconnect();
         }
       },
-      { threshold: 0.4 }
+      { threshold: 1, rootMargin: "0px 0px -25% 0px" }
     );
     observer.observe(containerRef.current);
     return () => observer.disconnect();
