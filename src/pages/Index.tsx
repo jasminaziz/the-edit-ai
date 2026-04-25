@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchTools, fetchWhatsNew, type Tool, type WhatsNew } from "@/lib/sheets";
 import { HomeGravity } from "@/components/HomeGravity";
+import { Counter } from "@/components/ui/animated-counter";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const CATEGORY_COLOURS: Record<string, { bg: string; text: string }> = {
   "New Release": { bg: "#2D35C9", text: "#FFFFFF" },
@@ -30,6 +32,7 @@ const Index = () => {
 
   const stackTools = tools.filter((t) => t.status === "in_stack").slice(0, 4);
   const latestNews = news.slice(0, 1);
+  const isMobile = useIsMobile();
 
   return (
     <>
@@ -172,12 +175,11 @@ const Index = () => {
               <div className="h-20 bg-border rounded animate-pulse" />
             ) : (
               <>
-                <p
-                  className="font-heading font-bold text-primary"
-                  style={{ fontSize: "clamp(56px, 8vw, 80px)" }}
-                >
-                  {tools.length}
-                </p>
+                <Counter
+                  end={tools.length}
+                  fontSize={isMobile ? 56 : 80}
+                  className="text-primary"
+                />
                 <p className="font-body text-[15px] text-muted">AI tools in the directory</p>
               </>
             )}
