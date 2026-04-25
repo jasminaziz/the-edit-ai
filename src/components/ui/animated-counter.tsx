@@ -1,12 +1,12 @@
 import * as React from "react";
-import { useEffect, useMemo } from "react";
-import { motion, useSpring, useTransform, type MotionValue } from "framer-motion";
+import { useEffect, useMemo, useRef } from "react";
+import { motion, useMotionValue, useTransform, animate, type MotionValue } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface CounterProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
   start?: number;
   end: number;
-  /** Animation duration in seconds (approx; spring physics will refine it). */
+  /** Animation duration in seconds. */
   duration?: number;
   /** Pixel font size. Required to be fixed because digit roll height depends on it. */
   fontSize?: number;
@@ -25,23 +25,24 @@ export const Counter = ({
 }: CounterProps) => {
   const height = fontSize + PADDING;
 
-  // One spring drives all digit columns.
-  const spring = useSpring(start, {
-    mass: 1,
-    stiffness: 90,
-    damping: 22,
-    duration: duration * 1000,
-  });
+  // Plain motion value — we drive it with `animate()` so it lands EXACTLY on `end`.
+  const value = useMotionValue(start);
+  const previousEnd = useRef(start);
 
   useEffect(() => {
-    spring.set(end);
-  }, [end, spring]);
+    const controls = animate(value, end, {
+      duration,
+      ease: [0.16, 1, 0.3, 1], // editorial ease-out
+      onComplete: () => value.set(end), // hard-snap so digits align perfectly
+    });
+    previousEnd.current = end;
+    return controls.stop;
+  }, [end, duration, value]);
 
   // Determine how many digit columns based on the largest of start/end.
   const places = useMemo(() => {
     const maxVal = Math.max(Math.abs(start), Math.abs(end), 1);
     const digits = Math.floor(Math.log10(maxVal)) + 1;
-    // Build place values from highest to lowest: e.g. 247 → [100, 10, 1]
     return Array.from({ length: digits }, (_, i) => Math.pow(10, digits - 1 - i));
   }, [start, end]);
 
@@ -56,7 +57,7 @@ export const Counter = ({
       }}
     >
       {places.map((place) => (
-        <Digit key={place} place={place} value={spring} height={height} />
+        <Digit key={place} place={place} value={value} height={height} />
       ))}
     </div>
   );
@@ -71,7 +72,6 @@ function Digit({
   value: MotionValue<number>;
   height: number;
 }) {
-  // Floats so digit roll animates between integers.
   const placeValue = useTransform(value, (v) => (v / place) % 10);
 
   return (
@@ -96,8 +96,7 @@ function Numeral({
   height: number;
 }) {
   const y = useTransform(mv, (latest) => {
-    const placeValue = latest;
-    let offset = (10 + number - placeValue) % 10;
+    let offset = (10 + number - latest) % 10;
     let memo = offset * height;
     if (offset > 5) memo -= 10 * height;
     return memo;
