@@ -4,6 +4,9 @@ import { Menu, X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { FooterEmailCapture } from "@/components/FooterEmailCapture";
+import { ScrollProgress } from "@/components/ScrollProgress";
+
+const SCROLL_PROGRESS_ROUTES = ["/my-stack", "/tools", "/design-kit", "/learning", "/whats-new"];
 
 const navItems = [
   { to: "/", label: "Home" },
