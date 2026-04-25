@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchTools, fetchWhatsNew, type Tool, type WhatsNew } from "@/lib/sheets";
+import { parseDate } from "@/components/WhatsNewCard";
 import { HomeGravity } from "@/components/HomeGravity";
 import { Counter } from "@/components/ui/animated-counter";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -31,7 +32,13 @@ const Index = () => {
   }, []);
 
   const stackTools = tools.filter((t) => t.status === "in_stack").slice(0, 4);
-  const latestNews = news.slice(0, 1);
+  const latestNews = [...news]
+    .sort((a, b) => {
+      const da = parseDate(a.date)?.getTime() || 0;
+      const db = parseDate(b.date)?.getTime() || 0;
+      return db - da;
+    })
+    .slice(0, 3);
   const isMobile = useIsMobile();
 
   return (
