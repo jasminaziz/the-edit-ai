@@ -1,43 +1,60 @@
 ## Goal
-Replace the static `tools.length` number in the "In the directory" dashboard card with an animated rolling-digit counter that ticks from 0 up to the final count once the Google Sheets fetch resolves.
+Restructure the desktop nav so the page links and the CTAs read as two distinct zones — making "Work with me" the clear hero action without crowding the bar.
 
-## Scope
-- **One location only:** `src/pages/Index.tsx`, the third dashboard column ("In the directory").
-- Hero typography ("The / Edit.") is untouched.
-- Other pages untouched.
+## Layout structure (desktop)
+Switch the nav row from a single centered cluster to a three-zone flex layout:
 
-## Files
+```
+[ Logo / spacer ]   [ Nav links: Home · My Stack · Tools · Design · Learning · What's New ]   [ Substack → · Get the digest → · ⬤ Work with me ]
+   left                                  left-aligned                                                                  right-aligned
+```
 
-### 1. New: `src/components/ui/animated-counter.tsx`
-Reconstruct the component properly (the supplied snippet had stripped JSX). Implementation notes:
-- Use **`framer-motion`** (standard package), not `motion/react`. Adds one dep: `framer-motion`. `clsx` and `tailwind-merge` already installed.
-- Drop `"use client"` (Vite SPA, not Next).
-- Use shared `cn` from `@/lib/utils` — no local redefinition.
-- Fix the malformed `React.DetailedHTMLProps` type → use `React.HTMLAttributes<HTMLDivElement>`.
-- Props: `start = 0`, `end: number`, `duration = 1.2` (seconds), `fontSize = 80`, `className?`.
-- Re-trigger animation when `end` changes (so counter animates once Sheets data lands, not stuck at 0).
-- Replace the `setInterval`-keyed-by-`value` pattern with a `useSpring` driving the digit columns directly — smoother, no wasted intervals.
-- Render as many `<Digit>` columns as digits in `end` (no hardcoded ladder of `value >= 10`, `value >= 100`, etc.). Computed from `String(end).length`.
-- Each `<Digit>` is a fixed-height window with a `<motion.span>` per 0–9 numeral; `useTransform` rolls them based on the spring value and digit place.
+- **Left zone**: small spacer (keeps current `w-16` reserved area for future logo).
+- **Middle zone (left-anchored)**: the 6 nav links with the existing sliding white pill behaviour preserved exactly as-is. Move this group out of the centered flex and anchor it to the left side, immediately after the spacer.
+- **Right zone (right-anchored)**: the CTA cluster — see below.
+- Use `justify-between` on the parent row so the nav links sit left and CTAs sit right, with natural breathing room between them.
 
-### 2. Edit: `src/pages/Index.tsx`
-In the "In the directory" block (currently lines ~170–180):
-- Keep the existing skeleton shimmer while `loading === true`.
-- Once loaded, swap the static `<p>{tools.length}</p>` for `<Counter end={tools.length} fontSize={80} />`.
-- Preserve the existing Chillax heading font, primary color (`text-primary`), and the "AI tools in the directory" subline.
-- Use a fixed `fontSize={80}` on desktop, `fontSize={56}` on mobile (via a small `useIsMobile` check, already used elsewhere in the codebase). Fixed pixel sizing is required because the rolling-digit effect depends on a fixed row height for `translateY` math — `clamp()` won't work.
+## CTA cluster (right side)
+Three actions, visually ranked:
 
-### 3. Edit: `package.json`
-Add `framer-motion` (^11). One new dependency.
+1. **"Read the Substack →"** — quiet text link
+   - Style: `text-sm font-medium text-primary-foreground/70 hover:text-primary-foreground`
+   - No background, no border, just the arrow.
+   - Moves *up from the footer* into the nav. (Footer keeps it too — that's fine, footer is a sitemap.)
 
-## Behavior
-- On first paint: skeleton shimmer (existing behavior).
-- When `fetchTools()` resolves: counter mounts with `end = tools.length`, springs from 0 to that value over ~1.2s.
-- If `tools.length` ever changes (e.g. Sheets refetch), counter re-animates from current → new value smoothly via the spring.
+2. **"Get the digest →"** — quiet text link
+   - Same treatment as Substack link above.
+   - Routes to `/subscribe` (unchanged).
 
-## Flags / decisions for you to confirm
-1. **Font size on mobile.** I'm planning fixed 56px mobile / 80px desktop. The current `clamp(56px, 8vw, 80px)` cannot survive the digit-roll math. OK to lose the fluid scaling on this one number?
-2. **Animation duration.** 1.2s feels editorial — long enough to notice, short enough not to annoy. Adjust if you want snappier (0.8s) or slower (2s).
-3. **Spring vs linear.** Spring gives a natural overshoot/settle. If you want a strict linear count-up (more "metric dashboard" feel), say so and I'll swap.
-4. **Scope creep risk.** The component supports any number, so it could later be reused (e.g. subscriber count, # of items in your stack). Not building those now — just flagging the option.
-5. **Bundle cost.** `framer-motion` is ~50KB gzipped. Acceptable for a single counter? If not, I can hand-roll the digit roll with CSS transforms + `requestAnimationFrame` and skip the dep entirely. Let me know.
+3. **"Work with me"** — the hero pill (primary action)
+   - Solid filled pill, distinct from everything else in the nav.
+   - On the Home page (lilac nav `#7B7FD4`): white pill with cobalt text — `bg-white text-primary`.
+   - On all other pages (cobalt nav `#2D35C9`): lime pill with cobalt text — `bg-[hsl(var(--lime))] text-primary` (uses the brand lime accent which per memory is reserved for accents — this is exactly that use case).
+   - Slightly bolder weight: `font-semibold`.
+   - Drop the arrow — the solid pill shape is the affordance.
+   - Hover: subtle lift via `hover:opacity-90` + `transition`.
+   - Padding bumped slightly: `px-5 py-2` to feel more substantial than the surrounding text links.
+
+Cluster spacing: `gap-5` between the two text links, then `gap-3` before the solid pill, so the pill visually separates from the secondary actions.
+
+A subtle vertical divider (`w-px h-5 bg-white/15`) sits between the nav-links group and the CTA cluster to reinforce the two zones.
+
+## Mobile
+The mobile sheet menu already lists "Work with me" and "Get the digest" as text rows. Updates:
+- Add **"Read the Substack →"** as a third CTA row in the sheet (currently missing on mobile).
+- Pin **"Work with me"** to the bottom of the sheet as a full-width solid lime pill (`bg-[hsl(var(--lime))] text-primary font-semibold rounded-full py-3 text-center`) so the hierarchy matches desktop.
+- "Get the digest" and "Read the Substack" stay as the existing quiet rows above it.
+
+## Files to edit
+- **`src/components/Layout.tsx`** — the only file changing.
+  - Restructure the desktop `<div ref={navContainerRef}>` block: split into a left-anchored nav-links group and a right-anchored CTA cluster, with the parent row using `justify-between`.
+  - Replace the two existing `<a>` / `<Link>` CTA elements with the new 3-CTA cluster (Substack + Get the digest as text links, Work with me as the solid pill).
+  - Add the Substack `<a>` to the mobile `SheetContent` and convert "Work with me" there to a pinned solid pill.
+  - The sliding active-pill logic (`pillStyle`, `updatePill`, refs) is unchanged — it only tracks the 6 `navItems`, which still live in the same group.
+
+## Footer
+No changes needed. The footer's "Read the Substack →" stays as part of the sitemap row — it's a different context (not a CTA, just a link).
+
+## Out of scope
+- No changes to colors in `tailwind.config.ts` / `index.css` — uses existing `--lime`, `--primary`, `--primary-foreground` tokens.
+- No changes to nav links' active-pill animation or routing.
