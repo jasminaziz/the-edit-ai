@@ -79,6 +79,16 @@ const Index = () => {
         </p>
       </section>
 
+      {/* Gravity playground */}
+      <section className="bg-background pt-12 pb-4 px-6 sm:px-12">
+        <div className="max-w-[1280px] mx-auto">
+          <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-muted mb-4">
+            A little playground
+          </h2>
+          {!loading && <HomeGravity tools={tools} />}
+        </div>
+      </section>
+
       {/* Dashboard Preview Strip */}
       <section className="bg-background py-16 px-6 sm:px-12">
         <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
