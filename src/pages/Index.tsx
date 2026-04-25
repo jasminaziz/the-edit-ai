@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchTools, fetchWhatsNew, type Tool, type WhatsNew } from "@/lib/sheets";
+import { HomeGravity } from "@/components/HomeGravity";
 
 const CATEGORY_COLOURS: Record<string, { bg: string; text: string }> = {
   "New Release": { bg: "#2D35C9", text: "#FFFFFF" },
@@ -76,6 +77,16 @@ const Index = () => {
         >
           Honest verdicts only.
         </p>
+      </section>
+
+      {/* Gravity playground */}
+      <section className="bg-background pt-12 pb-4 px-6 sm:px-12">
+        <div className="max-w-[1280px] mx-auto">
+          <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-muted mb-4">
+            A little playground
+          </h2>
+          {!loading && <HomeGravity tools={tools} />}
+        </div>
       </section>
 
       {/* Dashboard Preview Strip */}
