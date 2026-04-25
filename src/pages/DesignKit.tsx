@@ -1,8 +1,9 @@
-import { useEffect, useState, useMemo, useRef, useCallback } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { fetchDesignKit, type DesignKitItem } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
+import { Reveal, StaggerGrid, RevealItem } from "@/components/Reveal";
 
 const COST_STYLES: Record<string, { bg: string; text: string }> = {
   free: { bg: "#2D6A4F", text: "#ffffff" },
@@ -91,30 +92,6 @@ function groupByPhase(items: DesignKitItem[]) {
   }
 
   return sections;
-}
-
-/* ─── Scroll entrance hook ─── */
-function useScrollReveal() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  return { ref, visible };
 }
 
 /* ─── Phase Section ─── */
