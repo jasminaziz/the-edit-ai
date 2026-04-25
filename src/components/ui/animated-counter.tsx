@@ -26,6 +26,7 @@ export const Counter = ({
   const height = fontSize + PADDING;
   const containerRef = useRef<HTMLDivElement>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [isSettled, setIsSettled] = useState(false);
 
   // Plain motion value — we drive it with `animate()` so it lands EXACTLY on `end`.
   const value = useMotionValue(start);
@@ -48,10 +49,14 @@ export const Counter = ({
 
   useEffect(() => {
     if (!hasAnimated) return;
+    setIsSettled(false);
     const controls = animate(value, end, {
       duration,
       ease: [0.16, 1, 0.3, 1], // editorial ease-out
-      onComplete: () => value.set(end), // hard-snap so digits align perfectly
+      onComplete: () => {
+        value.set(end);
+        setIsSettled(true);
+      },
     });
     return controls.stop;
   }, [hasAnimated, end, duration, value]);
@@ -74,9 +79,16 @@ export const Counter = ({
         ...rest.style,
       }}
     >
-      {places.map((place) => (
-        <Digit key={place} place={place} value={value} height={height} />
-      ))}
+      {isSettled ? (
+        // Static text once animation finishes — guarantees pixel-perfect alignment.
+        <span className="tabular-nums" style={{ lineHeight: `${height}px` }}>
+          {end}
+        </span>
+      ) : (
+        places.map((place) => (
+          <Digit key={place} place={place} value={value} height={height} />
+        ))
+      )}
     </div>
   );
 };
