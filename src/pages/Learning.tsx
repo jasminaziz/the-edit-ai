@@ -145,8 +145,9 @@ const Learning = () => {
                     </a>
                   )}
                 </div>
+                </RevealItem>
               ))}
-            </div>
+            </StaggerGrid>
           )}
         </div>
       </section>
