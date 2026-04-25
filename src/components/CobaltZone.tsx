@@ -5,7 +5,7 @@ interface CobaltZoneProps {
   subheading?: string;
   bodyText?: string;
   illustration?: ReactNode;
-  twoLineHeading?: { line1: string; line2: string; line2Color?: string };
+  twoLineHeading?: { line1: string; line2: string; line2Color?: string; inline?: boolean };
 }
 
 export function CobaltZone({ heading, subheading, bodyText, illustration, twoLineHeading }: CobaltZoneProps) {
@@ -16,7 +16,7 @@ export function CobaltZone({ heading, subheading, bodyText, illustration, twoLin
     >
       <div className="max-w-[1280px] mx-auto relative">
         {twoLineHeading ? (
-          <>
+          twoLineHeading.inline ? (
             <h1
               className="font-heading font-bold leading-[0.95]"
               style={{
@@ -25,19 +25,35 @@ export function CobaltZone({ heading, subheading, bodyText, illustration, twoLin
                 letterSpacing: "-0.02em",
               }}
             >
-              {twoLineHeading.line1}
+              {twoLineHeading.line1}{" "}
+              <span style={{ color: twoLineHeading.line2Color || "#C8F04A" }}>
+                {twoLineHeading.line2}
+              </span>
             </h1>
-            <h1
-              className="font-heading font-bold leading-[0.95]"
-              style={{
-                fontSize: "clamp(56px, 8vw, 96px)",
-                color: twoLineHeading.line2Color || "#C8F04A",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              {twoLineHeading.line2}
-            </h1>
-          </>
+          ) : (
+            <>
+              <h1
+                className="font-heading font-bold leading-[0.95]"
+                style={{
+                  fontSize: "clamp(56px, 8vw, 96px)",
+                  color: "#FAF8F4",
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                {twoLineHeading.line1}
+              </h1>
+              <h1
+                className="font-heading font-bold leading-[0.95]"
+                style={{
+                  fontSize: "clamp(56px, 8vw, 96px)",
+                  color: twoLineHeading.line2Color || "#C8F04A",
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                {twoLineHeading.line2}
+              </h1>
+            </>
+          )
         ) : (
           <h1
             className="font-heading font-bold leading-[0.95]"
