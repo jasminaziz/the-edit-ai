@@ -150,7 +150,9 @@ const MatterBody = ({
     <div
       ref={elementRef}
       className={cn("absolute", className)}
-      style={{ willChange: "transform", left: 0, top: 0 }}
+      // pointer-events: none lets mousedown pass through to the Matter.js
+      // canvas underneath, which is where the drag handler is bound.
+      style={{ willChange: "transform", left: 0, top: 0, pointerEvents: "none" }}
     >
       {children}
     </div>
