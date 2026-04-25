@@ -183,9 +183,18 @@ export function Layout({ children }: { children: ReactNode }) {
         <div className="max-w-[1280px] mx-auto w-full">
           <FooterEmailCapture />
           <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-            <span className="font-body font-semibold text-[13px] text-primary-foreground">
-              The Edit — curated by Jasmin Aziz
-            </span>
+            <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-start">
+              <span className="font-body font-semibold text-[13px] text-primary-foreground">
+                The Edit — curated by Jasmin Aziz
+              </span>
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="font-body text-[12px] sm:text-[13px] no-underline hover:underline transition-colors"
+                style={{ color: "#9A8F82", fontWeight: 400 }}
+              >
+                {CONTACT_EMAIL}
+              </a>
+            </div>
             <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
               <a
                 href={WORK_WITH_ME_URL}
@@ -194,13 +203,6 @@ export function Layout({ children }: { children: ReactNode }) {
                 className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
               >
                 Work with me →
-              </a>
-              <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                className="font-body text-[12px] sm:text-[13px] no-underline hover:underline transition-colors"
-                style={{ color: "#9A8F82", fontWeight: 400 }}
-              >
-                {CONTACT_EMAIL}
               </a>
               <a
                 href="https://jasminaziz.substack.com"
