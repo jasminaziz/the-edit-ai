@@ -147,9 +147,10 @@ const Learning = () => {
                       Open resource →
                     </a>
                   )}
-                </div>
+                  </div>
+                </RevealItem>
               ))}
-            </div>
+            </RevealGroup>
           )}
         </div>
       </section>
