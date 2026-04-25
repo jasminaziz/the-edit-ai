@@ -2,13 +2,13 @@ import { motion, type Variants } from "framer-motion";
 import { ReactNode } from "react";
 
 /**
- * Reveal — fades + lifts a single block into view as it enters the viewport.
- * Plays once. Respects reduced-motion via framer-motion's defaults.
+ * Reveal — fades + lifts + scales a single block into view as it enters.
+ * Plays once. Tuned to be clearly visible: 32px lift, 0.94→1 scale, 700ms.
  */
 export function Reveal({
   children,
   delay = 0,
-  y = 14,
+  y = 32,
   className,
   as = "div",
 }: {
@@ -22,10 +22,10 @@ export function Reveal({
   return (
     <MotionTag
       className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.45, delay, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, y, scale: 0.96 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: "0px 0px -120px 0px" }}
+      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </MotionTag>
@@ -39,16 +39,17 @@ export function Reveal({
 const groupVariants: Variants = {
   hidden: {},
   show: {
-    transition: { staggerChildren: 0.06, delayChildren: 0.05 },
+    transition: { staggerChildren: 0.09, delayChildren: 0.05 },
   },
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 14 },
+  hidden: { opacity: 0, y: 32, scale: 0.94 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+    scale: 1,
+    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
@@ -68,7 +69,7 @@ export function RevealGroup({
       variants={groupVariants}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, margin: "0px 0px -120px 0px" }}
     >
       {children}
     </motion.div>
@@ -90,3 +91,4 @@ export function RevealItem({
     </motion.div>
   );
 }
+
