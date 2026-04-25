@@ -55,11 +55,11 @@ const Index = () => {
 
         {/* Typography layer — pills sit on top, so type stays purely decorative */}
         <div className="relative z-10 pointer-events-none">
-          {/* THE — full-width, pushed to edges */}
+          {/* THE — scales with both width AND height so it always fits the viewport */}
           <h1
             className="font-heading font-black leading-[0.82] w-full"
             style={{
-              fontSize: "clamp(120px, 28vw, 420px)",
+              fontSize: "clamp(80px, min(26vw, 32vh), 420px)",
               color: "#2D35C9",
               letterSpacing: "-0.04em",
               marginLeft: "-0.04em",
@@ -71,7 +71,7 @@ const Index = () => {
           <h1
             className="font-heading font-black leading-[0.78] w-full"
             style={{
-              fontSize: "clamp(160px, 38vw, 560px)",
+              fontSize: "clamp(110px, min(36vw, 44vh), 560px)",
               color: "#2D35C9",
               letterSpacing: "-0.05em",
               marginLeft: "-0.05em",
