@@ -1,14 +1,11 @@
 import { motion, useScroll, useSpring } from "framer-motion";
 
 /**
- * Site-wide scroll progress bar. Sits below the fixed nav.
+ * Site-wide scroll progress bar — lime pill that grows from the left.
  *
- * Visibility-across-backgrounds approach:
- *  - Track row uses a faint dark wash (visible on cobalt, lilac, lime, cream).
- *  - Fill is cobalt (brand) with a lime accent edge so it remains legible
- *    when the underlying section is also cobalt — the lime separator gives it
- *    contrast against any background colour we use on the site.
- *  - 3px tall — present without being heavy.
+ * Sits just under the fixed nav. Lime against the dark/cobalt nav reads
+ * cleanly, and against cream / lime page sections it's lifted off its track
+ * by the dark wash beneath. Pill-shaped to match the brand.
  */
 export function ScrollProgressBar() {
   const { scrollYProgress } = useScroll();
@@ -20,25 +17,34 @@ export function ScrollProgressBar() {
 
   return (
     <div
-      className="fixed left-0 right-0 z-[60] pointer-events-none"
+      className="fixed left-0 right-0 z-[60] pointer-events-none px-3 sm:px-6"
       style={{
-        top: "var(--nav-height, 56px)",
-        height: 3,
-        backgroundColor: "rgba(26,21,16,0.08)",
+        top: "calc(var(--nav-height, 56px) + 6px)",
       }}
       aria-hidden="true"
     >
-      <motion.div
+      <div
+        className="relative mx-auto"
         style={{
-          scaleX,
-          transformOrigin: "0% 50%",
-          height: "100%",
-          width: "100%",
-          backgroundColor: "#2D35C9",
-          boxShadow:
-            "0 0 0 1px rgba(255,255,255,0.35), 0 1px 0 0 #C8F04A",
+          maxWidth: 1280,
+          height: 6,
+          backgroundColor: "rgba(26,21,16,0.18)",
+          borderRadius: 9999,
+          overflow: "hidden",
         }}
-      />
+      >
+        <motion.div
+          style={{
+            scaleX,
+            transformOrigin: "0% 50%",
+            height: "100%",
+            width: "100%",
+            backgroundColor: "#C8F04A",
+            borderRadius: 9999,
+            boxShadow: "0 0 8px rgba(200,240,74,0.55)",
+          }}
+        />
+      </div>
     </div>
   );
 }
