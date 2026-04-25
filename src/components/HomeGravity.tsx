@@ -5,7 +5,6 @@ import type { Tool } from "@/lib/sheets";
 const PILL_COLOURS = [
   "#2D35C9", // Cobalt
   "#2D6A4F", // Forest
-  "#7B7FD4", // Lilac
   "#4A4A9A", // Indigo
   "#E8572A", // Orange
 ];
@@ -41,7 +40,15 @@ function pillStyle(index: number): React.CSSProperties {
   };
 }
 
-export function HomeGravity({ tools }: { tools: Tool[] }) {
+type Variant = "section" | "hero";
+
+export function HomeGravity({
+  tools,
+  variant = "section",
+}: {
+  tools: Tool[];
+  variant?: Variant;
+}) {
   const isMobile = useIsMobile();
   const pills = buildPills(tools);
 
@@ -49,6 +56,17 @@ export function HomeGravity({ tools }: { tools: Tool[] }) {
 
   // Mobile: static flex-wrap, no physics mounted
   if (isMobile) {
+    if (variant === "hero") {
+      return (
+        <div className="absolute inset-x-0 bottom-6 px-4 flex flex-wrap gap-2 justify-center pointer-events-auto">
+          {pills.map((label, i) => (
+            <span key={`${label}-${i}`} style={pillStyle(i)}>
+              {label}
+            </span>
+          ))}
+        </div>
+      );
+    }
     return (
       <div className="flex flex-wrap gap-2.5">
         {pills.map((label, i) => (
@@ -61,18 +79,14 @@ export function HomeGravity({ tools }: { tools: Tool[] }) {
   }
 
   // Desktop: physics canvas
+  const className = variant === "hero" ? "h-full w-full" : "h-[480px] w-full";
+
   return (
-    <Gravity
-      gravity={{ x: 0, y: 1 }}
-      className="h-[480px] w-full"
-      autoStart
-      grabCursor
-    >
+    <Gravity gravity={{ x: 0, y: 1 }} className={className} autoStart grabCursor>
       {pills.map((label, i) => {
-        // Pseudo-random but deterministic per index
-        const xPct = 12 + ((i * 17) % 76); // 12% – 88%
-        const yPct = (i * 7) % 12; // 0% – 11% from top
-        const angle = ((i * 53) % 30) - 15; // -15° to +15°
+        const xPct = 12 + ((i * 17) % 76);
+        const yPct = (i * 7) % 12;
+        const angle = ((i * 53) % 30) - 15;
         return (
           <MatterBody
             key={`${label}-${i}`}
