@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useMotionValue, useTransform, animate, type MotionValue } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -24,20 +24,37 @@ export const Counter = ({
   ...rest
 }: CounterProps) => {
   const height = fontSize + PADDING;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [hasAnimated, setHasAnimated] = useState(false);
 
   // Plain motion value — we drive it with `animate()` so it lands EXACTLY on `end`.
   const value = useMotionValue(start);
-  const previousEnd = useRef(start);
+
+  // Trigger animation only when the counter scrolls into view (once).
+  useEffect(() => {
+    if (hasAnimated || !containerRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasAnimated(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.4 }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, [hasAnimated]);
 
   useEffect(() => {
+    if (!hasAnimated) return;
     const controls = animate(value, end, {
       duration,
       ease: [0.16, 1, 0.3, 1], // editorial ease-out
       onComplete: () => value.set(end), // hard-snap so digits align perfectly
     });
-    previousEnd.current = end;
     return controls.stop;
-  }, [end, duration, value]);
+  }, [hasAnimated, end, duration, value]);
 
   // Determine how many digit columns based on the largest of start/end.
   const places = useMemo(() => {
@@ -49,6 +66,7 @@ export const Counter = ({
   return (
     <div
       {...rest}
+      ref={containerRef}
       className={cn("flex leading-none font-heading font-bold", className)}
       style={{
         fontSize,
