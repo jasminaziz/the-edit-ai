@@ -135,7 +135,6 @@ export function Layout({ children }: { children: ReactNode }) {
               </>
             ) : (
               <>
-                <div className="w-16" />
                 <div ref={navContainerRef} className="relative flex items-center gap-1 sm:gap-2">
                   {/* Sliding active pill — only rendered when a nav item is active */}
                   {pillStyle.visible && (
@@ -167,20 +166,37 @@ export function Layout({ children }: { children: ReactNode }) {
                       </NavLink>
                     );
                   })}
+                </div>
+
+                {/* CTA cluster — secondary text links + primary pill */}
+                <div className="flex items-center gap-5">
+                  <div className="flex items-center gap-5">
+                    <a
+                      href="https://jasminaziz.substack.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`font-body text-sm font-medium whitespace-nowrap transition-colors text-primary-foreground/70 hover:text-primary-foreground`}
+                    >
+                      Read the Substack →
+                    </a>
+                    <Link
+                      to="/subscribe"
+                      className={`font-body text-sm font-medium whitespace-nowrap transition-colors text-primary-foreground/70 hover:text-primary-foreground`}
+                    >
+                      Get the digest →
+                    </Link>
+                  </div>
+                  <span aria-hidden="true" className="w-px h-5 bg-white/15" />
                   <a
                     href={WORK_WITH_ME_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`relative z-10 font-body text-sm font-medium px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-all duration-150 ${textColor} hover:bg-white hover:text-primary`}
+                    className={`font-body text-sm font-semibold px-5 py-2 rounded-full whitespace-nowrap transition-opacity hover:opacity-90 ${
+                      isHome ? "bg-white text-primary" : "bg-accent text-accent-foreground"
+                    }`}
                   >
-                    Work with me →
+                    Work with me
                   </a>
-                  <Link
-                    to="/subscribe"
-                    className={`relative z-10 font-body text-sm font-medium px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-all duration-150 ${textColor} hover:bg-white hover:text-primary`}
-                  >
-                    Get the digest →
-                  </Link>
                 </div>
               </>
             )}
