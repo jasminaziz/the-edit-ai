@@ -78,7 +78,32 @@ const Index = () => {
               marginTop: "-0.02em",
             }}
           >
-            Edit.
+            Ed<span className="relative inline-block">
+              {/* Mask the native tittle (dot) of the i in the hero background colour */}
+              <span
+                aria-hidden="true"
+                className="absolute"
+                style={{
+                  top: "0.04em",
+                  left: "0.18em",
+                  width: "0.22em",
+                  height: "0.22em",
+                  backgroundColor: "#7B7FD4",
+                }}
+              />
+              {/* Lime replacement dot */}
+              <span
+                aria-hidden="true"
+                className="absolute rounded-full"
+                style={{
+                  top: "0.06em",
+                  left: "0.21em",
+                  width: "0.18em",
+                  height: "0.18em",
+                  backgroundColor: "#C8F04A",
+                }}
+              />
+              i</span>t.
           </h1>
         </div>
       </section>
