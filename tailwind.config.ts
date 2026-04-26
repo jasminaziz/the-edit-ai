@@ -109,6 +109,13 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(8px)" },
         },
+        "sign-drop": {
+          "0%": { transform: "translateY(-180px) rotate(-18deg)", opacity: "0" },
+          "55%": { transform: "translateY(12px) rotate(6deg)", opacity: "1" },
+          "72%": { transform: "translateY(-4px) rotate(-6deg)" },
+          "85%": { transform: "translateY(2px) rotate(-1deg)" },
+          "100%": { transform: "translateY(0) rotate(-2deg)", opacity: "1" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
