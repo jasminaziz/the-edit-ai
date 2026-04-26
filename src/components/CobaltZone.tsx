@@ -12,7 +12,7 @@ interface CobaltZoneProps {
 export function CobaltZone({ heading, subheading, bodyText, illustration, rightBadge, twoLineHeading }: CobaltZoneProps) {
   const badge = rightBadge ? (
     <span
-      className="font-heading"
+      className="font-heading animate-sign-drop"
       style={{
         display: "inline-block",
         backgroundColor: "#C8F04A",
@@ -24,9 +24,10 @@ export function CobaltZone({ heading, subheading, bodyText, illustration, rightB
         padding: "10px 16px",
         borderRadius: 8,
         boxShadow: "4px 4px 0 #1A1510",
-        transform: "rotate(-2deg)",
         whiteSpace: "nowrap",
         lineHeight: 1,
+        transformOrigin: "top center",
+        willChange: "transform",
       }}
     >
       {rightBadge}
