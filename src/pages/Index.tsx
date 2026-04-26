@@ -242,7 +242,7 @@ const Index = () => {
           What's new this week →
         </Link>
       </section>
-    </>
+    </div>
   );
 };
 
