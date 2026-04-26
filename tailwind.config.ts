@@ -128,6 +128,7 @@ export default {
         "slide-in-3": "slide-in-left 0.4s ease-out 0.4s forwards",
         "page-fan": "page-fan 3s ease-in-out infinite",
         "float-arrow": "float-arrow 2s ease-in-out infinite",
+        "sign-drop": "sign-drop 1.1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both",
       },
     },
   },
