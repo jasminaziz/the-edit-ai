@@ -47,13 +47,13 @@ const Index = () => {
 
   return (
     <div className="relative">
-      {/* Mobile-only: full-page gravity canvas behind all content, pills settle just above the footer */}
+      {/* Mobile-only: full-viewport gravity canvas behind hero type, pills settle at viewport bottom */}
       {isMobile && !loading && (
         <div
-          className="absolute inset-0 z-0 pointer-events-none"
+          className="fixed inset-0 z-0 pointer-events-none"
           aria-hidden="true"
         >
-          <div className="sticky top-0 h-screen w-full pointer-events-auto">
+          <div className="absolute inset-0 pointer-events-auto">
             <HomeGravity tools={tools} variant="page" />
           </div>
         </div>
