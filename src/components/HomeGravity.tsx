@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Gravity, MatterBody } from "@/components/ui/gravity";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { Tool } from "@/lib/sheets";
@@ -13,9 +12,9 @@ const CORE_COLOURS = [
 ];
 const ACCENT_COLOUR = { bg: "#C8F04A", fg: "#1A1510" }; // Lime
 
-// Simple deterministic hash so the same pill name always maps to the same
-// numbers. This keeps colour/position assignments stable across renders but
-// looks randomly mixed across pills.
+// FNV-1a-ish hash so the same pill name always maps to the same numbers.
+// This keeps colour/position assignments stable across renders but looks
+// randomly mixed across pills (decorrelated from list order).
 function hash(str: string): number {
   let h = 2166136261;
   for (let i = 0; i < str.length; i += 1) {
@@ -27,8 +26,7 @@ function hash(str: string): number {
 
 function colourFor(label: string) {
   const h = hash(label);
-  // ~1 in 8 pills get the lime accent
-  if (h % 8 === 0) return ACCENT_COLOUR;
+  if (h % 8 === 0) return ACCENT_COLOUR; // ~1 in 8 lime accent
   return CORE_COLOURS[h % CORE_COLOURS.length];
 }
 
@@ -45,30 +43,18 @@ function pillStyle(label: string, isMobile: boolean): React.CSSProperties {
     whiteSpace: "nowrap",
     userSelect: "none",
     lineHeight: 1,
+    display: "inline-block",
   };
 }
 
-function buildPills(tools: Tool[]): string[] {
-  return tools.filter((t) => t.status === "in_stack").map((t) => t.name);
-}
+const MAX_PILLS = 18;
 
 export function HomeGravity({ tools }: { tools: Tool[] }) {
   const isMobile = useIsMobile();
-  const pills = buildPills(tools);
-
-  // Staggered cascade — pills mount one at a time
-  const [visibleCount, setVisibleCount] = useState(0);
-  useEffect(() => {
-    setVisibleCount(0);
-    if (pills.length === 0) return;
-    let i = 0;
-    const id = window.setInterval(() => {
-      i += 1;
-      setVisibleCount(i);
-      if (i >= pills.length) window.clearInterval(id);
-    }, 80);
-    return () => window.clearInterval(id);
-  }, [pills.length]);
+  const pills = tools
+    .filter((t) => t.status === "in_stack")
+    .map((t) => t.name)
+    .slice(0, MAX_PILLS);
 
   if (pills.length === 0) return null;
 
@@ -82,17 +68,17 @@ export function HomeGravity({ tools }: { tools: Tool[] }) {
       grabCursor
       addTopWall={false}
     >
-      {pills.slice(0, visibleCount).map((label, i) => {
+      {pills.map((label, i) => {
         const h = hash(label);
-        // Spread across the canvas width using the hash, not a stride
-        const xPct = 5 + (h % 87);
+        // Spread across the canvas width using the hash, not list order
+        const xPct = 6 + (h % 86);
         // Spawn INSIDE the canvas near the top so pills always enter the simulation
-        const yPct = 5 + ((h * 7) % 35);
+        const yPct = 6 + ((h * 7) % 28);
         // Small angle jitter so they land at varied tilts
-        const angle = ((h * 13) % 30) - 15;
-        // Vary density + restitution per pill — heavier ones sink, lighter bounce
-        const density = 0.0007 + ((h % 7) * 0.0001); // 0.0007 – 0.0013
-        const restitution = 0.25 + ((h % 5) * 0.05); // 0.25 – 0.45
+        const angle = (h % 30) - 15;
+        // Vary density + restitution per pill — heavier ones sink first, lighter bounce longer
+        const density = 0.0008 + ((h % 6) * 0.0001); // 0.0008 – 0.0013
+        const restitution = 0.25 + ((h % 5) * 0.04); // 0.25 – 0.41
         return (
           <MatterBody
             key={`${label}-${i}`}
@@ -100,7 +86,7 @@ export function HomeGravity({ tools }: { tools: Tool[] }) {
             y={`${yPct}%`}
             angle={angle}
             matterBodyOptions={{
-              friction: 0.4,
+              friction: 0.35,
               restitution,
               density,
             }}
