@@ -45,15 +45,13 @@ const Index = () => {
     <div className="relative">
       {/* Hero */}
       <section
-        className="relative min-h-[40vh] sm:min-h-[100vh] flex flex-col justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
+        className="relative min-h-[85vh] sm:min-h-[100vh] flex flex-col justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
         style={{ backgroundColor: "#7B7FD4" }}
       >
-        {/* Desktop pills layer — sits IN FRONT of the headlines so they can be dragged across the type */}
-        {!isMobile && (
-          <div className="absolute inset-0 z-20">
-            {!loading && <HomeGravity tools={tools} />}
-          </div>
-        )}
+        {/* Pills layer — sits IN FRONT of the headlines so they can be dragged across the type, on every device */}
+        <div className="absolute inset-0 z-20">
+          {!loading && <HomeGravity tools={tools} />}
+        </div>
 
         {/* Typography layer */}
         <div className="relative z-10 pointer-events-none">
