@@ -1,77 +1,82 @@
-## Audit: why the motion is broken right now
+## Goal — back to the original prompt
 
-I traced the regression line by line. Two real bugs + two design gaps:
+The reference demo (`gravity.tsx` + `demo.tsx`) is a single physics canvas with pills laid out as children. Each pill is given a unique `x="X%"` and `y="Y%"` spawn coordinate, all mount at once, and the **natural cascade emerges from the physics engine**, not from JS staggering. Pills are draggable via the Matter.js `MouseConstraint` already wired into the canvas.
 
-### Bugs
-1. **Pills spawn ABOVE the canvas ceiling.** In `HomeGravity.tsx`, desktop pills use `yPct = -10 - ((i * 11) % 30)` — that's `-10%` to `-40%`. The `<Gravity>` component defaults `addTopWall = true`, which inserts a static wall at `y = -10px`. Bodies spawned at negative percentages are *above* that wall and get trapped/ejected from the simulation. Nothing falls into view.
-2. **Mobile has no physics at all.** The current code returns a static `flex flex-wrap` for mobile — by design, but that contradicts your goal of "works across desktop and mobile" with impact and play.
+I drifted from that pattern in two ways that have caused the recent glitchiness:
+1. **Staggered `setInterval` mounting** — pills get added after the engine is running, which competes with the resize-debounce/reset cycle and produces flicker, dropped bodies, and the "nothing falls" state.
+2. **Spawning at `y` values too close to the canvas top** — combined with `addTopWall={true}` defaults and tight hero heights on mobile, bodies clip walls and pop out of the simulation.
 
-### Design gaps vs. your goals
-3. **Colors group predictably.** `PILL_COLOURS[i % 5]` cycles the palette in a fixed order, so pills appear in repeating rainbow stripes instead of a natural mix.
-4. **No staggered entry.** All pills are mounted at once, so even when physics works they appear as a single dump rather than a playful cascade.
+The plan below returns to the demo's pattern and layers in your three explicit requirements: mixed brand colours, real data from the stack, true mobile responsiveness.
 
 ---
 
-## The plan — a ground-up rebuild that satisfies every goal
+## 1. Rewrite `src/components/HomeGravity.tsx` faithful to the demo
 
-### Goals (locked in from your brief)
-- ✅ Works on **both** desktop and mobile
-- ✅ **Has impact** — visible, central, part of the hero
-- ✅ **Playful** — natural fall, mix of colors, draggable
-- ✅ **Pulls from the stack** (filter `tools.status === 'in_stack'`)
-- ✅ **Brand colors** — Cobalt, Forest, Indigo, Orange, Lime
-- ✅ **Draggable + interactive** on every screen size
-- ✅ **Mixed colors**, not grouped
+**Mount model — match the demo exactly:**
+- Remove all `visibleCount` / `setInterval` staggering. All pills mount on first render once `tools` is loaded.
+- The "cascade" feel comes from spawning pills at varied `x%` across the width and varied `y%` near the top — physics does the rest. This is the pattern the original demo uses and the only one the engine handles cleanly.
 
----
+**Physics container:**
+- One `<Gravity gravity={{x:0, y:1}} addTopWall={false} grabCursor autoStart>` wrapping all pills.
+- `addTopWall={false}` so spawn points slightly above the canvas (if any) don't trap bodies — but we'll spawn inside anyway.
+- `resetOnResize` left at default `true` so rotation/landscape works.
 
-### File: `src/components/HomeGravity.tsx` — full rewrite
+**Data — pull from the stack:**
+- Input: `tools: Tool[]` (already passed in).
+- Filter to `status === "in_stack"` (these are the things you actually run). Cap at ~18 pills so the canvas doesn't get crowded on mobile.
 
-**Color shuffling (deterministic mix, not grouping)**
-- Replace the index-based color cycling with a deterministic shuffle seeded by the pill name. Each pill gets a color via a hash of its label so the same tool always gets the same color (stable across renders), but adjacent pills look randomly mixed.
-- Lime stays rare (~1 in 8 pills) so it pops as an accent — matches your "Lime ONLY for accents" core rule from memory.
+**Mixed brand colours (deterministic, never grouped):**
+- Core rotation: Cobalt `#2D35C9`, Forest `#2D6A4F`, Indigo `#4A4A9A`, Orange `#E8572A` — all with white text.
+- Accent: Lime `#C8F04A` with `#1A1510` text, used as a rare ~1-in-8 highlight (never adjacent by coincidence because we hash the label, not the index).
+- Use a small FNV-1a hash on the pill name → pick a colour bucket. Same name always gets the same colour (stable across renders), but neighbouring pills look mixed because the hash decorrelates from list order. This satisfies "mix of colours instead of grouping them by colour".
 
-**Spawn positions (fix the ceiling bug for good)**
-- Spawn pills INSIDE the canvas at `yPct = 5 + ((hash * 25) % 35)` → between 5% and 40% from the top. They fall under gravity and pile up at the bottom.
-- Pass `addTopWall={false}` to `<Gravity>` so even if a body bounces upward it can leave the top instead of getting trapped — defensive against future tweaks.
-- Distribute `xPct` across `5%` to `92%` using a hash, not a stride pattern — feels more natural.
+**Per-pill spawn variation (the cascade):**
+- `xPct = 6 + (hash % 86)` — spread across full canvas width (6%–92%).
+- `yPct = 6 + ((hash * 7) % 28)` — all spawn well **inside** the canvas near the top (6%–34%), so nothing clips the (absent) top wall.
+- `angle = (hash % 30) - 15` — −15° to +15° tilt jitter.
+- `density = 0.0008 + (hash % 6) * 0.0001` — slight weight variance so heavy pills sink first and light ones bounce longer (natural-feeling fall).
+- `restitution = 0.25 + (hash % 5) * 0.04` — varied bounciness.
+- `friction = 0.35`.
 
-**Physics tuning for natural cascade**
-- Vary `density` (0.0007–0.0013) and `restitution` (0.25–0.45) per pill so they don't all fall identically — heavier pills sink faster, lighter ones bounce a touch more. This creates the "feathered" mix you want.
-- Slight rotation jitter (`angle = -15° to +15°`) so they land at varied tilts.
+**Pill styling — same component on mobile and desktop, just scaled:**
+- Rounded-full span, `font-body font-semibold`, `whitespace-nowrap`, `select-none`, `line-height: 1`.
+- Mobile (`useIsMobile()` true): `font-size: 13px`, `padding: 8px 14px`.
+- Desktop: `font-size: 15px`, `padding: 10px 18px`.
+- No static fallback layout — physics runs on every device. This is the playful hero feature.
 
-**Staggered entry (the playful cascade)**
-- Use a `useEffect` with `setInterval` to incrementally raise `visibleCount` from 0 → `pills.length`, one pill every ~80ms. Each new pill spawns at the top and falls — creates the "raining in" effect.
-- Crucially: only mount the `<MatterBody>` for `i < visibleCount`. The previous attempt at this caused glitchiness because mobile + sticky positioning collapsed the canvas to 0 height. With the mobile fix below (fixed full-viewport canvas), staggering will work cleanly.
+**Canvas height:**
+- Mobile: `h-[420px]`.
+- Desktop: `h-[480px]`.
+- The hero section already gives `min-h-[85vh]` mobile / `min-h-[100vh]` desktop, so the absolutely-positioned `inset-0` wrapper around `<HomeGravity />` will fill the hero. We pass an explicit canvas height through the `Gravity` className so Matter has measurable dimensions even before layout settles.
 
-**Mobile gets real physics, not a static wrap**
-- Single code path: same `<Gravity>` canvas on both. Differences are only:
-  - **Pill size**: smaller font/padding on mobile (font 13px, padding 8px 14px) so more fit comfortably.
-  - **Canvas height**: `h-[420px]` on mobile, `h-[480px]` on desktop.
-  - **Touch dragging works** because `gravity.tsx` already removes the touch-blocking listeners and sets `touch-action: pan-y` (preserves vertical scroll, allows horizontal drag of pills).
-
----
-
-### File: `src/pages/Index.tsx` — hero layout adjustment
-
-**Single gravity layer for both breakpoints**
-- Remove the `!isMobile` gate around `<HomeGravity>`. Always render it inside the hero, layered `z-20` over the headline (`z-10`) so pills can be dragged across "The Edit." text on every device.
-- Keep the headlines as the visual anchor; pills are the playful overlay.
-
-**Mobile hero needs height to contain the canvas**
-- Current mobile hero is `min-h-[40vh]` — that's too short for a 420px gravity canvas + huge headlines. Bump to `min-h-[85vh]` on mobile so the canvas has real room and pills are clearly visible from the first paint.
-- Desktop stays `100vh`.
-
-**No `fixed inset-0` page-wide canvas this time** — that approach caused the glitchiness you saw. The canvas lives inside the hero section only, with explicit pixel height, so Matter.js measures it correctly on first render.
+**Render guard:**
+- Return `null` until `tools.filter(in_stack).length > 0`. Index already gates on `!loading`, but this is a safety net so we never initialise the engine with zero bodies (which is fine, but skips a pointless mount/teardown when data refreshes).
 
 ---
 
-### Files to edit
-- `src/components/HomeGravity.tsx` — full rewrite (color hash, positive spawn, staggered cascade, single mobile/desktop path, pill size variants)
-- `src/pages/Index.tsx` — remove `!isMobile` gate on gravity; bump mobile hero `min-h` from `40vh` to `85vh`
+## 2. Minor tweak in `src/pages/Index.tsx`
 
-### What you'll see after
-- **Desktop**: pills cascade in (one every ~80ms) from near the top of the lilac hero, fall in mixed brand colors, pile up at the bottom, draggable across "The Edit." headline. Lime appears as a rare accent.
-- **Mobile**: same cascade, scaled down. Touch-and-drag pills around the screen. Vertical page scrolling still works (touch listeners scoped correctly).
-- **No grouping**: colors look randomly mixed because they're hashed off pill names, not cycled.
-- **Stable**: pills don't disappear, get trapped above ceilings, or glitch on resize — canvas has explicit height inside the hero, no sticky/fixed wrappers.
+Current structure is already correct (single absolutely-positioned wrapper at `z-20`, headlines behind at `z-10` with `pointer-events-none`). Two small fixes:
+
+- Keep the `{!loading && <HomeGravity tools={tools} />}` gate.
+- No mobile-vs-desktop branching for the gravity feature — one component, one canvas, both viewports. Remove any leftover code paths that try to swap in a static flex-wrap.
+- Headlines stay in cobalt `#2D35C9` on the lilac `#7B7FD4` background (already correct).
+
+No other section of the page changes.
+
+---
+
+## Why this will actually work this time
+
+- **One mount, no stagger** = no race between React re-render cycles and Matter's runner. This was the root cause of "nothing falls" and the flicker.
+- **Spawn inside the canvas** (yPct ≥ 6%) + **`addTopWall={false}`** = bodies always live inside the simulation regardless of small layout shifts.
+- **Hash-based colour assignment** = guaranteed mixed look, with lime appearing only as a true accent, matching brand rules.
+- **Same physics on mobile and desktop**, only the pill chrome scales — the feature is consistently playful everywhere.
+- **Drag works for free** because Matter's `MouseConstraint` is already installed in `Gravity` and pills use `pointer-events: none` so drags hit the canvas underneath (this is already in the existing `gravity.tsx`).
+
+## Files to change
+
+- `src/components/HomeGravity.tsx` — full rewrite to the model above.
+- `src/pages/Index.tsx` — confirm the single-canvas layout, no mobile fork.
+
+No new dependencies. No changes to `gravity.tsx`, brand tokens, data fetching, or any other page.
