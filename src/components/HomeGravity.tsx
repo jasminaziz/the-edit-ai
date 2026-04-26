@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Gravity, MatterBody } from "@/components/ui/gravity";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { Tool } from "@/lib/sheets";
@@ -32,7 +33,7 @@ function pillStyle(index: number): React.CSSProperties {
   };
 }
 
-type Variant = "section" | "hero";
+type Variant = "section" | "hero" | "page";
 
 export function HomeGravity({
   tools,
@@ -43,6 +44,23 @@ export function HomeGravity({
 }) {
   const isMobile = useIsMobile();
   const pills = buildPills(tools);
+
+  // Stagger reveal — pills mount one at a time for a feathered cascade
+  const [visibleCount, setVisibleCount] = useState(0);
+  useEffect(() => {
+    setVisibleCount(0);
+    if (pills.length === 0) return;
+    let i = 0;
+    const tick = () => {
+      i += 1;
+      setVisibleCount(i);
+      if (i < pills.length) {
+        timer = window.setTimeout(tick, 110);
+      }
+    };
+    let timer = window.setTimeout(tick, 80);
+    return () => window.clearTimeout(timer);
+  }, [pills.length]);
 
   if (pills.length === 0) return null;
 
@@ -59,15 +77,21 @@ export function HomeGravity({
     );
   }
 
-  // Physics canvas — desktop everywhere, and mobile in hero variant
-  const className = variant === "hero" ? "h-full w-full" : "h-[480px] w-full";
+  // Physics canvas — desktop everywhere, and mobile in hero/page variants
+  const className =
+    variant === "hero" || variant === "page"
+      ? "h-full w-full"
+      : "h-[480px] w-full";
 
   return (
     <Gravity gravity={{ x: 0, y: 1 }} className={className} autoStart grabCursor>
-      {pills.map((label, i) => {
-        const xPct = 12 + ((i * 17) % 76);
-        const yPct = (i * 7) % 12;
+      {pills.slice(0, visibleCount).map((label, i) => {
+        const xPct = 8 + ((i * 17) % 84);
+        // Spawn above the canvas at varied heights so they cascade in
+        const yPct = -((i * 11) % 40) - 4;
         const angle = ((i * 53) % 30) - 15;
+        const density = 0.0008 + ((i * 37) % 10) * 0.00005;
+        const restitution = 0.3 + ((i * 13) % 5) * 0.02;
         return (
           <MatterBody
             key={`${label}-${i}`}
@@ -76,8 +100,8 @@ export function HomeGravity({
             angle={angle}
             matterBodyOptions={{
               friction: 0.4,
-              restitution: 0.35,
-              density: 0.001,
+              restitution,
+              density,
             }}
           >
             <span style={pillStyle(i)}>{label}</span>
