@@ -58,12 +58,10 @@ export function HomeGravity({ tools }: { tools: Tool[] }) {
 
   if (pills.length === 0) return null;
 
-  const canvasHeight = isMobile ? "h-[420px]" : "h-[480px]";
-
   return (
     <Gravity
       gravity={{ x: 0, y: 1 }}
-      className={`${canvasHeight} w-full`}
+      className="h-full w-full"
       autoStart
       grabCursor
       addTopWall={false}
