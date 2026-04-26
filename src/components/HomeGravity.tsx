@@ -84,11 +84,18 @@ export function HomeGravity({
       : "h-[480px] w-full";
 
   return (
-    <Gravity gravity={{ x: 0, y: 1 }} className={className} autoStart grabCursor>
+    <Gravity
+      gravity={{ x: 0, y: 1 }}
+      className={className}
+      autoStart
+      grabCursor
+      addTopWall={false}
+    >
       {pills.slice(0, visibleCount).map((label, i) => {
         const xPct = 8 + ((i * 17) % 84);
-        // Spawn above the canvas at varied heights so they cascade in
-        const yPct = -((i * 11) % 40) - 4;
+        // Spawn just inside the top of the canvas, with small varied offsets
+        // so pills cascade naturally instead of dropping in unison.
+        const yPct = ((i * 7) % 12) + 2;
         const angle = ((i * 53) % 30) - 15;
         const density = 0.0008 + ((i * 37) % 10) * 0.00005;
         const restitution = 0.3 + ((i * 13) % 5) * 0.02;
