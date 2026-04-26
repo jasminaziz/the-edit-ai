@@ -41,26 +41,53 @@ const Index = () => {
     .slice(0, 3);
   const isMobile = useIsMobile();
 
+  // On mobile, type goes in front (white) and pills fall behind across the whole page.
+  // On desktop, pills stay in front of the cobalt type within the hero only.
+  const heroTypeColor = isMobile ? "#FFFFFF" : "#2D35C9";
+
   return (
-    <>
+    <div className="relative">
+      {/* Mobile-only: full-page gravity canvas behind all content, pills settle just above the footer */}
+      {isMobile && !loading && (
+        <div
+          className="absolute inset-0 z-0 pointer-events-none"
+          aria-hidden="true"
+        >
+          <div className="sticky top-0 h-screen w-full pointer-events-auto">
+            <HomeGravity tools={tools} variant="page" />
+          </div>
+        </div>
+      )}
+
       {/* Hero */}
       <section
         className="relative min-h-[40vh] sm:min-h-[100vh] flex flex-col justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
-        style={{ backgroundColor: "#7B7FD4" }}
+        style={{ backgroundColor: isMobile ? "transparent" : "#7B7FD4" }}
       >
-        {/* Pills layer — sits IN FRONT of the headlines so they can be dragged across the type */}
-        <div className="absolute inset-0 z-20">
-          {!loading && <HomeGravity tools={tools} variant="hero" />}
-        </div>
+        {/* Mobile background sits behind the page-wide gravity layer */}
+        {isMobile && (
+          <div
+            className="absolute inset-0 -z-10"
+            style={{ backgroundColor: "#7B7FD4" }}
+            aria-hidden="true"
+          />
+        )}
 
-        {/* Typography layer — pills sit on top, so type stays purely decorative */}
-        <div className="relative z-10 pointer-events-none">
+        {/* Desktop pills layer — sits IN FRONT of the headlines so they can be dragged across the type */}
+        {!isMobile && (
+          <div className="absolute inset-0 z-20">
+            {!loading && <HomeGravity tools={tools} variant="hero" />}
+          </div>
+        )}
+
+        {/* Typography layer — on mobile sits in FRONT (z-30) of the page-wide pills; on desktop sits behind hero pills */}
+        <div className={`relative ${isMobile ? "z-30" : "z-10"} pointer-events-none`}>
           {/* THE — full-width, pushed to edges */}
           <h1
             className="font-heading font-black leading-[0.82] w-full"
             style={{
               fontSize: "clamp(120px, 28vw, 420px)",
-              color: "#2D35C9",
+              color: heroTypeColor,
               letterSpacing: "-0.04em",
               marginLeft: "-0.04em",
             }}
@@ -72,7 +99,7 @@ const Index = () => {
             className="font-heading font-black leading-[0.78] w-full"
             style={{
               fontSize: "clamp(160px, 38vw, 560px)",
-              color: "#2D35C9",
+              color: heroTypeColor,
               letterSpacing: "-0.05em",
               marginLeft: "-0.05em",
               marginTop: "-0.02em",
