@@ -11,6 +11,11 @@ interface CounterProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "child
   /** Pixel font size. Required to be fixed because digit roll height depends on it. */
   fontSize?: number;
   className?: string;
+  /**
+   * Optional external ref to observe instead of the counter itself.
+   * When provided, the counter starts animating once that element enters the viewport.
+   */
+  triggerRef?: React.RefObject<Element>;
 }
 
 const PADDING = 10;
@@ -21,6 +26,7 @@ export const Counter = ({
   duration = 1.2,
   fontSize = 80,
   className,
+  triggerRef,
   ...rest
 }: CounterProps) => {
   const height = fontSize + PADDING;
@@ -31,10 +37,12 @@ export const Counter = ({
   // Plain motion value — we drive it with `animate()` so it lands EXACTLY on `end`.
   const value = useMotionValue(start);
 
-  // Trigger as soon as any part of the counter enters the viewport, so the
-  // visitor never sees a stationary "0". Fires once.
+  // Observe either the external trigger element (e.g. the pills/hero section)
+  // or, as a fallback, the counter's own container. Fires once.
   useEffect(() => {
-    if (hasAnimated || !containerRef.current) return;
+    if (hasAnimated) return;
+    const target = triggerRef?.current ?? containerRef.current;
+    if (!target) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -44,9 +52,9 @@ export const Counter = ({
       },
       { threshold: 0, rootMargin: "0px 0px 200px 0px" }
     );
-    observer.observe(containerRef.current);
+    observer.observe(target);
     return () => observer.disconnect();
-  }, [hasAnimated]);
+  }, [hasAnimated, triggerRef]);
 
   useEffect(() => {
     if (!hasAnimated) return;
