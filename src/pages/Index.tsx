@@ -32,14 +32,14 @@ const Index = () => {
   }, []);
 
   const stackTools = tools.filter((t) => t.status === "in_stack").slice(0, 4);
+  const isMobile = useIsMobile();
   const latestNews = [...news]
     .sort((a, b) => {
       const da = parseDate(a.date)?.getTime() || 0;
       const db = parseDate(b.date)?.getTime() || 0;
       return db - da;
     })
-    .slice(0, 3);
-  const isMobile = useIsMobile();
+    .slice(0, isMobile ? 1 : 3);
 
   return (
     <div className="relative">
