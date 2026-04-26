@@ -22,6 +22,7 @@ const Index = () => {
   const [tools, setTools] = useState<Tool[]>([]);
   const [news, setNews] = useState<WhatsNew[]>([]);
   const [loading, setLoading] = useState(true);
+  const pillsSectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     Promise.all([fetchTools(), fetchWhatsNew()]).then(([t, n]) => {
