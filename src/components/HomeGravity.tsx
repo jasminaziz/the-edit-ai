@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Gravity, MatterBody } from "@/components/ui/gravity";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { Tool } from "@/lib/sheets";
@@ -33,39 +32,14 @@ function pillStyle(index: number): React.CSSProperties {
   };
 }
 
-type Variant = "section" | "hero" | "page";
-
-export function HomeGravity({
-  tools,
-  variant = "section",
-}: {
-  tools: Tool[];
-  variant?: Variant;
-}) {
+export function HomeGravity({ tools }: { tools: Tool[] }) {
   const isMobile = useIsMobile();
   const pills = buildPills(tools);
 
-  // Stagger reveal — pills mount one at a time for a feathered cascade
-  const [visibleCount, setVisibleCount] = useState(0);
-  useEffect(() => {
-    setVisibleCount(0);
-    if (pills.length === 0) return;
-    let i = 0;
-    const tick = () => {
-      i += 1;
-      setVisibleCount(i);
-      if (i < pills.length) {
-        timer = window.setTimeout(tick, 110);
-      }
-    };
-    let timer = window.setTimeout(tick, 80);
-    return () => window.clearTimeout(timer);
-  }, [pills.length]);
-
   if (pills.length === 0) return null;
 
-  // Standalone section variant on mobile: keep static flex-wrap (no fixed height parent)
-  if (isMobile && variant === "section") {
+  // On mobile, render as a static flex-wrap (no physics).
+  if (isMobile) {
     return (
       <div className="flex flex-wrap gap-2.5">
         {pills.map((label, i) => (
@@ -77,18 +51,12 @@ export function HomeGravity({
     );
   }
 
-  // Physics canvas — desktop everywhere, and mobile in hero/page variants
-  const className =
-    variant === "hero" || variant === "page"
-      ? "h-full w-full"
-      : "h-[480px] w-full";
-
+  // Desktop: physics canvas inside the hero.
   return (
-    <Gravity gravity={{ x: 0, y: 1 }} className={className} autoStart grabCursor addTopWall={false}>
-      {pills.slice(0, visibleCount).map((label, i) => {
+    <Gravity gravity={{ x: 0, y: 1 }} className="h-[480px] w-full" autoStart grabCursor>
+      {pills.map((label, i) => {
         const xPct = 8 + ((i * 17) % 84);
-        // Spawn just inside the top of the canvas at varied heights so they cascade down
-        const yPct = 4 + ((i * 11) % 30);
+        const yPct = -10 - ((i * 11) % 30);
         const angle = ((i * 53) % 30) - 15;
         const density = 0.0008 + ((i * 37) % 10) * 0.00005;
         const restitution = 0.3 + ((i * 13) % 5) * 0.02;

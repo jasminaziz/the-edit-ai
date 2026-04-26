@@ -41,53 +41,28 @@ const Index = () => {
     .slice(0, 3);
   const isMobile = useIsMobile();
 
-  // On mobile, type goes in front (white) and pills fall behind across the whole page.
-  // On desktop, pills stay in front of the cobalt type within the hero only.
-  const heroTypeColor = isMobile ? "#FFFFFF" : "#2D35C9";
-
   return (
     <div className="relative">
-      {/* Mobile-only: full-viewport gravity canvas behind hero type, pills settle at viewport bottom */}
-      {isMobile && !loading && (
-        <div
-          className="fixed inset-0 z-0 pointer-events-none"
-          aria-hidden="true"
-        >
-          <div className="absolute inset-0 pointer-events-auto">
-            <HomeGravity tools={tools} variant="page" />
-          </div>
-        </div>
-      )}
-
       {/* Hero */}
       <section
         className="relative min-h-[40vh] sm:min-h-[100vh] flex flex-col justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
-        style={{ backgroundColor: isMobile ? "transparent" : "#7B7FD4" }}
+        style={{ backgroundColor: "#7B7FD4" }}
       >
-        {/* Mobile background sits behind the page-wide gravity layer */}
-        {isMobile && (
-          <div
-            className="absolute inset-0 -z-10"
-            style={{ backgroundColor: "#7B7FD4" }}
-            aria-hidden="true"
-          />
-        )}
-
         {/* Desktop pills layer — sits IN FRONT of the headlines so they can be dragged across the type */}
         {!isMobile && (
           <div className="absolute inset-0 z-20">
-            {!loading && <HomeGravity tools={tools} variant="hero" />}
+            {!loading && <HomeGravity tools={tools} />}
           </div>
         )}
 
-        {/* Typography layer — on mobile sits in FRONT (z-30) of the page-wide pills; on desktop sits behind hero pills */}
-        <div className={`relative ${isMobile ? "z-30" : "z-10"} pointer-events-none`}>
+        {/* Typography layer */}
+        <div className="relative z-10 pointer-events-none">
           {/* THE — full-width, pushed to edges */}
           <h1
             className="font-heading font-black leading-[0.82] w-full"
             style={{
               fontSize: "clamp(120px, 28vw, 420px)",
-              color: heroTypeColor,
+              color: "#2D35C9",
               letterSpacing: "-0.04em",
               marginLeft: "-0.04em",
             }}
@@ -99,7 +74,7 @@ const Index = () => {
             className="font-heading font-black leading-[0.78] w-full"
             style={{
               fontSize: "clamp(160px, 38vw, 560px)",
-              color: heroTypeColor,
+              color: "#2D35C9",
               letterSpacing: "-0.05em",
               marginLeft: "-0.05em",
               marginTop: "-0.02em",
