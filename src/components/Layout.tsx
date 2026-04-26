@@ -78,17 +78,8 @@ export function Layout({ children }: { children: ReactNode }) {
                 <div className="flex-1" />
                 <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
                   <SheetTrigger asChild>
-                    <button className="p-2" aria-label="Open menu">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 32 32"
-                        className="h-6 w-6"
-                        aria-hidden="true"
-                      >
-                        <rect x="4" y="5" width="24" height="6" rx="3" fill="#C8F04A" />
-                        <rect x="9" y="13" width="19" height="6" rx="3" fill="#C8F04A" />
-                        <rect x="4" y="21" width="24" height="6" rx="3" fill="#C8F04A" />
-                      </svg>
+                    <button className="p-2 text-primary-foreground" aria-label="Open menu">
+                      <Menu className="h-5 w-5" />
                     </button>
                   </SheetTrigger>
                   <SheetContent side="right" className="w-[260px] p-0 flex flex-col" style={{ backgroundColor: "#2D35C9" }}>
