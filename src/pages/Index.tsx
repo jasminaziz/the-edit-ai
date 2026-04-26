@@ -188,6 +188,7 @@ const Index = () => {
                   end={tools.length}
                   fontSize={isMobile ? 56 : 80}
                   className="text-primary"
+                  triggerRef={pillsSectionRef}
                 />
                 <p className="font-body text-[15px] text-muted">AI tools in the directory</p>
               </>
