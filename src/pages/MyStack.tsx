@@ -34,6 +34,7 @@ const FeaturedCard = ({ tool }: { tool: MyStackItem }) => {
         padding: "28px",
         color: "#FFFFFF",
         width: "100%",
+        position: "relative",
       }}
     >
       <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 sm:items-stretch">
