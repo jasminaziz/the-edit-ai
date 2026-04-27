@@ -305,9 +305,11 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
 
       const mouse = Mouse.create(render.current.canvas);
 
-      // Matter.js Mouse installs wheel/touch listeners that call preventDefault().
-      // Because the hero gravity canvas fills the first viewport, those listeners
-      // can trap normal page scrolling. Remove all scroll-blocking listeners.
+      // Matter.js Mouse installs wheel/touch listeners that always call
+      // preventDefault(). On a hero canvas that fills the viewport, that traps
+      // vertical page scrolling on mobile. We replace them with smarter
+      // listeners that only block the default action when the touch is
+      // actually grabbing a pill — empty-space touches still scroll the page.
       const canvasEl = render.current.canvas as HTMLCanvasElement;
       const matterMouse = mouse as unknown as {
         mousewheel: EventListener;
@@ -315,11 +317,56 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
         mousedown: EventListener;
         mouseup: EventListener;
       };
+      // Strip wheel-blocking entirely (always allow page scroll via wheel)
       canvasEl.removeEventListener("wheel", matterMouse.mousewheel);
+      // Strip Matter's default touch listeners — we'll re-bind smarter ones below
       canvasEl.removeEventListener("touchmove", matterMouse.mousemove);
       canvasEl.removeEventListener("touchstart", matterMouse.mousedown);
       canvasEl.removeEventListener("touchend", matterMouse.mouseup);
       canvasEl.style.touchAction = "pan-y";
+
+      // Conditional touch handling: only hijack the touch when it lands on a
+      // draggable body. This restores mobile drag-and-throw without breaking
+      // vertical page scroll on empty canvas areas.
+      let touchHasBody = false;
+      const getTouchPos = (e: TouchEvent) => {
+        const t = e.touches[0] || e.changedTouches[0];
+        const rect = canvasEl.getBoundingClientRect();
+        return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+      };
+      const bodyAt = (pos: { x: number; y: number }) =>
+        Query.point(engine.current.world.bodies, pos).some((b) => !b.isStatic);
+
+      const onTouchStart = (e: TouchEvent) => {
+        const pos = getTouchPos(e);
+        touchHasBody = bodyAt(pos);
+        if (touchHasBody) {
+          e.preventDefault();
+          mouse.position = pos;
+          mouse.absolute = pos;
+          mouse.button = 0;
+          mouseDown.current = true;
+          matterMouse.mousedown(e as unknown as Event);
+        }
+      };
+      const onTouchMove = (e: TouchEvent) => {
+        if (!touchHasBody) return;
+        e.preventDefault();
+        const pos = getTouchPos(e);
+        mouse.position = pos;
+        mouse.absolute = pos;
+        matterMouse.mousemove(e as unknown as Event);
+      };
+      const onTouchEnd = (e: TouchEvent) => {
+        if (!touchHasBody) return;
+        touchHasBody = false;
+        mouseDown.current = false;
+        matterMouse.mouseup(e as unknown as Event);
+      };
+      canvasEl.addEventListener("touchstart", onTouchStart, { passive: false });
+      canvasEl.addEventListener("touchmove", onTouchMove, { passive: false });
+      canvasEl.addEventListener("touchend", onTouchEnd, { passive: true });
+      canvasEl.addEventListener("touchcancel", onTouchEnd, { passive: true });
 
       mouseConstraint.current = MouseConstraint.create(engine.current, {
         mouse,
