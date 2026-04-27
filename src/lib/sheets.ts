@@ -141,10 +141,10 @@ export interface MyStackItem {
   name: string;
   category: string;
   what_it_does: string;
-  my_use_case: string;
-  cost: string;
+  pricing: string;
   url: string;
   verdict: string;
+  featured: boolean;
 }
 
 export async function fetchMyStack(): Promise<MyStackItem[]> {
@@ -154,15 +154,28 @@ export async function fetchMyStack(): Promise<MyStackItem[]> {
     const data = await res.json();
     const rows: string[][] = data.values || [];
     if (rows.length < 2) return [];
-    return rows.slice(1).filter(r => r.length > 0 && r[0]).map(r => ({
-      name: stripEmoji(r[0] || ''),
-      category: stripEmoji(r[1] || ''),
-      what_it_does: stripEmoji(r[2] || ''),
-      my_use_case: stripEmoji(r[3] || ''),
-      cost: stripEmoji(r[4] || ''),
-      url: r[5] || '',
-      verdict: stripEmoji(r[6] || ''),
-    }));
+    // Header row: name, category, what_it_does, pricing, url, verdict, featured
+    const header = (rows[0] || []).map(h => (h || '').toLowerCase().trim());
+    const idx = (key: string) => header.indexOf(key);
+    const iName = idx('name');
+    const iCategory = idx('category');
+    const iWhat = idx('what_it_does');
+    const iPricing = idx('pricing');
+    const iUrl = idx('url');
+    const iVerdict = idx('verdict');
+    const iFeatured = idx('featured');
+    return rows.slice(1).filter(r => r.length > 0 && r[iName >= 0 ? iName : 0]).map(r => {
+      const featuredRaw = (iFeatured >= 0 ? (r[iFeatured] || '') : '').toString().trim().toLowerCase();
+      return {
+        name: stripEmoji(r[iName >= 0 ? iName : 0] || ''),
+        category: stripEmoji(r[iCategory >= 0 ? iCategory : 1] || ''),
+        what_it_does: stripEmoji(r[iWhat >= 0 ? iWhat : 2] || ''),
+        pricing: stripEmoji(r[iPricing >= 0 ? iPricing : 3] || ''),
+        url: r[iUrl >= 0 ? iUrl : 4] || '',
+        verdict: stripEmoji(r[iVerdict >= 0 ? iVerdict : 5] || ''),
+        featured: featuredRaw === 'true' || featuredRaw === 'yes' || featuredRaw === '1',
+      };
+    });
   } catch {
     return [];
   }
