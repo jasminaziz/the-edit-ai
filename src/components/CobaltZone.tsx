@@ -10,7 +10,10 @@ interface CobaltZoneProps {
 }
 
 export function CobaltZone({ heading, subheading, bodyText, illustration, rightBadge, twoLineHeading }: CobaltZoneProps) {
-  const badge = rightBadge ? (
+  const badgeText = typeof rightBadge === "string" ? rightBadge : rightBadge?.text;
+  const badgeUrl = typeof rightBadge === "string" ? undefined : rightBadge?.url;
+
+  const badgeContent = (
     <span
       className="font-heading animate-sign-drop"
       style={{
@@ -30,8 +33,23 @@ export function CobaltZone({ heading, subheading, bodyText, illustration, rightB
         willChange: "transform",
       }}
     >
-      {rightBadge}
+      {badgeText}
     </span>
+  );
+
+  const badge = rightBadge ? (
+    badgeUrl ? (
+      <a
+        href={badgeUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ textDecoration: "none" }}
+      >
+        {badgeContent}
+      </a>
+    ) : (
+      badgeContent
+    )
   ) : null;
 
   return (
