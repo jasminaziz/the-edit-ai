@@ -49,26 +49,15 @@ function pillStyle(label: string, isMobile: boolean): React.CSSProperties {
 }
 
 const MAX_PILLS = 18;
-const FALLBACK_PILLS = [
-  "Writing",
-  "Research",
-  "Design",
-  "Video",
-  "Automation",
-  "Building",
-  "Editing",
-  "Planning",
-  "Prompting",
-  "Publishing",
-];
 
 export function HomeGravity({ tools }: { tools: Tool[] }) {
   const isMobile = useIsMobile();
-  const sheetPills = tools
+  const pills = tools
     .filter((t) => t.status === "in_stack")
     .map((t) => t.name)
-    .filter(Boolean);
-  const pills = (sheetPills.length > 0 ? sheetPills : FALLBACK_PILLS).slice(0, MAX_PILLS);
+    .slice(0, MAX_PILLS);
+
+  if (pills.length === 0) return null;
 
   return (
     <div className="relative h-full w-full">
