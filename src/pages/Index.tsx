@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchTools, fetchWhatsNew, type Tool, type WhatsNew } from "@/lib/sheets";
 import { parseDate } from "@/components/WhatsNewCard";
@@ -22,7 +22,6 @@ const Index = () => {
   const [tools, setTools] = useState<Tool[]>([]);
   const [news, setNews] = useState<WhatsNew[]>([]);
   const [loading, setLoading] = useState(true);
-  const pillsSectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     Promise.all([fetchTools(), fetchWhatsNew()]).then(([t, n]) => {
@@ -46,7 +45,6 @@ const Index = () => {
     <div className="relative">
       {/* Hero */}
       <section
-        ref={pillsSectionRef}
         className="relative min-h-[85vh] sm:min-h-[100vh] flex flex-col justify-start sm:justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
         style={{ backgroundColor: "#7B7FD4" }}
       >
@@ -188,7 +186,6 @@ const Index = () => {
                   end={tools.length}
                   fontSize={isMobile ? 56 : 80}
                   className="text-primary"
-                  triggerRef={pillsSectionRef}
                 />
                 <p className="font-body text-[15px] text-muted">AI tools in the directory</p>
               </>
