@@ -108,7 +108,7 @@ export interface LearningItem {
   type: string;
   provider: string;
   what_it_is: string;
-  why_it_matters: string;
+  why_i_put_it_here: string;
   time: string;
   cost: string;
   url: string;
@@ -127,7 +127,7 @@ export async function fetchLearning(): Promise<LearningItem[]> {
       type: stripEmoji(r[2] || ''),
       provider: stripEmoji(r[3] || ''),
       what_it_is: stripEmoji(r[4] || ''),
-      why_it_matters: stripEmoji(r[5] || ''),
+      why_i_put_it_here: stripEmoji(r[5] || ''),
       time: stripEmoji(r[6] || ''),
       cost: stripEmoji(r[7] || ''),
       url: r[8] || '',
