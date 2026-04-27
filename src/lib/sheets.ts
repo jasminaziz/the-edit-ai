@@ -72,12 +72,12 @@ export async function fetchWhatsNew(): Promise<WhatsNew[]> {
 export interface DesignKitItem {
   name: string;
   category: string;
+  phase: string;
+  group: string;
   url: string;
-  what_it_does: string;
   when_to_use: string;
   cost: string;
   verdict: string;
-  phase: string;
 }
 
 export async function fetchDesignKit(): Promise<DesignKitItem[]> {
@@ -87,16 +87,55 @@ export async function fetchDesignKit(): Promise<DesignKitItem[]> {
     const data = await res.json();
     const rows: string[][] = data.values || [];
     if (rows.length < 2) return [];
-    return rows.slice(1).filter(r => r.length > 0 && r[0]).map(r => ({
-      name: stripEmoji(r[0] || ''),
-      category: stripEmoji(r[1] || ''),
-      url: r[2] || '',
-      what_it_does: stripEmoji(r[3] || ''),
-      when_to_use: stripEmoji(r[4] || ''),
-      cost: stripEmoji(r[5] || ''),
-      verdict: stripEmoji(r[6] || ''),
-      phase: stripEmoji(r[7] || ''),
-    }));
+
+    // Header-name lookup — column positions in the sheet may change.
+    const norm = (s: unknown) =>
+      String(s ?? '')
+        .toLowerCase()
+        .trim()
+        .replace(/[\s-]+/g, '_')
+        .replace(/[^a-z0-9_]/g, '');
+    const header = (rows[0] || []).map(norm);
+    const findIdx = (...keys: string[]) => {
+      for (const k of keys) {
+        const i = header.indexOf(k);
+        if (i >= 0) return i;
+      }
+      return -1;
+    };
+    const iName = findIdx('name');
+    const iCategory = findIdx('category');
+    const iPhase = findIdx('phase');
+    const iGroup = findIdx('group');
+    const iUrl = findIdx('url');
+    const iWhenToUse = findIdx('when_to_use');
+    const iCost = findIdx('cost');
+    const iVerdict = findIdx('verdict');
+
+    // Surface missing required columns once for debugging.
+    const missing: string[] = [];
+    if (iPhase < 0) missing.push('phase');
+    if (iGroup < 0) missing.push('group');
+    if (iWhenToUse < 0) missing.push('when_to_use');
+    if (iVerdict < 0) missing.push('verdict');
+    if (missing.length) {
+      console.warn('[design_kit] missing expected columns:', missing.join(', '), 'headers seen:', header);
+    }
+
+    const cell = (r: string[], i: number) => (i >= 0 && i < r.length ? r[i] : '');
+
+    return rows.slice(1)
+      .filter(r => r.length > 0 && (iName >= 0 ? r[iName] : r[0]))
+      .map(r => ({
+        name: stripEmoji(cell(r, iName)),
+        category: stripEmoji(cell(r, iCategory)),
+        phase: stripEmoji(cell(r, iPhase)),
+        group: stripEmoji(cell(r, iGroup)),
+        url: cell(r, iUrl) || '',
+        when_to_use: stripEmoji(cell(r, iWhenToUse)),
+        cost: stripEmoji(cell(r, iCost)),
+        verdict: stripEmoji(cell(r, iVerdict)),
+      }));
   } catch {
     return [];
   }
