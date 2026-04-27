@@ -171,18 +171,6 @@ export function FooterEmailCapture() {
                 </Link>
                 . You can unsubscribe at any time.
               </p>
-                  style={{
-                    fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    fontWeight: 400,
-                    fontSize: 13,
-                    color: "#E8572A",
-                    marginTop: 10,
-                    marginBottom: 0,
-                  }}
-                >
-                  Something went wrong — please try again.
-                </p>
-              )}
             </>
           )}
         </div>
