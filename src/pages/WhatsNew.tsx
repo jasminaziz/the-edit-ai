@@ -147,7 +147,7 @@ const WhatsNewPage = () => {
         heading=""
         twoLineHeading={{ line1: "What's New", line2: "in AI", inline: true }}
         subheading="Model updates, releases, and AI gossip."
-        rightBadge="Source: The Rundown.ai"
+        rightBadge={{ text: "Source: The Rundown.ai", url: "https://www.therundown.ai" }}
       />
 
       <section className="bg-background py-10 px-6 sm:px-12">
