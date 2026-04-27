@@ -81,7 +81,7 @@ export function Layout({ children }: { children: ReactNode }) {
                     <button
                       className="p-1.5 rounded-md transition-opacity hover:opacity-90"
                       aria-label="Open menu"
-                      style={{ backgroundColor: "#2D35C9" }}
+                      style={{ backgroundColor: "transparent" }}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +96,7 @@ export function Layout({ children }: { children: ReactNode }) {
                       </svg>
                     </button>
                   </SheetTrigger>
-                  <SheetContent side="right" className="w-[260px] p-0 flex flex-col" style={{ backgroundColor: "#2D35C9" }}>
+                  <SheetContent side="right" className="w-[260px] p-0 flex flex-col" style={{ backgroundColor: navBg, borderLeft: "1px solid rgba(255,255,255,0.12)" }}>
                     <SheetTitle className="sr-only">Navigation</SheetTitle>
                     <div className="flex flex-col pt-16 px-6 gap-1 flex-1">
                       {navItems.map((item) => {
