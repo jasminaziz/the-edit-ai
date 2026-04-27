@@ -6,164 +6,204 @@ import { CobaltZone } from "@/components/CobaltZone";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { AnimatePresence, motion } from "framer-motion";
 
-// Claude-style asymmetric starburst mark
+// Claude starburst mark — accurate 4-pointed asymmetric petal logo
 const ClaudeStar = ({ size = 12, color = "#C8F04A" }: { size?: number; color?: string }) => (
   <svg
     width={size}
     height={size}
-    viewBox="0 0 100 100"
+    viewBox="0 0 200 200"
     aria-hidden="true"
     style={{ display: "block" }}
   >
     <path
-      d="M50 0 C52 28, 58 38, 72 42 C58 46, 52 56, 50 84 C48 56, 42 46, 28 42 C42 38, 48 28, 50 0 Z
-         M86 14 C82 36, 76 42, 60 46 C76 50, 82 56, 86 78 C90 56, 96 50, 100 46 C96 42, 90 36, 86 14 Z
-         M14 22 C12 40, 8 46, 0 50 C8 54, 12 60, 14 78 C16 60, 20 54, 28 50 C20 46, 16 40, 14 22 Z
-         M50 70 C51 82, 54 86, 62 90 C54 94, 51 96, 50 100 C49 96, 46 94, 38 90 C46 86, 49 82, 50 70 Z"
       fill={color}
+      d="M100 0 C104 52 108 64 122 78 C136 92 148 96 200 100 C148 104 136 108 122 122 C108 136 104 148 100 200 C96 148 92 136 78 122 C64 108 52 104 0 100 C52 96 64 92 78 78 C92 64 96 52 100 0 Z"
     />
   </svg>
 );
 
-const FeaturedCard = ({ tool }: { tool: MyStackItem }) => (
-  <div
-    style={{
-      backgroundColor: "#2D35C9",
-      borderRadius: "16px",
-      padding: "32px",
-      color: "#FFFFFF",
-      width: "100%",
-      position: "relative",
-      overflow: "hidden",
-    }}
-  >
-    {/* Decorative Claude star on the right */}
-    <div
-      aria-hidden="true"
-      style={{
-        position: "absolute",
-        right: "-24px",
-        top: "50%",
-        transform: "translateY(-50%) rotate(12deg)",
-        opacity: 0.18,
-        pointerEvents: "none",
-      }}
-      className="hidden sm:block"
-    >
-      <ClaudeStar size={220} color="#C8F04A" />
-    </div>
+const FeaturedCard = ({ tool }: { tool: MyStackItem }) => {
+  const [open, setOpen] = useState(false);
+  const hasMore = Boolean(tool.verdict);
 
-    <div style={{ position: "relative", zIndex: 1 }}>
-      <div className="flex items-center gap-2 mb-3">
-        <div
-          className="flex items-center gap-2"
-          style={{
-            padding: "4px 10px 4px 6px",
-            borderRadius: "999px",
-            border: "1px solid rgba(200, 240, 74, 0.4)",
-            backgroundColor: "transparent",
-          }}
-          aria-label="Featured tool"
-        >
-          <ClaudeStar size={12} color="#C8F04A" />
-          <span
-            className="font-body"
+  return (
+    <div
+      style={{
+        backgroundColor: "#2D35C9",
+        borderRadius: "16px",
+        padding: "24px",
+        color: "#FFFFFF",
+        width: "100%",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Decorative Claude star on the right */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          right: "-30px",
+          top: "50%",
+          transform: "translateY(-50%) rotate(12deg)",
+          opacity: 0.22,
+          pointerEvents: "none",
+        }}
+        className="hidden sm:block"
+      >
+        <ClaudeStar size={180} color="#C8F04A" />
+      </div>
+
+      <div style={{ position: "relative", zIndex: 1 }} className="sm:pr-32">
+        <div className="flex items-center gap-2 mb-3">
+          <div
+            className="flex items-center gap-1.5"
             style={{
-              fontSize: "0.65rem",
+              padding: "4px 10px 4px 8px",
+              borderRadius: "999px",
+              border: "1px solid rgba(200, 240, 74, 0.4)",
+              backgroundColor: "transparent",
+            }}
+            aria-label="Featured tool"
+          >
+            <ClaudeStar size={11} color="#C8F04A" />
+            <span
+              className="font-body"
+              style={{
+                fontSize: "0.65rem",
+                fontWeight: 700,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "#C8F04A",
+                lineHeight: 1,
+              }}
+            >
+              Featured Tool
+            </span>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <h2
+            className="font-heading"
+            style={{
+              fontSize: "clamp(24px, 3.2vw, 32px)",
               fontWeight: 700,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
               color: "#C8F04A",
-              lineHeight: 1,
+              letterSpacing: "-0.02em",
+              lineHeight: 1.05,
             }}
           >
-            Featured Tool
-          </span>
+            {tool.name}
+          </h2>
+          {tool.pricing && (
+            <span className="font-body" style={{ fontSize: "13px", color: "#FFFFFF", opacity: 0.85 }}>
+              {tool.pricing}
+            </span>
+          )}
         </div>
-        {tool.category && (
-          <span
-            className="font-body"
-            style={{ fontSize: "12px", color: "#FFFFFF", opacity: 0.8, letterSpacing: "0.04em" }}
-          >
-            {tool.category}
-          </span>
-        )}
-      </div>
 
-      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h2
-          className="font-heading"
-          style={{
-            fontSize: "clamp(28px, 4vw, 40px)",
-            fontWeight: 700,
-            color: "#C8F04A",
-            letterSpacing: "-0.02em",
-            lineHeight: 1.05,
-          }}
-        >
-          {tool.name}
-        </h2>
-        {tool.pricing && (
-          <span className="font-body" style={{ fontSize: "13px", color: "#FFFFFF", opacity: 0.85 }}>
-            {tool.pricing}
-          </span>
-        )}
-      </div>
-
-      {tool.what_it_does && (
-        <p
-          className="font-body mt-4"
-          style={{ fontSize: "15px", color: "#FFFFFF", lineHeight: 1.55, opacity: 0.95 }}
-        >
-          {tool.what_it_does}
-        </p>
-      )}
-
-      {tool.verdict && (
-        <>
-          <hr style={{ border: "none", borderTop: "1px solid rgba(255,255,255,0.18)", margin: "20px 0" }} />
+        {tool.what_it_does && (
           <p
-            className="font-body"
-            style={{ fontSize: "15px", color: "#FFFFFF", lineHeight: 1.65, whiteSpace: "pre-wrap" }}
-          >
-            {tool.verdict}
-          </p>
-        </>
-      )}
-
-      {tool.url && (
-        <div className="mt-6">
-          <a
-            href={tool.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-body inline-block"
+            className="font-body mt-3"
             style={{
               fontSize: "14px",
-              fontWeight: 600,
-              color: "#1A1510",
-              backgroundColor: "#C8F04A",
-              borderRadius: "999px",
-              padding: "12px 24px",
-              textDecoration: "none",
-              transition: "background-color 0.2s ease-out, color 0.2s ease-out",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#FFFFFF";
-              e.currentTarget.style.color = "#2D35C9";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#C8F04A";
-              e.currentTarget.style.color = "#1A1510";
+              color: "#FFFFFF",
+              lineHeight: 1.55,
+              opacity: 0.95,
+              ...(open
+                ? {}
+                : {
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical" as const,
+                    overflow: "hidden",
+                  }),
             }}
           >
-            Open tool →
-          </a>
+            {tool.what_it_does}
+          </p>
+        )}
+
+        <AnimatePresence initial={false}>
+          {open && tool.verdict && (
+            <motion.div
+              key="featured-verdict"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              style={{ overflow: "hidden" }}
+            >
+              <hr style={{ border: "none", borderTop: "1px solid rgba(200,240,74,0.35)", margin: "16px 0" }} />
+              <p
+                className="font-body"
+                style={{ fontSize: "14px", color: "#FFFFFF", lineHeight: 1.65, whiteSpace: "pre-wrap" }}
+              >
+                {tool.verdict}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div className="mt-5 flex items-center justify-between gap-3 flex-wrap">
+          {hasMore ? (
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              className="font-body"
+              style={{
+                fontSize: "12px",
+                fontWeight: 700,
+                color: "#C8F04A",
+                background: "transparent",
+                border: "none",
+                padding: 0,
+                cursor: "pointer",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+              }}
+              aria-expanded={open}
+            >
+              {open ? "− Less" : "+ More"}
+            </button>
+          ) : (
+            <span />
+          )}
+
+          {tool.url && (
+            <a
+              href={tool.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-body inline-block"
+              style={{
+                fontSize: "13px",
+                fontWeight: 600,
+                color: "#1A1510",
+                backgroundColor: "#C8F04A",
+                borderRadius: "999px",
+                padding: "10px 20px",
+                textDecoration: "none",
+                transition: "background-color 0.2s ease-out, color 0.2s ease-out",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "#FFFFFF";
+                e.currentTarget.style.color = "#2D35C9";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "#C8F04A";
+                e.currentTarget.style.color = "#1A1510";
+              }}
+            >
+              Open tool →
+            </a>
+          )}
         </div>
-      )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const StackCard = ({ tool }: { tool: MyStackItem }) => {
   const [open, setOpen] = useState(false);
