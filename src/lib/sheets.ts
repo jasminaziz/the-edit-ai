@@ -152,30 +152,50 @@ export async function fetchMyStack(): Promise<MyStackItem[]> {
     const res = await fetch(sheetsUrl('my_stack'));
     if (!res.ok) return [];
     const data = await res.json();
-    const rows: string[][] = data.values || [];
+    const rows: (string | boolean)[][] = data.values || [];
     if (rows.length < 2) return [];
-    // Header row: name, category, what_it_does, pricing, url, verdict, featured
-    const header = (rows[0] || []).map(h => (h || '').toLowerCase().trim());
-    const idx = (key: string) => header.indexOf(key);
-    const iName = idx('name');
-    const iCategory = idx('category');
-    const iWhat = idx('what_it_does');
-    const iPricing = idx('pricing');
-    const iUrl = idx('url');
-    const iVerdict = idx('verdict');
-    const iFeatured = idx('featured');
-    return rows.slice(1).filter(r => r.length > 0 && r[iName >= 0 ? iName : 0]).map(r => {
-      const featuredRaw = (iFeatured >= 0 ? (r[iFeatured] || '') : '').toString().trim().toLowerCase();
-      return {
-        name: stripEmoji(r[iName >= 0 ? iName : 0] || ''),
-        category: stripEmoji(r[iCategory >= 0 ? iCategory : 1] || ''),
-        what_it_does: stripEmoji(r[iWhat >= 0 ? iWhat : 2] || ''),
-        pricing: stripEmoji(r[iPricing >= 0 ? iPricing : 3] || ''),
-        url: r[iUrl >= 0 ? iUrl : 4] || '',
-        verdict: stripEmoji(r[iVerdict >= 0 ? iVerdict : 5] || ''),
-        featured: featuredRaw === 'true' || featuredRaw === 'yes' || featuredRaw === '1',
-      };
-    });
+    // Normalize header: lowercase, trim, collapse spaces -> underscores, strip non-alphanumerics
+    const norm = (s: unknown) =>
+      String(s ?? '')
+        .toLowerCase()
+        .trim()
+        .replace(/[\s-]+/g, '_')
+        .replace(/[^a-z0-9_]/g, '');
+    const header = (rows[0] || []).map(norm);
+    const findIdx = (...keys: string[]) => {
+      for (const k of keys) {
+        const i = header.indexOf(k);
+        if (i >= 0) return i;
+      }
+      return -1;
+    };
+    const iName = findIdx('name', 'tool', 'tool_name');
+    const iCategory = findIdx('category');
+    const iWhat = findIdx('what_it_does', 'whatitdoes', 'description');
+    const iPricing = findIdx('pricing', 'price', 'cost');
+    const iUrl = findIdx('url', 'link', 'website');
+    const iVerdict = findIdx('verdict', 'review', 'notes');
+    const iFeatured = findIdx('featured', 'is_featured', 'feature');
+
+    const cell = (row: (string | boolean)[], i: number) =>
+      i >= 0 && i < row.length ? row[i] : '';
+
+    const items: MyStackItem[] = [];
+    for (const r of rows.slice(1)) {
+      const nameVal = String(cell(r, iName) ?? '').trim();
+      if (!nameVal) continue;
+      const featuredRaw = String(cell(r, iFeatured) ?? '').trim().toLowerCase();
+      items.push({
+        name: stripEmoji(String(cell(r, iName) ?? '')),
+        category: stripEmoji(String(cell(r, iCategory) ?? '')),
+        what_it_does: stripEmoji(String(cell(r, iWhat) ?? '')),
+        pricing: stripEmoji(String(cell(r, iPricing) ?? '')),
+        url: String(cell(r, iUrl) ?? '').trim(),
+        verdict: stripEmoji(String(cell(r, iVerdict) ?? '')),
+        featured: featuredRaw === 'true' || featuredRaw === 'yes' || featuredRaw === '1' || featuredRaw === 'y',
+      });
+    }
+    return items;
   } catch {
     return [];
   }
