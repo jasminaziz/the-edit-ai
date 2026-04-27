@@ -67,7 +67,7 @@ const FeaturedCard = ({ tool }: { tool: MyStackItem }) => {
       </div>
 
 
-      <div style={{ position: "relative", zIndex: 1 }} className="sm:pr-32">
+      <div style={{ position: "relative", zIndex: 1 }} className="pr-16 sm:pr-44">
         <div className="flex items-center gap-2 mb-3">
           <div
             className="flex items-center gap-1.5"
