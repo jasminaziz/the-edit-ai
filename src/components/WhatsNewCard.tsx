@@ -41,21 +41,45 @@ function getCategoryColour(category: string): string {
   return CATEGORY_COLOURS[category] || "#7B7FD4";
 }
 
-function CategoryBadge({ category }: { category: string }) {
+/** Bolder, framed category badge for clearer visual hierarchy. */
+function CategoryBadge({ category, onColourBlock = false }: { category: string; onColourBlock?: boolean }) {
   if (!category) return null;
   const bg = getCategoryColour(category);
+  // When sitting on top of the colour block, invert to white pill with coloured text for contrast
+  if (onColourBlock) {
+    return (
+      <span
+        className="inline-block uppercase"
+        style={{
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+          fontWeight: 800,
+          fontSize: 11,
+          letterSpacing: "0.1em",
+          borderRadius: 4,
+          padding: "5px 10px",
+          backgroundColor: "#FFFFFF",
+          color: bg,
+          border: `1.5px solid ${bg}`,
+          boxShadow: "0 1px 2px rgba(0,0,0,0.06)",
+        }}
+      >
+        {category}
+      </span>
+    );
+  }
   return (
     <span
       className="inline-block uppercase"
       style={{
         fontFamily: "'Plus Jakarta Sans', sans-serif",
-        fontWeight: 600,
-        fontSize: 10,
-        letterSpacing: "0.06em",
+        fontWeight: 800,
+        fontSize: 11,
+        letterSpacing: "0.1em",
         borderRadius: 4,
-        padding: "3px 8px",
+        padding: "5px 10px",
         backgroundColor: bg,
         color: "#FFFFFF",
+        border: `1.5px solid ${bg}`,
       }}
     >
       {category}
@@ -63,22 +87,39 @@ function CategoryBadge({ category }: { category: string }) {
   );
 }
 
-function ExpandToggle({ expanded }: { expanded: boolean }) {
+/** Pill-style toggle so it's obviously clickable and won't overlap text. */
+function ExpandToggle({ expanded, onClick }: { expanded: boolean; onClick: (e: React.MouseEvent) => void }) {
   return (
-    <span
-      className="inline-flex items-center gap-1 select-none cursor-pointer"
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex items-center gap-1 select-none"
       style={{
         fontFamily: "'Plus Jakarta Sans', sans-serif",
+        fontWeight: 600,
         fontSize: 12,
-        color: "#9A8F82",
-        minWidth: 40,
-        minHeight: 40,
-        justifyContent: "center",
-        transition: "opacity 200ms ease, transform 200ms ease",
+        color: "#1A1510",
+        backgroundColor: "#F5F0E8",
+        border: "1px solid #E8E2D8",
+        borderRadius: 999,
+        padding: "6px 12px",
+        minHeight: 32,
+        cursor: "pointer",
+        transition: "background-color 150ms ease, color 150ms ease",
       }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.backgroundColor = "#1A1510";
+        e.currentTarget.style.color = "#FFFFFF";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.backgroundColor = "#F5F0E8";
+        e.currentTarget.style.color = "#1A1510";
+      }}
+      aria-expanded={expanded}
+      aria-label={expanded ? "Show less" : "Show more"}
     >
       {expanded ? "↑ Less" : "↓ More"}
-    </span>
+    </button>
   );
 }
 
@@ -117,6 +158,26 @@ function ReadMoreButton({ url }: { url: string }) {
   );
 }
 
+/** Bolder developer label — provider name should pop. */
+function DeveloperLabel({ developer, size = "default" }: { developer: string; size?: "default" | "small" }) {
+  if (!developer) return null;
+  return (
+    <p
+      className="uppercase"
+      style={{
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+        fontWeight: 800,
+        fontSize: size === "small" ? 12 : 13,
+        letterSpacing: "0.1em",
+        color: "#1A1510",
+        marginBottom: 6,
+      }}
+    >
+      {developer}
+    </p>
+  );
+}
+
 /* ──────────────────────── LEAD CARD ──────────────────────── */
 
 export function LeadCard({ item }: { item: WhatsNew }) {
@@ -146,44 +207,39 @@ export function LeadCard({ item }: { item: WhatsNew }) {
         e.currentTarget.style.boxShadow = "none";
       }}
     >
-      {/* Colour zone */}
+      {/* Desktop colour zone — slimmer (was 35%) */}
       <div
         className="shrink-0 hidden sm:block"
         style={{
-          width: "35%",
+          width: "22%",
           backgroundColor: colour,
           borderRadius: "8px 0 0 8px",
-          minHeight: 200,
+          minHeight: 180,
         }}
       />
-      {/* Mobile colour bar */}
+      {/* Mobile colour bar — much smaller (was 120px) */}
       <div
         className="sm:hidden shrink-0"
-        style={{ height: 120, backgroundColor: colour, borderRadius: "8px 8px 0 0" }}
+        style={{ height: 56, backgroundColor: colour, borderRadius: "8px 8px 0 0" }}
       />
 
-      {/* Content zone */}
-      <div className="relative flex-1 p-8" style={{ backgroundColor: "#FFFFFF" }}>
+      {/* Content zone — extra bottom padding so toggle never overlaps text */}
+      <div
+        className="relative flex-1"
+        style={{
+          backgroundColor: "#FFFFFF",
+          padding: "20px 20px 64px 20px",
+        }}
+      >
         {/* Category badge top-right */}
-        <div className="absolute" style={{ top: 16, right: 16 }}>
+        <div className="absolute" style={{ top: 14, right: 14 }}>
           <CategoryBadge category={item.category} />
         </div>
 
-        {item.developer && (
-          <p
-            className="uppercase"
-            style={{
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 400,
-              fontSize: 12,
-              letterSpacing: "0.08em",
-              color: "#9A8F82",
-              marginBottom: 12,
-            }}
-          >
-            {item.developer}
-          </p>
-        )}
+        {/* Reserve right-side space on the first rows so badge never collides */}
+        <div style={{ paddingRight: 110 }}>
+          <DeveloperLabel developer={item.developer} />
+        </div>
 
         {displayDate && (
           <p
@@ -203,7 +259,8 @@ export function LeadCard({ item }: { item: WhatsNew }) {
           className="font-heading"
           style={{
             fontWeight: 700,
-            fontSize: 24,
+            fontSize: 22,
+            lineHeight: 1.25,
             color: "#1A1510",
             textWrap: "balance",
             marginBottom: 8,
@@ -212,11 +269,7 @@ export function LeadCard({ item }: { item: WhatsNew }) {
           {item.name}
         </h3>
 
-        <div
-          style={{
-            transition: "height 300ms ease-in-out, opacity 300ms ease-in-out",
-          }}
-        >
+        <div style={{ transition: "height 300ms ease-in-out, opacity 300ms ease-in-out" }}>
           <p
             style={{
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -242,9 +295,15 @@ export function LeadCard({ item }: { item: WhatsNew }) {
           )}
         </div>
 
-        {/* Expand chevron bottom-right */}
-        <div className="absolute" style={{ bottom: 16, right: 16 }}>
-          <ExpandToggle expanded={expanded} />
+        {/* Expand toggle bottom-right — pill button, doesn't overlap content */}
+        <div className="absolute" style={{ bottom: 14, right: 14 }}>
+          <ExpandToggle
+            expanded={expanded}
+            onClick={(e) => {
+              e.stopPropagation();
+              setExpanded((p) => !p);
+            }}
+          />
         </div>
       </div>
     </div>
@@ -278,47 +337,33 @@ export function GridCard({ item }: { item: WhatsNew }) {
         e.currentTarget.style.boxShadow = "none";
       }}
     >
-      {/* Colour zone */}
+      {/* Colour zone — reduced from 120px to 64px to save vertical space */}
       <div
         className="relative shrink-0"
         style={{
-          height: 120,
+          height: 64,
           backgroundColor: colour,
           borderRadius: "8px 8px 0 0",
         }}
       >
-        {/* Category badge bottom-left */}
-        <div className="absolute" style={{ bottom: 10, left: 10 }}>
-          <CategoryBadge category={item.category} />
+        {/* Category badge bottom-left, inverted for contrast */}
+        <div className="absolute" style={{ bottom: 8, left: 10 }}>
+          <CategoryBadge category={item.category} onColourBlock />
         </div>
       </div>
 
-      {/* Card body */}
+      {/* Card body — extra bottom padding for the toggle */}
       <div
         className="relative flex-1 flex flex-col"
         style={{
           backgroundColor: "#FFFFFF",
-          padding: 20,
+          padding: "16px 18px 56px 18px",
           border: "1px solid #E8E2D8",
           borderTop: "none",
           borderRadius: "0 0 8px 8px",
         }}
       >
-        {item.developer && (
-          <p
-            className="uppercase"
-            style={{
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 400,
-              fontSize: 11,
-              letterSpacing: "0.08em",
-              color: "#9A8F82",
-              marginBottom: 6,
-            }}
-          >
-            {item.developer}
-          </p>
-        )}
+        <DeveloperLabel developer={item.developer} size="small" />
 
         {displayDate && (
           <p
@@ -348,11 +393,7 @@ export function GridCard({ item }: { item: WhatsNew }) {
           {item.name}
         </h3>
 
-        <div
-          style={{
-            transition: "height 300ms ease-in-out, opacity 300ms ease-in-out",
-          }}
-        >
+        <div style={{ transition: "height 300ms ease-in-out, opacity 300ms ease-in-out" }}>
           <p
             style={{
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -378,9 +419,15 @@ export function GridCard({ item }: { item: WhatsNew }) {
           )}
         </div>
 
-        {/* Expand chevron bottom-right */}
+        {/* Expand toggle — pill, clearly clickable */}
         <div className="absolute" style={{ bottom: 12, right: 12 }}>
-          <ExpandToggle expanded={expanded} />
+          <ExpandToggle
+            expanded={expanded}
+            onClick={(e) => {
+              e.stopPropagation();
+              setExpanded((p) => !p);
+            }}
+          />
         </div>
       </div>
     </div>
