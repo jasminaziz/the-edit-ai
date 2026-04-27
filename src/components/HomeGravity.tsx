@@ -60,18 +60,19 @@ export function HomeGravity({ tools }: { tools: Tool[] }) {
   if (pills.length === 0) return null;
 
   return (
-    <Gravity
-      gravity={{ x: 0, y: 1 }}
-      className="h-full w-full"
-      autoStart
-      grabCursor
-      addTopWall={false}
-      // Mobile browsers fire `resize` whenever the URL bar collapses/expands
-      // on scroll. Keeping resetOnResize on causes the pills to re-drop every
-      // time the user scrolls back up. Lock the simulation in place after the
-      // initial fall — it only re-runs on a full page refresh.
-      resetOnResize={false}
-    >
+    <div className="relative h-full w-full">
+      <Gravity
+        gravity={{ x: 0, y: 1 }}
+        className="h-full w-full"
+        autoStart
+        grabCursor
+        addTopWall={false}
+        // Mobile browsers fire `resize` whenever the URL bar collapses/expands
+        // on scroll. Keeping resetOnResize on causes the pills to re-drop every
+        // time the user scrolls back up. Lock the simulation in place after the
+        // initial fall — it only re-runs on a full page refresh.
+        resetOnResize={false}
+      >
       {pills.map((label, i) => {
         const h = hash(label);
         // Spread across the canvas width using the hash, not list order
