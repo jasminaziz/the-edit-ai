@@ -106,20 +106,7 @@ const FeaturedCard = ({ tool }: { tool: MyStackItem }) => {
         {tool.what_it_does && (
           <p
             className="font-body mt-3"
-            style={{
-              fontSize: "14px",
-              color: "#FFFFFF",
-              lineHeight: 1.55,
-              opacity: 0.95,
-              ...(open
-                ? {}
-                : {
-                    display: "-webkit-box",
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: "vertical" as const,
-                    overflow: "hidden",
-                  }),
-            }}
+            style={{ fontSize: "14px", color: "#FFFFFF", lineHeight: 1.55, opacity: 0.95 }}
           >
             {tool.what_it_does}
           </p>
