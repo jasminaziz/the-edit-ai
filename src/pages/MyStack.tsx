@@ -4,6 +4,26 @@ import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
+import { AnimatePresence, motion } from "framer-motion";
+
+// Claude-style asymmetric starburst mark
+const ClaudeStar = ({ size = 12, color = "#C8F04A" }: { size?: number; color?: string }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 100 100"
+    aria-hidden="true"
+    style={{ display: "block" }}
+  >
+    <path
+      d="M50 0 C52 28, 58 38, 72 42 C58 46, 52 56, 50 84 C48 56, 42 46, 28 42 C42 38, 48 28, 50 0 Z
+         M86 14 C82 36, 76 42, 60 46 C76 50, 82 56, 86 78 C90 56, 96 50, 100 46 C96 42, 90 36, 86 14 Z
+         M14 22 C12 40, 8 46, 0 50 C8 54, 12 60, 14 78 C16 60, 20 54, 28 50 C20 46, 16 40, 14 22 Z
+         M50 70 C51 82, 54 86, 62 90 C54 94, 51 96, 50 100 C49 96, 46 94, 38 90 C46 86, 49 82, 50 70 Z"
+      fill={color}
+    />
+  </svg>
+);
 
 const FeaturedCard = ({ tool }: { tool: MyStackItem }) => (
   <div
@@ -13,120 +33,273 @@ const FeaturedCard = ({ tool }: { tool: MyStackItem }) => (
       padding: "32px",
       color: "#FFFFFF",
       width: "100%",
+      position: "relative",
+      overflow: "hidden",
     }}
   >
-    <div className="flex items-center gap-2 mb-3">
-      <div
-        className="flex items-center gap-2"
-        style={{
-          padding: "4px 10px 4px 6px",
-          borderRadius: "999px",
-          border: "1px solid rgba(200, 240, 74, 0.4)",
-          backgroundColor: "transparent",
-        }}
-        aria-label="Featured tool"
-      >
-        {/* Claude-style diamond mark */}
-        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
-          <path d="M6 0 L12 6 L6 12 L0 6 Z" fill="#C8F04A" />
-        </svg>
-        <span
-          className="font-body"
-          style={{
-            fontSize: "0.65rem",
-            fontWeight: 700,
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "#C8F04A",
-            lineHeight: 1,
-          }}
-        >
-          Featured Tool
-        </span>
-      </div>
-      {tool.category && (
-        <span
-          className="font-body"
-          style={{ fontSize: "12px", color: "#FFFFFF", opacity: 0.8, letterSpacing: "0.04em" }}
-        >
-          {tool.category}
-        </span>
-      )}
+    {/* Decorative Claude star on the right */}
+    <div
+      aria-hidden="true"
+      style={{
+        position: "absolute",
+        right: "-24px",
+        top: "50%",
+        transform: "translateY(-50%) rotate(12deg)",
+        opacity: 0.18,
+        pointerEvents: "none",
+      }}
+      className="hidden sm:block"
+    >
+      <ClaudeStar size={220} color="#C8F04A" />
     </div>
 
-    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-      <h2
-        className="font-heading"
-        style={{
-          fontSize: "clamp(28px, 4vw, 40px)",
-          fontWeight: 700,
-          color: "#C8F04A",
-          letterSpacing: "-0.02em",
-          lineHeight: 1.05,
-        }}
-      >
-        {tool.name}
-      </h2>
-      {tool.pricing && (
-        <span className="font-body" style={{ fontSize: "13px", color: "#FFFFFF", opacity: 0.85 }}>
-          {tool.pricing}
-        </span>
-      )}
-    </div>
-
-    {tool.what_it_does && (
-      <p
-        className="font-body mt-4"
-        style={{ fontSize: "15px", color: "#FFFFFF", lineHeight: 1.55, opacity: 0.95 }}
-      >
-        {tool.what_it_does}
-      </p>
-    )}
-
-    {tool.verdict && (
-      <>
-        <hr style={{ border: "none", borderTop: "1px solid rgba(255,255,255,0.18)", margin: "20px 0" }} />
-        <p
-          className="font-body"
-          style={{ fontSize: "15px", color: "#FFFFFF", lineHeight: 1.65, whiteSpace: "pre-wrap" }}
-        >
-          {tool.verdict}
-        </p>
-      </>
-    )}
-
-    {tool.url && (
-      <div className="mt-6">
-        <a
-          href={tool.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-body inline-block"
+    <div style={{ position: "relative", zIndex: 1 }}>
+      <div className="flex items-center gap-2 mb-3">
+        <div
+          className="flex items-center gap-2"
           style={{
-            fontSize: "14px",
-            fontWeight: 600,
-            color: "#1A1510",
-            backgroundColor: "#C8F04A",
+            padding: "4px 10px 4px 6px",
             borderRadius: "999px",
-            padding: "12px 24px",
-            textDecoration: "none",
-            transition: "background-color 0.2s ease-out, color 0.2s ease-out",
+            border: "1px solid rgba(200, 240, 74, 0.4)",
+            backgroundColor: "transparent",
           }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#FFFFFF";
-            e.currentTarget.style.color = "#2D35C9";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "#C8F04A";
-            e.currentTarget.style.color = "#1A1510";
+          aria-label="Featured tool"
+        >
+          <ClaudeStar size={12} color="#C8F04A" />
+          <span
+            className="font-body"
+            style={{
+              fontSize: "0.65rem",
+              fontWeight: 700,
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              color: "#C8F04A",
+              lineHeight: 1,
+            }}
+          >
+            Featured Tool
+          </span>
+        </div>
+        {tool.category && (
+          <span
+            className="font-body"
+            style={{ fontSize: "12px", color: "#FFFFFF", opacity: 0.8, letterSpacing: "0.04em" }}
+          >
+            {tool.category}
+          </span>
+        )}
+      </div>
+
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <h2
+          className="font-heading"
+          style={{
+            fontSize: "clamp(28px, 4vw, 40px)",
+            fontWeight: 700,
+            color: "#C8F04A",
+            letterSpacing: "-0.02em",
+            lineHeight: 1.05,
           }}
         >
-          Open tool →
-        </a>
+          {tool.name}
+        </h2>
+        {tool.pricing && (
+          <span className="font-body" style={{ fontSize: "13px", color: "#FFFFFF", opacity: 0.85 }}>
+            {tool.pricing}
+          </span>
+        )}
       </div>
-    )}
+
+      {tool.what_it_does && (
+        <p
+          className="font-body mt-4"
+          style={{ fontSize: "15px", color: "#FFFFFF", lineHeight: 1.55, opacity: 0.95 }}
+        >
+          {tool.what_it_does}
+        </p>
+      )}
+
+      {tool.verdict && (
+        <>
+          <hr style={{ border: "none", borderTop: "1px solid rgba(255,255,255,0.18)", margin: "20px 0" }} />
+          <p
+            className="font-body"
+            style={{ fontSize: "15px", color: "#FFFFFF", lineHeight: 1.65, whiteSpace: "pre-wrap" }}
+          >
+            {tool.verdict}
+          </p>
+        </>
+      )}
+
+      {tool.url && (
+        <div className="mt-6">
+          <a
+            href={tool.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-body inline-block"
+            style={{
+              fontSize: "14px",
+              fontWeight: 600,
+              color: "#1A1510",
+              backgroundColor: "#C8F04A",
+              borderRadius: "999px",
+              padding: "12px 24px",
+              textDecoration: "none",
+              transition: "background-color 0.2s ease-out, color 0.2s ease-out",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#FFFFFF";
+              e.currentTarget.style.color = "#2D35C9";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "#C8F04A";
+              e.currentTarget.style.color = "#1A1510";
+            }}
+          >
+            Open tool →
+          </a>
+        </div>
+      )}
+    </div>
   </div>
 );
+
+const StackCard = ({ tool }: { tool: MyStackItem }) => {
+  const [open, setOpen] = useState(false);
+  const hasMore = Boolean(tool.verdict);
+
+  return (
+    <div
+      className="group transition-all duration-200 overflow-hidden h-full flex"
+      style={{
+        backgroundColor: "#FFFFFF",
+        border: open ? "0.5px solid #2D35C9" : "0.5px solid #E8E2D8",
+        borderRadius: "12px",
+        boxShadow: open ? "0 8px 24px rgba(45, 53, 201, 0.12)" : "none",
+      }}
+    >
+      {/* Left accent bar — thickens and shifts to cobalt when open */}
+      <div
+        style={{
+          width: open ? "6px" : "4px",
+          backgroundColor: open ? "#2D35C9" : "#C8F04A",
+          flexShrink: 0,
+          transition: "width 0.2s ease-out, background-color 0.2s ease-out",
+        }}
+      />
+
+      <div style={{ padding: "20px" }} className="flex flex-col flex-1 min-w-0">
+        <div className="flex items-center gap-2 flex-wrap">
+          <h3 className="font-heading" style={{ fontSize: "16px", fontWeight: 500, color: "#1A1510" }}>
+            {tool.name}
+          </h3>
+          {tool.pricing && (
+            <span className="font-body ml-auto" style={{ fontSize: "12px", color: "#9A8F82" }}>
+              {tool.pricing}
+            </span>
+          )}
+        </div>
+
+        {tool.what_it_does && (
+          <p
+            className="font-body mt-2"
+            style={{
+              fontSize: "14px",
+              color: "#1A1510",
+              lineHeight: 1.5,
+              ...(open
+                ? {}
+                : {
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical" as const,
+                    overflow: "hidden",
+                  }),
+            }}
+          >
+            {tool.what_it_does}
+          </p>
+        )}
+
+        <AnimatePresence initial={false}>
+          {open && tool.verdict && (
+            <motion.div
+              key="verdict"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              style={{ overflow: "hidden" }}
+            >
+              <hr style={{ border: "none", borderTop: "0.5px solid #C8F04A", margin: "16px 0" }} />
+              <p
+                className="font-body"
+                style={{ fontSize: "14px", color: "#1A1510", lineHeight: 1.6, whiteSpace: "pre-wrap" }}
+              >
+                {tool.verdict}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div className="mt-auto pt-4 flex items-center justify-between gap-3">
+          {hasMore ? (
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              className="font-body"
+              style={{
+                fontSize: "12px",
+                fontWeight: 600,
+                color: "#2D35C9",
+                background: "transparent",
+                border: "none",
+                padding: 0,
+                cursor: "pointer",
+                letterSpacing: "0.04em",
+              }}
+              aria-expanded={open}
+            >
+              {open ? "− Less" : "+ More"}
+            </button>
+          ) : (
+            <span />
+          )}
+
+          {tool.url && (
+            <a
+              href={tool.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-body inline-block"
+              style={{
+                fontSize: "13px",
+                fontWeight: 500,
+                color: "#1A1510",
+                backgroundColor: "#C8F04A",
+                borderRadius: "20px",
+                padding: "10px 20px",
+                transition: "background-color 0.2s ease-out, color 0.2s ease-out",
+                textDecoration: "none",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "#2D35C9";
+                e.currentTarget.style.color = "#FFFFFF";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "#C8F04A";
+                e.currentTarget.style.color = "#1A1510";
+              }}
+            >
+              Open tool →
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const MyStack = () => {
   const [items, setItems] = useState<MyStackItem[]>([]);
@@ -203,80 +376,7 @@ const MyStack = () => {
                     <RevealGroup className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {catTools.map((tool) => (
                         <RevealItem key={tool.name}>
-                          <div
-                            className="group hover:shadow-lg transition-all duration-150 overflow-hidden h-full flex flex-col"
-                            style={{
-                              backgroundColor: "#FFFFFF",
-                              border: "0.5px solid #E8E2D8",
-                              borderRadius: "12px",
-                            }}
-                          >
-                            <div style={{ height: "4px", backgroundColor: "#C8F04A" }} />
-
-                            <div style={{ padding: "20px" }} className="flex flex-col flex-1">
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <h3 className="font-heading" style={{ fontSize: "16px", fontWeight: 500, color: "#1A1510" }}>
-                                  {tool.name}
-                                </h3>
-                                {tool.category && (
-                                  <span className="font-body" style={{ fontSize: "11px", color: "#9A8F82", letterSpacing: "0.04em" }}>
-                                    {tool.category}
-                                  </span>
-                                )}
-                                {tool.pricing && (
-                                  <span className="font-body ml-auto" style={{ fontSize: "12px", color: "#9A8F82" }}>
-                                    {tool.pricing}
-                                  </span>
-                                )}
-                              </div>
-
-                              {tool.what_it_does && (
-                                <p className="font-body mt-2" style={{ fontSize: "14px", color: "#1A1510", lineHeight: 1.5 }}>
-                                  {tool.what_it_does}
-                                </p>
-                              )}
-
-                              {tool.verdict && (
-                                <>
-                                  <hr style={{ border: "none", borderTop: "0.5px solid #E8E2D8", margin: "16px 0" }} />
-                                  <p className="font-body" style={{ fontSize: "14px", color: "#1A1510", lineHeight: 1.6 }}>
-                                    {tool.verdict}
-                                  </p>
-                                </>
-                              )}
-
-                              {tool.url && (
-                                <div className="mt-auto pt-4 flex justify-end">
-                                  <a
-                                    href={tool.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="font-body inline-block"
-                                    style={{
-                                      fontSize: "13px",
-                                      fontWeight: 500,
-                                      color: "#1A1510",
-                                      backgroundColor: "#C8F04A",
-                                      borderRadius: "20px",
-                                      padding: "10px 20px",
-                                      transition: "background-color 0.2s ease-out, color 0.2s ease-out",
-                                      textDecoration: "none",
-                                    }}
-                                    onMouseEnter={(e) => {
-                                      e.currentTarget.style.backgroundColor = "#2D35C9";
-                                      e.currentTarget.style.color = "#FFFFFF";
-                                    }}
-                                    onMouseLeave={(e) => {
-                                      e.currentTarget.style.backgroundColor = "#C8F04A";
-                                      e.currentTarget.style.color = "#1A1510";
-                                    }}
-                                  >
-                                    Read more →
-                                  </a>
-                                </div>
-                              )}
-                            </div>
-                          </div>
+                          <StackCard tool={tool} />
                         </RevealItem>
                       ))}
                     </RevealGroup>
