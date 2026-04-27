@@ -245,6 +245,24 @@ export function Layout({ children }: { children: ReactNode }) {
               </a>
             </div>
             <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
+              <Link
+                to="/privacy-policy"
+                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+              >
+                Privacy
+              </Link>
+              <Link
+                to="/terms-of-service"
+                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+              >
+                Terms
+              </Link>
+              <Link
+                to="/cookie-policy"
+                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+              >
+                Cookies
+              </Link>
               <a
                 href={WORK_WITH_ME_URL}
                 target="_blank"
