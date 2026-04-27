@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
-import { Hand, MousePointer2 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-const SESSION_KEY = "homePillsDragHintSeen";
+const STORAGE_KEY = "homePillsDragged";
 
 /**
- * Subtle affordance overlay for the homepage pill physics.
+ * Minimal "DRAG ME" affordance for the homepage pill physics.
+ *
+ * Style: tiny uppercase lime label + bouncing chevron arrow below
+ * (Game Boy-esque, no chip background — sits directly on the periwinkle hero).
  *
  * Behaviour:
  *  - Hidden during the initial fall (~2.5s) so it doesn't compete with motion.
- *  - Fades in once pills have settled, auto-dismisses on a timer.
- *  - Dismisses immediately on first interaction with the gravity canvas.
- *  - Sets a sessionStorage flag so it never shows twice in the same session.
- *  - Respects prefers-reduced-motion (no bobbing, instant fade).
+ *  - Fades in once pills have settled and stays visible until the user drags.
+ *  - Persists across page loads via localStorage flag — only disappears once
+ *    the user has actually interacted with a pill.
+ *  - Respects prefers-reduced-motion (no bouncing).
  */
 export function DragHint() {
   const isMobile = useIsMobile();
@@ -20,33 +22,25 @@ export function DragHint() {
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    // Skip if user has already seen it this session
-    if (typeof window !== "undefined" && sessionStorage.getItem(SESSION_KEY)) {
-      setDismissed(true);
-      return;
+    // Skip permanently if user has dragged a pill before
+    try {
+      if (localStorage.getItem(STORAGE_KEY)) {
+        setDismissed(true);
+        return;
+      }
+    } catch {
+      // private mode — show anyway
     }
 
     // Show after pills have settled
     const showTimer = window.setTimeout(() => setVisible(true), 2500);
-
-    // Auto-dismiss after display window
-    const dismissDelay = isMobile ? 5000 : 7000;
-    const hideTimer = window.setTimeout(() => {
-      setVisible(false);
-      window.setTimeout(() => setDismissed(true), 400);
-      try {
-        sessionStorage.setItem(SESSION_KEY, "1");
-      } catch {
-        // ignore (private mode)
-      }
-    }, 2500 + dismissDelay);
 
     // Dismiss on first interaction anywhere on the gravity canvas
     const onInteract = () => {
       setVisible(false);
       window.setTimeout(() => setDismissed(true), 400);
       try {
-        sessionStorage.setItem(SESSION_KEY, "1");
+        localStorage.setItem(STORAGE_KEY, "1");
       } catch {
         // ignore
       }
@@ -55,64 +49,55 @@ export function DragHint() {
 
     return () => {
       window.clearTimeout(showTimer);
-      window.clearTimeout(hideTimer);
       window.removeEventListener("pointerdown", onInteract);
     };
-  }, [isMobile]);
+  }, []);
 
   if (dismissed) return null;
-
-  const Icon = isMobile ? Hand : MousePointer2;
-  const label = isMobile ? "Tap & drag" : "Drag me";
-
-  // Mobile: centered above pills near the top. Desktop: top-right of canvas.
-  const positionStyle: React.CSSProperties = isMobile
-    ? {
-        top: 12,
-        left: "50%",
-        transform: "translateX(-50%)",
-      }
-    : {
-        top: 20,
-        right: 24,
-      };
 
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute z-30"
+      className="pointer-events-none absolute z-30 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       style={{
-        ...positionStyle,
+        top: isMobile ? 16 : 24,
         opacity: visible ? 1 : 0,
-        transition: "opacity 400ms ease-out",
+        transition: "opacity 500ms ease-out",
       }}
     >
-      <div
-        className="drag-hint-chip flex items-center gap-2 rounded-full"
+      <span
         style={{
-          backgroundColor: "rgba(255, 255, 255, 0.95)",
-          color: "#2D35C9",
-          padding: isMobile ? "6px 12px" : "8px 14px",
+          color: "#C8F04A",
           fontFamily: "var(--font-body, 'Plus Jakarta Sans', sans-serif)",
           fontWeight: 700,
-          fontSize: isMobile ? 12 : 13,
-          letterSpacing: "0.01em",
-          boxShadow: "0 6px 20px rgba(45, 53, 201, 0.18)",
-          border: "1.5px solid rgba(45, 53, 201, 0.15)",
+          fontSize: isMobile ? 9 : 10,
+          letterSpacing: "0.3em",
+          textTransform: "uppercase",
+          textShadow: "0 1px 6px rgba(26, 21, 16, 0.25)",
         }}
       >
-        <Icon size={isMobile ? 14 : 16} strokeWidth={2.5} />
-        <span>{label}</span>
-      </div>
+        Drag me
+      </span>
+      <div
+        className="drag-hint-arrow"
+        style={{
+          width: isMobile ? 9 : 10,
+          height: isMobile ? 9 : 10,
+          borderBottom: "2px solid #C8F04A",
+          borderRight: "2px solid #C8F04A",
+          transform: "rotate(45deg)",
+          filter: "drop-shadow(1px 1px 4px rgba(200, 240, 74, 0.35))",
+        }}
+      />
       <style>{`
         @media (prefers-reduced-motion: no-preference) {
-          .drag-hint-chip {
-            animation: dragHintBob 2.2s ease-in-out infinite;
+          .drag-hint-arrow {
+            animation: dragHintBounce 1.4s ease-in-out infinite;
           }
         }
-        @keyframes dragHintBob {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-4px); }
+        @keyframes dragHintBounce {
+          0%, 100% { transform: rotate(45deg) translate(0, 0); }
+          50% { transform: rotate(45deg) translate(3px, 3px); }
         }
       `}</style>
     </div>
