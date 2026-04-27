@@ -16,21 +16,34 @@ const FeaturedCard = ({ tool }: { tool: MyStackItem }) => (
     }}
   >
     <div className="flex items-center gap-2 mb-3">
-      <span
-        className="font-body"
+      <div
+        className="flex items-center gap-2"
         style={{
-          fontSize: "11px",
-          fontWeight: 600,
-          letterSpacing: "0.12em",
-          textTransform: "uppercase",
-          backgroundColor: "#C8F04A",
-          color: "#1A1510",
-          padding: "4px 10px",
+          padding: "4px 10px 4px 6px",
           borderRadius: "999px",
+          border: "1px solid rgba(200, 240, 74, 0.4)",
+          backgroundColor: "transparent",
         }}
+        aria-label="Featured tool"
       >
-        Featured
-      </span>
+        {/* Claude-style diamond mark */}
+        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+          <path d="M6 0 L12 6 L6 12 L0 6 Z" fill="#C8F04A" />
+        </svg>
+        <span
+          className="font-body"
+          style={{
+            fontSize: "0.65rem",
+            fontWeight: 700,
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "#C8F04A",
+            lineHeight: 1,
+          }}
+        >
+          Featured Tool
+        </span>
+      </div>
       {tool.category && (
         <span
           className="font-body"
