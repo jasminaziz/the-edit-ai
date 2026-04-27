@@ -5,7 +5,7 @@ interface CobaltZoneProps {
   subheading?: string;
   bodyText?: string;
   illustration?: ReactNode;
-  rightBadge?: string;
+  rightBadge?: string | { text: string; url: string };
   twoLineHeading?: { line1: string; line2: string; line2Color?: string; inline?: boolean };
 }
 
