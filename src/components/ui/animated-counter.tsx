@@ -37,8 +37,8 @@ export const Counter = ({
   // Plain motion value — we drive it with `animate()` so it lands EXACTLY on `end`.
   const value = useMotionValue(start);
 
-  // Observe either the external trigger element (e.g. the pills/hero section)
-  // or, as a fallback, the counter's own container. Fires once.
+  // Observe either the external trigger element or, as a fallback, the counter's
+  // own container. Fires once per page load.
   useEffect(() => {
     if (hasAnimated) return;
     const target = triggerRef?.current ?? containerRef.current;
@@ -50,7 +50,7 @@ export const Counter = ({
           observer.disconnect();
         }
       },
-      { threshold: 0, rootMargin: "0px 0px 200px 0px" }
+      { threshold: 0.25, rootMargin: "0px" }
     );
     observer.observe(target);
     return () => observer.disconnect();
