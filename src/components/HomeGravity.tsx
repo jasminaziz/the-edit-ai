@@ -1,5 +1,6 @@
 import { Gravity, MatterBody } from "@/components/ui/gravity";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { DragHint } from "@/components/DragHint";
 import type { Tool } from "@/lib/sheets";
 
 // Brand palette. Lime is rare-only (used as accent), so we exclude it from the
@@ -59,18 +60,19 @@ export function HomeGravity({ tools }: { tools: Tool[] }) {
   if (pills.length === 0) return null;
 
   return (
-    <Gravity
-      gravity={{ x: 0, y: 1 }}
-      className="h-full w-full"
-      autoStart
-      grabCursor
-      addTopWall={false}
-      // Mobile browsers fire `resize` whenever the URL bar collapses/expands
-      // on scroll. Keeping resetOnResize on causes the pills to re-drop every
-      // time the user scrolls back up. Lock the simulation in place after the
-      // initial fall — it only re-runs on a full page refresh.
-      resetOnResize={false}
-    >
+    <div className="relative h-full w-full">
+      <Gravity
+        gravity={{ x: 0, y: 1 }}
+        className="h-full w-full"
+        autoStart
+        grabCursor
+        addTopWall={false}
+        // Mobile browsers fire `resize` whenever the URL bar collapses/expands
+        // on scroll. Keeping resetOnResize on causes the pills to re-drop every
+        // time the user scrolls back up. Lock the simulation in place after the
+        // initial fall — it only re-runs on a full page refresh.
+        resetOnResize={false}
+      >
       {pills.map((label, i) => {
         const h = hash(label);
         // Spread across the canvas width using the hash, not list order
@@ -98,6 +100,8 @@ export function HomeGravity({ tools }: { tools: Tool[] }) {
           </MatterBody>
         );
       })}
-    </Gravity>
+      </Gravity>
+      <DragHint />
+    </div>
   );
 }
