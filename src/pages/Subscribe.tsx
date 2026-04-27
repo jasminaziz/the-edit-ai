@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Check } from "lucide-react";
 
@@ -234,6 +235,27 @@ export default function Subscribe() {
                     Something went wrong — please try again.
                   </p>
                 )}
+
+                <p
+                  className="font-body"
+                  style={{
+                    fontWeight: 400,
+                    fontSize: 12,
+                    lineHeight: 1.5,
+                    color: "#9A8F82",
+                    marginTop: 10,
+                    marginBottom: 0,
+                  }}
+                >
+                  By subscribing, you agree to our{" "}
+                  <Link
+                    to="/privacy-policy"
+                    style={{ color: "#2D35C9", textDecoration: "underline", textUnderlineOffset: 2 }}
+                  >
+                    Privacy Policy
+                  </Link>
+                  . You can unsubscribe at any time.
+                </p>
 
                 <div style={{ marginTop: 12, marginBottom: 24 }}>
                   <label
