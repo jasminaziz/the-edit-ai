@@ -65,6 +65,11 @@ export function HomeGravity({ tools }: { tools: Tool[] }) {
       autoStart
       grabCursor
       addTopWall={false}
+      // Mobile browsers fire `resize` whenever the URL bar collapses/expands
+      // on scroll. Keeping resetOnResize on causes the pills to re-drop every
+      // time the user scrolls back up. Lock the simulation in place after the
+      // initial fall — it only re-runs on a full page refresh.
+      resetOnResize={false}
     >
       {pills.map((label, i) => {
         const h = hash(label);
