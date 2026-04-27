@@ -231,19 +231,7 @@ const StackCard = ({ tool }: { tool: MyStackItem }) => {
         {tool.what_it_does && (
           <p
             className="font-body mt-2"
-            style={{
-              fontSize: "14px",
-              color: "#1A1510",
-              lineHeight: 1.5,
-              ...(open
-                ? {}
-                : {
-                    display: "-webkit-box",
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: "vertical" as const,
-                    overflow: "hidden",
-                  }),
-            }}
+            style={{ fontSize: "14px", color: "#1A1510", lineHeight: 1.5 }}
           >
             {tool.what_it_does}
           </p>
