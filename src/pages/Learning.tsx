@@ -124,9 +124,9 @@ const Learning = () => {
                     {r.what_it_is}
                   </p>
 
-                  {r.why_it_matters && (
+                  {r.why_i_put_it_here && (
                     <p className="font-body text-xs text-muted-foreground mb-4">
-                      <strong>Why I put it here:</strong> {r.why_it_matters}
+                      <strong>Why I put it here:</strong> {r.why_i_put_it_here}
                     </p>
                   )}
 
