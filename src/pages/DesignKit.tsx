@@ -21,75 +21,66 @@ interface PhaseConfig {
   explainer: string;
 }
 
+// Exact phase order from the brief.
 const PHASES: PhaseConfig[] = [
-  {
-    name: "Discover",
-    explainer:
-      "Where you find your visual language. Gather references, study what works, and build the brief before any decisions are made.",
-  },
-  {
-    name: "Define",
-    explainer:
-      "Lock the building blocks. Colour, type, and icons decided here travel through everything you build.",
-  },
-  {
-    name: "Design",
-    explainer:
-      "Map the structure, design the screens, reference the components. Everything before a single prompt is written.",
-  },
-  {
-    name: "Present",
-    explainer:
-      "Show the work properly. Device frames and scene mockups turn screenshots into convincing client deliverables.",
-  },
-  {
-    name: "Check",
-    explainer:
-      "Sign off before building. Contrast, accessibility, and real photography confirmed before anything goes live.",
-  },
+  { name: "Get Inspired", explainer: "Where you find your visual language. Gather references and study what works before any decisions are made." },
+  { name: "Define Visual Direction", explainer: "Lock the building blocks. Colour, type, and icons decided here travel through everything you build." },
+  { name: "Plan the Build", explainer: "Map the structure and reference the components. Everything before a single prompt is written." },
+  { name: "Build the UI", explainer: "Translate the plan into screens and working interfaces." },
+  { name: "Present the Work", explainer: "Show the work properly. Device frames and scene mockups turn screenshots into convincing client deliverables." },
+  { name: "Check Before You Ship", explainer: "Sign off before building. Contrast, accessibility, and real photography confirmed before anything goes live." },
 ];
 
-function groupByPhase(items: DesignKitItem[]) {
-  const groups: Record<string, DesignKitItem[]> = {};
+function organise(items: DesignKitItem[]) {
+  // Bucket items by phase (case-insensitive match against PHASES).
+  const byPhase = new Map<string, DesignKitItem[]>();
+  for (const p of PHASES) byPhase.set(p.name, []);
+  const orphans: DesignKitItem[] = [];
 
   for (const item of items) {
-    const phase = item.phase?.trim() || "";
-    const key = phase || "__other__";
-    if (!groups[key]) groups[key] = [];
-    groups[key].push(item);
+    const ph = (item.phase || "").trim();
+    const match = PHASES.find((p) => p.name.toLowerCase() === ph.toLowerCase());
+    if (match) byPhase.get(match.name)!.push(item);
+    else orphans.push(item);
   }
 
-  const sections: { phase: PhaseConfig | null; number: string; items: DesignKitItem[] }[] = [];
+  // Flag empty phases for visibility.
+  const emptyPhases = PHASES.filter((p) => byPhase.get(p.name)!.length === 0).map((p) => p.name);
+  if (emptyPhases.length) {
+    console.warn("[design_kit] phase sections with zero entries:", emptyPhases);
+  }
+  if (orphans.length) {
+    console.warn(
+      "[design_kit] items with phase value not matching expected list:",
+      orphans.map((o) => ({ name: o.name, phase: o.phase }))
+    );
+  }
 
-  PHASES.forEach((p, i) => {
-    if (groups[p.name]) {
-      sections.push({
+  // Build sections in PHASES order, skipping empty ones.
+  const sections = PHASES
+    .filter((p) => byPhase.get(p.name)!.length > 0)
+    .map((p, i) => {
+      const phaseItems = byPhase.get(p.name)!;
+      // Group within phase by `group`. Preserve first-seen order.
+      const groupOrder: string[] = [];
+      const grouped = new Map<string, DesignKitItem[]>();
+      for (const it of phaseItems) {
+        const g = (it.group || "").trim();
+        if (!grouped.has(g)) {
+          grouped.set(g, []);
+          groupOrder.push(g);
+        }
+        grouped.get(g)!.push(it);
+      }
+      const showGroupHeaders = groupOrder.filter((g) => g).length > 1;
+      return {
         phase: p,
-        number: String(i + 1).padStart(2, "0"),
-        items: groups[p.name],
-      });
-    }
-  });
-
-  // Any phase values not in PHASES (excluding empty)
-  for (const key of Object.keys(groups)) {
-    if (key !== "__other__" && !PHASES.some((p) => p.name === key)) {
-      sections.push({
-        phase: { name: key, explainer: "" },
-        number: String(sections.length + 1).padStart(2, "0"),
-        items: groups[key],
-      });
-    }
-  }
-
-  // Empty phase → "Other" at the bottom with no header band
-  if (groups["__other__"]) {
-    sections.push({
-      phase: null,
-      number: "",
-      items: groups["__other__"],
+        number: String(PHASES.indexOf(p) + 1).padStart(2, "0"),
+        groups: groupOrder.map((g) => ({ name: g, items: grouped.get(g)! })),
+        showGroupHeaders,
+        sectionIndex: i,
+      };
     });
-  }
 
   return sections;
 }
@@ -98,87 +89,81 @@ function groupByPhase(items: DesignKitItem[]) {
 function PhaseSection({
   phase,
   number,
-  items,
+  groups,
+  showGroupHeaders,
   isFirst,
 }: {
-  phase: PhaseConfig | null;
+  phase: PhaseConfig;
   number: string;
-  items: DesignKitItem[];
+  groups: { name: string; items: DesignKitItem[] }[];
+  showGroupHeaders: boolean;
   isFirst: boolean;
 }) {
   return (
     <div style={{ marginTop: isFirst ? 0 : 48 }}>
       {/* Header band */}
-      {phase && (
-        <Reveal>
+      <Reveal>
+        <div
+          className="px-6 sm:px-12"
+          style={{
+            backgroundColor: "#2D35C9",
+            paddingTop: 32,
+            paddingBottom: 32,
+            borderRadius: 0,
+            WebkitFontSmoothing: "antialiased",
+          }}
+        >
           <div
-            className="px-6 sm:px-12"
-            style={{
-              backgroundColor: "#2D35C9",
-              paddingTop: 32,
-              paddingBottom: 32,
-              borderRadius: 0,
-              WebkitFontSmoothing: "antialiased",
-            }}
+            className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6"
+            style={{ maxWidth: 1280, margin: "0 auto" }}
           >
-            <div
-              className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6"
+            <span
+              className="font-heading"
               style={{
-                maxWidth: 1280,
-                margin: "0 auto",
+                fontSize: 80,
+                fontWeight: 700,
+                color: "#C8F04A",
+                lineHeight: 1,
+                letterSpacing: "-0.03em",
+                WebkitFontSmoothing: "antialiased",
+                flexShrink: 0,
               }}
             >
-              {/* Phase number */}
+              {number}
+            </span>
+            <div>
               <span
                 className="font-heading"
                 style={{
-                  fontSize: 80,
+                  display: "block",
+                  fontSize: 36,
                   fontWeight: 700,
-                  color: "#C8F04A",
-                  lineHeight: 1,
-                  letterSpacing: "-0.03em",
-                  WebkitFontSmoothing: "antialiased",
-                  flexShrink: 0,
+                  color: "#FFFFFF",
+                  letterSpacing: "-0.02em",
+                  textWrap: "balance",
                 }}
               >
-                {number}
+                {phase.name}
               </span>
-
-              {/* Name + explainer */}
-              <div>
+              {phase.explainer && (
                 <span
-                  className="font-heading"
+                  className="font-body"
                   style={{
                     display: "block",
-                    fontSize: 36,
-                    fontWeight: 700,
-                    color: "#FFFFFF",
-                    letterSpacing: "-0.02em",
-                    textWrap: "balance",
+                    fontSize: 16,
+                    fontWeight: 400,
+                    color: "rgba(255,255,255,0.65)",
+                    marginTop: 6,
+                    textWrap: "pretty",
                   }}
                 >
-                  {phase.name}
+                  {phase.explainer}
                 </span>
-                {phase.explainer && (
-                  <span
-                    className="font-body"
-                    style={{
-                      display: "block",
-                      fontSize: 16,
-                      fontWeight: 400,
-                      color: "rgba(255,255,255,0.65)",
-                      marginTop: 6,
-                      textWrap: "pretty",
-                    }}
-                  >
-                    {phase.explainer}
-                  </span>
-                )}
-              </div>
+              )}
             </div>
           </div>
-        </Reveal>
-      )}
+        </div>
+      </Reveal>
 
       {/* Card body */}
       <div
@@ -189,22 +174,42 @@ function PhaseSection({
           paddingBottom: 64,
         }}
       >
-        <RevealGroup
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-          style={{ maxWidth: 1280, margin: "0 auto" }}
-        >
-          {items.map((item) => (
-            <RevealItem key={item.name + item.url} className="h-full">
-              <DesignCard item={item} />
-            </RevealItem>
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          {groups.map((g, gi) => (
+            <div key={g.name || `__nogroup__${gi}`} style={{ marginTop: gi === 0 ? 0 : 40 }}>
+              {showGroupHeaders && g.name && (
+                <Reveal>
+                  <h3
+                    className="font-heading"
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: "#1A1510",
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      marginBottom: 16,
+                    }}
+                  >
+                    {g.name}
+                  </h3>
+                </Reveal>
+              )}
+              <RevealGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {g.items.map((item) => (
+                  <RevealItem key={item.name + item.url} className="h-full">
+                    <DesignCard item={item} />
+                  </RevealItem>
+                ))}
+              </RevealGroup>
+            </div>
           ))}
-        </RevealGroup>
+        </div>
       </div>
     </div>
   );
 }
 
-/* ─── Card with uniform height + read more/less ─── */
+/* ─── Card ─── */
 function DesignCard({ item }: { item: DesignKitItem }) {
   const style = costStyle(item.cost);
   const [expanded, setExpanded] = useState(false);
@@ -217,7 +222,7 @@ function DesignCard({ item }: { item: DesignKitItem }) {
     e.currentTarget.style.boxShadow = "none";
   }, []);
 
-  const hasExtra = !!(item.when_to_use || item.verdict);
+  const hasVerdict = !!item.verdict;
 
   return (
     <div
@@ -232,7 +237,7 @@ function DesignCard({ item }: { item: DesignKitItem }) {
       onMouseLeave={handleMouseLeave}
     >
       <div className="p-5 flex flex-col flex-1">
-        {/* Header row */}
+        {/* Header row: name + cost pill */}
         <div className="flex items-start justify-between gap-2 mb-2">
           <h3
             className="font-heading font-semibold text-base leading-tight"
@@ -240,86 +245,78 @@ function DesignCard({ item }: { item: DesignKitItem }) {
           >
             {item.name}
           </h3>
-          <span
-            className="shrink-0 px-2 py-0.5 rounded-full font-body text-[11px] font-medium"
-            style={{ backgroundColor: style.bg, color: style.text }}
-          >
-            {item.cost}
-          </span>
+          {item.cost && (
+            <span
+              className="shrink-0 px-2 py-0.5 rounded-full font-body text-[11px] font-medium"
+              style={{ backgroundColor: style.bg, color: style.text }}
+            >
+              {item.cost}
+            </span>
+          )}
         </div>
 
-        {/* Category badge */}
-        {item.category && (
+        {/* Group label (small uppercase) */}
+        {item.group && (
           <span
-            className="inline-block self-start px-2 py-0.5 rounded-full font-body text-[11px] mb-3"
-            style={{ backgroundColor: "#EEF0FB", color: "#2D35C9" }}
+            className="font-body"
+            style={{
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: "#2D35C9",
+              marginBottom: 10,
+            }}
           >
-            {item.category}
+            {item.group}
           </span>
         )}
 
-        {/* Description – always visible, clamped when collapsed */}
-        <p
-          className="font-body text-sm leading-relaxed text-foreground mb-3"
-          style={
-            !expanded
-              ? {
-                  display: "-webkit-box",
-                  WebkitLineClamp: 3,
-                  WebkitBoxOrient: "vertical",
-                  overflow: "hidden",
-                }
-              : undefined
-          }
-        >
-          {item.what_it_does}
-        </p>
+        {/* Body: when_to_use */}
+        {item.when_to_use && (
+          <p className="font-body text-sm leading-relaxed text-foreground mb-3">
+            {item.when_to_use}
+          </p>
+        )}
 
-        {/* Expandable extra content */}
-        {hasExtra && expanded && (
-          <div className="space-y-3 mb-3">
-            {item.when_to_use && (
-              <p className="font-body text-xs text-muted-foreground">
-                <strong>When to use:</strong> {item.when_to_use}
-              </p>
-            )}
-            {item.verdict && (
-              <div className="bg-background rounded-lg p-3 font-body text-sm italic text-foreground/80">
-                {item.verdict}
-              </div>
-            )}
+        {/* Verdict expand */}
+        {hasVerdict && expanded && (
+          <div className="mb-3">
+            <div className="bg-background rounded-lg p-3 font-body text-sm italic text-foreground/80">
+              {item.verdict}
+            </div>
           </div>
         )}
 
-        {/* Read more / less toggle */}
-        {hasExtra && (
+        {hasVerdict && (
           <button
             type="button"
             onClick={(e) => {
               e.stopPropagation();
               setExpanded((prev) => !prev);
             }}
-            className="mt-auto self-start font-body text-xs font-medium hover:underline"
+            className="self-start font-body text-xs font-medium hover:underline"
             style={{ color: "#2D35C9", background: "none", border: "none", padding: 0, cursor: "pointer" }}
           >
-            {expanded ? "Read less ↑" : "Read more ↓"}
+            {expanded ? "Why I use it ↑" : "Why I use it ↓"}
           </button>
         )}
 
-        {/* Spacer when no extra content */}
-        {!hasExtra && <div className="mt-auto" />}
+        <div className="mt-auto" />
       </div>
 
       {/* Open link */}
-      <a
-        href={item.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block px-5 py-3 font-body text-[13px] font-medium no-underline"
-        style={{ backgroundColor: "#7B7FD4", color: "#ffffff" }}
-      >
-        Open →
-      </a>
+      {item.url && (
+        <a
+          href={item.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block px-5 py-3 font-body text-[13px] font-medium no-underline"
+          style={{ backgroundColor: "#7B7FD4", color: "#ffffff" }}
+        >
+          Open →
+        </a>
+      )}
     </div>
   );
 }
@@ -338,7 +335,7 @@ const DesignKitPage = () => {
     });
   }, []);
 
-  const sections = useMemo(() => groupByPhase(items), [items]);
+  const sections = useMemo(() => organise(items), [items]);
 
   return (
     <>
@@ -366,10 +363,11 @@ const DesignKitPage = () => {
             <div>
               {sections.map((section, i) => (
                 <PhaseSection
-                  key={section.phase?.name || "other"}
+                  key={section.phase.name}
                   phase={section.phase}
                   number={section.number}
-                  items={section.items}
+                  groups={section.groups}
+                  showGroupHeaders={section.showGroupHeaders}
                   isFirst={i === 0}
                 />
               ))}
