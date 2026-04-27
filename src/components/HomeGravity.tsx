@@ -100,6 +100,8 @@ export function HomeGravity({ tools }: { tools: Tool[] }) {
           </MatterBody>
         );
       })}
-    </Gravity>
+      </Gravity>
+      <DragHint />
+    </div>
   );
 }
