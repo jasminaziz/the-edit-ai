@@ -12,7 +12,11 @@ import Learning from "./pages/Learning";
 import Submit from "./pages/Submit";
 import DesignKit from "./pages/DesignKit";
 import Subscribe from "./pages/Subscribe";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import CookiePolicy from "./pages/CookiePolicy";
 import NotFound from "./pages/NotFound";
+import { CookieBanner } from "@/components/CookieBanner";
 
 const queryClient = new QueryClient();
 
@@ -32,8 +36,12 @@ const App = () => (
             <Route path="/submit" element={<Submit />} />
             <Route path="/design-kit" element={<DesignKit />} />
             <Route path="/subscribe" element={<Subscribe />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <CookieBanner />
         </Layout>
       </BrowserRouter>
     </TooltipProvider>
