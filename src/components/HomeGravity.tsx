@@ -1,5 +1,6 @@
 import { Gravity, MatterBody } from "@/components/ui/gravity";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { DragHint } from "@/components/DragHint";
 import type { Tool } from "@/lib/sheets";
 
 // Brand palette. Lime is rare-only (used as accent), so we exclude it from the
