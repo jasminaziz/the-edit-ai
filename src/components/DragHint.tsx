@@ -35,9 +35,9 @@ export function DragHint() {
       className="pointer-events-none absolute z-30 flex flex-col items-center gap-1.5"
       style={{
         // Mobile: centered, anchored above where pills settle.
-        // Desktop: positioned over the bowl of the lowercase "d" in "Edit."
-        // (the headline is sized at ~38vw, "d" bowl center sits roughly
-        // 28vw from the left edge and ~20vw up from the bottom of the hero).
+        // Desktop: centered on the period after "Edit." in the hero headline.
+        // The headline is sized at clamp(160px, 38vw, 560px) — the dot sits
+        // ~71vw from the left edge and ~4vw up from the bottom of the hero.
         ...(isMobile
           ? {
               left: "50%",
@@ -45,9 +45,9 @@ export function DragHint() {
               bottom: "clamp(150px, 34vh, 190px)",
             }
           : {
-              left: "clamp(180px, 28vw, 410px)",
+              left: "clamp(450px, 71vw, 1045px)",
               transform: "translate(-50%, -50%)",
-              bottom: "clamp(120px, 19vw, 285px)",
+              bottom: "clamp(25px, 4vw, 60px)",
             }),
         opacity: visible ? 1 : 0,
         transition: "opacity 500ms ease-out",
