@@ -267,21 +267,24 @@ export function Layout({ children }: { children: ReactNode }) {
                 Cookies
               </Link>
               <a
-                href={WORK_WITH_ME_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={WORK_WITH_ME_HREF}
+                {...(isExternalHref(WORK_WITH_ME_HREF)
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
                 className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
               >
                 Work with me →
               </a>
-              <a
-                href="https://jasminaziz.substack.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
-              >
-                Read the Substack →
-              </a>
+              {SUBSTACK_LIVE && (
+                <a
+                  href={SUBSTACK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+                >
+                  Read the Substack →
+                </a>
+              )}
               <span className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40">
                 © 2026
               </span>
