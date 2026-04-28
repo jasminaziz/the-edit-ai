@@ -151,26 +151,6 @@ export function FooterEmailCapture() {
                 </p>
               )}
 
-              <p
-                style={{
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  fontWeight: 400,
-                  fontSize: 11,
-                  lineHeight: 1.5,
-                  color: "rgba(255,255,255,0.45)",
-                  marginTop: 10,
-                  marginBottom: 0,
-                }}
-              >
-                By subscribing, you agree to our{" "}
-                <Link
-                  to="/privacy-policy"
-                  style={{ color: "#C8F04A", textDecoration: "underline", textUnderlineOffset: 2 }}
-                >
-                  Privacy Policy
-                </Link>
-                . You can unsubscribe at any time.
-              </p>
             </>
           )}
         </div>

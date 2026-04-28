@@ -224,25 +224,21 @@ export function Layout({ children }: { children: ReactNode }) {
         <div className="max-w-[1280px] mx-auto w-full">
           <FooterEmailCapture />
           <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-            <div className="flex items-center gap-3 flex-wrap justify-center sm:justify-start">
-              <span className="font-body font-semibold text-[13px] text-primary-foreground">
-                The Edit — curated by Jasmin Aziz
-              </span>
-              <span
-                aria-hidden="true"
-                style={{
-                  display: "inline-block",
-                  width: 1,
-                  height: 14,
-                  backgroundColor: "rgba(255,255,255,0.2)",
-                }}
-              />
-              <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                className="font-body font-semibold text-[13px] no-underline hover:underline transition-colors text-primary-foreground"
+            <div className="flex justify-center sm:justify-start">
+              <p
+                className="font-body text-[13px] text-center"
+                style={{ fontWeight: 500, color: "#FFFFFF", margin: 0 }}
               >
-                {CONTACT_EMAIL}
-              </a>
+                Curated by Jasmin Aziz ·{" "}
+                <a
+                  href={`mailto:${CONTACT_EMAIL}`}
+                  style={{ color: "#C8F04A", textDecoration: "none" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.textDecoration = "underline")}
+                  onMouseLeave={(e) => (e.currentTarget.style.textDecoration = "none")}
+                >
+                  {CONTACT_EMAIL}
+                </a>
+              </p>
             </div>
             <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
               <Link
