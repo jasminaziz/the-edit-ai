@@ -307,59 +307,63 @@ export default function Subscribe() {
                 </button>
               </form>
 
-              <hr
-                style={{
-                  border: "none",
-                  borderTop: "1px solid #E8E2D8",
-                  margin: "48px 0",
-                }}
-              />
+              {SUBSTACK_LIVE && (
+                <>
+                  <hr
+                    style={{
+                      border: "none",
+                      borderTop: "1px solid #E8E2D8",
+                      margin: "48px 0",
+                    }}
+                  />
 
-              <div>
-                <p
-                  className="font-body"
-                  style={{
-                    fontWeight: 600,
-                    fontSize: 16,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    color: "#2D35C9",
-                    margin: 0,
-                    marginBottom: 12,
-                  }}
-                >
-                  Or read the Substack
-                </p>
-                <p
-                  className="font-body"
-                  style={{
-                    fontWeight: 400,
-                    fontSize: 15,
-                    lineHeight: 1.6,
-                    color: "#4A4440",
-                    margin: 0,
-                    marginBottom: 12,
-                  }}
-                >
-                  A longer-form publication from Jasmin. Audio-first, essay format, published when there is something worth saying rather than on a schedule.
-                </p>
-                <a
-                  href="https://jasminaziz.substack.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-body"
-                  style={{
-                    fontWeight: 500,
-                    fontSize: 15,
-                    color: "#2D35C9",
-                    textDecoration: "none",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.textDecoration = "underline")}
-                  onMouseLeave={(e) => (e.currentTarget.style.textDecoration = "none")}
-                >
-                  Read on Substack →
-                </a>
-              </div>
+                  <div>
+                    <p
+                      className="font-body"
+                      style={{
+                        fontWeight: 600,
+                        fontSize: 16,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        color: "#2D35C9",
+                        margin: 0,
+                        marginBottom: 12,
+                      }}
+                    >
+                      Or read the Substack
+                    </p>
+                    <p
+                      className="font-body"
+                      style={{
+                        fontWeight: 400,
+                        fontSize: 15,
+                        lineHeight: 1.6,
+                        color: "#4A4440",
+                        margin: 0,
+                        marginBottom: 12,
+                      }}
+                    >
+                      A longer-form publication from Jasmin. Audio-first, essay format, published when there is something worth saying rather than on a schedule.
+                    </p>
+                    <a
+                      href={SUBSTACK_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-body"
+                      style={{
+                        fontWeight: 500,
+                        fontSize: 15,
+                        color: "#2D35C9",
+                        textDecoration: "none",
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.textDecoration = "underline")}
+                      onMouseLeave={(e) => (e.currentTarget.style.textDecoration = "none")}
+                    >
+                      Read on Substack →
+                    </a>
+                  </div>
+                </>
+              )}
 
               <p
                 className="font-body"
