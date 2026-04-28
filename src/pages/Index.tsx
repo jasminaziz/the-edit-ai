@@ -79,8 +79,6 @@ const Index = () => {
           </h1>
         </div>
 
-        {/* Mobile-only scroll affordance — soft bouncing chevron, hides after first scroll */}
-        <ScrollChevron />
       </section>
 
       {/* Intro / positioning */}
