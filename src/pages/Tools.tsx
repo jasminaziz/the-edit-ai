@@ -56,28 +56,52 @@ const Tools = () => {
         subheading="Things on my radar. Breadth matters."
       />
 
-      {/* Filter Bar */}
-      <section className="sticky top-16 z-40 bg-background py-5 px-6 sm:px-12 border-b border-border">
-        <div className="max-w-[1280px] mx-auto space-y-4">
+      {/* Filter Bar — flush against nav, compacts on scroll */}
+      <section
+        className={`sticky top-14 sm:top-16 z-40 bg-background border-b transition-[padding,box-shadow,border-color] duration-200 px-4 sm:px-12 ${
+          scrolled
+            ? "py-2.5 sm:py-3 border-border shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
+            : "py-4 sm:py-5 border-border/60"
+        }`}
+      >
+        <div
+          className={`max-w-[1280px] mx-auto ${
+            scrolled
+              ? "flex items-center gap-3"
+              : "flex flex-col gap-3 sm:gap-4"
+          }`}
+        >
           {/* Search */}
-          <div className="relative max-w-[400px]">
+          <div
+            className={`relative ${
+              scrolled ? "w-[180px] sm:w-[260px] shrink-0" : "w-full max-w-[400px]"
+            }`}
+          >
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
             <input
               type="text"
               placeholder="Search tools..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-card border border-border rounded-lg font-body text-[15px] text-foreground placeholder:text-muted focus:border-primary focus:ring-[3px] focus:ring-primary/[0.12] outline-none transition-all"
+              className={`w-full pl-10 pr-3 bg-card border border-border rounded-lg font-body text-foreground placeholder:text-muted focus:border-primary focus:ring-[3px] focus:ring-primary/[0.12] outline-none transition-all ${
+                scrolled ? "py-1.5 text-sm" : "py-2.5 text-[15px]"
+              }`}
             />
           </div>
 
-          {/* Category pills */}
-          <div className="flex flex-wrap gap-2">
+          {/* Category pills — horizontal scroll on mobile, wraps on desktop when expanded */}
+          <div
+            className={`flex gap-2 ${
+              scrolled
+                ? "flex-1 flex-nowrap overflow-x-auto no-scrollbar"
+                : "flex-nowrap overflow-x-auto no-scrollbar sm:flex-wrap sm:overflow-visible"
+            }`}
+          >
             {CATEGORIES.map((c) => (
               <button
                 key={c}
                 onClick={() => setCategory(c)}
-                className={`px-3.5 py-1.5 font-body text-xs font-medium uppercase tracking-[0.04em] rounded-full border transition-colors duration-150 ${
+                className={`shrink-0 px-3.5 py-1.5 font-body text-xs font-medium uppercase tracking-[0.04em] rounded-full border transition-colors duration-150 ${
                   category === c
                     ? "text-foreground border-transparent"
                     : "bg-transparent border-border text-foreground hover:bg-card"
@@ -88,7 +112,6 @@ const Tools = () => {
               </button>
             ))}
           </div>
-
         </div>
       </section>
 
