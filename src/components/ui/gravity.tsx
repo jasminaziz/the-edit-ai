@@ -183,6 +183,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
     const frameId = useRef<number>();
     const mouseConstraint = useRef<Matter.MouseConstraint>();
     const mouseDown = useRef(false);
+    const wallsRef = useRef<{ floor?: Matter.Body; left?: Matter.Body; right?: Matter.Body; top?: Matter.Body }>({});
     const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
     const isRunning = useRef(false);
 
