@@ -124,21 +124,24 @@ export function Layout({ children }: { children: ReactNode }) {
                       >
                         Get the digest →
                       </Link>
-                      <a
-                        href="https://jasminaziz.substack.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => setMobileOpen(false)}
-                        className="font-body text-base font-medium px-4 py-3 rounded-lg transition-colors text-white/70 hover:text-white hover:bg-white/10"
-                      >
-                        Read the Substack →
-                      </a>
+                      {SUBSTACK_LIVE && (
+                        <a
+                          href={SUBSTACK_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => setMobileOpen(false)}
+                          className="font-body text-base font-medium px-4 py-3 rounded-lg transition-colors text-white/70 hover:text-white hover:bg-white/10"
+                        >
+                          Read the Substack →
+                        </a>
+                      )}
                     </div>
                     <div className="px-6 pb-8">
                       <a
-                        href={WORK_WITH_ME_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        href={WORK_WITH_ME_HREF}
+                        {...(isExternalHref(WORK_WITH_ME_HREF)
+                          ? { target: "_blank", rel: "noopener noreferrer" }
+                          : {})}
                         onClick={() => setMobileOpen(false)}
                         className="block w-full text-center font-body text-base font-semibold rounded-full py-3 bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
                       >
