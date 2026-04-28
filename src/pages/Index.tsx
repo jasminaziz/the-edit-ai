@@ -5,9 +5,13 @@ import { parseDate } from "@/components/WhatsNewCard";
 import { HomeGravity } from "@/components/HomeGravity";
 import { Counter } from "@/components/ui/animated-counter";
 import { useIsMobile } from "@/hooks/use-mobile";
-
-
-
+const CATEGORY_COLOURS: Record<string, { bg: string; text: string }> = {
+  "New Release": { bg: "#2D35C9", text: "#FFFFFF" },
+  "Model Update": { bg: "#7B7FD4", text: "#FFFFFF" },
+  "Tool Launch": { bg: "#2D6A4F", text: "#FFFFFF" },
+  "Integration": { bg: "#4A4A9A", text: "#FFFFFF" },
+  "AI in the News": { bg: "#E8572A", text: "#FFFFFF" },
+};
 
 const Index = () => {
   const [tools, setTools] = useState<Tool[]>([]);
