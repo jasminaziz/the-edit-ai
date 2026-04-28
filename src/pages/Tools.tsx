@@ -5,6 +5,7 @@ import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
 import { RevealGroup, RevealItem } from "@/components/Reveal";
+import { SEO } from "@/components/SEO";
 
 import { Search } from "lucide-react";
 
@@ -51,6 +52,11 @@ const Tools = () => {
 
   return (
     <>
+      <SEO
+        title="AI Toolkit | The Edit"
+        description="49 curated AI tools across Writing, Research, Design, Video, Automation and Building. Honest verdicts from someone who uses them."
+        canonical="https://theeditai.co.uk/toolkit"
+      />
       <CobaltZone
         heading="Tools"
         subheading="Things on my radar. Breadth matters."

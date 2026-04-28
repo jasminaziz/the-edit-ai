@@ -5,6 +5,7 @@ import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { AnimatePresence, motion } from "framer-motion";
+import { SEO } from "@/components/SEO";
 
 // Official Claude AI symbol — path data from Wikimedia Commons (Anthropic brand mark)
 const CLAUDE_PATH =
@@ -327,6 +328,11 @@ const MyStack = () => {
 
   return (
     <>
+      <SEO
+        title="My Stack | The Edit"
+        description="The AI tools Jasmin Aziz actually uses daily. Personal verdicts, real workflows."
+        canonical="https://theeditai.co.uk/my-stack"
+      />
       <CobaltZone heading="My Stack" subheading="What I'm actually using and why." />
 
       <section className="bg-background py-10 px-6 sm:px-12">

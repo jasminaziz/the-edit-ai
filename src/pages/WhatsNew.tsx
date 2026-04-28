@@ -6,6 +6,7 @@ import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { LeadCard, GridCard, monthYearKey, parseDate } from "@/components/WhatsNewCard";
+import { SEO } from "@/components/SEO";
 
 function groupByMonth(items: WhatsNew[]): { month: string; items: WhatsNew[] }[] {
   const sorted = [...items].sort((a, b) => {
@@ -143,6 +144,11 @@ const WhatsNewPage = () => {
 
   return (
     <div style={{ WebkitFontSmoothing: "antialiased" }}>
+      <SEO
+        title="What's New in AI | The Edit"
+        description="The latest AI tool releases, model updates, and integrations. Curated and updated automatically."
+        canonical="https://theeditai.co.uk/whats-new"
+      />
       <CobaltZone
         heading=""
         twoLineHeading={{ line1: "What's New", line2: "in AI", inline: true }}
