@@ -394,7 +394,7 @@ const MyStack = () => {
           <h2 className="font-heading font-bold text-[28px] text-foreground mb-3">How I built this</h2>
           <p className="font-body text-[15px] text-foreground max-w-2xl">
             This stack is tracked in a living spreadsheet and updated every time something changes. The site pulls
-            directly from that data — so what you see here is always current.
+            directly from that data, so what you see here is always current.
           </p>
         </div>
       </section>
