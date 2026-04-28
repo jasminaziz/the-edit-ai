@@ -35,7 +35,7 @@ const Index = () => {
       const db = parseDate(b.date)?.getTime() || 0;
       return db - da;
     })
-    .slice(0, isMobile ? 1 : 3);
+    .slice(0, 1);
 
   return (
     <div className="relative">

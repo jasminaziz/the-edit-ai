@@ -32,10 +32,23 @@ export function DragHint() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute z-30 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5"
+      className="pointer-events-none absolute z-30 flex flex-col items-center gap-1.5"
       style={{
-        // Anchor near the bottom of the canvas, just above where pills settle
-        bottom: isMobile ? "clamp(150px, 34vh, 190px)" : 120,
+        // Mobile: centered, anchored above where pills settle.
+        // Desktop: positioned over the bowl of the lowercase "d" in "Edit."
+        // (the headline is sized at ~38vw, "d" bowl center sits roughly
+        // 28vw from the left edge and ~20vw up from the bottom of the hero).
+        ...(isMobile
+          ? {
+              left: "50%",
+              transform: "translateX(-50%)",
+              bottom: "clamp(150px, 34vh, 190px)",
+            }
+          : {
+              left: "clamp(180px, 28vw, 410px)",
+              transform: "translate(-50%, -50%)",
+              bottom: "clamp(120px, 19vw, 285px)",
+            }),
         opacity: visible ? 1 : 0,
         transition: "opacity 500ms ease-out",
       }}
