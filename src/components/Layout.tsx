@@ -189,14 +189,16 @@ export function Layout({ children }: { children: ReactNode }) {
                 {/* CTA cluster — secondary text links + primary pill */}
                 <div className="flex items-center gap-5">
                   <div className="flex items-center gap-5">
-                    <a
-                      href="https://jasminaziz.substack.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`font-body text-sm font-medium whitespace-nowrap transition-colors text-primary-foreground/70 hover:text-primary-foreground`}
-                    >
-                      Read the Substack →
-                    </a>
+                    {SUBSTACK_LIVE && (
+                      <a
+                        href={SUBSTACK_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`font-body text-sm font-medium whitespace-nowrap transition-colors text-primary-foreground/70 hover:text-primary-foreground`}
+                      >
+                        Read the Substack →
+                      </a>
+                    )}
                     <Link
                       to="/subscribe"
                       className={`font-body text-sm font-medium whitespace-nowrap transition-colors text-primary-foreground/70 hover:text-primary-foreground`}
@@ -206,9 +208,10 @@ export function Layout({ children }: { children: ReactNode }) {
                   </div>
                   <span aria-hidden="true" className="w-px h-5 bg-white/15" />
                   <a
-                    href={WORK_WITH_ME_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={WORK_WITH_ME_HREF}
+                    {...(isExternalHref(WORK_WITH_ME_HREF)
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
                     className={`font-body text-sm font-semibold px-5 py-2 rounded-full whitespace-nowrap transition-opacity hover:opacity-90 ${
                       isHome ? "bg-white text-primary" : "bg-accent text-accent-foreground"
                     }`}
