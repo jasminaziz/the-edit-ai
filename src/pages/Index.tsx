@@ -123,6 +123,50 @@ const Index = () => {
         <ScrollChevron />
       </section>
 
+      {/* Intro / positioning */}
+      <section className="bg-background pt-12 pb-9 sm:pt-16 sm:pb-12 px-6 sm:px-12">
+        <div className="max-w-[1280px] mx-auto">
+          <div style={{ maxWidth: 640 }}>
+            <p
+              style={{
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontWeight: 600,
+                fontSize: 20,
+                color: "#1A1510",
+                margin: 0,
+                marginBottom: 16,
+              }}
+            >
+              There's a lot to keep up with. This helps.
+            </p>
+            <p
+              style={{
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontWeight: 400,
+                fontSize: 17,
+                lineHeight: 1.6,
+                color: "#1A1510",
+                margin: 0,
+                marginBottom: 16,
+              }}
+            >
+              A curated directory of AI tools that actually work, with honest verdicts from someone who builds with them every day. Made for people who want to use AI well, without having to become an expert first.
+            </p>
+            <p
+              style={{
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontWeight: 400,
+                fontSize: 14,
+                color: "#9A8F82",
+                margin: 0,
+              }}
+            >
+              Curated by Jasmin Aziz — strategic communications consultant and AI practitioner.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Dashboard Preview Strip */}
       <section className="bg-background py-16 px-6 sm:px-12">
         <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -209,7 +253,7 @@ const Index = () => {
               to="/whats-new"
               className="inline-block font-body font-medium text-sm text-primary hover:underline"
             >
-              See everything →
+              Discover what's new →
             </Link>
           </div>
 
