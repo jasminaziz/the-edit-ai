@@ -152,7 +152,7 @@ export default function Subscribe() {
                 className="font-heading"
                 style={{
                   fontWeight: 700,
-                  fontSize: "clamp(48px, 6vw, 64px)",
+                  fontSize: "clamp(36px, 5vw, 52px)",
                   color: "#1A1510",
                   textWrap: "balance",
                   lineHeight: 1.1,
@@ -173,7 +173,7 @@ export default function Subscribe() {
                   marginBottom: 24,
                 }}
               >
-                A curated round-up of things worth reading, trying, or watching in AI right now. Every other Friday. No hot takes, no doom loops, no forty-link roundups.
+                A curated round-up of things worth reading, trying, or watching in AI right now. Every other Friday. Written by me, Jasmin Aziz.
               </p>
               <p
                 className="font-body"
@@ -187,19 +187,6 @@ export default function Subscribe() {
                 }}
               >
                 Free to subscribe. You can unsubscribe in one click at any time.
-              </p>
-              <p
-                className="font-body"
-                style={{
-                  fontWeight: 400,
-                  fontSize: 15,
-                  lineHeight: 1.6,
-                  color: "#9A8F82",
-                  margin: 0,
-                  marginBottom: 24,
-                }}
-              >
-                Written and curated by Jasmin Aziz, strategic communications consultant and AI practitioner.
               </p>
               <form onSubmit={handleSubmit} style={{ maxWidth: 520 }}>
                 <input
