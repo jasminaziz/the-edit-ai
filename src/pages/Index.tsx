@@ -82,7 +82,7 @@ const Index = () => {
       </section>
 
       {/* Intro / positioning */}
-      <section className="bg-background pt-6 pb-2 sm:pt-16 sm:pb-4 px-6 sm:px-12">
+      <section className="bg-background pt-6 pb-2 sm:pt-12 sm:pb-3 px-6 sm:px-12">
         <div className="max-w-[1280px] mx-auto">
           <div style={{ maxWidth: 640 }}>
             <p
@@ -92,7 +92,7 @@ const Index = () => {
                 fontSize: 20,
                 color: "#1A1510",
                 margin: 0,
-                marginBottom: 16,
+                marginBottom: 10,
               }}
             >
               There's a lot to keep up with. This helps.
@@ -102,10 +102,10 @@ const Index = () => {
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontWeight: 400,
                 fontSize: 17,
-                lineHeight: 1.6,
+                lineHeight: 1.5,
                 color: "#1A1510",
                 margin: 0,
-                marginBottom: 16,
+                marginBottom: 10,
               }}
             >
               A curated directory of AI tools that actually work, with honest verdicts from someone who builds with them every day. Made for people who want to use AI well, without having to become an expert first.
@@ -126,8 +126,8 @@ const Index = () => {
       </section>
 
       {/* Dashboard Preview Strip */}
-      <section className="bg-background py-16 px-6 sm:px-12">
-        <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+      <section className="bg-background pt-4 pb-12 sm:pt-6 sm:pb-16 px-6 sm:px-12">
+        <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           {/* My Stack Preview */}
           <div className="space-y-4">
             <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-muted">
