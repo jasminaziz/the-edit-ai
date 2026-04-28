@@ -477,6 +477,45 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       initializeRenderer();
     }, [clearRenderer, initializeRenderer, resetOnResize]);
 
+    // Soft resize: when resetOnResize is false we still need to grow the
+    // renderer canvas and reposition the static walls so pills can fall to the
+    // new bottom. Without this, expanding the window (e.g. entering full
+    // screen) leaves the floor at the old height and pills appear to hover
+    // mid-section.
+    const handleSoftResize = useCallback(() => {
+      if (!canvas.current || resetOnResize) return;
+      const newWidth = canvas.current.offsetWidth;
+      const newHeight = canvas.current.offsetHeight;
+      if (render.current) {
+        render.current.canvas.width = newWidth;
+        render.current.canvas.height = newHeight;
+        render.current.options.width = newWidth;
+        render.current.options.height = newHeight;
+        Render.setPixelRatio(render.current, window.devicePixelRatio);
+      }
+      const { floor, left, right, top } = wallsRef.current;
+      if (floor) {
+        Matter.Body.setPosition(floor, { x: newWidth / 2, y: newHeight + 10 });
+        Matter.Body.scale(floor, newWidth / Math.max(floor.bounds.max.x - floor.bounds.min.x, 1), 1);
+      }
+      if (right) {
+        Matter.Body.setPosition(right, { x: newWidth + 10, y: newHeight / 2 });
+        Matter.Body.scale(right, 1, newHeight / Math.max(right.bounds.max.y - right.bounds.min.y, 1));
+      }
+      if (left) {
+        Matter.Body.setPosition(left, { x: -10, y: newHeight / 2 });
+        Matter.Body.scale(left, 1, newHeight / Math.max(left.bounds.max.y - left.bounds.min.y, 1));
+      }
+      if (top) {
+        Matter.Body.setPosition(top, { x: newWidth / 2, y: -10 });
+        Matter.Body.scale(top, newWidth / Math.max(top.bounds.max.x - top.bounds.min.x, 1), 1);
+      }
+      // Wake up sleeping/settled bodies so they fall to the new floor.
+      bodiesMap.current.forEach(({ body }) => {
+        Matter.Sleeping.set(body, false);
+      });
+    }, [resetOnResize]);
+
     const reset = useCallback(() => {
       stopEngine();
       bodiesMap.current.forEach(({ element, body, props }) => {
