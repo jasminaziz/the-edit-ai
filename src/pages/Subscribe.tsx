@@ -152,7 +152,7 @@ export default function Subscribe() {
                 className="font-heading"
                 style={{
                   fontWeight: 700,
-                  fontSize: 48,
+                  fontSize: "clamp(48px, 6vw, 64px)",
                   color: "#1A1510",
                   textWrap: "balance",
                   lineHeight: 1.1,
@@ -191,14 +191,15 @@ export default function Subscribe() {
               <p
                 className="font-body"
                 style={{
-                  fontWeight: 500,
-                  fontSize: 14,
+                  fontWeight: 400,
+                  fontSize: 15,
+                  lineHeight: 1.6,
                   color: "#9A8F82",
                   margin: 0,
-                  marginBottom: 16,
+                  marginBottom: 24,
                 }}
               >
-                Takes a moment. Saves you hours of scrolling later.
+                Written and curated by Jasmin Aziz, strategic communications consultant and AI practitioner.
               </p>
               <form onSubmit={handleSubmit} style={{ maxWidth: 520 }}>
                 <input
