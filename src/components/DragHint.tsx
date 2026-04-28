@@ -27,6 +27,9 @@ export function DragHint() {
     };
   }, []);
 
+  // Desktop hint is temporarily hidden — only show on mobile.
+  if (!isMobile) return null;
+
   // The label and arrow stay centered as a pair on both mobile and desktop.
   const arrowSize = isMobile ? 10 : 14;
 
