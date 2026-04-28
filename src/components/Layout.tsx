@@ -16,6 +16,7 @@ const navItems = [
 ];
 
 const isExternalHref = (href: string) => /^https?:\/\//i.test(href);
+const CONTACT_EMAIL = "hello@jasminaziz.co.uk";
 
 export function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
