@@ -56,25 +56,23 @@ const Tools = () => {
         subheading="Things on my radar. Breadth matters."
       />
 
-      {/* Filter Bar — flush against nav, compacts on scroll */}
+      {/* Filter Bar — flush against nav. Mobile: stacked (search + dedicated pills row with edge fade). Desktop: compacts on scroll. */}
       <section
         className={`sticky top-14 sm:top-16 z-40 bg-background border-b transition-[padding,box-shadow,border-color] duration-200 px-4 sm:px-12 ${
           scrolled
             ? "py-2.5 sm:py-3 border-border shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
-            : "py-4 sm:py-5 border-border/60"
+            : "py-3 sm:py-5 border-border/60"
         }`}
       >
         <div
-          className={`max-w-[1280px] mx-auto ${
-            scrolled
-              ? "flex items-center gap-3"
-              : "flex flex-col gap-3 sm:gap-4"
+          className={`max-w-[1280px] mx-auto flex flex-col gap-2.5 sm:gap-0 sm:flex-row sm:items-center ${
+            scrolled ? "sm:gap-3" : "sm:gap-4"
           }`}
         >
           {/* Search */}
           <div
-            className={`relative ${
-              scrolled ? "w-[180px] sm:w-[260px] shrink-0" : "w-full max-w-[400px]"
+            className={`relative w-full ${
+              scrolled ? "sm:w-[260px] sm:shrink-0" : "sm:max-w-[400px]"
             }`}
           >
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
@@ -89,28 +87,35 @@ const Tools = () => {
             />
           </div>
 
-          {/* Category pills — horizontal scroll on mobile, wraps on desktop when expanded */}
-          <div
-            className={`flex gap-2 ${
-              scrolled
-                ? "flex-1 flex-nowrap overflow-x-auto no-scrollbar"
-                : "flex-nowrap overflow-x-auto no-scrollbar sm:flex-wrap sm:overflow-visible"
-            }`}
-          >
-            {CATEGORIES.map((c) => (
-              <button
-                key={c}
-                onClick={() => setCategory(c)}
-                className={`shrink-0 px-3.5 py-1.5 font-body text-xs font-medium uppercase tracking-[0.04em] rounded-full border transition-colors duration-150 ${
-                  category === c
-                    ? "text-foreground border-transparent"
-                    : "bg-transparent border-border text-foreground hover:bg-card"
-                }`}
-                style={category === c ? { backgroundColor: "#C8F04A" } : undefined}
-              >
-                {c}
-              </button>
-            ))}
+          {/* Category pills row — full-width on mobile with right-edge fade hinting horizontal scroll */}
+          <div className="relative w-full sm:flex-1 min-w-0">
+            <div
+              className={`flex gap-2 flex-nowrap overflow-x-auto no-scrollbar scroll-smooth ${
+                scrolled ? "" : "sm:flex-wrap sm:overflow-visible"
+              }`}
+            >
+              {CATEGORIES.map((c) => (
+                <button
+                  key={c}
+                  onClick={() => setCategory(c)}
+                  className={`shrink-0 px-3.5 py-1.5 font-body text-xs font-medium uppercase tracking-[0.04em] rounded-full border transition-colors duration-150 ${
+                    category === c
+                      ? "text-foreground border-transparent"
+                      : "bg-transparent border-border text-foreground hover:bg-card"
+                  }`}
+                  style={category === c ? { backgroundColor: "#C8F04A" } : undefined}
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+            {/* Edge fade — visible on mobile (and desktop while scrolled, where pills also scroll) */}
+            <div
+              aria-hidden="true"
+              className={`pointer-events-none absolute top-0 right-0 h-full w-10 bg-gradient-to-l from-background to-transparent ${
+                scrolled ? "" : "sm:hidden"
+              }`}
+            />
           </div>
         </div>
       </section>
