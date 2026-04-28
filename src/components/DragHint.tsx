@@ -45,9 +45,13 @@ export function DragHint() {
               bottom: "clamp(150px, 34vh, 190px)",
             }
           : {
-              left: "clamp(450px, 71vw, 1045px)",
+              // Centered on the period (".") at the end of "Edit." in the hero.
+              // The headline is sized at clamp(160px, 38vw, 560px); the dot sits
+              // ~76% across the viewport and ~7.7vw up from the hero bottom,
+              // capped to fixed px once the headline stops scaling.
+              left: "clamp(450px, 76vw, 1120px)",
               transform: "translate(-50%, -50%)",
-              bottom: "clamp(25px, 4vw, 60px)",
+              bottom: "clamp(80px, 7.7vw, 130px)",
             }),
         opacity: visible ? 1 : 0,
         transition: "opacity 500ms ease-out",
