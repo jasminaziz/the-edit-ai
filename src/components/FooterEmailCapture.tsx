@@ -30,10 +30,10 @@ export function FooterEmailCapture() {
 
   return (
     <div
+      className="pb-4 sm:pb-10"
       style={{
         borderTop: "1px solid rgba(255,255,255,0.12)",
         paddingTop: 40,
-        paddingBottom: 40,
       }}
     >
       <div style={{ maxWidth: 480, margin: "0 auto", textAlign: "center" }}>
