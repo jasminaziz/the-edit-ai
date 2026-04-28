@@ -45,6 +45,21 @@ const Index = () => {
         description="An opinionated AI tools directory built by Jasmin Aziz. Real verdicts, no sponsored lists. Updated regularly."
         canonical="https://theeditai.co.uk/"
         googleVerification="2_93U4mtnkpPZgW6fZZJaOIQ7tEKv7__f8JSMuO0HC8"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "The Edit",
+          url: "https://theeditai.co.uk",
+          description:
+            "A curated AI tools directory for marketing and communications professionals. Built and maintained by Jasmin Aziz.",
+          author: {
+            "@type": "Person",
+            name: "Jasmin Aziz",
+            url: "https://theeditai.co.uk",
+            jobTitle: "Strategic Communications Consultant",
+            email: "hello@jasminaziz.co.uk",
+          },
+        }}
       />
       {/* Hero */}
       <section
