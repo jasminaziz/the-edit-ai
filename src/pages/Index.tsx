@@ -83,6 +83,9 @@ const Index = () => {
             Edit.
           </h1>
         </div>
+
+        {/* Mobile-only scroll affordance — soft bouncing chevron, hides after first scroll */}
+        <ScrollChevron />
       </section>
 
       {/* Dashboard Preview Strip */}
