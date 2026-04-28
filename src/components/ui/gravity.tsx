@@ -377,32 +377,32 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
         },
       });
 
-      const walls = [
-        Bodies.rectangle(width / 2, height + 10, width, 20, {
-          isStatic: true,
-          friction: 1,
-          render: { visible: debug },
-        }),
-        Bodies.rectangle(width + 10, height / 2, 20, height, {
-          isStatic: true,
-          friction: 1,
-          render: { visible: debug },
-        }),
-        Bodies.rectangle(-10, height / 2, 20, height, {
-          isStatic: true,
-          friction: 1,
-          render: { visible: debug },
-        }),
-      ];
+      const floor = Bodies.rectangle(width / 2, height + 10, width, 20, {
+        isStatic: true,
+        friction: 1,
+        render: { visible: debug },
+      });
+      const rightWall = Bodies.rectangle(width + 10, height / 2, 20, height, {
+        isStatic: true,
+        friction: 1,
+        render: { visible: debug },
+      });
+      const leftWall = Bodies.rectangle(-10, height / 2, 20, height, {
+        isStatic: true,
+        friction: 1,
+        render: { visible: debug },
+      });
+      const walls = [floor, rightWall, leftWall];
+      wallsRef.current = { floor, left: leftWall, right: rightWall };
 
       if (addTopWall) {
-        walls.push(
-          Bodies.rectangle(width / 2, -10, width, 20, {
-            isStatic: true,
-            friction: 1,
-            render: { visible: debug },
-          })
-        );
+        const topWall = Bodies.rectangle(width / 2, -10, width, 20, {
+          isStatic: true,
+          friction: 1,
+          render: { visible: debug },
+        });
+        walls.push(topWall);
+        wallsRef.current.top = topWall;
       }
 
       const touchingMouse = () =>
