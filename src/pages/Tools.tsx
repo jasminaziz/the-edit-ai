@@ -16,6 +16,7 @@ const Tools = () => {
   const [category, setCategory] = useState("ALL");
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [expandedVerdicts, setExpandedVerdicts] = useState<Set<string>>(new Set());
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     fetchTools().then((t) => {
@@ -24,6 +25,14 @@ const Tools = () => {
       setLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
 
   const toggleVerdict = (name: string) => {
     setExpandedVerdicts((prev) => {
