@@ -46,9 +46,9 @@ export function DragHint() {
             }
           : {
               // Vacant space to the right of the period after "Edit."
-              // Period sits at ~76vw; place hint further right at ~92vw,
+              // Period sits at ~76vw; place hint further right at ~97vw,
               // vertically aligned with the dot (~7.7vw from hero bottom).
-              left: "clamp(680px, 92vw, 1380px)",
+              left: "clamp(720px, 97vw, 1460px)",
               bottom: "clamp(80px, 7.7vw, 130px)",
               transform: "translate(-50%, -50%)",
               flexDirection: "column",
