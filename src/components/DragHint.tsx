@@ -35,7 +35,7 @@ export function DragHint() {
       className="pointer-events-none absolute z-30 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5"
       style={{
         // Anchor near the bottom of the canvas, just above where pills settle
-        bottom: isMobile ? 120 : 120,
+        bottom: isMobile ? "clamp(150px, 34vh, 190px)" : 120,
         opacity: visible ? 1 : 0,
         transition: "opacity 500ms ease-out",
       }}
