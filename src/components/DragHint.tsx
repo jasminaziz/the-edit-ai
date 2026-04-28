@@ -45,9 +45,9 @@ export function DragHint() {
               bottom: "clamp(150px, 34vh, 190px)",
             }
           : {
-              left: "clamp(450px, 71vw, 1045px)",
+              left: "76vw",
               transform: "translate(-50%, -50%)",
-              bottom: "clamp(25px, 4vw, 60px)",
+              bottom: "clamp(80px, 7.7vw, 130px)",
             }),
         opacity: visible ? 1 : 0,
         transition: "opacity 500ms ease-out",
