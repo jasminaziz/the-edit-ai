@@ -6,50 +6,6 @@ import { HomeGravity } from "@/components/HomeGravity";
 import { Counter } from "@/components/ui/animated-counter";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-// Mobile-only scroll cue: a soft, slow-bouncing chevron pinned bottom-centre of the hero.
-// Sits above the pills (z-30) but is pointer-events-none so it never blocks dragging.
-// Fades out once the user has scrolled past the hero so it doesn't linger.
-function ScrollChevron() {
-  const [hidden, setHidden] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setHidden(window.scrollY > 80);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-  return (
-    <>
-      <style>{`
-        @keyframes edit-scroll-bounce {
-          0%, 100% { transform: translate(-50%, 0); }
-          50% { transform: translate(-50%, 6px); }
-        }
-      `}</style>
-      <div
-        aria-hidden="true"
-        className="sm:hidden absolute left-1/2 bottom-4 z-30 pointer-events-none transition-opacity duration-500"
-        style={{
-          transform: "translateX(-50%)",
-          opacity: hidden ? 0 : 0.7,
-          animation: "edit-scroll-bounce 2s ease-in-out infinite",
-        }}
-      >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2D35C9" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="6 9 12 15 18 9" />
-        </svg>
-      </div>
-    </>
-  );
-}
-
-const CATEGORY_COLOURS: Record<string, { bg: string; text: string }> = {
-  "New Release": { bg: "#2D35C9", text: "#FFFFFF" },
-  "Model Update": { bg: "#7B7FD4", text: "#FFFFFF" },
-  "Tool Launch": { bg: "#2D6A4F", text: "#FFFFFF" },
-  "Integration": { bg: "#4A4A9A", text: "#FFFFFF" },
-  "AI in the News": { bg: "#E8572A", text: "#FFFFFF" },
-};
-
-
 
 
 
