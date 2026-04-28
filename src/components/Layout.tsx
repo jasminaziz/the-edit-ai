@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { FooterEmailCapture } from "@/components/FooterEmailCapture";
+import { WORK_WITH_ME_HREF, SUBSTACK_LIVE, SUBSTACK_URL } from "@/lib/links";
 
 const navItems = [
   { to: "/", label: "Home" },
@@ -14,7 +15,7 @@ const navItems = [
   { to: "/whats-new", label: "What's New" },
 ];
 
-const WORK_WITH_ME_URL = "https://jasminaziz.co.uk";
+const isExternalHref = (href: string) => /^https?:\/\//i.test(href);
 const CONTACT_EMAIL = "hello@jasminaziz.co.uk";
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -123,21 +124,24 @@ export function Layout({ children }: { children: ReactNode }) {
                       >
                         Get the digest →
                       </Link>
-                      <a
-                        href="https://jasminaziz.substack.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => setMobileOpen(false)}
-                        className="font-body text-base font-medium px-4 py-3 rounded-lg transition-colors text-white/70 hover:text-white hover:bg-white/10"
-                      >
-                        Read the Substack →
-                      </a>
+                      {SUBSTACK_LIVE && (
+                        <a
+                          href={SUBSTACK_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => setMobileOpen(false)}
+                          className="font-body text-base font-medium px-4 py-3 rounded-lg transition-colors text-white/70 hover:text-white hover:bg-white/10"
+                        >
+                          Read the Substack →
+                        </a>
+                      )}
                     </div>
                     <div className="px-6 pb-8">
                       <a
-                        href={WORK_WITH_ME_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        href={WORK_WITH_ME_HREF}
+                        {...(isExternalHref(WORK_WITH_ME_HREF)
+                          ? { target: "_blank", rel: "noopener noreferrer" }
+                          : {})}
                         onClick={() => setMobileOpen(false)}
                         className="block w-full text-center font-body text-base font-semibold rounded-full py-3 bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
                       >
@@ -185,14 +189,16 @@ export function Layout({ children }: { children: ReactNode }) {
                 {/* CTA cluster — secondary text links + primary pill */}
                 <div className="flex items-center gap-5">
                   <div className="flex items-center gap-5">
-                    <a
-                      href="https://jasminaziz.substack.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`font-body text-sm font-medium whitespace-nowrap transition-colors text-primary-foreground/70 hover:text-primary-foreground`}
-                    >
-                      Read the Substack →
-                    </a>
+                    {SUBSTACK_LIVE && (
+                      <a
+                        href={SUBSTACK_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`font-body text-sm font-medium whitespace-nowrap transition-colors text-primary-foreground/70 hover:text-primary-foreground`}
+                      >
+                        Read the Substack →
+                      </a>
+                    )}
                     <Link
                       to="/subscribe"
                       className={`font-body text-sm font-medium whitespace-nowrap transition-colors text-primary-foreground/70 hover:text-primary-foreground`}
@@ -202,9 +208,10 @@ export function Layout({ children }: { children: ReactNode }) {
                   </div>
                   <span aria-hidden="true" className="w-px h-5 bg-white/15" />
                   <a
-                    href={WORK_WITH_ME_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={WORK_WITH_ME_HREF}
+                    {...(isExternalHref(WORK_WITH_ME_HREF)
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
                     className={`font-body text-sm font-semibold px-5 py-2 rounded-full whitespace-nowrap transition-opacity hover:opacity-90 ${
                       isHome ? "bg-white text-primary" : "bg-accent text-accent-foreground"
                     }`}
@@ -260,21 +267,24 @@ export function Layout({ children }: { children: ReactNode }) {
                 Cookies
               </Link>
               <a
-                href={WORK_WITH_ME_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={WORK_WITH_ME_HREF}
+                {...(isExternalHref(WORK_WITH_ME_HREF)
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
                 className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
               >
                 Work with me →
               </a>
-              <a
-                href="https://jasminaziz.substack.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
-              >
-                Read the Substack →
-              </a>
+              {SUBSTACK_LIVE && (
+                <a
+                  href={SUBSTACK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+                >
+                  Read the Substack →
+                </a>
+              )}
               <span className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40">
                 © 2026
               </span>
