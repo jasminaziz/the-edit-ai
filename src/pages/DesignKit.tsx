@@ -4,6 +4,7 @@ import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
+import { SEO } from "@/components/SEO";
 
 const COST_STYLES: Record<string, { bg: string; text: string }> = {
   free: { bg: "#2D6A4F", text: "#ffffff" },
@@ -339,6 +340,11 @@ const DesignKitPage = () => {
 
   return (
     <>
+      <SEO
+        title="Design Kit | The Edit"
+        description="Curated visual resources for marketing and communications professionals working with AI."
+        canonical="https://theeditai.co.uk/design-kit"
+      />
       <CobaltZone
         heading=""
         twoLineHeading={{ line1: "Design Workflow", line2: "" }}

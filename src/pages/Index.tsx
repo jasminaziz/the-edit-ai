@@ -5,6 +5,7 @@ import { parseDate } from "@/components/WhatsNewCard";
 import { HomeGravity } from "@/components/HomeGravity";
 import { Counter } from "@/components/ui/animated-counter";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { SEO } from "@/components/SEO";
 const CATEGORY_COLOURS: Record<string, { bg: string; text: string }> = {
   "New Release": { bg: "#2D35C9", text: "#FFFFFF" },
   "Model Update": { bg: "#7B7FD4", text: "#FFFFFF" },
@@ -39,6 +40,12 @@ const Index = () => {
 
   return (
     <div className="relative">
+      <SEO
+        title="The Edit | Curated AI Tools for Marketing & Comms Professionals"
+        description="An opinionated AI tools directory built by Jasmin Aziz. Real verdicts, no sponsored lists. Updated regularly."
+        canonical="https://theeditai.co.uk/"
+        googleVerification="2_93U4mtnkpPZgW6fZZJaOIQ7tEKv7__f8JSMuO0HC8"
+      />
       {/* Hero */}
       <section
         ref={pillsSectionRef}

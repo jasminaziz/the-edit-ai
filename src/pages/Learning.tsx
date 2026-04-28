@@ -4,6 +4,7 @@ import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
 import { RevealGroup, RevealItem } from "@/components/Reveal";
+import { SEO } from "@/components/SEO";
 
 const Learning = () => {
   const [items, setItems] = useState<LearningItem[]>([]);
@@ -31,6 +32,11 @@ const Learning = () => {
 
   return (
     <>
+      <SEO
+        title="Learning | The Edit"
+        description="AI learning resources curated by Jasmin Aziz."
+        canonical="https://theeditai.co.uk/learning"
+      />
       <CobaltZone
         heading="Learning"
         subheading="How I'm staying sharp."

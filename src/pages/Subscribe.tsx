@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Check } from "lucide-react";
 import { SUBSTACK_LIVE, SUBSTACK_URL } from "@/lib/links";
+import { SEO } from "@/components/SEO";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -110,6 +111,11 @@ export default function Subscribe() {
 
   return (
     <>
+      <SEO
+        title="Subscribe | The Edit"
+        description="Join the fortnightly digest. Curated AI tools and thinking for marketing and comms professionals."
+        canonical="https://theeditai.co.uk/subscribe"
+      />
       {/* Hero — mirrors homepage style */}
       <section
         className="relative min-h-[40vh] sm:min-h-[70vh] flex flex-col justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
