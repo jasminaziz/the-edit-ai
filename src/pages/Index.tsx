@@ -126,7 +126,7 @@ const Index = () => {
       </section>
 
       {/* Dashboard Preview Strip */}
-      <section className="bg-background pt-4 pb-12 sm:pt-6 sm:pb-16 px-6 sm:px-12">
+      <section className="bg-background pt-4 pb-6 sm:pt-6 sm:pb-12 px-6 sm:px-12">
         <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           {/* My Stack Preview */}
           <div className="space-y-4">
