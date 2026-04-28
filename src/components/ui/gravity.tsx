@@ -550,6 +550,16 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
     }, [handleResize, resetOnResize]);
 
     useEffect(() => {
+      if (resetOnResize) return;
+      const debounced = debounce(handleSoftResize, 150);
+      window.addEventListener("resize", debounced);
+      return () => {
+        window.removeEventListener("resize", debounced);
+        debounced.cancel();
+      };
+    }, [handleSoftResize, resetOnResize]);
+
+    useEffect(() => {
       initializeRenderer();
       return clearRenderer;
       // eslint-disable-next-line react-hooks/exhaustive-deps
