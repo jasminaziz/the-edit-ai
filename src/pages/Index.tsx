@@ -124,7 +124,7 @@ const Index = () => {
       </section>
 
       {/* Intro / positioning */}
-      <section className="bg-background pt-12 pb-9 sm:pt-16 sm:pb-12 px-6 sm:px-12">
+      <section className="bg-background pt-6 pb-2 sm:pt-16 sm:pb-4 px-6 sm:px-12">
         <div className="max-w-[1280px] mx-auto">
           <div style={{ maxWidth: 640 }}>
             <p
