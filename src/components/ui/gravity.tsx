@@ -548,13 +548,12 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       (canvasEl as unknown as { __syncMouseOffset?: () => void } | undefined)?.__syncMouseOffset?.();
     }, [resetOnResize]);
 
-    // Mobile browsers can throttle requestAnimationFrame when the canvas
-    // scrolls out of view, leaving the rAF loop dead even after returning. We
-    // also need to refresh the cached mouse offset whenever the page scrolls,
-    // otherwise a touch after scrolling lands on stale coordinates and the
-    // pills feel frozen. Wake any settled bodies for good measure.
+    // When the tab is hidden and re-shown, mobile browsers may have stalled
+    // the rAF loop. Re-arm it and refresh Matter's cached canvas offset so the
+    // next touch lands on the correct coordinates.
     useEffect(() => {
-      const wakeAndResync = () => {
+      const onVisibility = () => {
+        if (document.visibilityState !== "visible") return;
         const canvasEl = render.current?.canvas as HTMLCanvasElement | undefined;
         (canvasEl as unknown as { __syncMouseOffset?: () => void } | undefined)?.__syncMouseOffset?.();
         bodiesMap.current.forEach(({ body }) => {
@@ -565,17 +564,8 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
           frameId.current = requestAnimationFrame(updateElements);
         }
       };
-      const onScroll = debounce(wakeAndResync, 80);
-      const onVisibility = () => {
-        if (document.visibilityState === "visible") wakeAndResync();
-      };
-      window.addEventListener("scroll", onScroll, { passive: true });
       document.addEventListener("visibilitychange", onVisibility);
-      return () => {
-        window.removeEventListener("scroll", onScroll);
-        document.removeEventListener("visibilitychange", onVisibility);
-        onScroll.cancel();
-      };
+      return () => document.removeEventListener("visibilitychange", onVisibility);
     }, [updateElements]);
 
     const reset = useCallback(() => {
