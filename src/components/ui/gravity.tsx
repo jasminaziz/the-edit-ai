@@ -292,6 +292,10 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
 
       engine.current.gravity.x = gravity.x;
       engine.current.gravity.y = gravity.y;
+      // Mobile Safari aggressively sleeps bodies once they settle, after which
+      // touches no longer wake them and the pills appear "frozen". Disable the
+      // engine-wide sleeping behaviour to keep them interactive.
+      engine.current.enableSleeping = false;
 
       render.current = Render.create({
         element: canvas.current,
