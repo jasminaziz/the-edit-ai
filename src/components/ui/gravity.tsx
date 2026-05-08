@@ -407,8 +407,8 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       };
       canvasEl.addEventListener("touchstart", onTouchStart, { passive: false });
       canvasEl.addEventListener("touchmove", onTouchMove, { passive: false });
-      canvasEl.addEventListener("touchend", onTouchEnd, { passive: true });
-      canvasEl.addEventListener("touchcancel", onTouchEnd, { passive: true });
+      canvasEl.addEventListener("touchend", onTouchEnd, { passive: false });
+      canvasEl.addEventListener("touchcancel", onTouchEnd, { passive: false });
 
       // Expose for handleSoftResize / scroll / visibility handlers below.
       (canvasEl as unknown as { __syncMouseOffset?: () => void }).__syncMouseOffset = syncMouseOffset;
