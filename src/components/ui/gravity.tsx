@@ -333,6 +333,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       // Conditional touch handling: only hijack the touch when it lands on a
       // draggable body. This restores mobile drag-and-throw without breaking
       // vertical page scroll on empty canvas areas.
+      let touchHasBody = false;
       // Matter caches the canvas offset internally on Mouse.create. On mobile,
       // the page can scroll/resize after the canvas mounts, leaving the cached
       // offset stale — taps then land on the wrong body coordinates and the
