@@ -348,6 +348,9 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
         pos: { x: number; y: number },
         sourceEvent: TouchEvent
       ) => {
+        const mouseState = mouse as unknown as {
+          sourceEvents: Record<"mousedown" | "mousemove" | "mouseup", MouseEvent | TouchEvent | null>;
+        };
         mouse.absolute = pos;
         mouse.position = pos;
         if (eventName === "mousedown") {
@@ -358,7 +361,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
           mouse.button = -1;
           mouse.mouseupPosition = pos;
         }
-        mouse.sourceEvents[eventName] = sourceEvent as unknown as MouseEvent;
+        mouseState.sourceEvents[eventName] = sourceEvent;
       };
       const getTouchPos = (e: TouchEvent) => {
         const t = e.touches[0] || e.changedTouches[0];
