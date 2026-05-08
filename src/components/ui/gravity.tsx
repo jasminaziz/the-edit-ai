@@ -333,16 +333,37 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       // Conditional touch handling: only hijack the touch when it lands on a
       // draggable body. This restores mobile drag-and-throw without breaking
       // vertical page scroll on empty canvas areas.
-      let touchHasBody = false;
+      // Matter caches the canvas offset internally on Mouse.create. On mobile,
+      // the page can scroll/resize after the canvas mounts, leaving the cached
+      // offset stale — taps then land on the wrong body coordinates and the
+      // simulation feels frozen. Refresh the offset before any touch begins.
+      const syncMouseOffset = () => {
+        const rect = canvasEl.getBoundingClientRect();
+        (mouse as unknown as { offset: { x: number; y: number } }).offset = {
+          x: -rect.left,
+          y: -rect.top,
+        };
+      };
       const getTouchPos = (e: TouchEvent) => {
         const t = e.touches[0] || e.changedTouches[0];
         const rect = canvasEl.getBoundingClientRect();
         return { x: t.clientX - rect.left, y: t.clientY - rect.top };
       };
-      const bodyAt = (pos: { x: number; y: number }) =>
-        Query.point(engine.current.world.bodies, pos).some((b) => !b.isStatic);
+      // Slightly forgiving hit-test: also accept bodies within a small radius
+      // around the touch point, so finger taps don't have to be pixel-perfect.
+      const bodyAt = (pos: { x: number; y: number }) => {
+        const r = 8;
+        const region = {
+          min: { x: pos.x - r, y: pos.y - r },
+          max: { x: pos.x + r, y: pos.y + r },
+        };
+        return Query.region(engine.current.world.bodies, region as Matter.Bounds).some(
+          (b) => !b.isStatic
+        );
+      };
 
       const onTouchStart = (e: TouchEvent) => {
+        syncMouseOffset();
         const pos = getTouchPos(e);
         touchHasBody = bodyAt(pos);
         if (touchHasBody) {
@@ -372,6 +393,9 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       canvasEl.addEventListener("touchmove", onTouchMove, { passive: false });
       canvasEl.addEventListener("touchend", onTouchEnd, { passive: true });
       canvasEl.addEventListener("touchcancel", onTouchEnd, { passive: true });
+
+      // Expose for handleSoftResize / scroll / visibility handlers below.
+      (canvasEl as unknown as { __syncMouseOffset?: () => void }).__syncMouseOffset = syncMouseOffset;
 
       mouseConstraint.current = MouseConstraint.create(engine.current, {
         mouse,
