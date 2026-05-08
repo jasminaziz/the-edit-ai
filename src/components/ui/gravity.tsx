@@ -334,16 +334,34 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       // draggable body. This restores mobile drag-and-throw without breaking
       // vertical page scroll on empty canvas areas.
       let touchHasBody = false;
-      // Matter caches the canvas offset internally on Mouse.create. On mobile,
-      // the page can scroll/resize after the canvas mounts, leaving the cached
-      // offset stale — taps then land on the wrong body coordinates and the
-      // simulation feels frozen. Refresh the offset before any touch begins.
+      // Keep Matter's render-bounds offset at zero. Touch coordinates are
+      // calculated from getBoundingClientRect() on every event, so scrolling the
+      // page away and back cannot leave a stale viewport offset behind.
       const syncMouseOffset = () => {
-        const rect = canvasEl.getBoundingClientRect();
         (mouse as unknown as { offset: { x: number; y: number } }).offset = {
-          x: -rect.left,
-          y: -rect.top,
+          x: 0,
+          y: 0,
         };
+      };
+      const setTouchMouseState = (
+        eventName: "mousedown" | "mousemove" | "mouseup",
+        pos: { x: number; y: number },
+        sourceEvent: TouchEvent
+      ) => {
+        const mouseState = mouse as unknown as {
+          sourceEvents: Record<"mousedown" | "mousemove" | "mouseup", MouseEvent | TouchEvent | null>;
+        };
+        mouse.absolute = pos;
+        mouse.position = pos;
+        if (eventName === "mousedown") {
+          mouse.button = 0;
+          mouse.mousedownPosition = pos;
+        }
+        if (eventName === "mouseup") {
+          mouse.button = -1;
+          mouse.mouseupPosition = pos;
+        }
+        mouseState.sourceEvents[eventName] = sourceEvent;
       };
       const getTouchPos = (e: TouchEvent) => {
         const t = e.touches[0] || e.changedTouches[0];
@@ -369,31 +387,28 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
         touchHasBody = bodyAt(pos);
         if (touchHasBody) {
           e.preventDefault();
-          mouse.position = pos;
-          mouse.absolute = pos;
-          mouse.button = 0;
+          setTouchMouseState("mousedown", pos, e);
           mouseDown.current = true;
-          matterMouse.mousedown(e as unknown as Event);
         }
       };
       const onTouchMove = (e: TouchEvent) => {
         if (!touchHasBody) return;
         e.preventDefault();
         const pos = getTouchPos(e);
-        mouse.position = pos;
-        mouse.absolute = pos;
-        matterMouse.mousemove(e as unknown as Event);
+        setTouchMouseState("mousemove", pos, e);
       };
       const onTouchEnd = (e: TouchEvent) => {
         if (!touchHasBody) return;
+        e.preventDefault();
+        const pos = getTouchPos(e);
         touchHasBody = false;
         mouseDown.current = false;
-        matterMouse.mouseup(e as unknown as Event);
+        setTouchMouseState("mouseup", pos, e);
       };
       canvasEl.addEventListener("touchstart", onTouchStart, { passive: false });
       canvasEl.addEventListener("touchmove", onTouchMove, { passive: false });
-      canvasEl.addEventListener("touchend", onTouchEnd, { passive: true });
-      canvasEl.addEventListener("touchcancel", onTouchEnd, { passive: true });
+      canvasEl.addEventListener("touchend", onTouchEnd, { passive: false });
+      canvasEl.addEventListener("touchcancel", onTouchEnd, { passive: false });
 
       // Expose for handleSoftResize / scroll / visibility handlers below.
       (canvasEl as unknown as { __syncMouseOffset?: () => void }).__syncMouseOffset = syncMouseOffset;

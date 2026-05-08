@@ -19,16 +19,27 @@ import { useIsMobile } from "@/hooks/use-mobile";
 export function DragHint() {
   const isMobile = useIsMobile();
   const [visible, setVisible] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
 
   useEffect(() => {
     const showTimer = window.setTimeout(() => setVisible(true), 2000);
+    const onScroll = () => {
+      if (window.scrollY > 8) {
+        setHasScrolled(true);
+        setVisible(false);
+        window.clearTimeout(showTimer);
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.clearTimeout(showTimer);
+      window.removeEventListener("scroll", onScroll);
     };
   }, []);
 
   // Desktop hint is temporarily hidden — only show on mobile.
-  if (!isMobile) return null;
+  if (!isMobile || hasScrolled) return null;
 
   // The label and arrow stay centered as a pair on both mobile and desktop.
   const arrowSize = isMobile ? 10 : 14;
