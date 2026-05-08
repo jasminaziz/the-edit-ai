@@ -292,6 +292,10 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
 
       engine.current.gravity.x = gravity.x;
       engine.current.gravity.y = gravity.y;
+      // Mobile Safari aggressively sleeps bodies once they settle, after which
+      // touches no longer wake them and the pills appear "frozen". Disable the
+      // engine-wide sleeping behaviour to keep them interactive.
+      engine.current.enableSleeping = false;
 
       render.current = Render.create({
         element: canvas.current,
@@ -330,15 +334,37 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       // draggable body. This restores mobile drag-and-throw without breaking
       // vertical page scroll on empty canvas areas.
       let touchHasBody = false;
+      // Matter caches the canvas offset internally on Mouse.create. On mobile,
+      // the page can scroll/resize after the canvas mounts, leaving the cached
+      // offset stale — taps then land on the wrong body coordinates and the
+      // simulation feels frozen. Refresh the offset before any touch begins.
+      const syncMouseOffset = () => {
+        const rect = canvasEl.getBoundingClientRect();
+        (mouse as unknown as { offset: { x: number; y: number } }).offset = {
+          x: -rect.left,
+          y: -rect.top,
+        };
+      };
       const getTouchPos = (e: TouchEvent) => {
         const t = e.touches[0] || e.changedTouches[0];
         const rect = canvasEl.getBoundingClientRect();
         return { x: t.clientX - rect.left, y: t.clientY - rect.top };
       };
-      const bodyAt = (pos: { x: number; y: number }) =>
-        Query.point(engine.current.world.bodies, pos).some((b) => !b.isStatic);
+      // Slightly forgiving hit-test: also accept bodies within a small radius
+      // around the touch point, so finger taps don't have to be pixel-perfect.
+      const bodyAt = (pos: { x: number; y: number }) => {
+        const r = 8;
+        const region = {
+          min: { x: pos.x - r, y: pos.y - r },
+          max: { x: pos.x + r, y: pos.y + r },
+        };
+        return Query.region(engine.current.world.bodies, region as Matter.Bounds).some(
+          (b) => !b.isStatic
+        );
+      };
 
       const onTouchStart = (e: TouchEvent) => {
+        syncMouseOffset();
         const pos = getTouchPos(e);
         touchHasBody = bodyAt(pos);
         if (touchHasBody) {
@@ -368,6 +394,9 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       canvasEl.addEventListener("touchmove", onTouchMove, { passive: false });
       canvasEl.addEventListener("touchend", onTouchEnd, { passive: true });
       canvasEl.addEventListener("touchcancel", onTouchEnd, { passive: true });
+
+      // Expose for handleSoftResize / scroll / visibility handlers below.
+      (canvasEl as unknown as { __syncMouseOffset?: () => void }).__syncMouseOffset = syncMouseOffset;
 
       mouseConstraint.current = MouseConstraint.create(engine.current, {
         mouse,
@@ -514,7 +543,40 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       bodiesMap.current.forEach(({ body }) => {
         Matter.Sleeping.set(body, false);
       });
+      // Canvas may have moved within the viewport — refresh Matter's offset.
+      const canvasEl = render.current?.canvas as HTMLCanvasElement | undefined;
+      (canvasEl as unknown as { __syncMouseOffset?: () => void } | undefined)?.__syncMouseOffset?.();
     }, [resetOnResize]);
+
+    // Mobile browsers can throttle requestAnimationFrame when the canvas
+    // scrolls out of view, leaving the rAF loop dead even after returning. We
+    // also need to refresh the cached mouse offset whenever the page scrolls,
+    // otherwise a touch after scrolling lands on stale coordinates and the
+    // pills feel frozen. Wake any settled bodies for good measure.
+    useEffect(() => {
+      const wakeAndResync = () => {
+        const canvasEl = render.current?.canvas as HTMLCanvasElement | undefined;
+        (canvasEl as unknown as { __syncMouseOffset?: () => void } | undefined)?.__syncMouseOffset?.();
+        bodiesMap.current.forEach(({ body }) => {
+          Matter.Sleeping.set(body, false);
+        });
+        if (isRunning.current) {
+          if (frameId.current) cancelAnimationFrame(frameId.current);
+          frameId.current = requestAnimationFrame(updateElements);
+        }
+      };
+      const onScroll = debounce(wakeAndResync, 80);
+      const onVisibility = () => {
+        if (document.visibilityState === "visible") wakeAndResync();
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      document.addEventListener("visibilitychange", onVisibility);
+      return () => {
+        window.removeEventListener("scroll", onScroll);
+        document.removeEventListener("visibilitychange", onVisibility);
+        onScroll.cancel();
+      };
+    }, [updateElements]);
 
     const reset = useCallback(() => {
       stopEngine();
