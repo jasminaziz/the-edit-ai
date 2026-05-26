@@ -17,6 +17,6 @@ export const WORK_WITH_ME_HREF = "mailto:hello@jasminaziz.co.uk";
 // Flip to `true` once the Substack is live to restore all Substack CTAs
 // (top nav desktop + mobile, footer link, and the "Or read the Substack"
 // section on the Subscribe page).
-export const SUBSTACK_LIVE = false;
+export const SUBSTACK_LIVE = true;
 
 export const SUBSTACK_URL = "https://jasminaziz.substack.com";
