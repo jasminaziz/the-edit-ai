@@ -8,6 +8,7 @@ interface StackBarProps {
 }
 
 export const StackBar = ({ stack, onRemove }: StackBarProps) => {
+  const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
   const [footerOffset, setFooterOffset] = useState(0);
