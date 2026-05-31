@@ -42,6 +42,10 @@ const Tools = () => {
       return next;
     });
   };
+
+  useEffect(() => {
+    fetchTools().then((t) => {
+      if (t.length === 0 && import.meta.env.VITE_GOOGLE_SHEETS_ID) setError(true);
       setTools(t);
       setLoading(false);
     });
@@ -54,14 +58,6 @@ const Tools = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-
-  const toggleVerdict = (name: string) => {
-    setExpandedVerdicts((prev) => {
-      const next = new Set(prev);
-      next.has(name) ? next.delete(name) : next.add(name);
-      return next;
-    });
-  };
 
   const filtered = tools.filter((t) => {
     const q = search.toLowerCase();
