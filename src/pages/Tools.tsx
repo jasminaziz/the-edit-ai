@@ -9,6 +9,7 @@ import { RevealGroup, RevealItem } from "@/components/Reveal";
 import { SEO } from "@/components/SEO";
 import { ToolCard } from "@/components/ToolCard";
 import { StackBar } from "@/components/StackBar";
+import { StackTooltip } from "@/components/StackTooltip";
 import { slugifyToolName } from "@/utils/slugify";
 
 import { Search, X } from "lucide-react";
@@ -37,10 +38,28 @@ const Tools = () => {
       return [];
     }
   });
+  const [tooltipVisible, setTooltipVisible] = useState(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      return window.localStorage.getItem("stack-tooltip-seen") !== "true";
+    } catch {
+      return false;
+    }
+  });
+
+  const dismissTooltip = () => {
+    setTooltipVisible(false);
+    try {
+      window.localStorage.setItem("stack-tooltip-seen", "true");
+    } catch {
+      /* ignore */
+    }
+  };
 
   const toggleStack = (name: string) => {
     setStack((prev) => {
       const next = prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name];
+      if (prev.length === 0 && next.length > 0) dismissTooltip();
       try {
         window.localStorage.setItem(STACK_STORAGE_KEY, JSON.stringify(next));
       } catch {
@@ -81,6 +100,7 @@ const Tools = () => {
     setStack((prev) => {
       const merged = Array.from(new Set([...prev, ...matchedNames]));
       if (merged.length === prev.length) return prev;
+      if (merged.length > 0) dismissTooltip();
       try {
         window.localStorage.setItem(STACK_STORAGE_KEY, JSON.stringify(merged));
       } catch {
@@ -256,6 +276,7 @@ const Tools = () => {
         </div>
       </section>
 
+      <StackTooltip visible={tooltipVisible} onDismiss={dismissTooltip} />
       <StackBar stack={stack} onRemove={toggleStack} />
     </>
 
