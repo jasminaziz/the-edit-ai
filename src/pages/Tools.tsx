@@ -23,6 +23,10 @@ const Tools = () => {
   const [category, setCategory] = useState("ALL");
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [searchParams] = useSearchParams();
+  const [sharedBannerVisible, setSharedBannerVisible] = useState(
+    () => typeof window !== "undefined" && new URLSearchParams(window.location.search).has("stack"),
+  );
   const [stack, setStack] = useState<string[]>(() => {
     if (typeof window === "undefined") return [];
     try {
