@@ -85,8 +85,18 @@ export function RevealItem({
   className?: string;
   style?: React.CSSProperties;
 }) {
+  // Self-triggered so items appended after the parent group has finished
+  // its stagger (e.g. via "Show more") still animate in correctly instead
+  // of being stuck in the parent's hidden variant.
   return (
-    <motion.div className={className} style={style} variants={itemVariants}>
+    <motion.div
+      className={className}
+      style={style}
+      variants={itemVariants}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "0px 0px 100px 0px" }}
+    >
       {children}
     </motion.div>
   );
