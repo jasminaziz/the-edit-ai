@@ -115,23 +115,23 @@ function MonthSection({
       {open && (
         <div style={{ marginTop: 24 }}>
           {lead && <LeadCard item={lead} />}
-          {visibleRest.length > 0 && (
+          {rest.length > 0 && (
             <RevealGroup
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-6"
               style={{ gap: 24 }}
             >
-              {visibleRest.map((item) => (
+              {rest.map((item) => (
                 <RevealItem key={item.name}>
                   <GridCard item={item} />
                 </RevealItem>
               ))}
             </RevealGroup>
           )}
-          {hasMore && !showAll && (
+          {hasMore && (
             <div className="flex justify-center" style={{ marginTop: 24 }}>
               <button
                 type="button"
-                onClick={() => setShowAll(true)}
+                onClick={() => setVisibleCount((c) => c + 6)}
                 style={{
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   fontWeight: 600,
