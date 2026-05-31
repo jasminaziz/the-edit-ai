@@ -186,11 +186,51 @@ export default function Stack() {
             fontSize: 16,
             color: "#9A8F82",
             marginTop: 12,
-            marginBottom: 40,
+            marginBottom: 24,
           }}
         >
           Add more tools or remove the ones that don't fit.
         </p>
+
+        {stackNames.length > 0 && (
+          <div style={{ display: "flex", gap: 12, marginBottom: 40, flexWrap: "wrap" }}>
+            <button
+              onClick={handleDownload}
+              style={{
+                backgroundColor: "#2D35C9",
+                color: "#FFFFFF",
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontWeight: 600,
+                fontSize: 14,
+                height: 44,
+                padding: "0 24px",
+                borderRadius: 6,
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              Download your stack
+            </button>
+            <button
+              onClick={handleCopyLink}
+              style={{
+                backgroundColor: "#FAF8F4",
+                color: "#2D35C9",
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontWeight: 600,
+                fontSize: 14,
+                height: 44,
+                padding: "0 24px",
+                borderRadius: 6,
+                border: "1px solid #E8E2D8",
+                cursor: "pointer",
+              }}
+            >
+              {copied ? "Link copied ✓" : "Copy link"}
+            </button>
+          </div>
+        )}
+
 
         {stackNames.length === 0 ? (
           <p
