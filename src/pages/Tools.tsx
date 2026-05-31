@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { fetchTools, type Tool, CATEGORIES } from "@/lib/sheets";
 
@@ -12,7 +12,7 @@ import { StackBar } from "@/components/StackBar";
 import { StackTooltip } from "@/components/StackTooltip";
 import { slugifyToolName } from "@/utils/slugify";
 
-import { Search, X } from "lucide-react";
+import { Search } from "lucide-react";
 
 const STACK_STORAGE_KEY = "the-edit-stack";
 
@@ -25,9 +25,9 @@ const Tools = () => {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [searchParams] = useSearchParams();
-  const [sharedBannerVisible, setSharedBannerVisible] = useState(
-    () => typeof window !== "undefined" && new URLSearchParams(window.location.search).has("stack"),
-  );
+  const stackParam = searchParams.get("stack");
+  const hasStackParam = !!stackParam;
+
   const [stack, setStack] = useState<string[]>(() => {
     if (typeof window === "undefined") return [];
     try {
@@ -40,6 +40,7 @@ const Tools = () => {
   });
   const [tooltipVisible, setTooltipVisible] = useState(() => {
     if (typeof window === "undefined") return false;
+    if (new URLSearchParams(window.location.search).has("stack")) return false;
     try {
       return window.localStorage.getItem("stack-tooltip-seen") !== "true";
     } catch {
@@ -86,21 +87,21 @@ const Tools = () => {
 
   // Merge ?stack= slugs into localStorage stack once tools data is loaded.
   useEffect(() => {
-    if (tools.length === 0) return;
-    const raw = searchParams.get("stack");
-    if (!raw) return;
-    const slugs = raw.split(",").map((s) => s.trim()).filter(Boolean);
+    if (tools.length === 0 || !stackParam) return;
+    const slugs = stackParam
+      .split(",")
+      .map((s) => s.trim().toLowerCase())
+      .filter(Boolean);
     if (slugs.length === 0) return;
 
     const matchedNames = tools
-      .filter((t) => slugs.includes(slugifyToolName(t.name)))
+      .filter((t) => slugs.includes(slugifyToolName(t.name).toLowerCase()))
       .map((t) => t.name);
     if (matchedNames.length === 0) return;
 
     setStack((prev) => {
       const merged = Array.from(new Set([...prev, ...matchedNames]));
       if (merged.length === prev.length) return prev;
-      if (merged.length > 0) dismissTooltip();
       try {
         window.localStorage.setItem(STACK_STORAGE_KEY, JSON.stringify(merged));
       } catch {
@@ -108,21 +109,16 @@ const Tools = () => {
       }
       return merged;
     });
-  }, [tools, searchParams]);
+  }, [tools, stackParam]);
 
-  const dismissSharedBanner = () => {
-    setSharedBannerVisible(false);
-    try {
-      const url = new URL(window.location.href);
-      url.searchParams.delete("stack");
-      window.history.replaceState({}, "", url.toString());
-    } catch {
-      /* ignore */
-    }
-  };
-
-
-
+  const matchedSharedTools = useMemo(() => {
+    if (!stackParam || tools.length === 0) return [] as Tool[];
+    const slugs = stackParam
+      .split(",")
+      .map((s) => s.trim().toLowerCase())
+      .filter(Boolean);
+    return tools.filter((t) => slugs.includes(slugifyToolName(t.name).toLowerCase()));
+  }, [stackParam, tools]);
 
   const filtered = tools.filter((t) => {
     const q = search.toLowerCase();
@@ -130,6 +126,87 @@ const Tools = () => {
     const matchCat = category === "ALL" || t.category === category;
     return matchSearch && matchCat;
   });
+
+  const filterBar = (
+    <section
+      className={`sticky top-14 sm:top-16 z-40 bg-background border-b transition-[padding,box-shadow,border-color] duration-200 px-4 sm:px-12 ${
+        scrolled
+          ? "py-2.5 sm:py-3 border-border shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
+          : "py-3 sm:py-5 border-border/60"
+      }`}
+    >
+      <div
+        className={`max-w-[1280px] mx-auto flex flex-col gap-2.5 sm:gap-0 sm:flex-row sm:items-center ${
+          scrolled ? "sm:gap-3" : "sm:gap-4"
+        }`}
+      >
+        <div
+          className={`relative w-full ${
+            scrolled ? "sm:w-[260px] sm:shrink-0" : "sm:max-w-[400px]"
+          }`}
+        >
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
+          <input
+            type="text"
+            placeholder="Search tools..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className={`w-full pl-10 pr-3 bg-card border border-border rounded-lg font-body text-foreground placeholder:text-muted focus:border-primary focus:ring-[3px] focus:ring-primary/[0.12] outline-none transition-all ${
+              scrolled ? "py-1.5 text-sm" : "py-2.5 text-[15px]"
+            }`}
+          />
+        </div>
+
+        <div className="relative w-full sm:flex-1 min-w-0">
+          <div
+            className={`flex gap-2 flex-nowrap overflow-x-auto no-scrollbar scroll-smooth ${
+              scrolled ? "" : "sm:flex-wrap sm:overflow-visible"
+            }`}
+          >
+            {CATEGORIES.map((c) => (
+              <button
+                key={c}
+                onClick={() => setCategory(c)}
+                className={`shrink-0 px-3.5 py-1.5 font-body text-xs font-medium uppercase tracking-[0.04em] rounded-full border transition-colors duration-150 ${
+                  category === c
+                    ? "text-foreground border-transparent"
+                    : "bg-transparent border-border text-foreground hover:bg-card"
+                }`}
+                style={category === c ? { backgroundColor: "#C8F04A" } : undefined}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+          <div
+            aria-hidden="true"
+            className={`pointer-events-none absolute top-0 right-0 h-full w-10 bg-gradient-to-l from-background to-transparent ${
+              scrolled ? "" : "sm:hidden"
+            }`}
+          />
+        </div>
+      </div>
+    </section>
+  );
+
+  const renderCard = (tool: Tool) => {
+    const isSelected = hoveredCard === tool.name;
+    const isDimmed = !!hoveredCard && !isSelected;
+    const isInStack = stack.includes(tool.name);
+    return (
+      <RevealItem key={tool.name}>
+        <ToolCard
+          tool={tool}
+          isSelected={isSelected}
+          isDimmed={isDimmed}
+          isInStack={isInStack}
+          onMouseEnter={() => setHoveredCard(tool.name)}
+          onMouseLeave={() => setHoveredCard(null)}
+          onToggleStack={() => toggleStack(tool.name)}
+        />
+      </RevealItem>
+    );
+  };
 
   return (
     <>
@@ -143,143 +220,102 @@ const Tools = () => {
         subheading="Things on my radar. Breadth matters."
       />
 
-      {/* Filter Bar — flush against nav. Mobile: stacked (search + dedicated pills row with edge fade). Desktop: compacts on scroll. */}
-      <section
-        className={`sticky top-14 sm:top-16 z-40 bg-background border-b transition-[padding,box-shadow,border-color] duration-200 px-4 sm:px-12 ${
-          scrolled
-            ? "py-2.5 sm:py-3 border-border shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
-            : "py-3 sm:py-5 border-border/60"
-        }`}
-      >
-        <div
-          className={`max-w-[1280px] mx-auto flex flex-col gap-2.5 sm:gap-0 sm:flex-row sm:items-center ${
-            scrolled ? "sm:gap-3" : "sm:gap-4"
-          }`}
-        >
-          {/* Search */}
-          <div
-            className={`relative w-full ${
-              scrolled ? "sm:w-[260px] sm:shrink-0" : "sm:max-w-[400px]"
-            }`}
-          >
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
-            <input
-              type="text"
-              placeholder="Search tools..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className={`w-full pl-10 pr-3 bg-card border border-border rounded-lg font-body text-foreground placeholder:text-muted focus:border-primary focus:ring-[3px] focus:ring-primary/[0.12] outline-none transition-all ${
-                scrolled ? "py-1.5 text-sm" : "py-2.5 text-[15px]"
-              }`}
-            />
-          </div>
+      {hasStackParam ? (
+        <>
+          {/* SECTION 1 — Your Stack */}
+          <section className="bg-background pt-10 px-6 sm:px-12">
+            <div className="max-w-[1280px] mx-auto">
+              <h2
+                className="font-display"
+                style={{ fontSize: 28, fontWeight: 700, color: "#2D35C9", margin: 0 }}
+              >
+                Your Stack
+              </h2>
+              <p
+                className="font-body"
+                style={{ fontSize: 16, fontWeight: 400, color: "#9A8F82", marginTop: 8, marginBottom: 24 }}
+              >
+                Your saved stack. Add more tools or share it with someone.
+              </p>
 
-          {/* Category pills row — full-width on mobile with right-edge fade hinting horizontal scroll */}
-          <div className="relative w-full sm:flex-1 min-w-0">
-            <div
-              className={`flex gap-2 flex-nowrap overflow-x-auto no-scrollbar scroll-smooth ${
-                scrolled ? "" : "sm:flex-wrap sm:overflow-visible"
-              }`}
-            >
-              {CATEGORIES.map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setCategory(c)}
-                  className={`shrink-0 px-3.5 py-1.5 font-body text-xs font-medium uppercase tracking-[0.04em] rounded-full border transition-colors duration-150 ${
-                    category === c
-                      ? "text-foreground border-transparent"
-                      : "bg-transparent border-border text-foreground hover:bg-card"
-                  }`}
-                  style={category === c ? { backgroundColor: "#C8F04A" } : undefined}
-                >
-                  {c}
-                </button>
-              ))}
+              {loading ? (
+                <LoadingSpinner />
+              ) : matchedSharedTools.length === 0 ? (
+                <EmptyState />
+              ) : (
+                <RevealGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {matchedSharedTools.map(renderCard)}
+                </RevealGroup>
+              )}
+
+              <hr
+                style={{
+                  border: "none",
+                  borderTop: "1px solid #E8E2D8",
+                  marginTop: 32,
+                  marginBottom: 32,
+                }}
+              />
+
+              <h2
+                className="font-display"
+                style={{ fontSize: 22, fontWeight: 700, color: "#1A1510", margin: 0 }}
+              >
+                All Tools
+              </h2>
             </div>
-            {/* Edge fade — visible on mobile (and desktop while scrolled, where pills also scroll) */}
-            <div
-              aria-hidden="true"
-              className={`pointer-events-none absolute top-0 right-0 h-full w-10 bg-gradient-to-l from-background to-transparent ${
-                scrolled ? "" : "sm:hidden"
-              }`}
-            />
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* Shared stack banner */}
-      {sharedBannerVisible && (
-        <div
-          className="w-full flex items-center justify-center relative px-12"
-          style={{ height: 48, backgroundColor: "#2D35C9" }}
-        >
-          <p
-            className="font-body text-center"
-            style={{ fontSize: 14, fontWeight: 400, color: "#FFFFFF", margin: 0 }}
-          >
-            Viewing a shared stack — add your own tools to customise it.
-          </p>
-          <button
-            onClick={dismissSharedBanner}
-            aria-label="Dismiss shared stack banner"
-            className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center"
-            style={{
-              width: 24,
-              height: 24,
-              background: "none",
-              border: "none",
-              color: "#FFFFFF",
-              cursor: "pointer",
-              padding: 0,
-            }}
-          >
-            <X size={18} />
-          </button>
-        </div>
+          {filterBar}
+
+          {/* SECTION 2 — All Tools grid */}
+          <section className="bg-background py-10 px-6 sm:px-12 pb-[72px]">
+            <div className="max-w-[1280px] mx-auto">
+              {loading ? (
+                <LoadingSpinner />
+              ) : error ? (
+                <ErrorState />
+              ) : filtered.length === 0 ? (
+                <EmptyState />
+              ) : (
+                <RevealGroup
+                  key={`${category}-${search}`}
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                >
+                  {filtered.map(renderCard)}
+                </RevealGroup>
+              )}
+            </div>
+          </section>
+        </>
+      ) : (
+        <>
+          {filterBar}
+
+          <section className="bg-background py-10 px-6 sm:px-12 pb-[72px]">
+            <div className="max-w-[1280px] mx-auto">
+              {loading ? (
+                <LoadingSpinner />
+              ) : error ? (
+                <ErrorState />
+              ) : filtered.length === 0 ? (
+                <EmptyState />
+              ) : (
+                <RevealGroup
+                  key={`${category}-${search}`}
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                >
+                  {filtered.map(renderCard)}
+                </RevealGroup>
+              )}
+            </div>
+          </section>
+        </>
       )}
 
-      {/* Tool Grid */}
-      <section className="bg-background py-10 px-6 sm:px-12 pb-[72px]">
-        <div className="max-w-[1280px] mx-auto">
-          {loading ? (
-            <LoadingSpinner />
-          ) : error ? (
-            <ErrorState />
-          ) : filtered.length === 0 ? (
-            <EmptyState />
-          ) : (
-            <RevealGroup
-              key={`${category}-${search}`}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              {filtered.map((tool) => {
-                const isSelected = hoveredCard === tool.name;
-                const isDimmed = !!hoveredCard && !isSelected;
-                const isInStack = stack.includes(tool.name);
-
-                return (
-                  <RevealItem key={tool.name}>
-                    <ToolCard
-                      tool={tool}
-                      isSelected={isSelected}
-                      isDimmed={isDimmed}
-                      isInStack={isInStack}
-                      onMouseEnter={() => setHoveredCard(tool.name)}
-                      onMouseLeave={() => setHoveredCard(null)}
-                      onToggleStack={() => toggleStack(tool.name)}
-                    />
-                  </RevealItem>
-                );
-              })}
-            </RevealGroup>
-          )}
-        </div>
-      </section>
-
-      <StackTooltip visible={tooltipVisible} onDismiss={dismissTooltip} />
+      <StackTooltip visible={tooltipVisible && !hasStackParam} onDismiss={dismissTooltip} />
       <StackBar stack={stack} onRemove={toggleStack} />
     </>
-
   );
 };
 
