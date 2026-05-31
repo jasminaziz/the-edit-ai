@@ -9,20 +9,26 @@ interface StackBarProps {
 export const StackBar = ({ stack, onRemove }: StackBarProps) => {
   const [expanded, setExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [footerVisible, setFooterVisible] = useState(false);
+  const [footerOffset, setFooterOffset] = useState(0);
   const count = stack.length;
   const isEmpty = count === 0;
 
-  // Hide the floating bar once the footer scrolls into view so it never overlaps.
+  // Push the bar up so it rests just above the footer when the footer enters view.
   useEffect(() => {
     const footer = document.querySelector("footer");
     if (!footer) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setFooterVisible(entry.isIntersecting),
-      { rootMargin: "0px 0px 0px 0px", threshold: 0 },
-    );
-    observer.observe(footer);
-    return () => observer.disconnect();
+    const update = () => {
+      const rect = footer.getBoundingClientRect();
+      const overlap = window.innerHeight - rect.top;
+      setFooterOffset(overlap > 0 ? overlap : 0);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
   const handleShare = async () => {
