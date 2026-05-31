@@ -63,8 +63,10 @@ export const StackBar = ({ stack, onRemove }: StackBarProps) => {
       className="fixed bottom-0 left-0 right-0 z-50"
       style={{
         backgroundColor: "#2D35C9",
-        opacity: isEmpty ? 0.5 : 1,
-        transition: "opacity 200ms ease-out",
+        opacity: footerVisible ? 0 : isEmpty ? 0.5 : 1,
+        pointerEvents: footerVisible ? "none" : "auto",
+        transform: footerVisible ? "translateY(100%)" : "translateY(0)",
+        transition: "opacity 200ms ease-out, transform 200ms ease-out",
       }}
     >
       {/* Expanded panel */}
