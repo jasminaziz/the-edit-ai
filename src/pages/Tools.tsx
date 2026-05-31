@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { fetchTools, type Tool, CATEGORIES } from "@/lib/sheets";
 
 import { LoadingSpinner } from "@/components/LoadingSpinner";
@@ -8,8 +9,9 @@ import { RevealGroup, RevealItem } from "@/components/Reveal";
 import { SEO } from "@/components/SEO";
 import { ToolCard } from "@/components/ToolCard";
 import { StackBar } from "@/components/StackBar";
+import { slugifyToolName } from "@/utils/slugify";
 
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 
 const STACK_STORAGE_KEY = "the-edit-stack";
 
@@ -21,6 +23,10 @@ const Tools = () => {
   const [category, setCategory] = useState("ALL");
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [searchParams] = useSearchParams();
+  const [sharedBannerVisible, setSharedBannerVisible] = useState(
+    () => typeof window !== "undefined" && new URLSearchParams(window.location.search).has("stack"),
+  );
   const [stack, setStack] = useState<string[]>(() => {
     if (typeof window === "undefined") return [];
     try {
@@ -58,6 +64,44 @@ const Tools = () => {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Merge ?stack= slugs into localStorage stack once tools data is loaded.
+  useEffect(() => {
+    if (tools.length === 0) return;
+    const raw = searchParams.get("stack");
+    if (!raw) return;
+    const slugs = raw.split(",").map((s) => s.trim()).filter(Boolean);
+    if (slugs.length === 0) return;
+
+    const matchedNames = tools
+      .filter((t) => slugs.includes(slugifyToolName(t.name)))
+      .map((t) => t.name);
+    if (matchedNames.length === 0) return;
+
+    setStack((prev) => {
+      const merged = Array.from(new Set([...prev, ...matchedNames]));
+      if (merged.length === prev.length) return prev;
+      try {
+        window.localStorage.setItem(STACK_STORAGE_KEY, JSON.stringify(merged));
+      } catch {
+        /* ignore */
+      }
+      return merged;
+    });
+  }, [tools, searchParams]);
+
+  const dismissSharedBanner = () => {
+    setSharedBannerVisible(false);
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("stack");
+      window.history.replaceState({}, "", url.toString());
+    } catch {
+      /* ignore */
+    }
+  };
+
+
 
 
   const filtered = tools.filter((t) => {
@@ -142,6 +186,37 @@ const Tools = () => {
           </div>
         </div>
       </section>
+
+      {/* Shared stack banner */}
+      {sharedBannerVisible && (
+        <div
+          className="w-full flex items-center justify-center relative px-12"
+          style={{ height: 48, backgroundColor: "#2D35C9" }}
+        >
+          <p
+            className="font-body text-center"
+            style={{ fontSize: 14, fontWeight: 400, color: "#FFFFFF", margin: 0 }}
+          >
+            Viewing a shared stack, add your own tools to customise it.
+          </p>
+          <button
+            onClick={dismissSharedBanner}
+            aria-label="Dismiss shared stack banner"
+            className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center"
+            style={{
+              width: 24,
+              height: 24,
+              background: "none",
+              border: "none",
+              color: "#FFFFFF",
+              cursor: "pointer",
+              padding: 0,
+            }}
+          >
+            <X size={18} />
+          </button>
+        </div>
+      )}
 
       {/* Tool Grid */}
       <section className="bg-background py-10 px-6 sm:px-12">
