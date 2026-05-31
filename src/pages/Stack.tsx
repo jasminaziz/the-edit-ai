@@ -1,6 +1,60 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchTools, type Tool } from "@/lib/sheets";
+import { slugifyToolName } from "@/utils/slugify";
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function buildStackHtml(items: Array<{ name: string; tool?: Tool }>): string {
+  const date = new Date().toLocaleDateString("en-GB");
+  const cards = items
+    .map(({ name, tool }) => {
+      const safeName = escapeHtml(name);
+      const category = tool?.category
+        ? `<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#9A8F82;margin-bottom:10px;">${escapeHtml(tool.category)}</div>`
+        : "";
+      const verdict = tool?.verdict
+        ? `<p style="font-size:14px;line-height:1.6;color:#1A1510;margin:0 0 12px 0;">${escapeHtml(tool.verdict)}</p>`
+        : "";
+      const url = tool?.url
+        ? `<a href="${escapeHtml(tool.url)}" style="font-size:13px;color:#2D35C9;text-decoration:none;" target="_blank" rel="noopener noreferrer">${escapeHtml(tool.url)}</a>`
+        : "";
+      return `<div style="background:#FFFFFF;border:1px solid #E8E2D8;border-left:3px solid #2D35C9;border-radius:6px;padding:20px;margin-bottom:16px;">
+  <h2 style="font-size:18px;font-weight:700;color:#1A1510;margin:0 0 6px 0;">${safeName}</h2>
+  ${category}
+  ${verdict}
+  ${url}
+</div>`;
+    })
+    .join("\n");
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>My AI Stack — The Edit</title>
+</head>
+<body style="background:#FAF8F4;font-family:-apple-system,BlinkMacSystemFont,sans-serif;color:#1A1510;margin:0;">
+<div style="max-width:680px;margin:0 auto;padding:40px 24px;">
+  <h1 style="font-size:28px;font-weight:700;color:#2D35C9;margin:0 0 4px 0;">My AI Stack</h1>
+  <p style="font-size:14px;color:#9A8F82;margin:0 0 40px 0;">Built using The Edit — theeditai.co.uk</p>
+  ${cards}
+  <footer style="margin-top:48px;border-top:1px solid #E8E2D8;padding-top:16px;font-size:12px;color:#9A8F82;">
+    Built on The Edit · theeditai.co.uk · ${escapeHtml(date)}
+  </footer>
+</div>
+</body>
+</html>`;
+}
+
 
 const STACK_KEY = "the-edit-stack";
 
