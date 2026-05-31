@@ -19,12 +19,29 @@ const Tools = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("ALL");
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
-  const [expandedVerdicts, setExpandedVerdicts] = useState<Set<string>>(new Set());
   const [scrolled, setScrolled] = useState(false);
+  const [stack, setStack] = useState<string[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const raw = window.localStorage.getItem(STACK_STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed.filter((v) => typeof v === "string") : [];
+    } catch {
+      return [];
+    }
+  });
 
-  useEffect(() => {
-    fetchTools().then((t) => {
-      if (t.length === 0 && import.meta.env.VITE_GOOGLE_SHEETS_ID) setError(true);
+  const toggleStack = (name: string) => {
+    setStack((prev) => {
+      const next = prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name];
+      try {
+        window.localStorage.setItem(STACK_STORAGE_KEY, JSON.stringify(next));
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+  };
       setTools(t);
       setLoading(false);
     });
