@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { slugifyToolName } from "@/utils/slugify";
 
@@ -7,6 +8,7 @@ interface StackBarProps {
 }
 
 export const StackBar = ({ stack, onRemove }: StackBarProps) => {
+  const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
   const [footerOffset, setFooterOffset] = useState(0);
@@ -33,7 +35,7 @@ export const StackBar = ({ stack, onRemove }: StackBarProps) => {
 
   const handleShare = async () => {
     const slugs = stack.map(slugifyToolName).join(",");
-    const url = `https://www.theeditai.co.uk/tools?stack=${slugs}`;
+    const url = `https://www.theeditai.co.uk/stack?stack=${slugs}`;
 
     const fallback = () => {
       try {
@@ -114,22 +116,40 @@ export const StackBar = ({ stack, onRemove }: StackBarProps) => {
             ))}
           </ul>
 
-          <button
-            onClick={handleShare}
-            className="font-body w-full"
-            style={{
-              height: 44,
-              backgroundColor: "#C8F04A",
-              color: "#1A1510",
-              fontSize: 14,
-              fontWeight: 600,
-              border: "none",
-              borderRadius: 8,
-              cursor: "pointer",
-            }}
-          >
-            {copied ? "Link copied ✓" : "Share my stack"}
-          </button>
+          <div className="flex flex-col" style={{ gap: 8 }}>
+            <button
+              onClick={() => navigate("/stack")}
+              className="font-body w-full"
+              style={{
+                height: 44,
+                backgroundColor: "#C8F04A",
+                color: "#1A1510",
+                fontSize: 14,
+                fontWeight: 600,
+                border: "none",
+                borderRadius: 6,
+                cursor: "pointer",
+              }}
+            >
+              See your stack
+            </button>
+            <button
+              onClick={handleShare}
+              className="font-body w-full"
+              style={{
+                height: 40,
+                backgroundColor: "transparent",
+                color: "#FFFFFF",
+                fontSize: 14,
+                fontWeight: 500,
+                border: "1px solid rgba(255,255,255,0.3)",
+                borderRadius: 6,
+                cursor: "pointer",
+              }}
+            >
+              {copied ? "Link copied ✓" : "Copy link"}
+            </button>
+          </div>
         </div>
       )}
 
