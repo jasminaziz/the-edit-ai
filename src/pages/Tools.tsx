@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { fetchTools, type Tool, CATEGORIES } from "@/lib/sheets";
 
 import { LoadingSpinner } from "@/components/LoadingSpinner";
@@ -8,8 +9,9 @@ import { RevealGroup, RevealItem } from "@/components/Reveal";
 import { SEO } from "@/components/SEO";
 import { ToolCard } from "@/components/ToolCard";
 import { StackBar } from "@/components/StackBar";
+import { slugifyToolName } from "@/utils/slugify";
 
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 
 const STACK_STORAGE_KEY = "the-edit-stack";
 
