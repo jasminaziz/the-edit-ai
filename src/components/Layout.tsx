@@ -21,6 +21,7 @@ const CONTACT_EMAIL = "hello@jasminaziz.co.uk";
 export function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const isBare = location.pathname === "/stack";
   const isMobile = useIsMobile();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -58,6 +59,11 @@ export function Layout({ children }: { children: ReactNode }) {
     window.addEventListener("resize", updatePill);
     return () => window.removeEventListener("resize", updatePill);
   }, [updatePill]);
+
+  if (isBare) {
+    return <>{children}</>;
+  }
+
 
   const navBg = isHome ? "#7B7FD4" : "#2D35C9";
   const textColor = "text-primary-foreground";
