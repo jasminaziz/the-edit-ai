@@ -35,7 +35,7 @@ export const StackBar = ({ stack, onRemove }: StackBarProps) => {
 
   const handleShare = async () => {
     const slugs = stack.map(slugifyToolName).join(",");
-    const url = `https://www.theeditai.co.uk/tools?stack=${slugs}`;
+    const url = `https://www.theeditai.co.uk/stack?stack=${slugs}`;
 
     const fallback = () => {
       try {
