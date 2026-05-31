@@ -382,7 +382,7 @@ export default function Subscribe() {
                   marginBottom: 0,
                 }}
               >
-                Get in touch —{" "}
+                Get in touch:{" "}
                 <a
                   href="mailto:hello@jasminaziz.co.uk"
                   style={{ color: "#9A8F82", textDecoration: "none" }}
