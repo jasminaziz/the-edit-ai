@@ -6,8 +6,11 @@ import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
 import { RevealGroup, RevealItem } from "@/components/Reveal";
 import { SEO } from "@/components/SEO";
+import { ToolCard } from "@/components/ToolCard";
 
 import { Search } from "lucide-react";
+
+const STACK_STORAGE_KEY = "the-edit-stack";
 
 const Tools = () => {
   const [tools, setTools] = useState<Tool[]>([]);
