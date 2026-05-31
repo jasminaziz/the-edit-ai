@@ -197,7 +197,7 @@ const Tools = () => {
             className="font-body text-center"
             style={{ fontSize: 14, fontWeight: 400, color: "#FFFFFF", margin: 0 }}
           >
-            Viewing a shared stack, add your own tools to customise it.
+            Viewing a shared stack — add your own tools to customise it.
           </p>
           <button
             onClick={dismissSharedBanner}
