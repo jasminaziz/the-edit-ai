@@ -180,7 +180,10 @@ const Tools = () => {
           )}
         </div>
       </section>
+
+      <StackBar stack={stack} onRemove={toggleStack} />
     </>
+
   );
 };
 
