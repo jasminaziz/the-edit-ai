@@ -60,6 +60,11 @@ export function Layout({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("resize", updatePill);
   }, [updatePill]);
 
+  if (isBare) {
+    return <>{children}</>;
+  }
+
+
   const navBg = isHome ? "#7B7FD4" : "#2D35C9";
   const textColor = "text-primary-foreground";
   const pillBg = "bg-white";
