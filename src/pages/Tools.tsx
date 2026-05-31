@@ -187,6 +187,37 @@ const Tools = () => {
         </div>
       </section>
 
+      {/* Shared stack banner */}
+      {sharedBannerVisible && (
+        <div
+          className="w-full flex items-center justify-center relative px-12"
+          style={{ height: 48, backgroundColor: "#2D35C9" }}
+        >
+          <p
+            className="font-body text-center"
+            style={{ fontSize: 14, fontWeight: 400, color: "#FFFFFF", margin: 0 }}
+          >
+            Viewing a shared stack, add your own tools to customise it.
+          </p>
+          <button
+            onClick={dismissSharedBanner}
+            aria-label="Dismiss shared stack banner"
+            className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center"
+            style={{
+              width: 24,
+              height: 24,
+              background: "none",
+              border: "none",
+              color: "#FFFFFF",
+              cursor: "pointer",
+              padding: 0,
+            }}
+          >
+            <X size={18} />
+          </button>
+        </div>
+      )}
+
       {/* Tool Grid */}
       <section className="bg-background py-10 px-6 sm:px-12">
         <div className="max-w-[1280px] mx-auto">
