@@ -147,7 +147,7 @@ export function FooterEmailCapture() {
                     marginBottom: 0,
                   }}
                 >
-                  Something went wrong — please try again.
+                  Something went wrong, please try again.
                 </p>
               )}
 
