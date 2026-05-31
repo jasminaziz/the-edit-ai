@@ -78,18 +78,16 @@ export const ToolCard = ({
         >
           {tool.category}
         </span>
-        {tool.status && (
+        {tool.status === "in_stack" && (
           <span
             className="inline-block px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full"
             style={
               isSelected
                 ? { backgroundColor: "rgba(250,248,244,0.15)", color: "#FAF8F4" }
-                : tool.status === "in_stack"
-                ? { backgroundColor: "#2D6A4F", color: "#FFFFFF" }
-                : { backgroundColor: "#2D35C9", color: "#FFFFFF" }
+                : { backgroundColor: "#2D6A4F", color: "#FFFFFF" }
             }
           >
-            {tool.status === "in_stack" ? "IN MY STACK" : "ON MY RADAR"}
+            IN MY STACK
           </span>
         )}
       </div>
