@@ -7,6 +7,7 @@ import { CobaltZone } from "@/components/CobaltZone";
 import { RevealGroup, RevealItem } from "@/components/Reveal";
 import { SEO } from "@/components/SEO";
 import { ToolCard } from "@/components/ToolCard";
+import { StackBar } from "@/components/StackBar";
 
 import { Search } from "lucide-react";
 
@@ -179,7 +180,10 @@ const Tools = () => {
           )}
         </div>
       </section>
+
+      <StackBar stack={stack} onRemove={toggleStack} />
     </>
+
   );
 };
 
