@@ -48,8 +48,13 @@ function MonthSection({
   isFirst: boolean;
 }) {
   const [open, setOpen] = useState(defaultOpen);
+  const [showAll, setShowAll] = useState(false);
   const [lead, ...rest] = group.items;
   const count = group.items.length;
+
+  const hasMore = count > 6;
+  const visibleRest = showAll ? rest : rest.slice(0, 5);
+  const hiddenCount = rest.length - 5;
 
   return (
     <div style={{ marginTop: isFirst ? 48 : 32 }}>
@@ -109,17 +114,39 @@ function MonthSection({
       {open && (
         <div style={{ marginTop: 24 }}>
           {lead && <LeadCard item={lead} />}
-          {rest.length > 0 && (
+          {visibleRest.length > 0 && (
             <RevealGroup
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-6"
               style={{ gap: 24 }}
             >
-              {rest.map((item) => (
+              {visibleRest.map((item) => (
                 <RevealItem key={item.name}>
                   <GridCard item={item} />
                 </RevealItem>
               ))}
             </RevealGroup>
+          )}
+          {hasMore && !showAll && (
+            <div className="flex justify-center" style={{ marginTop: 24 }}>
+              <button
+                type="button"
+                onClick={() => setShowAll(true)}
+                style={{
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontWeight: 600,
+                  fontSize: 14,
+                  color: "#2D35C9",
+                  background: "#FFFFFF",
+                  border: "1px solid #E8E2D8",
+                  borderRadius: 6,
+                  height: 40,
+                  padding: "0 20px",
+                  cursor: "pointer",
+                }}
+              >
+                Show more — {hiddenCount} remaining
+              </button>
+            </div>
           )}
         </div>
       )}
