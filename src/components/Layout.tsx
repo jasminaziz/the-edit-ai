@@ -21,6 +21,7 @@ const CONTACT_EMAIL = "hello@jasminaziz.co.uk";
 export function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const isBare = location.pathname === "/stack";
   const isMobile = useIsMobile();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
