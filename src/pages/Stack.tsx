@@ -102,6 +102,31 @@ export default function Stack() {
   const items = stackNames
     .map((name) => ({ name, tool: tools.find((t) => t.name === name) }));
 
+  const handleDownload = () => {
+    const html = buildStackHtml(items);
+    const blob = new Blob([html], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "my-stack-the-edit.html";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 0);
+  };
+
+  const handleCopyLink = async () => {
+    const slugs = stackNames.map((n) => slugifyToolName(n)).filter(Boolean).join(",");
+    const url = `https://www.theeditai.co.uk/stack?stack=${slugs}`;
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      // ignore
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div style={{ backgroundColor: "#FAF8F4", minHeight: "100vh" }}>
       {/* Top bar */}
