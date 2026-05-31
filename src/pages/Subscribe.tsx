@@ -227,7 +227,7 @@ export default function Subscribe() {
                 )}
                 {formState === "error" && (
                   <p className="font-body" style={{ fontWeight: 400, fontSize: 13, color: "#E8572A", marginTop: 8, marginBottom: 0 }}>
-                    Something went wrong — please try again.
+                    Something went wrong, please try again.
                   </p>
                 )}
 
