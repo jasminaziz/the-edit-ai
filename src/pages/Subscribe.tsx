@@ -227,7 +227,7 @@ export default function Subscribe() {
                 )}
                 {formState === "error" && (
                   <p className="font-body" style={{ fontWeight: 400, fontSize: 13, color: "#E8572A", marginTop: 8, marginBottom: 0 }}>
-                    Something went wrong — please try again.
+                    Something went wrong, please try again.
                   </p>
                 )}
 
@@ -274,7 +274,7 @@ export default function Subscribe() {
                     onFocus={(e) => (e.currentTarget.style.borderColor = "#2D35C9")}
                     onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E2D8")}
                   >
-                    <option value="" style={{ color: "#9A8F82" }}>Select one — optional</option>
+                    <option value="" style={{ color: "#9A8F82" }}>Select one (optional)</option>
                     <option value="using AI at work">using AI at work</option>
                     <option value="building something on the side">building something on the side</option>
                     <option value="both">both</option>
@@ -382,7 +382,7 @@ export default function Subscribe() {
                   marginBottom: 0,
                 }}
               >
-                Get in touch —{" "}
+                Get in touch:{" "}
                 <a
                   href="mailto:hello@jasminaziz.co.uk"
                   style={{ color: "#9A8F82", textDecoration: "none" }}

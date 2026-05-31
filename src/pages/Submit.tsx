@@ -35,7 +35,7 @@ const Submit = () => {
           {submitted ? (
             <div className="text-center py-16">
               <h2 className="font-heading font-semibold text-[28px] text-primary mb-6">
-                Thank you — I'll take a look.
+                Thank you, I'll take a look.
               </h2>
               <svg viewBox="0 0 300 20" className="mx-auto w-1/2" fill="none">
                 <path
@@ -80,11 +80,11 @@ const Submit = () => {
                 />
               </FormField>
 
-              <FormField label="How are you using it?" placeholder="Be specific — the more context the better.">
+              <FormField label="How are you using it?" placeholder="Be specific: the more context the better.">
                 <textarea
                   value={form.howUsing}
                   onChange={(e) => handleChange("howUsing", e.target.value)}
-                  placeholder="Be specific — the more context the better."
+                  placeholder="Be specific: the more context the better."
                   className="form-input"
                   style={{ height: 120 }}
                 />

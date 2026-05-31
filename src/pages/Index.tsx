@@ -141,7 +141,7 @@ const Index = () => {
                 margin: 0,
               }}
             >
-              Curated by Jasmin Aziz — strategic communications consultant and AI practitioner.
+              Curated by Jasmin Aziz | strategic communications consultant and AI practitioner.
             </p>
           </div>
         </div>
