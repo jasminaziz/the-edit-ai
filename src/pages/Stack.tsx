@@ -81,6 +81,7 @@ export default function Stack() {
   const [stackNames, setStackNames] = useState<string[]>([]);
   const [tools, setTools] = useState<Tool[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     setStackNames(readStack());
