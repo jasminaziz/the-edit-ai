@@ -65,6 +65,44 @@ const Tools = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Merge ?stack= slugs into localStorage stack once tools data is loaded.
+  useEffect(() => {
+    if (tools.length === 0) return;
+    const raw = searchParams.get("stack");
+    if (!raw) return;
+    const slugs = raw.split(",").map((s) => s.trim()).filter(Boolean);
+    if (slugs.length === 0) return;
+
+    const matchedNames = tools
+      .filter((t) => slugs.includes(slugifyToolName(t.name)))
+      .map((t) => t.name);
+    if (matchedNames.length === 0) return;
+
+    setStack((prev) => {
+      const merged = Array.from(new Set([...prev, ...matchedNames]));
+      if (merged.length === prev.length) return prev;
+      try {
+        window.localStorage.setItem(STACK_STORAGE_KEY, JSON.stringify(merged));
+      } catch {
+        /* ignore */
+      }
+      return merged;
+    });
+  }, [tools, searchParams]);
+
+  const dismissSharedBanner = () => {
+    setSharedBannerVisible(false);
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("stack");
+      window.history.replaceState({}, "", url.toString());
+    } catch {
+      /* ignore */
+    }
+  };
+
+
+
 
   const filtered = tools.filter((t) => {
     const q = search.toLowerCase();
