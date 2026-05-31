@@ -219,7 +219,7 @@ const Tools = () => {
       )}
 
       {/* Tool Grid */}
-      <section className="bg-background py-10 px-6 sm:px-12">
+      <section className="bg-background py-10 px-6 sm:px-12 pb-[72px]">
         <div className="max-w-[1280px] mx-auto">
           {loading ? (
             <LoadingSpinner />
