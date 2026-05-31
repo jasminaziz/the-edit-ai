@@ -48,13 +48,14 @@ function MonthSection({
   isFirst: boolean;
 }) {
   const [open, setOpen] = useState(defaultOpen);
-  const [showAll, setShowAll] = useState(false);
-  const [lead, ...rest] = group.items;
+  const [visibleCount, setVisibleCount] = useState(6);
   const count = group.items.length;
 
-  const hasMore = count > 7;
-  const visibleRest = showAll ? rest : rest.slice(0, 6);
-  const hiddenCount = rest.length - 6;
+  const visibleItems = group.items.slice(0, visibleCount);
+  const lead = visibleItems[0];
+  const rest = visibleItems.slice(1);
+  const hiddenCount = count - visibleCount;
+  const hasMore = hiddenCount > 0;
 
   return (
     <div style={{ marginTop: isFirst ? 48 : 32 }}>
