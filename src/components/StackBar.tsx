@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { slugifyToolName } from "@/utils/slugify";
 
 interface StackBarProps {
@@ -9,8 +9,21 @@ interface StackBarProps {
 export const StackBar = ({ stack, onRemove }: StackBarProps) => {
   const [expanded, setExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [footerVisible, setFooterVisible] = useState(false);
   const count = stack.length;
   const isEmpty = count === 0;
+
+  // Hide the floating bar once the footer scrolls into view so it never overlaps.
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setFooterVisible(entry.isIntersecting),
+      { rootMargin: "0px 0px 0px 0px", threshold: 0 },
+    );
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, []);
 
   const handleShare = async () => {
     const slugs = stack.map(slugifyToolName).join(",");
