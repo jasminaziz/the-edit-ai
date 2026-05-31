@@ -274,7 +274,7 @@ export default function Subscribe() {
                     onFocus={(e) => (e.currentTarget.style.borderColor = "#2D35C9")}
                     onBlur={(e) => (e.currentTarget.style.borderColor = "#E8E2D8")}
                   >
-                    <option value="" style={{ color: "#9A8F82" }}>Select one — optional</option>
+                    <option value="" style={{ color: "#9A8F82" }}>Select one (optional)</option>
                     <option value="using AI at work">using AI at work</option>
                     <option value="building something on the side">building something on the side</option>
                     <option value="both">both</option>
