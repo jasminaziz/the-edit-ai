@@ -80,11 +80,11 @@ const Submit = () => {
                 />
               </FormField>
 
-              <FormField label="How are you using it?" placeholder="Be specific — the more context the better.">
+              <FormField label="How are you using it?" placeholder="Be specific: the more context the better.">
                 <textarea
                   value={form.howUsing}
                   onChange={(e) => handleChange("howUsing", e.target.value)}
-                  placeholder="Be specific — the more context the better."
+                  placeholder="Be specific: the more context the better."
                   className="form-input"
                   style={{ height: 120 }}
                 />
