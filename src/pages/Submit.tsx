@@ -35,7 +35,7 @@ const Submit = () => {
           {submitted ? (
             <div className="text-center py-16">
               <h2 className="font-heading font-semibold text-[28px] text-primary mb-6">
-                Thank you — I'll take a look.
+                Thank you, I'll take a look.
               </h2>
               <svg viewBox="0 0 300 20" className="mx-auto w-1/2" fill="none">
                 <path
