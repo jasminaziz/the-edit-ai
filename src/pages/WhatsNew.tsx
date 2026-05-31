@@ -52,9 +52,9 @@ function MonthSection({
   const [lead, ...rest] = group.items;
   const count = group.items.length;
 
-  const hasMore = count > 6;
-  const visibleRest = showAll ? rest : rest.slice(0, 5);
-  const hiddenCount = rest.length - 5;
+  const hasMore = count > 7;
+  const visibleRest = showAll ? rest : rest.slice(0, 6);
+  const hiddenCount = rest.length - 6;
 
   return (
     <div style={{ marginTop: isFirst ? 48 : 32 }}>
