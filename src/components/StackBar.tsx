@@ -69,7 +69,7 @@ export const StackBar = ({ stack, onRemove }: StackBarProps) => {
       className="fixed left-0 right-0 z-50"
       style={{
         bottom: footerOffset,
-        backgroundColor: "#2D35C9",
+        backgroundColor: "#7B7FD4",
         opacity: isEmpty ? 0.5 : 1,
         transition: "opacity 200ms ease-out",
       }}
@@ -81,7 +81,7 @@ export const StackBar = ({ stack, onRemove }: StackBarProps) => {
             padding: "20px 24px",
             maxHeight: 320,
             overflowY: "auto",
-            backgroundColor: "#2D35C9",
+            backgroundColor: "#7B7FD4",
           }}
         >
           <ul className="flex flex-col gap-2 mb-4">
