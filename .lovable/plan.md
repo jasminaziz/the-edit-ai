@@ -1,82 +1,48 @@
-## Goal — back to the original prompt
+## First-visit StackBar tooltip
 
-The reference demo (`gravity.tsx` + `demo.tsx`) is a single physics canvas with pills laid out as children. Each pill is given a unique `x="X%"` and `y="Y%"` spawn coordinate, all mount at once, and the **natural cascade emerges from the physics engine**, not from JS staggering. Pills are draggable via the Matter.js `MouseConstraint` already wired into the canvas.
+### Flags (per your "flag before building" asks)
 
-I drifted from that pattern in two ways that have caused the recent glitchiness:
-1. **Staggered `setInterval` mounting** — pills get added after the engine is running, which competes with the resize-debounce/reset cycle and produces flicker, dropped bodies, and the "nothing falls" state.
-2. **Spawning at `y` values too close to the canvas top** — combined with `addTopWall={true}` defaults and tight hero heights on mobile, bodies clip walls and pop out of the simulation.
+1. **z-index**: StackBar is `z-50`. Tooltip will use `z-[60]` so it sits above the bar but below modals (none on this page). No other fixed/sticky element on /tools sits in the bottom region — the sticky filter bar is `top-14` `z-40` and won't conflict.
+2. **Dismiss-on-first-add wiring**: I'll wrap the existing `toggleStack` in `Tools.tsx` (not touch `ToolCard` or `StackBar`) so that whenever the stack transitions from 0 → ≥1 items, the tooltip is dismissed and `stack-tooltip-seen=true` is written. This uses the same single source of truth — no parallel state.
+3. **Edge case — returning user with `?stack=`**: The merge effect can also bring stack from 0 → N on load. I'll dismiss the tooltip in that case too (otherwise it floats over a populated bar, which is wrong).
+4. **Better-idea suggestion (flag)**: One small enhancement worth considering — gently pulse/bounce the tooltip's pointer once (or apply a subtle 2-cycle attention pulse to the StackBar itself) when the tooltip appears. It draws the eye to the bar without adding copy. **I won't build it unless you say yes** — the spec calls for a static fade-in only.
 
-The plan below returns to the demo's pattern and layers in your three explicit requirements: mixed brand colours, real data from the stack, true mobile responsiveness.
+### Files
 
----
+- **New**: `src/components/StackTooltip.tsx` — self-contained presentational component.
+- **Edit**: `src/pages/Tools.tsx` — mount tooltip, manage visibility, dismiss hooks.
 
-## 1. Rewrite `src/components/HomeGravity.tsx` faithful to the demo
+No changes to `StackBar.tsx`, `ToolCard.tsx`, card grid, filters, header, footer, or the `the-edit-stack` localStorage key.
 
-**Mount model — match the demo exactly:**
-- Remove all `visibleCount` / `setInterval` staggering. All pills mount on first render once `tools` is loaded.
-- The "cascade" feel comes from spawning pills at varied `x%` across the width and varied `y%` near the top — physics does the rest. This is the pattern the original demo uses and the only one the engine handles cleanly.
+### `StackTooltip.tsx`
 
-**Physics container:**
-- One `<Gravity gravity={{x:0, y:1}} addTopWall={false} grabCursor autoStart>` wrapping all pills.
-- `addTopWall={false}` so spawn points slightly above the canvas (if any) don't trap bodies — but we'll spawn inside anyway.
-- `resetOnResize` left at default `true` so rotation/landscape works.
+Props: `visible: boolean`, `onDismiss: () => void`.
 
-**Data — pull from the stack:**
-- Input: `tools: Tool[]` (already passed in).
-- Filter to `status === "in_stack"` (these are the things you actually run). Cap at ~18 pills so the canvas doesn't get crowded on mobile.
+- Renders `null` until a 1500ms timer (started on mount when `visible` is true) elapses, then transitions opacity 0 → 1 over 300ms ease-in.
+- Container: `position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); z-index: 60; max-width: 320px; width: calc(100% - 32px); background: #1A1510; border-radius: 6px; padding: 14px 18px;`.
+- Text: Plus Jakarta Sans 400 / 14px / `#FFFFFF` / line-height 1.5. Copy: *"Build your own stack as you browse. Click any tool to add it to your stack."*
+- Close button: absolute top-right, 20×20px touch target, `#9A8F82`, `aria-label="Dismiss tooltip"`, calls `onDismiss`.
+- Pointer: CSS triangle (8px) at bottom-centre, `#1A1510`, pointing down, via `::after` or an absolutely-positioned div with borders.
 
-**Mixed brand colours (deterministic, never grouped):**
-- Core rotation: Cobalt `#2D35C9`, Forest `#2D6A4F`, Indigo `#4A4A9A`, Orange `#E8572A` — all with white text.
-- Accent: Lime `#C8F04A` with `#1A1510` text, used as a rare ~1-in-8 highlight (never adjacent by coincidence because we hash the label, not the index).
-- Use a small FNV-1a hash on the pill name → pick a colour bucket. Same name always gets the same colour (stable across renders), but neighbouring pills look mixed because the hash decorrelates from list order. This satisfies "mix of colours instead of grouping them by colour".
+### `Tools.tsx` changes
 
-**Per-pill spawn variation (the cascade):**
-- `xPct = 6 + (hash % 86)` — spread across full canvas width (6%–92%).
-- `yPct = 6 + ((hash * 7) % 28)` — all spawn well **inside** the canvas near the top (6%–34%), so nothing clips the (absent) top wall.
-- `angle = (hash % 30) - 15` — −15° to +15° tilt jitter.
-- `density = 0.0008 + (hash % 6) * 0.0001` — slight weight variance so heavy pills sink first and light ones bounce longer (natural-feeling fall).
-- `restitution = 0.25 + (hash % 5) * 0.04` — varied bounciness.
-- `friction = 0.35`.
+1. Add state:
+   ```ts
+   const [tooltipVisible, setTooltipVisible] = useState(() => {
+     if (typeof window === "undefined") return false;
+     try { return window.localStorage.getItem("stack-tooltip-seen") !== "true"; }
+     catch { return false; }
+   });
+   ```
+2. Add `dismissTooltip()` helper that sets state false and writes `stack-tooltip-seen=true` to localStorage (try/catch).
+3. Wrap `toggleStack` so that if `prev.length === 0` and the new length > 0 → call `dismissTooltip()`.
+4. In the `?stack=` merge effect, if `tooltipVisible && merged.length > 0` → call `dismissTooltip()`.
+5. Render `<StackTooltip visible={tooltipVisible} onDismiss={dismissTooltip} />` just before `<StackBar … />`.
 
-**Pill styling — same component on mobile and desktop, just scaled:**
-- Rounded-full span, `font-body font-semibold`, `whitespace-nowrap`, `select-none`, `line-height: 1`.
-- Mobile (`useIsMobile()` true): `font-size: 13px`, `padding: 8px 14px`.
-- Desktop: `font-size: 15px`, `padding: 10px 18px`.
-- No static fallback layout — physics runs on every device. This is the playful hero feature.
+### Verification
 
-**Canvas height:**
-- Mobile: `h-[420px]`.
-- Desktop: `h-[480px]`.
-- The hero section already gives `min-h-[85vh]` mobile / `min-h-[100vh]` desktop, so the absolutely-positioned `inset-0` wrapper around `<HomeGravity />` will fill the hero. We pass an explicit canvas height through the `Gravity` className so Matter has measurable dimensions even before layout settles.
-
-**Render guard:**
-- Return `null` until `tools.filter(in_stack).length > 0`. Index already gates on `!loading`, but this is a safety net so we never initialise the engine with zero bodies (which is fine, but skips a pointless mount/teardown when data refreshes).
-
----
-
-## 2. Minor tweak in `src/pages/Index.tsx`
-
-Current structure is already correct (single absolutely-positioned wrapper at `z-20`, headlines behind at `z-10` with `pointer-events-none`). Two small fixes:
-
-- Keep the `{!loading && <HomeGravity tools={tools} />}` gate.
-- No mobile-vs-desktop branching for the gravity feature — one component, one canvas, both viewports. Remove any leftover code paths that try to swap in a static flex-wrap.
-- Headlines stay in cobalt `#2D35C9` on the lilac `#7B7FD4` background (already correct).
-
-No other section of the page changes.
-
----
-
-## Why this will actually work this time
-
-- **One mount, no stagger** = no race between React re-render cycles and Matter's runner. This was the root cause of "nothing falls" and the flicker.
-- **Spawn inside the canvas** (yPct ≥ 6%) + **`addTopWall={false}`** = bodies always live inside the simulation regardless of small layout shifts.
-- **Hash-based colour assignment** = guaranteed mixed look, with lime appearing only as a true accent, matching brand rules.
-- **Same physics on mobile and desktop**, only the pill chrome scales — the feature is consistently playful everywhere.
-- **Drag works for free** because Matter's `MouseConstraint` is already installed in `Gravity` and pills use `pointer-events: none` so drags hit the canvas underneath (this is already in the existing `gravity.tsx`).
-
-## Files to change
-
-- `src/components/HomeGravity.tsx` — full rewrite to the model above.
-- `src/pages/Index.tsx` — confirm the single-canvas layout, no mobile fork.
-
-No new dependencies. No changes to `gravity.tsx`, brand tokens, data fetching, or any other page.
+- Fresh visit (clear localStorage): tooltip fades in ~1.5s after load.
+- Click X → disappears, localStorage `stack-tooltip-seen=true`, reload → no tooltip.
+- Click any tool card → tooltip disappears, same localStorage write.
+- Visit `/tools?stack=…` fresh → tooltip suppressed once shared stack is applied.
+- Check 375px and 1280px viewports for centring and that the pointer aligns with the StackBar centre.
