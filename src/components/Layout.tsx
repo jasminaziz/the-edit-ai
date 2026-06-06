@@ -281,6 +281,14 @@ export function Layout({ children }: { children: ReactNode }) {
               >
                 Work with me →
               </a>
+              <a
+                href={LINKEDIN_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+              >
+                LinkedIn →
+              </a>
               {SUBSTACK_LIVE && (
                 <a
                   href={SUBSTACK_URL}
