@@ -20,3 +20,6 @@ export const WORK_WITH_ME_HREF = "mailto:hello@jasminaziz.co.uk";
 export const SUBSTACK_LIVE = true;
 
 export const SUBSTACK_URL = "https://jasminaziz.substack.com";
+
+// LinkedIn profile — update with your actual profile URL.
+export const LINKEDIN_URL = "https://www.linkedin.com/in/jasminaziz";
