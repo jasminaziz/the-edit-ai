@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { FooterEmailCapture } from "@/components/FooterEmailCapture";
-import { WORK_WITH_ME_HREF, SUBSTACK_LIVE, SUBSTACK_URL } from "@/lib/links";
+import { WORK_WITH_ME_HREF, SUBSTACK_LIVE, SUBSTACK_URL, LINKEDIN_URL } from "@/lib/links";
 
 const navItems = [
   { to: "/", label: "Home" },
@@ -280,6 +280,14 @@ export function Layout({ children }: { children: ReactNode }) {
                 className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
               >
                 Work with me →
+              </a>
+              <a
+                href={LINKEDIN_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+              >
+                LinkedIn →
               </a>
               {SUBSTACK_LIVE && (
                 <a
