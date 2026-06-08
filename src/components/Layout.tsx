@@ -77,7 +77,7 @@ export function Layout({ children }: { children: ReactNode }) {
         style={{ backgroundColor: navBg }}
       >
         <div className="max-w-[1280px] mx-auto px-4 sm:px-12">
-          <div className="flex items-center justify-between h-14 sm:h-16">
+          <div className="flex items-center justify-between h-14 sm:h-[104px]">
             {/* Mobile hamburger */}
             {isMobile ? (
               <>
