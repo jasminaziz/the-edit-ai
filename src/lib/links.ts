@@ -11,8 +11,8 @@
  * WORK_WITH_ME_HREF, and every Substack CTA is gated on SUBSTACK_LIVE.
  */
 
-// Temporary while jasminaziz.co.uk is being built — points at email instead.
-export const WORK_WITH_ME_HREF = "mailto:hello@jasminaziz.co.uk";
+// Consultancy website — live.
+export const WORK_WITH_ME_HREF = "https://jasminaziz.co.uk/";
 
 // Flip to `true` once the Substack is live to restore all Substack CTAs
 // (top nav desktop + mobile, footer link, and the "Or read the Substack"
