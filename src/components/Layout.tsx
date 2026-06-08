@@ -237,10 +237,11 @@ export function Layout({ children }: { children: ReactNode }) {
       <footer className="px-4 sm:px-12" style={{ backgroundColor: "#1A1510" }}>
         <div className="max-w-[1280px] mx-auto w-full">
           <FooterEmailCapture />
-          <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-            <div className="flex justify-center sm:justify-start">
+          <div className="py-4 flex flex-col gap-3">
+            {/* Top row: curator + primary CTAs */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
               <p
-                className="font-body text-[13px] text-center"
+                className="font-body text-[13px] text-center sm:text-left"
                 style={{ fontWeight: 500, color: "#FFFFFF", margin: 0 }}
               >
                 Curated by Jasmin Aziz ·{" "}
@@ -253,58 +254,63 @@ export function Layout({ children }: { children: ReactNode }) {
                   {CONTACT_EMAIL}
                 </a>
               </p>
+              <div className="flex items-center gap-5 flex-wrap justify-center">
+                <a
+                  href={WORK_WITH_ME_HREF}
+                  {...(isExternalHref(WORK_WITH_ME_HREF)
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  className="font-body text-[13px] text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                >
+                  Work with me →
+                </a>
+                <a
+                  href={LINKEDIN_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-body text-[13px] text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                >
+                  LinkedIn →
+                </a>
+                {SUBSTACK_LIVE && (
+                  <a
+                    href={SUBSTACK_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-body text-[13px] text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                  >
+                    Read the Substack →
+                  </a>
+                )}
+              </div>
             </div>
-            <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
+
+            {/* Bottom row: legal + copyright */}
+            <div className="flex items-center gap-4 sm:gap-5 flex-wrap justify-center sm:justify-end border-t border-white/5 pt-3">
               <Link
                 to="/privacy-policy"
-                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+                className="font-body text-[12px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
               >
                 Privacy
               </Link>
               <Link
                 to="/terms-of-service"
-                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+                className="font-body text-[12px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
               >
                 Terms
               </Link>
               <Link
                 to="/cookie-policy"
-                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+                className="font-body text-[12px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
               >
                 Cookies
               </Link>
-              <a
-                href={WORK_WITH_ME_HREF}
-                {...(isExternalHref(WORK_WITH_ME_HREF)
-                  ? { target: "_blank", rel: "noopener noreferrer" }
-                  : {})}
-                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
-              >
-                Work with me →
-              </a>
-              <a
-                href={LINKEDIN_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
-              >
-                LinkedIn →
-              </a>
-              {SUBSTACK_LIVE && (
-                <a
-                  href={SUBSTACK_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
-                >
-                  Read the Substack →
-                </a>
-              )}
-              <span className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40">
+              <span className="font-body text-[12px] text-primary-foreground/40">
                 © 2026
               </span>
             </div>
           </div>
+
         </div>
       </footer>
     </div>
