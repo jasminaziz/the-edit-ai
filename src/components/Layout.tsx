@@ -17,6 +17,7 @@ const navItems = [
 
 const isExternalHref = (href: string) => /^https?:\/\//i.test(href);
 const CONTACT_EMAIL = "hello@jasminaziz.co.uk";
+// Sync touch to trigger Vercel rebuild.
 
 export function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
