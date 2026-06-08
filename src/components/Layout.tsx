@@ -77,7 +77,7 @@ export function Layout({ children }: { children: ReactNode }) {
         style={{ backgroundColor: navBg }}
       >
         <div className="max-w-[1280px] mx-auto px-4 sm:px-12">
-          <div className="flex items-center justify-between h-14 sm:h-[104px]">
+          <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Mobile hamburger */}
             {isMobile ? (
               <>
@@ -192,52 +192,54 @@ export function Layout({ children }: { children: ReactNode }) {
                   })}
                 </div>
 
-                {/* CTA stack — three pills, Work with me primary */}
-                <div className="flex flex-col items-stretch gap-1.5 min-w-[160px]">
+                {/* CTA cluster — secondary text links + primary pill */}
+                <div className="flex items-center gap-5">
+                  <div className="flex items-center gap-5">
+                    {SUBSTACK_LIVE && (
+                      <a
+                        href={SUBSTACK_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`font-body text-sm font-medium whitespace-nowrap transition-colors text-primary-foreground/70 hover:text-primary-foreground`}
+                      >
+                        Read the Substack →
+                      </a>
+                    )}
+                    <Link
+                      to="/subscribe"
+                      className={`font-body text-sm font-medium whitespace-nowrap transition-colors text-primary-foreground/70 hover:text-primary-foreground`}
+                    >
+                      Get the digest →
+                    </Link>
+                  </div>
+                  <span aria-hidden="true" className="w-px h-5 bg-white/15" />
                   <a
                     href={WORK_WITH_ME_HREF}
                     {...(isExternalHref(WORK_WITH_ME_HREF)
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
-                    className={`font-body text-xs font-semibold px-4 py-1 rounded-full whitespace-nowrap text-center transition-opacity hover:opacity-90 ${
+                    className={`font-body text-sm font-semibold px-5 py-2 rounded-full whitespace-nowrap transition-opacity hover:opacity-90 ${
                       isHome ? "bg-white text-primary" : "bg-accent text-accent-foreground"
                     }`}
                   >
                     Work with me
                   </a>
-                  <Link
-                    to="/subscribe"
-                    className="font-body text-xs font-medium px-4 py-1 rounded-full whitespace-nowrap text-center border border-white/30 text-primary-foreground hover:bg-white/10 transition-colors"
-                  >
-                    Get the digest
-                  </Link>
-                  {SUBSTACK_LIVE && (
-                    <a
-                      href={SUBSTACK_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-body text-xs font-medium px-4 py-1 rounded-full whitespace-nowrap text-center border border-white/30 text-primary-foreground hover:bg-white/10 transition-colors"
-                    >
-                      Read the Substack
-                    </a>
-                  )}
                 </div>
-
               </>
             )}
           </div>
         </div>
       </nav>
 
-      <main className="flex-1 pt-14 sm:pt-[104px]">{children}</main>
+      <main className="flex-1 pt-14 sm:pt-16">{children}</main>
 
       <footer className="px-4 sm:px-12" style={{ backgroundColor: "#1A1510" }}>
         <div className="max-w-[1280px] mx-auto w-full">
           <FooterEmailCapture />
-          <div className="py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
             <div className="flex justify-center sm:justify-start">
               <p
-                className="font-body text-[13px] text-center sm:text-left"
+                className="font-body text-[13px] text-center"
                 style={{ fontWeight: 500, color: "#FFFFFF", margin: 0 }}
               >
                 Curated by Jasmin Aziz ·{" "}
@@ -251,40 +253,6 @@ export function Layout({ children }: { children: ReactNode }) {
                 </a>
               </p>
             </div>
-            <div className="flex items-center gap-5 sm:gap-6 flex-wrap justify-center">
-              <a
-                href={WORK_WITH_ME_HREF}
-                {...(isExternalHref(WORK_WITH_ME_HREF)
-                  ? { target: "_blank", rel: "noopener noreferrer" }
-                  : {})}
-                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-              >
-                Work with me →
-              </a>
-              <a
-                href={LINKEDIN_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-              >
-                LinkedIn →
-              </a>
-              {SUBSTACK_LIVE && (
-                <a
-                  href={SUBSTACK_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-body text-[12px] sm:text-[13px] text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                >
-                  Read the Substack →
-                </a>
-              )}
-            </div>
-          </div>
-          <div
-            className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2 border-t"
-            style={{ borderColor: "rgba(255,255,255,0.08)" }}
-          >
             <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
               <Link
                 to="/privacy-policy"
@@ -304,14 +272,40 @@ export function Layout({ children }: { children: ReactNode }) {
               >
                 Cookies
               </Link>
+              <a
+                href={WORK_WITH_ME_HREF}
+                {...(isExternalHref(WORK_WITH_ME_HREF)
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+              >
+                Work with me →
+              </a>
+              <a
+                href={LINKEDIN_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+              >
+                LinkedIn →
+              </a>
+              {SUBSTACK_LIVE && (
+                <a
+                  href={SUBSTACK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+                >
+                  Read the Substack →
+                </a>
+              )}
+              <span className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40">
+                © 2026
+              </span>
             </div>
-            <span className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40">
-              © 2026
-            </span>
           </div>
         </div>
       </footer>
-
     </div>
   );
 }
