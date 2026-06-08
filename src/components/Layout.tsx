@@ -236,10 +236,10 @@ export function Layout({ children }: { children: ReactNode }) {
       <footer className="px-4 sm:px-12" style={{ backgroundColor: "#1A1510" }}>
         <div className="max-w-[1280px] mx-auto w-full">
           <FooterEmailCapture />
-          <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+          <div className="py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="flex justify-center sm:justify-start">
               <p
-                className="font-body text-[13px] text-center"
+                className="font-body text-[13px] text-center sm:text-left"
                 style={{ fontWeight: 500, color: "#FFFFFF", margin: 0 }}
               >
                 Curated by Jasmin Aziz ·{" "}
@@ -253,6 +253,40 @@ export function Layout({ children }: { children: ReactNode }) {
                 </a>
               </p>
             </div>
+            <div className="flex items-center gap-5 sm:gap-6 flex-wrap justify-center">
+              <a
+                href={WORK_WITH_ME_HREF}
+                {...(isExternalHref(WORK_WITH_ME_HREF)
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+              >
+                Work with me →
+              </a>
+              <a
+                href={LINKEDIN_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+              >
+                LinkedIn →
+              </a>
+              {SUBSTACK_LIVE && (
+                <a
+                  href={SUBSTACK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-body text-[12px] sm:text-[13px] text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                >
+                  Read the Substack →
+                </a>
+              )}
+            </div>
+          </div>
+          <div
+            className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2 border-t"
+            style={{ borderColor: "rgba(255,255,255,0.08)" }}
+          >
             <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
               <Link
                 to="/privacy-policy"
@@ -272,40 +306,14 @@ export function Layout({ children }: { children: ReactNode }) {
               >
                 Cookies
               </Link>
-              <a
-                href={WORK_WITH_ME_HREF}
-                {...(isExternalHref(WORK_WITH_ME_HREF)
-                  ? { target: "_blank", rel: "noopener noreferrer" }
-                  : {})}
-                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
-              >
-                Work with me →
-              </a>
-              <a
-                href={LINKEDIN_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
-              >
-                LinkedIn →
-              </a>
-              {SUBSTACK_LIVE && (
-                <a
-                  href={SUBSTACK_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
-                >
-                  Read the Substack →
-                </a>
-              )}
-              <span className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40">
-                © 2026
-              </span>
             </div>
+            <span className="font-body text-[12px] sm:text-[13px] text-primary-foreground/40">
+              © 2026
+            </span>
           </div>
         </div>
       </footer>
+
     </div>
   );
 }
