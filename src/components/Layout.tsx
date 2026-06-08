@@ -229,7 +229,7 @@ export function Layout({ children }: { children: ReactNode }) {
         </div>
       </nav>
 
-      <main className="flex-1 pt-14 sm:pt-16">{children}</main>
+      <main className="flex-1 pt-14 sm:pt-[104px]">{children}</main>
 
       <footer className="px-4 sm:px-12" style={{ backgroundColor: "#1A1510" }}>
         <div className="max-w-[1280px] mx-auto w-full">
