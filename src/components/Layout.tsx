@@ -192,39 +192,37 @@ export function Layout({ children }: { children: ReactNode }) {
                   })}
                 </div>
 
-                {/* CTA cluster — secondary text links + primary pill */}
-                <div className="flex items-center gap-5">
-                  <div className="flex items-center gap-5">
-                    {SUBSTACK_LIVE && (
-                      <a
-                        href={SUBSTACK_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`font-body text-sm font-medium whitespace-nowrap transition-colors text-primary-foreground/70 hover:text-primary-foreground`}
-                      >
-                        Read the Substack →
-                      </a>
-                    )}
-                    <Link
-                      to="/subscribe"
-                      className={`font-body text-sm font-medium whitespace-nowrap transition-colors text-primary-foreground/70 hover:text-primary-foreground`}
-                    >
-                      Get the digest →
-                    </Link>
-                  </div>
-                  <span aria-hidden="true" className="w-px h-5 bg-white/15" />
+                {/* CTA stack — three pills, Work with me primary */}
+                <div className="flex flex-col items-stretch gap-1.5 min-w-[160px]">
                   <a
                     href={WORK_WITH_ME_HREF}
                     {...(isExternalHref(WORK_WITH_ME_HREF)
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
-                    className={`font-body text-sm font-semibold px-5 py-2 rounded-full whitespace-nowrap transition-opacity hover:opacity-90 ${
+                    className={`font-body text-xs font-semibold px-4 py-1 rounded-full whitespace-nowrap text-center transition-opacity hover:opacity-90 ${
                       isHome ? "bg-white text-primary" : "bg-accent text-accent-foreground"
                     }`}
                   >
                     Work with me
                   </a>
+                  <Link
+                    to="/subscribe"
+                    className="font-body text-xs font-medium px-4 py-1 rounded-full whitespace-nowrap text-center border border-white/30 text-primary-foreground hover:bg-white/10 transition-colors"
+                  >
+                    Get the digest
+                  </Link>
+                  {SUBSTACK_LIVE && (
+                    <a
+                      href={SUBSTACK_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-body text-xs font-medium px-4 py-1 rounded-full whitespace-nowrap text-center border border-white/30 text-primary-foreground hover:bg-white/10 transition-colors"
+                    >
+                      Read the Substack
+                    </a>
+                  )}
                 </div>
+
               </>
             )}
           </div>
