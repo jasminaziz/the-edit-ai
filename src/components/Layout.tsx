@@ -92,7 +92,7 @@ export function Layout({ children }: { children: ReactNode }) {
                       style={{ backgroundColor: "transparent" }}
                     >
                       <span
-                        className="hidden @[380px]:inline font-body font-bold text-[11px] uppercase tracking-wide"
+                        className="font-body font-bold text-[11px] uppercase tracking-wide"
                         style={{
                           color: "#C8F04A",
                           textShadow: "0 1px 8px rgba(26, 21, 16, 0.35), 0 0 12px rgba(200, 240, 74, 0.25)",
