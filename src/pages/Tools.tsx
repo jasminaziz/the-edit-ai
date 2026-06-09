@@ -12,9 +12,11 @@ import { StackBar } from "@/components/StackBar";
 import { StackTooltip } from "@/components/StackTooltip";
 import { slugifyToolName } from "@/utils/slugify";
 
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 
 const STACK_STORAGE_KEY = "the-edit-stack";
+const COACHMARK_KEY = "stack-coachmark-seen";
+const BANNER_KEY = "stack-banner-seen";
 
 const Tools = () => {
   const [tools, setTools] = useState<Tool[]>([]);
@@ -43,6 +45,24 @@ const Tools = () => {
     if (new URLSearchParams(window.location.search).has("stack")) return false;
     try {
       return window.localStorage.getItem("stack-tooltip-seen") !== "true";
+    } catch {
+      return false;
+    }
+  });
+  const [coachmarkVisible, setCoachmarkVisible] = useState(() => {
+    if (typeof window === "undefined") return false;
+    if (new URLSearchParams(window.location.search).has("stack")) return false;
+    try {
+      return window.localStorage.getItem(COACHMARK_KEY) !== "true";
+    } catch {
+      return false;
+    }
+  });
+  const [bannerVisible, setBannerVisible] = useState(() => {
+    if (typeof window === "undefined") return false;
+    if (new URLSearchParams(window.location.search).has("stack")) return false;
+    try {
+      return window.localStorage.getItem(BANNER_KEY) !== "true";
     } catch {
       return false;
     }
