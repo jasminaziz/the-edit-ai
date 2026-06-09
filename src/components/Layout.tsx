@@ -87,10 +87,19 @@ export function Layout({ children }: { children: ReactNode }) {
                 <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
                   <SheetTrigger asChild>
                     <button
-                      className="p-1.5 rounded-md transition-opacity hover:opacity-90"
+                      className="flex items-center gap-2 p-1.5 rounded-md transition-opacity hover:opacity-90"
                       aria-label="Open menu"
                       style={{ backgroundColor: "transparent" }}
                     >
+                      <span
+                        className="font-body font-bold text-[11px] uppercase tracking-wide"
+                        style={{
+                          color: "#C8F04A",
+                          textShadow: "0 1px 8px rgba(26, 21, 16, 0.35), 0 0 12px rgba(200, 240, 74, 0.25)",
+                        }}
+                      >
+                        Menu
+                      </span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 32 32"
