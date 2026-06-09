@@ -77,10 +77,31 @@ const Tools = () => {
     }
   };
 
+  const dismissCoachmark = () => {
+    setCoachmarkVisible(false);
+    try {
+      window.localStorage.setItem(COACHMARK_KEY, "true");
+    } catch {
+      /* ignore */
+    }
+  };
+
+  const dismissBanner = () => {
+    setBannerVisible(false);
+    try {
+      window.localStorage.setItem(BANNER_KEY, "true");
+    } catch {
+      /* ignore */
+    }
+  };
+
   const toggleStack = (name: string) => {
     setStack((prev) => {
       const next = prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name];
-      if (prev.length === 0 && next.length > 0) dismissTooltip();
+      if (prev.length === 0 && next.length > 0) {
+        dismissTooltip();
+        dismissCoachmark();
+      }
       try {
         window.localStorage.setItem(STACK_STORAGE_KEY, JSON.stringify(next));
       } catch {
