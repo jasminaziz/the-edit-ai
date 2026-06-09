@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { slugifyToolName } from "@/utils/slugify";
 
 interface StackBarProps {
@@ -12,8 +12,21 @@ export const StackBar = ({ stack, onRemove }: StackBarProps) => {
   const [expanded, setExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
   const [footerOffset, setFooterOffset] = useState(0);
+  const [flash, setFlash] = useState(false);
+  const prevCount = useRef(stack.length);
   const count = stack.length;
   const isEmpty = count === 0;
+
+  // Flash the bar briefly when a tool is added (cause→effect signal).
+  useEffect(() => {
+    if (stack.length > prevCount.current) {
+      setFlash(true);
+      const t = setTimeout(() => setFlash(false), 600);
+      prevCount.current = stack.length;
+      return () => clearTimeout(t);
+    }
+    prevCount.current = stack.length;
+  }, [stack.length]);
 
   // Push the bar up so it rests just above the footer when the footer enters view.
   useEffect(() => {
@@ -72,8 +85,10 @@ export const StackBar = ({ stack, onRemove }: StackBarProps) => {
       style={{
         bottom: footerOffset,
         backgroundColor: "#7B7FD4",
-        opacity: isEmpty ? 0.5 : 1,
-        transition: "opacity 200ms ease-out",
+        boxShadow: flash
+          ? "inset 0 0 0 2px #C8F04A, 0 -8px 24px rgba(200,240,74,0.25)"
+          : "0 -2px 12px rgba(0,0,0,0.06)",
+        transition: "box-shadow 250ms ease-out",
       }}
     >
       {/* Expanded panel */}
@@ -159,19 +174,60 @@ export const StackBar = ({ stack, onRemove }: StackBarProps) => {
         disabled={isEmpty}
         className="font-body w-full flex items-center justify-between"
         style={{
-          height: 52,
-          padding: "0 24px",
+          height: 56,
+          padding: "0 20px",
           background: "none",
           border: "none",
           color: "#FFFFFF",
-          fontSize: 16,
+          fontSize: 15,
           fontWeight: 500,
           cursor: isEmpty ? "default" : "pointer",
+          textAlign: "left",
         }}
       >
-        <span>Your stack ({count})</span>
-        {!isEmpty && <span style={{ fontSize: 18 }}>{expanded ? "↓" : "↑"}</span>}
+        <span className="flex items-center gap-2.5 min-w-0">
+          <span
+            aria-hidden="true"
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: "50%",
+              backgroundColor: "#C8F04A",
+              flexShrink: 0,
+              animation: isEmpty ? "stack-pulse 2s ease-in-out infinite" : "none",
+              boxShadow: isEmpty ? "0 0 0 0 rgba(200,240,74,0.6)" : "none",
+            }}
+          />
+          <span className="truncate">
+            {isEmpty
+              ? "Your stack is empty — tap any tool to start"
+              : `Your stack · ${count}`}
+          </span>
+        </span>
+        {!isEmpty && (
+          <span
+            className="font-body shrink-0 ml-3"
+            style={{
+              backgroundColor: "#C8F04A",
+              color: "#1A1510",
+              fontSize: 12,
+              fontWeight: 600,
+              padding: "6px 12px",
+              borderRadius: 999,
+              letterSpacing: "0.02em",
+            }}
+          >
+            {expanded ? "Close ↓" : "View & share →"}
+          </span>
+        )}
       </button>
+
+      <style>{`
+        @keyframes stack-pulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(200,240,74,0.7); }
+          50% { box-shadow: 0 0 0 6px rgba(200,240,74,0); }
+        }
+      `}</style>
     </div>
   );
 };
