@@ -230,10 +230,11 @@ const Tools = () => {
     </section>
   );
 
-  const renderCard = (tool: Tool) => {
+  const renderCard = (tool: Tool, index: number) => {
     const isSelected = hoveredCard === tool.name;
     const isDimmed = !!hoveredCard && !isSelected;
     const isInStack = stack.includes(tool.name);
+    const showCoachmark = index === 0 && coachmarkVisible && stack.length === 0;
     return (
       <RevealItem key={tool.name}>
         <ToolCard
@@ -244,10 +245,55 @@ const Tools = () => {
           onMouseEnter={() => setHoveredCard(tool.name)}
           onMouseLeave={() => setHoveredCard(null)}
           onToggleStack={() => toggleStack(tool.name)}
+          showCoachmark={showCoachmark}
+          onDismissCoachmark={dismissCoachmark}
         />
       </RevealItem>
     );
   };
+
+  const mobileBanner = bannerVisible && !hasStackParam ? (
+    <div className="sm:hidden px-4 pt-3">
+      <div
+        className="max-w-[1280px] mx-auto relative font-body"
+        style={{
+          backgroundColor: "#7B7FD4",
+          color: "#FFFFFF",
+          padding: "12px 38px 12px 14px",
+          borderRadius: 8,
+          boxShadow: "0 2px 8px rgba(123,127,212,0.18)",
+        }}
+      >
+        <div style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.3 }}>
+          Build your stack <span style={{ color: "#C8F04A" }}>↓</span>
+        </div>
+        <div style={{ fontSize: 12.5, lineHeight: 1.4, marginTop: 2, color: "rgba(255,255,255,0.85)" }}>
+          Tap <strong style={{ fontWeight: 600 }}>+ Add to my stack</strong> on any tool. Share it in one link.
+        </div>
+        <button
+          onClick={dismissBanner}
+          aria-label="Dismiss"
+          style={{
+            position: "absolute",
+            top: 6,
+            right: 6,
+            width: 24,
+            height: 24,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "none",
+            border: "none",
+            color: "rgba(255,255,255,0.85)",
+            cursor: "pointer",
+            padding: 0,
+          }}
+        >
+          <X size={14} />
+        </button>
+      </div>
+    </div>
+  ) : null;
 
   return (
     <>
@@ -332,6 +378,7 @@ const Tools = () => {
       ) : (
         <>
           {filterBar}
+          {mobileBanner}
 
           <section className="bg-background py-10 px-6 sm:px-12 pb-[72px]">
             <div className="max-w-[1280px] mx-auto">
@@ -354,7 +401,9 @@ const Tools = () => {
         </>
       )}
 
-      <StackTooltip visible={tooltipVisible && !hasStackParam} onDismiss={dismissTooltip} />
+      <div className="hidden md:block">
+        <StackTooltip visible={tooltipVisible && !hasStackParam} onDismiss={dismissTooltip} />
+      </div>
       <StackBar stack={stack} onRemove={toggleStack} />
     </>
   );
