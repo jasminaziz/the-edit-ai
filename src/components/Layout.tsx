@@ -12,7 +12,7 @@ const navItems = [
   { to: "/tools", label: "Tools" },
   { to: "/design-kit", label: "Design" },
   { to: "/learning", label: "Learning" },
-  { to: "/whats-new", label: "What's New" },
+  { to: "/ai-news", label: "AI News" },
 ];
 
 const isExternalHref = (href: string) => /^https?:\/\//i.test(href);
