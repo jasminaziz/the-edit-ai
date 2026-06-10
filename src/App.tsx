@@ -32,7 +32,8 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/tools" element={<Tools />} />
             <Route path="/stack" element={<Stack />} />
-            <Route path="/whats-new" element={<WhatsNew />} />
+            <Route path="/ai-news" element={<WhatsNew />} />
+            <Route path="/whats-new" element={<Navigate to="/ai-news" replace />} />
             <Route path="/my-stack" element={<MyStack />} />
             <Route path="/learning" element={<Learning />} />
             <Route path="/submit" element={<Submit />} />
