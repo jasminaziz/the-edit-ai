@@ -253,15 +253,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 className="font-body text-[13px] text-center sm:text-left"
                 style={{ fontWeight: 500, color: "#FFFFFF", margin: 0 }}
               >
-                <a
-                  href={WORK_WITH_ME_HREF}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: "#C8F04A", textDecoration: "underline" }}
-                >
-                  Curated by Jasmin Aziz | Strategic Communications Consultant →
-                </a>
-                {" · "}
+                Curated by Jasmin Aziz ·{" "}
                 <a
                   href={`mailto:${CONTACT_EMAIL}`}
                   style={{ color: "#C8F04A", textDecoration: "none" }}
