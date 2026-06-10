@@ -146,19 +146,27 @@ const Index = () => {
                 href={WORK_WITH_ME_HREF}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="group"
                 style={{
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   fontWeight: 400,
                   fontSize: 14,
-                  color: "#9A8F82",
+                  color: "#1A1510",
                   margin: 0,
-                  textDecoration: "underline",
-                  textUnderlineOffset: "3px",
-                  textDecorationColor: "#C8F04A",
+                  textDecoration: "none",
                   cursor: "pointer",
+                  transition: "text-decoration-color 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.textDecoration = "underline";
+                  e.currentTarget.style.textUnderlineOffset = "3px";
+                  e.currentTarget.style.textDecorationColor = "#C8F04A";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.textDecoration = "none";
                 }}
               >
-                Curated by Jasmin Aziz | Strategic Communications Consultant and AI Practitioner{" "}
+                Curated by Jasmin Aziz | Strategic Communications Consultant{" "}
                 <span style={{ color: "#C8F04A" }}>→</span>
               </a>
             </p>
