@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchTools, fetchWhatsNew, type Tool, type WhatsNew } from "@/lib/sheets";
-import { WORK_WITH_ME_HREF } from "@/lib/links";
 import { parseDate } from "@/components/WhatsNewCard";
 import { HomeGravity } from "@/components/HomeGravity";
 import { Counter } from "@/components/ui/animated-counter";
@@ -115,38 +114,10 @@ const Index = () => {
                 fontSize: 20,
                 color: "#1A1510",
                 margin: 0,
-                marginBottom: 4,
-              }}
-            >
-              Strategic Communications Consultant
-            </p>
-            <p
-              style={{
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: 400,
-                fontSize: 14,
-                color: "#9A8F82",
-                margin: 0,
                 marginBottom: 10,
               }}
             >
-              <a
-                href={WORK_WITH_ME_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 group"
-                style={{ color: "#1A1510", textDecoration: "none" }}
-              >
-                <span className="relative">
-                  Jasmin Aziz
-                  <span
-                    className="absolute left-0 bottom-0 w-0 group-hover:w-full h-[1px] transition-all duration-300"
-                    style={{ backgroundColor: "#C8F04A" }}
-                  />
-                </span>
-                <span style={{ color: "#C8F04A" }}>→</span>
-              </a>
-              {" "}| AI Practitioner
+              There's a lot to keep up with. This helps.
             </p>
             <p
               style={{
@@ -160,6 +131,17 @@ const Index = () => {
               }}
             >
               A curated directory of AI tools that actually work, with honest verdicts from someone who builds with them every day. Made for people who want to use AI well, without having to become an expert first.
+            </p>
+            <p
+              style={{
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontWeight: 400,
+                fontSize: 14,
+                color: "#9A8F82",
+                margin: 0,
+              }}
+            >
+              Curated by Jasmin Aziz | Strategic Communications Consultant and AI Practitioner.
             </p>
           </div>
         </div>
