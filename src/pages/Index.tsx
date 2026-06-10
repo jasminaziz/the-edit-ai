@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchTools, fetchWhatsNew, type Tool, type WhatsNew } from "@/lib/sheets";
+import { WORK_WITH_ME_HREF } from "@/lib/links";
 import { parseDate } from "@/components/WhatsNewCard";
 import { HomeGravity } from "@/components/HomeGravity";
 import { Counter } from "@/components/ui/animated-counter";
@@ -141,7 +142,24 @@ const Index = () => {
                 margin: 0,
               }}
             >
-              Curated by Jasmin Aziz | Strategic Communications Consultant and AI Practitioner.
+              Curated by{" "}
+              <a
+                href={WORK_WITH_ME_HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 group"
+                style={{ color: "#1A1510", textDecoration: "none" }}
+              >
+                <span className="relative">
+                  Jasmin Aziz
+                  <span
+                    className="absolute left-0 bottom-0 w-0 group-hover:w-full h-[1px] transition-all duration-300"
+                    style={{ backgroundColor: "#C8F04A" }}
+                  />
+                </span>
+                <span style={{ color: "#C8F04A" }}>→</span>
+              </a>{" "}
+              | Strategic Communications Consultant and AI Practitioner.
             </p>
           </div>
         </div>
