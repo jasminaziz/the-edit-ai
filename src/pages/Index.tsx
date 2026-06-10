@@ -115,23 +115,10 @@ const Index = () => {
                 fontSize: 20,
                 color: "#1A1510",
                 margin: 0,
-                marginBottom: 10,
+                marginBottom: 4,
               }}
             >
-              There's a lot to keep up with. This helps.
-            </p>
-            <p
-              style={{
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: 400,
-                fontSize: 17,
-                lineHeight: 1.5,
-                color: "#1A1510",
-                margin: 0,
-                marginBottom: 10,
-              }}
-            >
-              A curated directory of AI tools that actually work, with honest verdicts from someone who builds with them every day. Made for people who want to use AI well, without having to become an expert first.
+              Strategic Communications Consultant
             </p>
             <p
               style={{
@@ -140,9 +127,9 @@ const Index = () => {
                 fontSize: 14,
                 color: "#9A8F82",
                 margin: 0,
+                marginBottom: 10,
               }}
             >
-              Curated by{" "}
               <a
                 href={WORK_WITH_ME_HREF}
                 target="_blank"
@@ -158,8 +145,21 @@ const Index = () => {
                   />
                 </span>
                 <span style={{ color: "#C8F04A" }}>→</span>
-              </a>{" "}
-              | Strategic Communications Consultant and AI Practitioner.
+              </a>
+              {" "}| AI Practitioner
+            </p>
+            <p
+              style={{
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontWeight: 400,
+                fontSize: 17,
+                lineHeight: 1.5,
+                color: "#1A1510",
+                margin: 0,
+                marginBottom: 10,
+              }}
+            >
+              A curated directory of AI tools that actually work, with honest verdicts from someone who builds with them every day. Made for people who want to use AI well, without having to become an expert first.
             </p>
           </div>
         </div>
