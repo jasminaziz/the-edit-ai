@@ -6,6 +6,7 @@ import { HomeGravity } from "@/components/HomeGravity";
 import { Counter } from "@/components/ui/animated-counter";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SEO } from "@/components/SEO";
+import { WORK_WITH_ME_HREF } from "@/lib/links";
 const CATEGORY_COLOURS: Record<string, { bg: string; text: string }> = {
   "New Release": { bg: "#2D35C9", text: "#FFFFFF" },
   "Model Update": { bg: "#7B7FD4", text: "#FFFFFF" },
@@ -141,7 +142,23 @@ const Index = () => {
                 margin: 0,
               }}
             >
-              Curated by Jasmin Aziz | Strategic Communications Consultant and AI Practitioner.
+              <a
+                href={WORK_WITH_ME_HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontWeight: 400,
+                  fontSize: 14,
+                  color: "#9A8F82",
+                  margin: 0,
+                  textDecoration: "underline",
+                  textUnderlineOffset: "3px",
+                  cursor: "pointer",
+                }}
+              >
+                Curated by Jasmin Aziz | Strategic Communications Consultant and AI Practitioner →
+              </a>
             </p>
           </div>
         </div>
