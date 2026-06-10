@@ -154,10 +154,12 @@ const Index = () => {
                   margin: 0,
                   textDecoration: "underline",
                   textUnderlineOffset: "3px",
+                  textDecorationColor: "#C8F04A",
                   cursor: "pointer",
                 }}
               >
-                Curated by Jasmin Aziz | Strategic Communications Consultant and AI Practitioner →
+                Curated by Jasmin Aziz | Strategic Communications Consultant and AI Practitioner{" "}
+                <span style={{ color: "#C8F04A" }}>→</span>
               </a>
             </p>
           </div>
