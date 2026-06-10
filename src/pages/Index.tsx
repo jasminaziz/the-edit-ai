@@ -185,10 +185,10 @@ const Index = () => {
             </Link>
           </div>
 
-          {/* What's New in AI */}
+          {/* AI News */}
           <div className="space-y-4">
             <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-muted">
-              What's new in AI
+              AI News
             </h2>
             {loading ? (
               <div className="space-y-3">
@@ -230,10 +230,10 @@ const Index = () => {
               </div>
             )}
             <Link
-              to="/whats-new"
+              to="/ai-news"
               className="inline-block font-body font-medium text-sm text-primary hover:underline"
             >
-              Discover what's new →
+              See all AI news →
             </Link>
           </div>
 
