@@ -173,13 +173,13 @@ const WhatsNewPage = () => {
   return (
     <div style={{ WebkitFontSmoothing: "antialiased" }}>
       <SEO
-        title="What's New in AI | The Edit"
+        title="AI News | The Edit"
         description="The latest AI tool releases, model updates, and integrations. Curated and updated automatically."
-        canonical="https://theeditai.co.uk/whats-new"
+        canonical="https://theeditai.co.uk/ai-news"
       />
       <CobaltZone
         heading=""
-        twoLineHeading={{ line1: "What's New", line2: "in AI", inline: true }}
+        twoLineHeading={{ line1: "AI", line2: "News", inline: true }}
         subheading="Model updates, releases, and AI gossip."
         rightBadge={{ text: "Source: The Rundown.ai", url: "https://www.therundown.ai" }}
       />
