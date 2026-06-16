@@ -122,7 +122,7 @@ Daily Claude Code Routine fires at 8am UK. Reads Gmail (news@daily.therundown.ai
 extracts top 5 stories, POSTs to Apps Script Web App, appends rows to `whats_new` tab.
 
 Apps Script URL:
-`https://script.google.com/macros/s/AKfycbyn23sj7EbwNfzKDB8kP9vhB_-lWBNUiHzZ70u7dBncHn2iNQRuxuwo_XE8iLWNQwOp/exec`
+`https://script.google.com/macros/s/AKfycbxGOh2fvk986AMMh_f57uZRAftaCuJGT-E9XOC_0FI36zGSCGVOF2OY81bn3LxCR0I/exec`
 
 Deployed under jasminaziz1@gmail.com, access: Anyone.
 
