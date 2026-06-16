@@ -19,7 +19,7 @@ jobs:
           printf '%s' "$PAYLOAD_B64" | base64 -d > /tmp/payload.json
           echo "Payload:"
           cat /tmp/payload.json
-          RESPONSE=$(curl -s -L -X POST \
+          RESPONSE=$(curl -s -L \
             "https://script.google.com/macros/s/AKfycbxGOh2fvk986AMMh_f57uZRAftaCuJGT-E9XOC_0FI36zGSCGVOF2OY81bn3LxCR0I/exec" \
             -H "Content-Type: application/json" \
             -d @/tmp/payload.json)
