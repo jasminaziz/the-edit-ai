@@ -29,4 +29,23 @@ Cowork folder: None
 
 ## Session notes
 
-<!-- Add dated session notes below as work progresses -->
+### 2026-06-16/17
+
+Built out all project MD files from scratch (.claude/CLAUDE.md, .claude/schema.md,
+tasks/lessons.md, SCRATCHPAD.md). Schema verified against live Sheets data via
+Apps Script doGet endpoint.
+
+Rebuilt whats_new automation end to end. Routines sandbox blocks
+script.google.com, so built a GitHub Actions proxy layer:
+Routine → GitHub dispatch API → .github/workflows/append-whats-new.yml →
+Apps Script doPost → Sheets. Pipeline confirmed working.
+
+Issues fixed along the way:
+- Workflow file not pushed to remote (first 404)
+- Python multi-line block in YAML caused trigger parse issue → rewrote with env: pattern
+- Apps Script doPost missing: doGet was missing closing `}`, so doPost was nested inside it
+- New deployment URL (AKfycbxGOh2...) needed explicit new version after code save
+- curl -L -X POST forced POST on 302 redirect → removed -X POST, fixed
+
+**ACTION NEEDED:** Delete the test row from the whats_new tab in Google Sheets:
+"Test / Test / 16 Jun 2026 / Test. / Tool Launch / (blank)"

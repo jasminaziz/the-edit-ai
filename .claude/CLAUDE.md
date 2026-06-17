@@ -118,13 +118,27 @@ for hello@theeditai.co.uk.
 
 ## whats_new automation
 
-Daily Claude Code Routine fires at 8am UK. Reads Gmail (news@daily.therundown.ai),
-extracts top 5 stories, POSTs to Apps Script Web App, appends rows to `whats_new` tab.
+Daily Claude Code Routine (trig_01288KFUKoGh4wWrewE7JqC2) fires at 8am UK.
+Reads Gmail (news@daily.therundown.ai), extracts up to 5 stories, dispatches a
+GitHub Actions workflow that POSTs to the Apps Script, which appends rows to
+the `whats_new` tab.
 
-Apps Script URL:
+GitHub Actions is the proxy because the Routines sandbox blocks script.google.com
+egress. The Routine can reach api.github.com; GitHub Actions can reach Google.
+
+Workflow: `.github/workflows/append-whats-new.yml` in this repo.
+Trigger: `workflow_dispatch` with `payload_b64` input (base64-encoded JSON).
+PAT: stored in Routine prompt as `Authorization: Bearer ...`. Also saved as
+GitHub Actions secret `WHATS_NEW_PAT` for reference.
+
+Apps Script URL (active as of 2026-06-17, deployed under jasminaziz1@gmail.com):
 `https://script.google.com/macros/s/AKfycbxGOh2fvk986AMMh_f57uZRAftaCuJGT-E9XOC_0FI36zGSCGVOF2OY81bn3LxCR0I/exec`
 
-Deployed under jasminaziz1@gmail.com, access: Anyone.
+This URL serves both `doGet` (schema inspection) and `doPost` (write rows).
+The old URL (AKfycbyn23...) is dead — do not reintroduce it.
+
+curl note: use `-d @file` without `-X POST` when calling Apps Script. The 302
+redirect must be followed with GET to read the echo response; `-X POST` breaks it.
 
 Schema: name, developer, date (DD MMM YYYY strict), what_it_is, category, url
 Column order: A=name B=developer C=date D=what_it_is E=category F=url
