@@ -3,23 +3,26 @@
 Spreadsheet ID: `1RIO-WY9H75gML_UgdQbHGgDl-R0MfaG3CRPUp3PtAUI`
 
 Tab names are case-sensitive, lowercase with underscores. Content changes go
-live immediately without a deploy. `google_drive_fetch` cannot read Sheets —
-download as .xlsx and upload to the thread.
+live immediately without a deploy. The Google Drive connector can read the
+spreadsheet but may return only the first tab; for reliable per-tab reads use
+the Sheets values API (production key + theeditai.co.uk referer).
 
-Last verified from live data: 2026-06-16.
+Last verified from live data: 2026-07-03.
 
 ---
 
 ## tools (61 rows)
 
-Status values: `in_stack` or `on_radar`. No blank status — both values are active.
+Status values: `in_stack` (22) or `on_radar` (39). No blank status — both
+values are active. Only `in_stack` renders a badge on the site; `on_radar`
+displays nothing (see CLAUDE.md, Badge states).
 
 | Col | Field    | Notes                        |
 |-----|----------|------------------------------|
 | A   | name     |                              |
 | B   | category |                              |
 | C   | status   | `in_stack` or `on_radar`     |
-| D   | cost     |                              |
+| D   | cost     | Code maps this to `pricing`  |
 | E   | verdict  |                              |
 | F   | url      |                              |
 
@@ -81,10 +84,11 @@ Categories: Learn, Reference, Stay Current.
 
 ---
 
-## whats_new (228 rows)
+## whats_new (260 rows as at 2026-07-03, grows daily when the Routine runs)
 
-Populated daily by the Claude Code Routine via Apps Script.
-Deployed under jasminaziz1@gmail.com.
+Populated daily by the Claude Code Routine via GitHub Actions → Apps Script
+(deployed under jasminaziz1@gmail.com). Note: last appended row is dated
+23 Jun 2026 — the Routine has stalled; see CLAUDE.md Outstanding item 1.
 
 | Col | Field      | Notes                                    |
 |-----|------------|------------------------------------------|

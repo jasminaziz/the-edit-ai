@@ -11,24 +11,50 @@ site, never here.
 
 ## Tech stack
 
-- Build environment: Lovable (all code changes via prompts)
-- Repository: GitHub (jasminaziz/the-edit-ai) — auto-receives every Lovable push
+- Build environment: **Claude Code (primary)** — local edits in
+  `~/Developer/the-edit-ai`. Lovable is legacy/optional, see the Lovable
+  section below.
+- Repository: GitHub (jasminaziz/the-edit-ai)
 - Hosting: Vercel — auto-deploys from GitHub main (2-3 min)
 - Framework: Vite + React + TypeScript
 - Styling: Tailwind
 - Data layer: Google Sheets (all content lives here)
-- Subscriber capture: Supabase (subscribers table only — not the content layer)
+- Subscriber capture: Supabase (`subscribers` table only — written from two
+  points: FooterEmailCapture and the Subscribe page. Not the content layer.)
 - SEO: react-helmet-async
 - Analytics: GA4 (G-QHYYEWC2C0)
 
-### Environment variables (Vercel only, never in repo)
+### Deployment pipeline (default)
+
+```
+local edit → git commit → push to GitHub main → Vercel auto-redeploy (2-3 min)
+```
+
+Legacy fallback (Lovable): prompt in Lovable → Lovable pushes to GitHub main →
+Vercel auto-redeploy. Optional, no longer the default path.
+
+### Environment variables
 
 ```
 VITE_GOOGLE_SHEETS_ID
-VITE_GOOGLE_SHEETS_API_KEY    (restricted to theeditai.co.uk/*)
+VITE_GOOGLE_SHEETS_API_KEY
 VITE_SUPABASE_URL
 VITE_SUPABASE_PUBLISHABLE_KEY (must be this exact name — NOT VITE_SUPABASE_ANON_KEY)
 ```
+
+Production values live in Vercel only, never in the repo. The production
+Sheets API key is referrer-restricted to `theeditai.co.uk/*` and returns 403
+from localhost.
+
+Local dev uses a **separate Google Sheets API key scoped to localhost only**,
+kept in `.env.local` (gitignored) — never in Vercel and never committed. The
+production key stays restricted to `theeditai.co.uk/*`. If asked to debug a
+local data-loading failure, check this before anything else.
+
+> Status 2026-07-03: the localhost-scoped key has not been created yet.
+> `.env.local` currently holds the production key (pulled via
+> `vercel env pull`), so local data loads fail with 403
+> API_KEY_HTTP_REFERRER_BLOCKED until the separate key exists.
 
 ## Google account split
 
@@ -48,19 +74,27 @@ Sheets go live immediately — no deploy needed.
 
 Tabs: `tools`, `my_stack`, `design_kit`, `learning`, `whats_new`
 
-See @schema.md for per-tab column schemas.
+See @schema.md for per-tab column schemas (last verified against live data
+2026-07-03).
 
-`google_drive_fetch` cannot read Google Sheets. Download as .xlsx and upload
-to the thread instead.
+The Google Drive connector CAN read the spreadsheet (`read_file_content` on
+the spreadsheet ID), but may return only the first tab. For reliable per-tab
+reads, use the Sheets values API with the production key and a
+`https://www.theeditai.co.uk/` referer.
 
 ## Routes and canonical URLs
 
 Canonical base: `www.theeditai.co.uk`
 
-Routes: `/`, `/tools`, `/my-stack`, `/design-kit`, `/whats-new`, `/learning`, `/subscribe`
+Routes (from `src/App.tsx`, verified 2026-07-03):
+`/`, `/tools`, `/stack` (visitor's own Build Your Own Stack page), `/my-stack`,
+`/design-kit`, `/learning`, `/ai-news`, `/subscribe`, `/submit`,
+`/privacy-policy`, `/terms-of-service`, `/cookie-policy`.
+`/whats-new` is a permanent redirect to `/ai-news`.
 
-New routes need both a React Router entry and a `vercel.json` rewrite rule or
-they 404 on production.
+`vercel.json` contains a single SPA catch-all rewrite (`/(.*) → /index.html`),
+so **new routes need only a React Router entry** — no per-route vercel.json
+rule. (Earlier docs said otherwise; that was wrong.)
 
 ## Codebase conventions
 
@@ -68,6 +102,17 @@ they 404 on production.
 strip parentheses and their contents, replace spaces with hyphens, strip remaining
 special characters. Tool names store as raw strings in localStorage; slugs are for
 URL construction only. Never duplicate this logic elsewhere.
+
+## Badge states (verified against live code 2026-07-03)
+
+- Only ONE badge renders on the Tools grid: **IN MY STACK** (forest green
+  `#2D6A4F`), shown when `status === "in_stack"` (`ToolCard.tsx`).
+- `on_radar` is still a live data value (39 of 61 tools rows) and still exists
+  in `STATUS_MAP` in `src/lib/sheets.ts` (styled cobalt, not burnt orange),
+  but **no component renders an On My Radar badge** — `StatusBadge.tsx` is
+  unused dead code.
+- Blank status cells parse as `on_radar` (`sheets.ts` fallback), so blanks and
+  `on_radar` are indistinguishable to the site.
 
 ## Design system (locked)
 
@@ -98,40 +143,62 @@ Pixel values only in Lovable prompts, never vague adjectives.
 - "Your stack" not "my stack" in all visitor-facing copy
 - Verdicts: direct, frank, name the catch, do not bury limitations
 
-## Current state (as at 2026-06-16)
+## Current state (as at 2026-07-03)
 
-Live and working: Home, AI Toolkit, What's New, My Stack, Design Kit, Learning,
-Subscribe, Build Your Own Stack, SEO/AEO, security audit, whats_new automation.
+Live and working: Home, AI Toolkit, AI News, My Stack (21 rows, full verdicts,
+Claude featured), Design Kit (45 rows, 6 phases), Learning, Subscribe, Build
+Your Own Stack, SEO/AEO, security audit. Homepage attribution live ("Curated
+by Jasmin Aziz | Strategic Communications Consultant"). Nav/footer IA
+restructured (Design, AI News, Substack links). font-display: swap shipped for
+both Fontshare and Google Fonts.
 
-Priority order:
-1. Paste my_stack v4 into Sheets, then run My Stack Lovable prompt (immediate next)
-2. Paste design_kit into Sheets, then run Design Kit prompt
-3. Desktop layout + mobile audit (PageSpeed 64/100 — fix is font-display swap for Fontshare and Google Fonts)
-4. Nav/footer IA restructure
-5. Put Jasmin into the site (homepage attribution, about panel)
-6. Subscribe page copy rewrite
-7. External links audit
-8. Favicon replacement
+Outstanding:
+1. whats_new automation stalled — last successful run 23 Jun 2026 (verified
+   in GitHub Actions history and sheet data). The Routine has not fired since;
+   investigate in claude.ai Routines.
+2. Create the localhost-scoped Google Sheets API key and put it in `.env.local`
+   (see Environment variables above). Until then local data loads 403.
+3. About panel — homepage attribution is done, but no about panel/component
+   exists in the codebase.
+4. Mobile/desktop audit — the font-display fix has shipped; re-run PageSpeed
+   to confirm the 64/100 score has improved.
+5. Make copy review — the live my_stack verdict for Make (and the homepage
+   "What I'm Running" strip) still describes Make.com as running the whats_new
+   automation. It's retired; the copy needs updating in the Sheet.
+6. Subscribe page copy — live copy reads finished ("Cut through the noise",
+   fortnightly digest framing); confirm this is the rewritten version before
+   closing it out.
+7. External links audit — not verifiable from the repo; status unknown.
+8. Favicon — a full favicon set has been live since April 2026; confirm
+   whether it's the intended replacement before closing this out.
 
-Blocked: conversion layer prompts are drafted but waiting on email confirmation
-for hello@theeditai.co.uk.
+Blocked: conversion layer prompts drafted, waiting on email confirmation for
+hello@theeditai.co.uk (not verifiable from the repo; the live footer currently
+uses hello@jasminaziz.co.uk).
 
 ## whats_new automation
 
-Daily Claude Code Routine (trig_01288KFUKoGh4wWrewE7JqC2) fires at 8am UK.
-Reads Gmail (news@daily.therundown.ai), extracts up to 5 stories, dispatches a
-GitHub Actions workflow that POSTs to the Apps Script, which appends rows to
-the `whats_new` tab.
+Daily Claude Code Routine (trig_01288KFUKoGh4wWrewE7JqC2 — lives in claude.ai
+Routines, not verifiable locally) fires at 8am UK. Reads Gmail
+(news@daily.therundown.ai), extracts up to 5 stories, dispatches a GitHub
+Actions workflow that POSTs to the Apps Script, which appends rows to the
+`whats_new` tab.
 
-GitHub Actions is the proxy because the Routines sandbox blocks script.google.com
-egress. The Routine can reach api.github.com; GitHub Actions can reach Google.
+GitHub Actions is the proxy because the Routines sandbox blocks
+script.google.com egress. The Routine can reach api.github.com; GitHub Actions
+can reach Google.
 
 Workflow: `.github/workflows/append-whats-new.yml` in this repo.
 Trigger: `workflow_dispatch` with `payload_b64` input (base64-encoded JSON).
 PAT: stored in Routine prompt as `Authorization: Bearer ...`. Also saved as
-GitHub Actions secret `WHATS_NEW_PAT` for reference.
+GitHub Actions secret `WHATS_NEW_PAT` (verified present, set 2026-06-16).
 
-Apps Script URL (active as of 2026-06-17, deployed under jasminaziz1@gmail.com):
+> Status 2026-07-03: last successful workflow run was 23 Jun 2026 (daily
+> ~08:03 UTC before that, all green). The pipeline itself works; the Routine
+> has stopped dispatching. See Outstanding item 1.
+
+Apps Script URL (deployed under jasminaziz1@gmail.com, matches the workflow
+file):
 `https://script.google.com/macros/s/AKfycbxGOh2fvk986AMMh_f57uZRAftaCuJGT-E9XOC_0FI36zGSCGVOF2OY81bn3LxCR0I/exec`
 
 This URL serves both `doGet` (schema inspection) and `doPost` (write rows).
@@ -146,7 +213,19 @@ Column order: A=name B=developer C=date D=what_it_is E=category F=url
 Date format is load-bearing. It drives the month-grouping parser on the live site
 and breaks it if wrong. No ranges, no "Unknown".
 
-## Lovable prompt discipline (non-negotiable)
+## Working discipline — Claude Code (default)
+
+No prompt template needed, but keep the same discipline as the Lovable era:
+
+- One job per change, never combine two changes
+- Before editing, state what must not be touched
+- Structure before styling; hex codes and pixel values, never vague adjectives
+- Verify on the local dev server first, then on the production URL after the
+  deploy lands
+- Never assume the production Sheets API key will resolve locally — it's
+  referrer-restricted to `theeditai.co.uk/*` and 403s from localhost
+
+## If working in Lovable (legacy path — not the default)
 
 - One job per prompt, never combine two changes
 - Always include a DO NOT CHANGE list
@@ -161,13 +240,19 @@ and breaks it if wrong. No ranges, no "Unknown".
 
 - Build failures are silent. Vercel serves the last successful deploy. If a change
   has not appeared after 5 min, check the Deployments tab for a red failed build.
-- New routes need a React Router entry plus a vercel.json rewrite rule or they 404 live.
-- New Google Sheets tabs need a Lovable prompt to wire them to the site.
+- New routes need a React Router entry only — vercel.json already has a SPA
+  catch-all rewrite.
+- New Google Sheets tabs need a fetch function in `src/lib/sheets.ts` plus a
+  component/page to render them.
+- Local dev uses a separate Google Sheets API key scoped to localhost only,
+  kept in `.env.local`, never in Vercel and never committed. The production
+  key stays restricted to `theeditai.co.uk/*`. If asked to debug a local
+  data-loading failure, check this before anything else.
 
 ## What Claude must not do
 
-- Never suggest deviating from the locked architecture (Lovable, GitHub, Vercel,
-  Google Sheets, Supabase)
+- Never suggest deviating from the locked architecture (Claude Code + GitHub +
+  Vercel + Google Sheets + Supabase; Lovable available as a legacy path only)
 - Never confuse Supabase with the content layer — Google Sheets is content,
   Supabase is subscriber capture only
 - Never reintroduce DM Mono
