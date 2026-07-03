@@ -82,3 +82,23 @@ Session corrections and rules built up over time. Add entries; do not delete his
   the token settings page does. When a daily automation stops cleanly with
   no error trail, check token expiry first and pick a long expiry (or diary
   the renewal) when creating dispatch PATs.
+
+- **Guard PAT-dependent dispatch chains with a watchdog workflow on
+  github.token (2026-07-03).** A scheduled GitHub Actions workflow using the
+  built-in `github.token` (no PAT, cannot expire) can check daily whether the
+  main workflow ran successfully in the last 48 hours and exit 1 if not. A
+  failed scheduled run triggers GitHub's failure email automatically. This is
+  the reliable silent-failure guard: `.github/workflows/whats-new-watchdog.yml`
+  is the live example. One caveat: GitHub pauses scheduled workflows after 60
+  days of repo inactivity, but emails a warning before disabling.
+
+- **The Routines sandbox proxy requires repos to be explicitly connected
+  (2026-07-03).** Even with a valid PAT, the Routine's GitHub API dispatch
+  call returns HTTP 403 "GitHub access to this repository is not enabled for
+  this session. Use add_repo to request access." The repo must be connected to
+  the session via the GitHub connector in the claude.ai interface. This is a
+  one-time configuration on the Routine itself (persists across runs), not a
+  per-run step. Confirmed reachable once connected: api.github.com dispatch
+  proceeds. Note: "Resource not accessible by integration" is GitHub's error
+  for BOTH an expired PAT AND insufficient permissions — check expiry first,
+  then permissions.

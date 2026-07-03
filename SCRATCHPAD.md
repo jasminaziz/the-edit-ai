@@ -10,12 +10,21 @@ Cowork folder: None
 
 ## Priority queue (as at 2026-07-03)
 
-1. **Fix the stalled whats_new automation** (next) — last write 23 Jun.
-   Downstream verified clean; prime suspect is the whats-new-routine PAT
-   expiring on a 7-day lifetime. Check
-   github.com/settings/personal-access-tokens/15903659 and the Routines UI,
-   recreate the token with a longer expiry, update the Routine prompt and
-   the WHATS_NEW_PAT secret.
+1. **Fix the stalled whats_new automation** — last write 23 Jun. Two blockers
+   found and partially resolved (2026-07-03 second session):
+   - **PAT confirmed expired**: Routine transcript shows HTTP 403 "Resource not
+     accessible by integration" on the dispatch call; original 7-day token lapsed
+     ~23 Jun. Action: create a new fine-grained PAT (jasminaziz/the-edit-ai only,
+     Actions: read and write, 366-day expiry) and paste into the Routine's
+     `Authorization: Bearer` line. (WHATS_NEW_PAT repo secret deleted — vestigial.)
+   - **Proxy blocker**: the Routine sandbox now routes GitHub API calls through a
+     proxy that requires the repo to be connected via "add_repo". Jasmin connected
+     jasminaziz/the-edit-ai to the session — this is now resolved.
+   - **Watchdog shipped**: `.github/workflows/whats-new-watchdog.yml` (commit
+     5d6e1e7) runs daily at 12:00 UTC on github.token and fails loudly if
+     append-whats-new hasn't succeeded in 48h. Test run confirmed it correctly
+     detects the current stall.
+   - **Next action (Jasmin)**: create replacement PAT → paste into Routine → re-run.
 2. Create the localhost-scoped Google Sheets API key and put it in .env.local
    (until then local dev renders but data 403s)
 3. Update the Make copy in the my_stack tab (and homepage strip) — it still
@@ -58,7 +67,17 @@ Issues fixed along the way:
 **ACTION NEEDED:** Delete the test row from the whats_new tab in Google Sheets:
 "Test / Test / 16 Jun 2026 / Test. / Tool Launch / (blank)"
 
-### 2026-07-03
+### 2026-07-03 (second session — automation fix)
+
+Full audit of stalled pipeline. Findings: PAT confirmed expired (seven green
+daily runs 17–23 Jun, then zero dispatches; Routine transcript confirmed
+403 "Resource not accessible by integration"). Second blocker found: Routines
+sandbox proxy now requires repo connected via "add_repo" before GitHub API
+calls succeed — Jasmin connected jasminaziz/the-edit-ai, proxy blocker
+resolved. Watchdog workflow shipped (commit 5d6e1e7). WHATS_NEW_PAT secret
+deleted (referenced by nothing). Pipeline still stalled pending new PAT.
+
+### 2026-07-03 (first session — local dev + doc rewrite)
 
 Local dev environment set up; Claude Code is now the primary build path
 (Lovable relabelled legacy in all docs).
