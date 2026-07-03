@@ -153,9 +153,14 @@ restructured (Design, AI News, Substack links). font-display: swap shipped for
 both Fontshare and Google Fonts.
 
 Outstanding:
-1. whats_new automation stalled — last successful run 23 Jun 2026 (verified
-   in GitHub Actions history and sheet data). The Routine has not fired since;
-   investigate in claude.ai Routines.
+1. whats_new automation — PAT confirmed expired (original 7-day token lapsed
+   23 Jun; Routine transcript confirmed 403). Two blockers found and partially
+   resolved 2026-07-03: expired PAT (action: create replacement with 366-day
+   expiry, paste into Routine prompt) + Routines sandbox proxy now requires
+   repo connected via "add_repo" (resolved: jasminaziz/the-edit-ai connected).
+   Watchdog workflow shipped (commit 5d6e1e7) — fails loudly if
+   append-whats-new hasn't run in 48h. Next: Jasmin creates new fine-grained
+   PAT (Actions: read and write, 366-day expiry), pastes into Routine, re-runs.
 2. Create the localhost-scoped Google Sheets API key and put it in `.env.local`
    (see Environment variables above). Until then local data loads 403.
 3. About panel — homepage attribution is done, but no about panel/component
@@ -195,9 +200,11 @@ is the only place the token lives. The workflow itself uses no secrets. (A
 `WHATS_NEW_PAT` repo secret existed but was referenced by nothing; deleted
 2026-07-03.)
 
-> Status 2026-07-03: last successful workflow run was 23 Jun 2026 (daily
-> ~08:03 UTC before that, all green). The pipeline itself works; the Routine
-> has stopped dispatching. See Outstanding item 1.
+> Status 2026-07-03 (updated): PAT confirmed expired. Two blockers —
+> expired PAT + Routines sandbox proxy (resolved: repo now connected).
+> Watchdog workflow shipped (commit 5d6e1e7, daily 12:00 UTC, github.token).
+> Remaining: new PAT with 366-day expiry needed in Routine prompt.
+> See Outstanding item 1.
 
 Apps Script URL (deployed under jasminaziz1@gmail.com, matches the workflow
 file):
