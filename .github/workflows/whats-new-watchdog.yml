@@ -1,0 +1,51 @@
+# Watchdog for the daily whats_new pipeline.
+#
+# The Routine's dispatch call fails silently if its PAT expires: no workflow
+# run is created, nothing errors, no email arrives (this is exactly how the
+# June 2026 stall went unnoticed for ten days). This workflow checks once a
+# day that append-whats-new succeeded within the last 48 hours and fails
+# loudly if not — a failed scheduled run triggers GitHub's failure email.
+#
+# It runs on the built-in github.token, not a PAT, so it cannot lapse the
+# same way. One caveat: GitHub pauses scheduled workflows after 60 days of
+# repo inactivity (it emails a warning before disabling).
+
+name: whats_new watchdog
+
+on:
+  schedule:
+    - cron: '0 12 * * *' # 12:00 UTC daily, well after the ~08:03 UTC dispatch
+  workflow_dispatch: {} # allows a manual test run
+
+permissions:
+  actions: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if append-whats-new has not succeeded in 48 hours
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          latest=$(gh api \
+            "repos/${{ github.repository }}/actions/workflows/append-whats-new.yml/runs?status=success&per_page=1" \
+            --jq '.workflow_runs[0].created_at // empty')
+
+          if [ -z "$latest" ]; then
+            echo "No successful append-whats-new run found at all."
+            exit 1
+          fi
+
+          echo "Last successful append: $latest"
+          latest_epoch=$(date -d "$latest" +%s)
+          cutoff_epoch=$(date -d '48 hours ago' +%s)
+
+          if [ "$latest_epoch" -lt "$cutoff_epoch" ]; then
+            echo "STALE: no successful run in the last 48 hours."
+            echo "The dispatch chain has probably stopped. Check the Routine's PAT first:"
+            echo "https://github.com/settings/personal-access-tokens"
+            exit 1
+          fi
+
+          echo "OK: pipeline ran within the last 48 hours."

@@ -190,8 +190,10 @@ can reach Google.
 
 Workflow: `.github/workflows/append-whats-new.yml` in this repo.
 Trigger: `workflow_dispatch` with `payload_b64` input (base64-encoded JSON).
-PAT: stored in Routine prompt as `Authorization: Bearer ...`. Also saved as
-GitHub Actions secret `WHATS_NEW_PAT` (verified present, set 2026-06-16).
+PAT: stored in the Routine prompt as `Authorization: Bearer ...` — the Routine
+is the only place the token lives. The workflow itself uses no secrets. (A
+`WHATS_NEW_PAT` repo secret existed but was referenced by nothing; deleted
+2026-07-03.)
 
 > Status 2026-07-03: last successful workflow run was 23 Jun 2026 (daily
 > ~08:03 UTC before that, all green). The pipeline itself works; the Routine
