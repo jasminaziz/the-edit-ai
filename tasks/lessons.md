@@ -53,3 +53,32 @@ Session corrections and rules built up over time. Add entries; do not delete his
   (AKfycbyn23sj7EbwNfzKDB8kP9vhB_...) is now dead. The active URL is
   AKfycbxGOh2fvk986AMMh_... — this serves both doGet (schema) and doPost
   (write rows). Do not reintroduce the old URL anywhere.
+
+- **The production Sheets key is referrer-locked (2026-07-03).** Localhost
+  gets 403 API_KEY_HTTP_REFERRER_BLOCKED — expected until a separate
+  localhost-scoped key exists in .env.local. From curl, read the sheet by
+  sending `-e "https://www.theeditai.co.uk/"` as the referer. Check the key
+  before debugging any local data-loading failure.
+
+- **Superseded (2026-07-03): the Drive connector CAN read the spreadsheet**
+  via read_file_content on the spreadsheet ID, but returns only the first
+  tab. For per-tab reads use the Sheets values API with the referer trick
+  above. (Supersedes the earlier "google_drive_fetch cannot read Sheets"
+  entry.)
+
+- **bun is the package manager (2026-07-03).** bun.lock (Apr 2026) is
+  canonical; package-lock.json (Jan 2025) is stale. `bun install
+  --frozen-lockfile` — never `npm install`, which would resolve against the
+  stale lockfile and rewrite it.
+
+- **`vercel link` silently edits .gitignore** (appends `.vercel` and
+  `.env*`). Check `git status` after linking if the session isn't supposed
+  to touch project files.
+
+- **An expired fine-grained PAT stops workflow_dispatch silently
+  (2026-07-03).** The dispatch call 401s, so NO workflow run is created —
+  Actions shows nothing, and Sheets/Apps Script never error. `gh` cannot
+  show a token's expiry and GitHub's creation email doesn't state it; only
+  the token settings page does. When a daily automation stops cleanly with
+  no error trail, check token expiry first and pick a long expiry (or diary
+  the renewal) when creating dispatch PATs.
