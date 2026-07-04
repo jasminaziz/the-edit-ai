@@ -17,10 +17,17 @@ site, never here.
 - Repository: GitHub (jasminaziz/the-edit-ai)
 - Hosting: Vercel — auto-deploys from GitHub main (2-3 min)
 - Framework: Vite + React + TypeScript
+- Package manager: **bun** — `bun.lock` is canonical; `package-lock.json` is
+  stale (Jan 2025). Never `npm install` or `npm audit fix` (both resolve
+  against and rewrite the stale lockfile). Audits and updates go through bun.
 - Styling: Tailwind
 - Data layer: Google Sheets (all content lives here)
-- Subscriber capture: Supabase (`subscribers` table only — written from two
-  points: FooterEmailCapture and the Subscribe page. Not the content layer.)
+- Subscriber capture: Supabase (the **site** touches the `subscribers` table
+  only — written from two points: FooterEmailCapture and the Subscribe page.
+  Not the content layer. Note: the Supabase *project* (zsoczlgkyessfhobhtgu)
+  also hosts the ops-dashboard tables — documented accepted design, see
+  memory decisions.md — plus empty Lovable-era `tools`/`whats_new` tables
+  that are dead weight.)
 - SEO: react-helmet-async
 - Analytics: GA4 (G-QHYYEWC2C0)
 
@@ -176,6 +183,14 @@ Outstanding:
 7. External links audit — not verifiable from the repo; status unknown.
 8. Favicon — a full favicon set has been live since April 2026; confirm
    whether it's the intended replacement before closing this out.
+9. Security audit follow-ups (2026-07-04) — full detail and priorities in
+   `reports/2026-07-04-security-audit.md` and SCRATCHPAD queue item 7. No
+   critical findings. Named here because it's user-facing: **the Submit a
+   Tool form discards every submission** (`handleSubmit` only flips state) —
+   wire it to a destination or pull the page. Also queued: GA consent mode
+   (the cookie banner records a choice nothing reads), Apps Script shared
+   secret, subscribers insert constraints, dependency bumps via bun,
+   Lovable dead-code sweep.
 
 Blocked: conversion layer prompts drafted, waiting on email confirmation for
 hello@theeditai.co.uk (not verifiable from the repo; the live footer currently

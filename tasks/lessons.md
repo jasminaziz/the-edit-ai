@@ -92,6 +92,23 @@ Session corrections and rules built up over time. Add entries; do not delete his
   is the live example. One caveat: GitHub pauses scheduled workflows after 60
   days of repo inactivity, but emails a warning before disabling.
 
+- **Dependency tooling must go through bun in this repo, not just installs
+  (2026-07-04).** `npm audit` resolves against the stale package-lock.json and
+  can misreport what is actually installed; `npm audit fix` would rewrite that
+  stale lockfile. Extend the bun rule above to audits and updates: `bun update
+  <pkg>`, and treat any npm-lockfile-derived result as provisional until
+  checked against bun.lock. (Caught at wrap on 2026-07-04 — the security audit
+  initially assumed npm was the package manager.)
+
+- **Check the ops-dashboard decision record before flagging the shared
+  Supabase project (2026-07-04).** The Edit's Supabase project deliberately
+  hosts the ops-dashboard tables (`ops_agent_status` world-readable,
+  `ops_secrets` locked, token-gated SECURITY DEFINER writes) — documented
+  accepted design in ~/AI Work/memory/decisions.md (ops-dashboard section),
+  not a vulnerability. Future audits should verify the design holds rather
+  than re-raise it. The empty Lovable-era `tools`/`whats_new` tables in the
+  same project ARE dead weight and can go.
+
 - **The Routines sandbox proxy requires repos to be explicitly connected
   (2026-07-03).** Even with a valid PAT, the Routine's GitHub API dispatch
   call returns HTTP 403 "GitHub access to this repository is not enabled for

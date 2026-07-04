@@ -33,6 +33,23 @@ Cowork folder: None
 5. Re-run PageSpeed (font-display swap has shipped) to confirm the mobile score
 6. Confirm-and-close items: Subscribe copy, favicon, external links audit
    (all flagged unverifiable in the 2026-07-03 doc audit)
+7. **Security audit follow-ups (2026-07-04)** — full detail in
+   `reports/2026-07-04-security-audit.md`. No critical findings. In rough order:
+   - **Submit form discards every submission** (Q1) — `handleSubmit` only flips
+     state; wire it to a destination or pull the page
+   - GA consent: banner records a choice nothing reads; GA4 fires regardless
+     (M2) — decide approach (Consent Mode), then one small change
+   - Apps Script doPost shared secret + render only http(s) hrefs in
+     WhatsNewCard (M3)
+   - subscribers insert constraints: email format CHECK, length limits,
+     server-side defaults for source/status (M4) — DB migration, run deliberately
+   - Dependency bumps via **bun** (M5) — react-router-dom first; do NOT run
+     `npm audit fix` (stale package-lock)
+   - Dead-code sweep: ~44 unused shadcn/ui components + orphaned radix deps,
+     two unused toast systems in App.tsx, lovable-tagger, boilerplate README,
+     .lovable/plan.md, src/vercel.json, stale supabase/config.toml, bun.lockb +
+     package-lock.json; lazy-load matter-js/HomeGravity (988K single chunk,
+     feeds queue item 5)
 
 Done since the 2026-06-16 queue: my_stack live (21 rows), design_kit live
 (45 rows), nav/footer IA restructure, homepage attribution, font-display swap.
@@ -45,6 +62,28 @@ Done since the 2026-06-16 queue: my_stack live (21 rows), design_kit live
 ---
 
 ## Session notes
+
+### 2026-07-04 (security audit + code quality review)
+
+Findings-only audit, no code changed. Report: `reports/2026-07-04-security-audit.md`.
+Covered full git history, workflows, live Supabase (read-only), npm audit, dead code.
+
+Verified clean: historic .env leak is inert (anon key for the dead Lovable
+project htimtwbltcpupsjpkqlv; live project is zsoczlgkyessfhobhtgu; repo
+private); Sheets key never in git history; subscribers RLS INSERT-only, list
+unreadable; both workflows minimally scoped, no fork-PR exposure.
+
+Biggest genuine finds: Submit form silently bins submissions; cookie banner is
+decorative (GA4 unconditional); Apps Script write endpoint unauthenticated with
+the URL committed; whats_new `url` column rendered straight into href (forged
+row could plant a javascript: link).
+
+Two self-corrections made at wrap and annotated in the report: (1) npm audit
+was run against the stale package-lock.json — bun.lock is canonical, re-check
+via bun before acting; (2) finding M1 (ops tables in the shared Supabase
+project) largely re-verified the documented, accepted ops-dashboard design —
+new information is only the empty Lovable tables, GraphQL discoverability, and
+unthrottled token guessing.
 
 ### 2026-06-16/17
 
