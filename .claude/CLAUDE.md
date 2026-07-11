@@ -170,8 +170,14 @@ Outstanding:
    Jasmin: (a) rewrite Routine prompt Step 5 to use the MCP tool and delete
    the PAT from the prompt, (b) revoke PAT 16554137 (exposed in prompt and
    transcripts, no longer needed), (c) paste the dedupe + shared-secret code
-   into the Apps Script. Watchdog tightened to 26h. Sheet gaps: 24 Jun-2 Jul
-   and 4, 5, 7, 8 Jul (9 Jul backfilled and 11 Jul appended 2026-07-11).
+   into the Apps Script. Watchdog tightened to 26h. All sheet gaps backfilled
+   2026-07-11 (50 rows across 24 Jun-8 Jul, plus 9 and 11 Jul). Dates 28-29
+   Jun and 5 Jul are legitimately empty: The Rundown publishes weekdays only.
+   Known data wart: the 3 Jul and 6 Jul batches are the same five stories
+   twice (the Jul 6 run re-read the Jul 3 newsletter over the long weekend);
+   likewise 20-22 Jun rows likely repeat 19 Jun's stories. Delete the extra
+   batches in the Sheet by hand; dedupe in the Apps Script prevents
+   recurrence.
 2. Create the localhost-scoped Google Sheets API key and put it in `.env.local`
    (see Environment variables above). Until then local data loads 403.
 3. About panel — homepage attribution is done, but no about panel/component

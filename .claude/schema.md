@@ -88,9 +88,10 @@ Categories: Learn, Reference, Stay Current.
 
 Populated daily by the Claude Code Routine via GitHub Actions → Apps Script
 (deployed under jasminaziz1@gmail.com). Dispatch goes through the GitHub MCP
-tool — see CLAUDE.md, whats_new automation. Known gaps (runs that never
-happened): 24 Jun-2 Jul and 4, 5, 7, 8 Jul 2026, pending backfill; see
-CLAUDE.md Outstanding item 1.
+tool — see CLAUDE.md, whats_new automation. Gaps from the June-July stalls
+were backfilled 2026-07-11; 28-29 Jun and 5 Jul are legitimately empty (no
+weekend editions). Known duplicates to hand-delete: 3 Jul vs 6 Jul batch,
+and likely 20-22 Jun repeating 19 Jun; see CLAUDE.md Outstanding item 1.
 
 | Col | Field      | Notes                                    |
 |-----|------------|------------------------------------------|
