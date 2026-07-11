@@ -160,14 +160,18 @@ restructured (Design, AI News, Substack links). font-display: swap shipped for
 both Fontshare and Google Fonts.
 
 Outstanding:
-1. whats_new automation — PAT confirmed expired (original 7-day token lapsed
-   23 Jun; Routine transcript confirmed 403). Two blockers found and partially
-   resolved 2026-07-03: expired PAT (action: create replacement with 366-day
-   expiry, paste into Routine prompt) + Routines sandbox proxy now requires
-   repo connected via "add_repo" (resolved: jasminaziz/the-edit-ai connected).
-   Watchdog workflow shipped (commit 5d6e1e7) — fails loudly if
-   append-whats-new hasn't run in 48h. Next: Jasmin creates new fine-grained
-   PAT (Actions: read and write, 366-day expiry), pastes into Routine, re-runs.
+1. whats_new automation — root cause found 2026-07-11: the Routine sandbox
+   proxy strips Authorization headers on api.github.com and injects its own
+   scoped credential, which cannot dispatch workflows (403 "Resource not
+   accessible by integration"). curl+PAT is deterministically broken there
+   regardless of the PAT; the intermittent successes (6, 10 Jul) were runs
+   where the agent happened to use the GitHub MCP tool instead. Verified fix
+   2026-07-11: dispatch via GitHub MCP `actions_run_trigger`. Remaining for
+   Jasmin: (a) rewrite Routine prompt Step 5 to use the MCP tool and delete
+   the PAT from the prompt, (b) revoke PAT 16554137 (exposed in prompt and
+   transcripts, no longer needed), (c) paste the dedupe + shared-secret code
+   into the Apps Script. Watchdog tightened to 26h. Sheet gaps: 24 Jun-2 Jul
+   and 4, 5, 7, 8 Jul (9 Jul backfilled and 11 Jul appended 2026-07-11).
 2. Create the localhost-scoped Google Sheets API key and put it in `.env.local`
    (see Environment variables above). Until then local data loads 403.
 3. About panel — homepage attribution is done, but no about panel/component
@@ -204,22 +208,29 @@ Routines, not verifiable locally) fires at 8am UK. Reads Gmail
 Actions workflow that POSTs to the Apps Script, which appends rows to the
 `whats_new` tab.
 
-GitHub Actions is the proxy because the Routines sandbox blocks
-script.google.com egress. The Routine can reach api.github.com; GitHub Actions
-can reach Google.
+GitHub Actions is the relay because the Routine sandbox blocks
+script.google.com egress (network policy CONNECT 403, re-verified
+2026-07-11). GitHub Actions can reach Google.
 
 Workflow: `.github/workflows/append-whats-new.yml` in this repo.
 Trigger: `workflow_dispatch` with `payload_b64` input (base64-encoded JSON).
-PAT: stored in the Routine prompt as `Authorization: Bearer ...` — the Routine
-is the only place the token lives. The workflow itself uses no secrets. (A
-`WHATS_NEW_PAT` repo secret existed but was referenced by nothing; deleted
-2026-07-03.)
 
-> Status 2026-07-03 (updated): PAT confirmed expired. Two blockers —
-> expired PAT + Routines sandbox proxy (resolved: repo now connected).
-> Watchdog workflow shipped (commit 5d6e1e7, daily 12:00 UTC, github.token).
-> Remaining: new PAT with 366-day expiry needed in Routine prompt.
-> See Outstanding item 1.
+Dispatch mechanism (the load-bearing part): the Routine MUST dispatch via the
+GitHub MCP tool `actions_run_trigger` (method `run_workflow`, workflow_id
+`append-whats-new.yml`, ref `main`). Raw `curl` to api.github.com CANNOT work
+from the Routine sandbox: its proxy strips whatever Authorization header is
+sent and injects the session's own scoped credential, which cannot dispatch
+workflows (403 "Resource not accessible by integration"). A PAT in the
+Routine prompt is therefore useless — GitHub never sees it. This was proven
+2026-07-11 by sending a fake token and no token: both authenticated fine.
+The repo connection ("add_repo") is the only credential the pipeline needs.
+No PATs, no repo secrets.
+
+> Status 2026-07-11: MCP dispatch verified end to end (run 29156307002,
+> success, rows appended). History for the record: the June stall was the
+> original 7-day PAT expiring; the July intermittency was agents sometimes
+> following the prompt's broken curl instructions and sometimes reaching for
+> the MCP tool. Remaining actions live in Outstanding item 1.
 
 Apps Script URL (deployed under jasminaziz1@gmail.com, matches the workflow
 file):

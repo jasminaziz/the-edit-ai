@@ -87,8 +87,10 @@ Categories: Learn, Reference, Stay Current.
 ## whats_new (260 rows as at 2026-07-03, grows daily when the Routine runs)
 
 Populated daily by the Claude Code Routine via GitHub Actions → Apps Script
-(deployed under jasminaziz1@gmail.com). Note: last appended row is dated
-23 Jun 2026 — the Routine has stalled; see CLAUDE.md Outstanding item 1.
+(deployed under jasminaziz1@gmail.com). Dispatch goes through the GitHub MCP
+tool — see CLAUDE.md, whats_new automation. Known gaps (runs that never
+happened): 24 Jun-2 Jul and 4, 5, 7, 8 Jul 2026, pending backfill; see
+CLAUDE.md Outstanding item 1.
 
 | Col | Field      | Notes                                    |
 |-----|------------|------------------------------------------|
