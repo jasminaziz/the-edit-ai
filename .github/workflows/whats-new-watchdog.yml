@@ -1,10 +1,13 @@
 # Watchdog for the daily whats_new pipeline.
 #
-# The Routine's dispatch call fails silently if its PAT expires: no workflow
-# run is created, nothing errors, no email arrives (this is exactly how the
-# June 2026 stall went unnoticed for ten days). This workflow checks once a
-# day that append-whats-new succeeded within the last 48 hours and fails
-# loudly if not — a failed scheduled run triggers GitHub's failure email.
+# The Routine's dispatch step fails silently when it can't reach GitHub: no
+# workflow run is created, nothing errors, no email arrives (this is how the
+# June 2026 stall went unnoticed for ten days, and how single-day gaps
+# accumulated in early July under the old 48-hour window). This workflow
+# checks once a day that append-whats-new succeeded within the last 26 hours
+# and fails loudly if not — a failed scheduled run triggers GitHub's failure
+# email. 26 hours = one daily cycle plus slack for schedule drift, so a
+# single missed morning alerts the same day.
 #
 # It runs on the built-in github.token, not a PAT, so it cannot lapse the
 # same way. One caveat: GitHub pauses scheduled workflows after 60 days of
@@ -24,7 +27,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Fail if append-whats-new has not succeeded in 48 hours
+      - name: Fail if append-whats-new has not succeeded in 26 hours
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -39,13 +42,15 @@ jobs:
 
           echo "Last successful append: $latest"
           latest_epoch=$(date -d "$latest" +%s)
-          cutoff_epoch=$(date -d '48 hours ago' +%s)
+          cutoff_epoch=$(date -d '26 hours ago' +%s)
 
           if [ "$latest_epoch" -lt "$cutoff_epoch" ]; then
-            echo "STALE: no successful run in the last 48 hours."
-            echo "The dispatch chain has probably stopped. Check the Routine's PAT first:"
-            echo "https://github.com/settings/personal-access-tokens"
+            echo "STALE: no successful run in the last 26 hours."
+            echo "The dispatch chain has probably stopped. Check the Routine's last run"
+            echo "transcript in claude.ai first. The dispatch must go through the GitHub"
+            echo "MCP tool (actions_run_trigger) — raw curl to api.github.com does not"
+            echo "work from the Routine sandbox (its proxy strips Authorization headers)."
             exit 1
           fi
 
-          echo "OK: pipeline ran within the last 48 hours."
+          echo "OK: pipeline ran within the last 26 hours."
