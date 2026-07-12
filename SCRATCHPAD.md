@@ -10,21 +10,17 @@ Cowork folder: None
 
 ## Priority queue (as at 2026-07-03)
 
-1. **Fix the stalled whats_new automation** — last write 23 Jun. Two blockers
-   found and partially resolved (2026-07-03 second session):
-   - **PAT confirmed expired**: Routine transcript shows HTTP 403 "Resource not
-     accessible by integration" on the dispatch call; original 7-day token lapsed
-     ~23 Jun. Action: create a new fine-grained PAT (jasminaziz/the-edit-ai only,
-     Actions: read and write, 366-day expiry) and paste into the Routine's
-     `Authorization: Bearer` line. (WHATS_NEW_PAT repo secret deleted — vestigial.)
-   - **Proxy blocker**: the Routine sandbox now routes GitHub API calls through a
-     proxy that requires the repo to be connected via "add_repo". Jasmin connected
-     jasminaziz/the-edit-ai to the session — this is now resolved.
-   - **Watchdog shipped**: `.github/workflows/whats-new-watchdog.yml` (commit
-     5d6e1e7) runs daily at 12:00 UTC on github.token and fails loudly if
-     append-whats-new hasn't succeeded in 48h. Test run confirmed it correctly
-     detects the current stall.
-   - **Next action (Jasmin)**: create replacement PAT → paste into Routine → re-run.
+1. **whats_new automation — FIXED 2026-07-12.** Root cause: Routine sandbox
+   proxy strips Authorization headers on api.github.com; curl+PAT was always
+   broken. Fix: dispatch via GitHub MCP `actions_run_trigger`. All actions done:
+   Routine prompt updated (MCP dispatch, PAT removed, freshness check), PAT
+   16554137 revoked, Apps Script doPost replaced (dedupe by name+url,
+   all-or-nothing validation, optional SHARED_SECRET). Watchdog tightened to 26h.
+   All sheet gaps backfilled (50 rows, 24 Jun-11 Jul). Remaining: delete the 6 Jul
+   duplicate batch from the Sheet (same 5 stories as 3 Jul); check 20-22 Jun rows.
+   Known caveat: watchdog fires false-alert emails on Saturday mornings (no weekend
+   newsletter = no dispatch = stale check triggers); safe to ignore or change cron
+   to `0 12 * * 1-5`.
 2. Create the localhost-scoped Google Sheets API key and put it in .env.local
    (until then local dev renders but data 403s)
 3. Update the Make copy in the my_stack tab (and homepage strip) — it still
@@ -62,6 +58,31 @@ Done since the 2026-06-16 queue: my_stack live (21 rows), design_kit live
 ---
 
 ## Session notes
+
+### 2026-07-12 (whats_new automation full fix)
+
+Full audit of why the automation kept breaking. Root cause proved: Routine
+sandbox proxy strips Authorization headers on api.github.com and injects its
+own scoped credential, which cannot dispatch workflows (403 "Resource not
+accessible by integration"). Proved by sending a fake token and no token —
+both authenticated as jasminaziz. curl+PAT is therefore permanently broken
+from the sandbox; GitHub MCP `actions_run_trigger` is the only working path.
+
+All fixes applied this session:
+- Routine prompt rewritten: Step 5 uses MCP tool, PAT removed, freshness check
+  added (stops without dispatching if email >24h old)
+- PAT 16554137 revoked by Jasmin
+- Apps Script doPost replaced: dedupe by name+url (catches weekend re-reads),
+  all-or-nothing row validation (6 fields, date format, category whitelist),
+  optional SHARED_SECRET via Script Properties
+- Watchdog tightened from 48h to 26h; failure message updated
+- All sheet gaps backfilled: 50 rows across 24 Jun-8 Jul plus 9 and 11 Jul
+  (two 25-row dispatch chunks due to Apps Script JSON parse limit)
+- Branch merged to main (PR #1)
+
+Known caveat: watchdog sends false-alert emails on weekends (no newsletter =
+no dispatch = 26h check triggers). Can fix with `0 12 * * 1-5` cron.
+Remaining manual task: delete 6 Jul duplicate batch from the Sheet.
 
 ### 2026-07-04 (security audit + code quality review)
 

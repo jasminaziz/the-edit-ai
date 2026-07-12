@@ -150,7 +150,7 @@ Pixel values only in Lovable prompts, never vague adjectives.
 - "Your stack" not "my stack" in all visitor-facing copy
 - Verdicts: direct, frank, name the catch, do not bury limitations
 
-## Current state (as at 2026-07-03)
+## Current state (as at 2026-07-12)
 
 Live and working: Home, AI Toolkit, AI News, My Stack (21 rows, full verdicts,
 Claude featured), Design Kit (45 rows, 6 phases), Learning, Subscribe, Build
@@ -160,24 +160,23 @@ restructured (Design, AI News, Substack links). font-display: swap shipped for
 both Fontshare and Google Fonts.
 
 Outstanding:
-1. whats_new automation — root cause found 2026-07-11: the Routine sandbox
-   proxy strips Authorization headers on api.github.com and injects its own
-   scoped credential, which cannot dispatch workflows (403 "Resource not
-   accessible by integration"). curl+PAT is deterministically broken there
-   regardless of the PAT; the intermittent successes (6, 10 Jul) were runs
-   where the agent happened to use the GitHub MCP tool instead. Verified fix
-   2026-07-11: dispatch via GitHub MCP `actions_run_trigger`. Remaining for
-   Jasmin: (a) rewrite Routine prompt Step 5 to use the MCP tool and delete
-   the PAT from the prompt, (b) revoke PAT 16554137 (exposed in prompt and
-   transcripts, no longer needed), (c) paste the dedupe + shared-secret code
-   into the Apps Script. Watchdog tightened to 26h. All sheet gaps backfilled
-   2026-07-11 (50 rows across 24 Jun-8 Jul, plus 9 and 11 Jul). Dates 28-29
-   Jun and 5 Jul are legitimately empty: The Rundown publishes weekdays only.
-   Known data wart: the 3 Jul and 6 Jul batches are the same five stories
-   twice (the Jul 6 run re-read the Jul 3 newsletter over the long weekend);
-   likewise 20-22 Jun rows likely repeat 19 Jun's stories. Delete the extra
-   batches in the Sheet by hand; dedupe in the Apps Script prevents
-   recurrence.
+1. whats_new automation — FIXED 2026-07-12. Root cause: Routine sandbox proxy
+   strips Authorization headers on api.github.com and injects its own scoped
+   credential; curl+PAT was always broken regardless of token. Fix: dispatch
+   via GitHub MCP `actions_run_trigger` (verified end to end, run 29156307002).
+   All three Jasmin actions completed 2026-07-12: (a) Routine prompt rewritten
+   — Step 5 uses MCP tool, PAT removed, freshness check added (stops without
+   dispatching if email >24h old, preventing weekend re-reads creating duplicate
+   rows); (b) PAT 16554137 revoked; (c) Apps Script doPost replaced with dedupe
+   + validation version (dedupes by name+url case-insensitively, all-or-nothing
+   row validation, optional SHARED_SECRET via Script Properties). Watchdog
+   tightened to 26h. All sheet gaps backfilled (50 rows, 24 Jun-8 Jul plus 9
+   and 11 Jul). Legitimately empty: 28-29 Jun and 5 Jul (no weekend editions).
+   Remaining: (a) hand-delete the 6 Jul batch from the Sheet (identical to
+   3 Jul); check whether 20-22 Jun rows repeat 19 Jun and delete if so.
+   (b) Watchdog cron runs daily including weekends — will send a false-alert
+   email on Saturday mornings because no newsletter dispatches on weekends;
+   safe to ignore, or fix cron to `0 12 * * 1-5`.
 2. Create the localhost-scoped Google Sheets API key and put it in `.env.local`
    (see Environment variables above). Until then local data loads 403.
 3. About panel — homepage attribution is done, but no about panel/component
@@ -232,11 +231,10 @@ Routine prompt is therefore useless — GitHub never sees it. This was proven
 The repo connection ("add_repo") is the only credential the pipeline needs.
 No PATs, no repo secrets.
 
-> Status 2026-07-11: MCP dispatch verified end to end (run 29156307002,
-> success, rows appended). History for the record: the June stall was the
-> original 7-day PAT expiring; the July intermittency was agents sometimes
-> following the prompt's broken curl instructions and sometimes reaching for
-> the MCP tool. Remaining actions live in Outstanding item 1.
+> Status 2026-07-12: FULLY RESOLVED. MCP dispatch verified end to end (run
+> 29156307002). Routine prompt updated, PAT 16554137 revoked, Apps Script
+> doPost replaced with dedupe + validation version. All outstanding Jasmin
+> actions done. See Outstanding item 1 for remaining Sheet cleanup.
 
 Apps Script URL (deployed under jasminaziz1@gmail.com, matches the workflow
 file):
