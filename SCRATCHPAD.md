@@ -123,6 +123,15 @@ new maskable-safe padded variant (see below).
   unverifiable locally (no full Xcode install on this Mac, so no simulator
   testing). Branding the status bar is a real v2 idea if the safe-area work
   gets done properly and tested on-device first.
+- **Second related regression, same report**: Jasmin also saw white flashes
+  (against the brand cream/cobalt) on horizontal scroll bounce, "didn't feel
+  fixed on the screen". Root cause: `<html>` had no background-color set —
+  only `<body>` did (`bg-background`). iOS Safari's elastic overscroll
+  reveals the `<html>` background in the bounce region, not `<body>`'s, so
+  it defaulted to white. Fix: added `@apply bg-background` to the `html`
+  selector in `src/index.css`. This is a page-wide fix (not PWA/iOS-specific
+  code), so it also corrects the same white-flash bounce in a normal mobile
+  Safari tab, not just the installed app.
 
 ### 2026-07-04 (security audit + code quality review)
 

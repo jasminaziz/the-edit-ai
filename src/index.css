@@ -74,6 +74,10 @@
     padding: 0;
   }
 
+  html {
+    @apply bg-background;
+  }
+
   body {
     @apply bg-background text-foreground font-body;
   }
