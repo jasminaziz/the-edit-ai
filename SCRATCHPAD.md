@@ -95,10 +95,8 @@ new maskable-safe padded variant (see below).
   background_color `#FAF8F4`, display standalone), no runtime caching rules
   (offline caching for Sheets data stays explicitly out of scope).
 - `index.html`: added `theme-color`, `apple-mobile-web-app-capable`,
-  `apple-mobile-web-app-status-bar-style` (`black-translucent`, so the
-  status bar shows app content instead of generic grey), and
-  `apple-mobile-web-app-title` ("The Edit"). Existing favicon/apple-touch-icon
-  links untouched.
+  `apple-mobile-web-app-status-bar-style`, and `apple-mobile-web-app-title`
+  ("The Edit"). Existing favicon/apple-touch-icon links untouched.
 - Generated `public/favicon-512-maskable.png`: same artwork as
   `favicon-512.png`, padded (scaled to 74%, centred on the same cobalt
   background) so it survives Android's circular maskable-icon crop. No
@@ -113,6 +111,18 @@ new maskable-safe padded variant (see below).
 - Verify after deploy: PWA install behaviour on an iPhone (Safari share
   sheet → Add to Home Screen), not just local build — manifest/service
   worker need confirming against the live `vercel.json` SPA rewrite.
+- **Live regression found and fixed same day**: shipped with
+  `status-bar-style: black-translucent` (site-design-check's suggestion to
+  brand the one native iOS chrome element). Jasmin reported the header
+  visually detaching from the top of the screen on scroll in the installed
+  home-screen app. Root cause: the fixed nav in `Layout.tsx` has no
+  `safe-area-inset-top` handling and the viewport meta has no
+  `viewport-fit=cover`, so content draws under the status bar in standalone
+  mode. Reverted to `default` (see `tasks/lessons.md`) rather than build out
+  safe-area CSS — that's real component work, out of scaffold scope, and
+  unverifiable locally (no full Xcode install on this Mac, so no simulator
+  testing). Branding the status bar is a real v2 idea if the safe-area work
+  gets done properly and tested on-device first.
 
 ### 2026-07-04 (security audit + code quality review)
 

@@ -109,6 +109,21 @@ Session corrections and rules built up over time. Add entries; do not delete his
   than re-raise it. The empty Lovable-era `tools`/`whats_new` tables in the
   same project ARE dead weight and can go.
 
+- **`apple-mobile-web-app-status-bar-style: black-translucent` broke the
+  mobile header (2026-08-05).** Set as part of the PWA scaffold on
+  site-design-check's suggestion (branding the status bar with cobalt
+  instead of leaving it generic grey). Confirmed live regression in the
+  installed home-screen app: the fixed nav in `Layout.tsx` has no
+  `safe-area-inset-top` handling and `index.html`'s viewport meta has no
+  `viewport-fit=cover`, so content draws under the status bar and the header
+  visually detaches from the top of the screen on scroll. Reverted to
+  `default`. `black-translucent` is only safe to use if the fixed nav gets
+  proper safe-area CSS (`viewport-fit=cover` + `padding-top:
+  env(safe-area-inset-top)` on the nav, adjusted `<main>` offset) at the
+  same time — don't re-apply it without that work, and verify on an actual
+  device or simulator first (no full Xcode install on this Mac as at
+  2026-08-05, so no local simulator testing available).
+
 - **The Routines sandbox proxy requires repos to be explicitly connected
   (2026-07-03).** Even with a valid PAT, the Routine's GitHub API dispatch
   call returns HTTP 403 "GitHub access to this repository is not enabled for
