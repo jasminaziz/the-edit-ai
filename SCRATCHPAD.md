@@ -8,23 +8,18 @@ Cowork folder: None
 
 ---
 
-## Priority queue (as at 2026-07-03)
+## Priority queue (as at 2026-08-05)
 
-1. **Fix the stalled whats_new automation** — last write 23 Jun. Two blockers
-   found and partially resolved (2026-07-03 second session):
-   - **PAT confirmed expired**: Routine transcript shows HTTP 403 "Resource not
-     accessible by integration" on the dispatch call; original 7-day token lapsed
-     ~23 Jun. Action: create a new fine-grained PAT (jasminaziz/the-edit-ai only,
-     Actions: read and write, 366-day expiry) and paste into the Routine's
-     `Authorization: Bearer` line. (WHATS_NEW_PAT repo secret deleted — vestigial.)
-   - **Proxy blocker**: the Routine sandbox now routes GitHub API calls through a
-     proxy that requires the repo to be connected via "add_repo". Jasmin connected
-     jasminaziz/the-edit-ai to the session — this is now resolved.
-   - **Watchdog shipped**: `.github/workflows/whats-new-watchdog.yml` (commit
-     5d6e1e7) runs daily at 12:00 UTC on github.token and fails loudly if
-     append-whats-new hasn't succeeded in 48h. Test run confirmed it correctly
-     detects the current stall.
-   - **Next action (Jasmin)**: create replacement PAT → paste into Routine → re-run.
+1. **whats_new automation — fixed 2026-07-11** (separate session, merged into
+   this repo 2026-08-05 via rebase, commit 54fce74). Root cause was never the
+   PAT: the Routine sandbox proxy strips Authorization headers on
+   api.github.com, so curl+PAT dispatch was deterministically broken.
+   Verified fix: dispatch via GitHub MCP `actions_run_trigger` instead. Full
+   detail in `.claude/CLAUDE.md` Outstanding item 1. Remaining for Jasmin:
+   (a) rewrite Routine prompt Step 5 to use the MCP tool, delete the PAT from
+   the prompt, (b) revoke PAT 16554137, (c) paste dedupe + shared-secret code
+   into the Apps Script, (d) manually delete the duplicate 3/6 Jul batches
+   from the Sheet.
 2. Create the localhost-scoped Google Sheets API key and put it in .env.local
    (until then local dev renders but data 403s)
 3. Update the Make copy in the my_stack tab (and homepage strip) — it still
@@ -69,10 +64,21 @@ Cowork folder: None
    - Observability: Submit form data loss (already queue item 7/Q1, still
      unfixed); Subscribe/footer capture show a generic error on failure with
      no logging anywhere
+9. **iOS status bar branding (2026-08-05, deferred)** — `black-translucent`
+   shipped then reverted same day after it broke the mobile header (see
+   `tasks/lessons.md`). Worth revisiting only alongside proper safe-area CSS
+   on the fixed nav in `Layout.tsx` (`viewport-fit=cover` + `padding-top:
+   env(safe-area-inset-top)`) and on-device or simulator verification before
+   shipping — no full Xcode install on this Mac as at 2026-08-05, so no
+   local iOS Simulator testing available until that's set up.
 
 Done since the 2026-06-16 queue: my_stack live (21 rows), design_kit live
 (45 rows), nav/footer IA restructure, homepage attribution, font-display swap,
-PWA install scaffold (manifest + iOS meta tags, 2026-08-05).
+whats_new automation fixed via MCP dispatch (2026-07-11), PWA install
+scaffold shipped and live-tested (2026-08-05) — manifest, iOS meta tags,
+maskable icon, plus two same-day regression fixes confirmed on device
+(status bar reverted to default, html background-color set to stop white
+flashes on iOS elastic scroll bounce).
 
 ## Blocked
 
