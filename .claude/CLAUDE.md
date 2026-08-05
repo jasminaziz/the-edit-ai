@@ -157,7 +157,10 @@ Claude featured), Design Kit (45 rows, 6 phases), Learning, Subscribe, Build
 Your Own Stack, SEO/AEO, security audit. Homepage attribution live ("Curated
 by Jasmin Aziz | Strategic Communications Consultant"). Nav/footer IA
 restructured (Design, AI News, Substack links). font-display: swap shipped for
-both Fontshare and Google Fonts.
+both Fontshare and Google Fonts. PWA install scaffold shipped (2026-08-05):
+`vite-plugin-pwa` + manifest + iOS meta tags, reuses the existing locked
+favicon set plus one new maskable-safe icon variant. Offline caching for
+Sheets data is explicitly not implemented.
 
 Outstanding:
 1. whats_new automation — root cause found 2026-07-11: the Routine sandbox
@@ -201,6 +204,16 @@ Outstanding:
    (the cookie banner records a choice nothing reads), Apps Script shared
    secret, subscribers insert constraints, dependency bumps via bun,
    Lovable dead-code sweep.
+10. Gates audit follow-ups (2026-08-05) — full detail in
+    `reports/site-gates-2026-08-05.md` and SCRATCHPAD queue item 8. All four
+    gates (accessibility, performance, SEO, observability) fail, none caused
+    by that session's PWA scaffold. Named here because it's a recurrence:
+    **`Tools.tsx:303` canonicalises `/tools` to a dead `/toolkit` route** —
+    the site's own SEO guide already documents this exact trap once before.
+    Also queued: five AA contrast failures, heading-level skips, two `<h1>`s
+    on the homepage, unlabelled Subscribe form fields, `matter-js` shipping
+    on every route, missing meta on `/submit` and `/stack`, no error logging
+    anywhere in the codebase.
 
 Blocked: conversion layer prompts drafted, waiting on email confirmation for
 hello@theeditai.co.uk (not verifiable from the repo; the live footer currently

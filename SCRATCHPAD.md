@@ -50,9 +50,29 @@ Cowork folder: None
      .lovable/plan.md, src/vercel.json, stale supabase/config.toml, bun.lockb +
      package-lock.json; lazy-load matter-js/HomeGravity (988K single chunk,
      feeds queue item 5)
+8. **Gates audit follow-ups (2026-08-05)** — full detail in
+   `reports/site-gates-2026-08-05.md`. All four gates failed, all pre-existing
+   site debt unrelated to that session's PWA scaffold. In rough order:
+   - **`/tools` canonicalises to a dead `/toolkit` route** (`Tools.tsx:303`) —
+     new finding, not previously logged; the site's own SEO guide already
+     names this exact trap once before, so it's recurred
+   - Accessibility: five colour pairs fail AA contrast (worst: nav text and
+     StackBar text on periwinkle, 2.47:1 and 2.75:1), DesignKit/Learning skip
+     h1→h3 with no h2, homepage has two `<h1>`s, Subscribe form fields have no
+     `<label>` (placeholder-only)
+   - Performance: `matter-js` ships on every route despite being homepage-hero
+     only (feeds queue item 5's lazy-load note); no `preconnect` for Fontshare
+     despite the site's own guide naming it as the cause of the 64/100 mobile
+     score (still unverified since font-display:swap shipped, see queue item 5)
+   - SEO: `/submit` and `/stack` ship no meta at all; every non-home page
+     reuses the homepage's OG/Twitter card (`SEO.tsx` never overrides them)
+   - Observability: Submit form data loss (already queue item 7/Q1, still
+     unfixed); Subscribe/footer capture show a generic error on failure with
+     no logging anywhere
 
 Done since the 2026-06-16 queue: my_stack live (21 rows), design_kit live
-(45 rows), nav/footer IA restructure, homepage attribution, font-display swap.
+(45 rows), nav/footer IA restructure, homepage attribution, font-display swap,
+PWA install scaffold (manifest + iOS meta tags, 2026-08-05).
 
 ## Blocked
 
@@ -62,6 +82,37 @@ Done since the 2026-06-16 queue: my_stack live (21 rows), design_kit live
 ---
 
 ## Session notes
+
+### 2026-08-05 (PWA install scaffold)
+
+Scaffold only: manifest and plugin config for an installable iPhone PWA.
+Existing locked favicon set reused as-is, no icons regenerated except one
+new maskable-safe padded variant (see below).
+
+- `vite-plugin-pwa` installed via bun, configured in `vite.config.ts`:
+  `registerType: autoUpdate`, manifest (name/short_name/description reused
+  verbatim from existing `index.html` meta, theme_color `#2D35C9`,
+  background_color `#FAF8F4`, display standalone), no runtime caching rules
+  (offline caching for Sheets data stays explicitly out of scope).
+- `index.html`: added `theme-color`, `apple-mobile-web-app-capable`,
+  `apple-mobile-web-app-status-bar-style` (`black-translucent`, so the
+  status bar shows app content instead of generic grey), and
+  `apple-mobile-web-app-title` ("The Edit"). Existing favicon/apple-touch-icon
+  links untouched.
+- Generated `public/favicon-512-maskable.png`: same artwork as
+  `favicon-512.png`, padded (scaled to 74%, centred on the same cobalt
+  background) so it survives Android's circular maskable-icon crop. No
+  redesign, added to the manifest as a third icon entry (`purpose: maskable`).
+- Ran `site-design-check`: verdict Faithful, no hard drift. Ran `site-gates`:
+  all four gates failed, but confirmed clean on the scaffold itself — every
+  failure is pre-existing site debt (logged as queue item 8 above), except
+  one real new cost this session added: the service worker precaches the
+  full ~1MB main JS chunk in the background after first load. Non-blocking
+  (deferred past load, doesn't touch LCP/FCP) but real added weight, worth
+  remembering if bundle size work happens later.
+- Verify after deploy: PWA install behaviour on an iPhone (Safari share
+  sheet → Add to Home Screen), not just local build — manifest/service
+  worker need confirming against the live `vercel.json` SPA rewrite.
 
 ### 2026-07-04 (security audit + code quality review)
 
