@@ -123,6 +123,48 @@ Session corrections and rules built up over time. Add entries; do not delete his
   same time — don't re-apply it without that work, and verify on an actual
   device or simulator first (no full Xcode install on this Mac as at
   2026-08-05, so no local simulator testing available).
+  **Superseded 2026-08-11 — this was not the (whole) cause, see below.**
+
+- **Mobile header "detaching" on scroll took four attempts to actually fix
+  (2026-08-05 → 2026-08-11).** Three targeted fixes each addressed a real,
+  separate, confirmed-live bug — but the header kept detaching after every
+  one, because none of them were the actual root cause:
+  1. `status-bar-style: black-translucent` → `default` (see entry above) —
+     fixed content drawing under the status bar, didn't fix the detach.
+  2. `<html>` had no `background-color` → added it — fixed white flashes on
+     bounce, didn't fix the detach.
+  3. `transform: translateZ(0)` / `will-change: transform` on the fixed nav
+     (GPU compositing hint) — the standard fix for iOS "fixed element jank",
+     didn't fix the detach either.
+
+  The actual cause, found only after researching current sources rather
+  than guessing further: this is a well-documented, long-standing WebKit
+  bug where `position: fixed` elements genuinely move *with* the document
+  during iOS's rubber-band bounce — no CSS compositing hint changes that.
+  `overscroll-behavior: none` (the standard desktop fix) is also a dead
+  end here: it doesn't work inside WKWebView, which is what an installed
+  home-screen PWA runs on. The only reliable fix is architectural: stop
+  `<body>`/`<html>` from scrolling at all and move scrolling to a
+  dedicated inner pane, so fixed elements are never part of a bouncing
+  scroll context in the first place. Implemented by scoping `h-dvh
+  overflow-hidden` to `Layout.tsx`'s own wrapper (not global `html`/`body`
+  CSS — the `/stack` route bypasses `Layout` entirely and needed to stay
+  on normal document scroll). Nav no longer needs to be `position: fixed`
+  at all once this is in place — it's just a normal flex item above the
+  new `#app-scroll` scrollable div.
+
+  **Anything that reads `window.scrollY` / listens on `window` for
+  `scroll` no longer fires** once this is in place — scrolling happens on
+  `document.getElementById('app-scroll')` instead. Four call sites needed
+  migrating (`Layout.tsx` route-change reset, `DragHint.tsx`,
+  `StackBar.tsx`, `Tools.tsx`'s sticky-header state) — check for this
+  pattern before adding any new scroll-position-dependent feature.
+
+  Lesson for next time this class of bug shows up: don't keep guessing
+  narrower CSS patches after the first "should be it" fix doesn't hold on
+  a re-test — search current sources for the specific symptom early, this
+  is a decade-old, well-catalogued WebKit issue with a known fix pattern,
+  not something worth rediscovering by trial and error.
 
 - **The Routines sandbox proxy requires repos to be explicitly connected
   (2026-07-03).** Even with a valid PAT, the Routine's GitHub API dispatch

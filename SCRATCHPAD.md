@@ -139,6 +139,32 @@ new maskable-safe padded variant (see below).
   code), so it also corrects the same white-flash bounce in a normal mobile
   Safari tab, not just the installed app.
 
+### 2026-08-11 (mobile header detach — actual root cause found and fixed)
+
+Continuation of 2026-08-05's saga. After the status-bar and html-background
+fixes, Jasmin reported the header was still detaching on scroll. A third
+attempt (GPU compositing hint — `transform: translateZ(0)` on the nav) also
+didn't fix it. Stopped guessing narrower CSS patches and researched current
+sources instead: this is a well-documented WebKit bug where `position:
+fixed` elements move *with* the document during iOS rubber-band bounce, and
+`overscroll-behavior: none` (the usual fix) doesn't work inside WKWebView
+(what installed PWAs run on). Full writeup in `tasks/lessons.md`.
+
+Real fix: locked `<body>`/`<html>` from scrolling at all (scoped to
+`Layout.tsx`'s own wrapper — `/stack` bypasses `Layout` and was left on
+normal document scroll), moved scrolling to a new inner `#app-scroll` div.
+Nav no longer needs `position: fixed` at all. Migrated 4 window-scroll
+dependents (`Layout.tsx`, `DragHint.tsx`, `StackBar.tsx`, `Tools.tsx`) to
+track `#app-scroll` instead, each with a `window` fallback. Verified on
+desktop via the dev preview (created `.claude/launch.json`, didn't exist
+before): `document.body.scrollHeight` now exactly equals
+`window.innerHeight` (zero document-level scroll), nav stays pinned through
+a programmatic scroll, StackBar's footer-offset tracking still works.
+Commits `c377653` (fix) and `ce39fd5` (launch.json). Still can't verify the
+actual iOS bounce behaviour without a device — no full Xcode install on
+this Mac, still queue item 9's blocker. **Needs Jasmin's on-device
+confirmation before this can be marked closed.**
+
 ### 2026-07-04 (security audit + code quality review)
 
 Findings-only audit, no code changed. Report: `reports/2026-07-04-security-audit.md`.
