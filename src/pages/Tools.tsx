@@ -120,10 +120,14 @@ const Tools = () => {
   }, []);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    // Scrolling happens inside Layout's #app-scroll pane, not the window
+    // (body scroll is locked to stop iOS Safari's fixed-header bounce bug).
+    const scrollEl = document.getElementById("app-scroll");
+    const onScroll = () => setScrolled((scrollEl ? scrollEl.scrollTop : window.scrollY) > 8);
     onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const target: EventTarget = scrollEl ?? window;
+    target.addEventListener("scroll", onScroll, { passive: true });
+    return () => target.removeEventListener("scroll", onScroll);
   }, []);
 
   // Merge ?stack= slugs into localStorage stack once tools data is loaded.

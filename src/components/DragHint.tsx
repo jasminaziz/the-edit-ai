@@ -23,18 +23,23 @@ export function DragHint() {
 
   useEffect(() => {
     const showTimer = window.setTimeout(() => setVisible(true), 2000);
+    // Scrolling happens inside Layout's #app-scroll pane, not the window
+    // (body scroll is locked to stop iOS Safari's fixed-header bounce bug).
+    const scrollEl = document.getElementById("app-scroll");
     const onScroll = () => {
-      if (window.scrollY > 8) {
+      const scrollTop = scrollEl ? scrollEl.scrollTop : window.scrollY;
+      if (scrollTop > 8) {
         setHasScrolled(true);
         setVisible(false);
         window.clearTimeout(showTimer);
       }
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
+    const target: EventTarget = scrollEl ?? window;
+    target.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.clearTimeout(showTimer);
-      window.removeEventListener("scroll", onScroll);
+      target.removeEventListener("scroll", onScroll);
     };
   }, []);
 

@@ -38,10 +38,14 @@ export const StackBar = ({ stack, onRemove }: StackBarProps) => {
       setFooterOffset(overlap > 0 ? overlap : 0);
     };
     update();
-    window.addEventListener("scroll", update, { passive: true });
+    // Scrolling happens inside Layout's #app-scroll pane, not the window
+    // (body scroll is locked to stop iOS Safari's fixed-header bounce bug).
+    const scrollEl = document.getElementById("app-scroll");
+    const scrollTarget: EventTarget = scrollEl ?? window;
+    scrollTarget.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
     return () => {
-      window.removeEventListener("scroll", update);
+      scrollTarget.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };
   }, []);

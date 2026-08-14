@@ -28,12 +28,13 @@ export function Layout({ children }: { children: ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const navRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const navContainerRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [pillStyle, setPillStyle] = useState<{ left: number; width: number; visible: boolean }>({ left: 0, width: 0, visible: false });
 
   // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
-    window.scrollTo(0, 0);
+    scrollRef.current?.scrollTo(0, 0);
   }, [location.pathname]);
 
   const updatePill = useCallback(() => {
@@ -72,15 +73,10 @@ export function Layout({ children }: { children: ReactNode }) {
   const pillText = "text-primary";
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="h-dvh flex flex-col overflow-hidden">
       <nav
-        className="fixed top-0 left-0 right-0 z-50"
-        style={{
-          backgroundColor: navBg,
-          transform: "translateZ(0)",
-          WebkitTransform: "translateZ(0)",
-          willChange: "transform",
-        }}
+        className="shrink-0 z-50"
+        style={{ backgroundColor: navBg }}
       >
         <div className="max-w-[1280px] mx-auto px-4 sm:px-12">
           <div className="flex items-center justify-between h-14 sm:h-16">
@@ -246,7 +242,13 @@ export function Layout({ children }: { children: ReactNode }) {
         </div>
       </nav>
 
-      <main className="flex-1 pt-14 sm:pt-16">{children}</main>
+      <div
+        id="app-scroll"
+        ref={scrollRef}
+        className="flex-1 min-h-0 overflow-y-auto overscroll-contain flex flex-col"
+        style={{ WebkitOverflowScrolling: "touch" }}
+      >
+      <main className="flex-1">{children}</main>
 
       <footer className="px-4 sm:px-12" style={{ backgroundColor: "#1A1510" }}>
         <div className="max-w-[1280px] mx-auto w-full">
@@ -327,6 +329,7 @@ export function Layout({ children }: { children: ReactNode }) {
 
         </div>
       </footer>
+      </div>
     </div>
   );
 }
