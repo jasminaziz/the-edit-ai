@@ -201,9 +201,17 @@ and item 11 stops being "not urgent".
 Working tree at wrap (branch `overhaul/sector-axis`, nothing committed by
 the session): modified `SEO.tsx`, `SCRATCHPAD.md`, handover report; new
 `src/test/seo.test.tsx`. Commit is Jasmin's call.
+**Since committed** (later session, same day): `SEO.tsx` and its test as
+`869dc5f`, docs as `be6d3bc`. The Mac check the session asked for was run
+first against `bun.lock`: `tsc --noEmit` clean, 24/24 pass.
 
-**Remaining in B4:** the `/submit` and `/stack` meta half, blocked on two
-approved strings from Jasmin (title + description for each).
+**Remaining in B4:** the `/submit` and `/stack` meta half, blocked on **four**
+approved strings from Jasmin: a title and a description for each of the two
+pages. (An earlier note here said two, which contradicted its own
+parenthetical; corrected 2026-08-22.) Counting the two C4 CTA strings the
+ToolCard session needs, **six strings in total** are waiting on Jasmin before
+B3 and B4b can run. The new-thread prompt states the same six; use it as
+written.
 
 ### 2026-08-22 (evening — B2 verification, no code changed)
 
