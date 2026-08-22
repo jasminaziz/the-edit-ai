@@ -56,10 +56,12 @@ Jasmin's judgement and are NEVER written by any automation or code session.
   through bun.
 - Styling: Tailwind
 - Data layer: Google Sheets (all content lives here)
-- Subscriber capture: Supabase `subscribers` table — legacy, write-only,
-  nothing reads or sends from it. The capture mechanism is moving to a
-  gated Substack post (see Conversion below); do not build on the Supabase
-  table.
+- Subscriber capture: **none in this repo.** The Supabase `subscribers`
+  write path was removed on the branch (2026-08-22). No file in `src/`
+  imports the Supabase client or calls `.insert()`. The table still exists
+  in the Supabase project but is orphaned: nothing writes to it, nothing
+  reads it. Capture is a gated Substack post (see Conversion). Do not
+  rebuild against the Supabase table.
 - SEO: react-helmet-async
 - Analytics: GA4 (G-QHYYEWC2C0)
 
@@ -125,9 +127,13 @@ code is non-www. Do not add www. The Sheets API referer header is the
 exception and uses `https://www.theeditai.co.uk/`.
 
 Routes: `/`, `/tools`, `/stack` (visitor's own Build Your Own Stack page),
-`/my-stack`, `/design-kit`, `/learning`, `/ai-news`, `/subscribe`,
-`/submit`, `/privacy-policy`, `/terms-of-service`, `/cookie-policy`. `/whats-new` redirects to
-`/ai-news`. `/policy-template` is being added on the branch.
+`/my-stack`, `/design-kit`, `/learning`, `/ai-news`, `/policy-template`,
+`/submit`, `/privacy-policy`, `/terms-of-service`, `/cookie-policy`.
+
+Two redirects: `/whats-new` to `/ai-news`, and `/subscribe` to
+`/policy-template` (both `Navigate ... replace`). `/subscribe` no longer
+renders. Nothing in the UI links to it; the redirect is kept only to catch
+old, indexed and external links, so do not delete it.
 
 Fixed on the branch: the `/tools` canonical, previously pointing at a dead
 `/toolkit` route. New routes need only a React Router entry —
@@ -142,6 +148,11 @@ the consultancy. The `/policy-template` page presents the template and
 links the Substack subscribe flow. No email infrastructure is built or
 maintained in this repo.
 
+Live in code as at 2026-08-22: the footer block and both nav links (desktop
+and mobile) point at `/policy-template`, all three labelled "Get the
+template". The page's CTA links out to `SUBSTACK_SUBSCRIBE_URL`. Keep the
+three labels identical to each other and to the page they land on.
+
 ## Codebase conventions
 
 `src/utils/slugify.ts` is the single source of truth for URL encoding.
@@ -150,6 +161,11 @@ construction only. Never duplicate this logic elsewhere.
 
 `stripEmoji` in `src/lib/sheets.ts` applies to all text fields parsed from
 the Sheet. Preserve it in any fetcher change.
+
+Dead on disk, deliberately: `src/pages/Subscribe.tsx` is unimported and
+unreachable since `/subscribe` became a redirect. It is retained for the
+dead-code sweep in SCRATCHPAD queue item 7. Do not "fix" it by wiring it
+back into the router.
 
 Badge states: only IN MY STACK renders (forest green `#2D6A4F`,
 `status === "in_stack"`, ToolCard.tsx). `on_radar` is live data and still in
@@ -199,6 +215,10 @@ categories. Branch `overhaul/sector-axis`: header-based `fetchTools` with
 the seven axis fields (vitest-verified against fixtures), pushed to remote.
 Sheet: awaiting G1:M1 headers (safe to add any time; main's fetcher ignores
 them). Localhost API key: not yet created.
+
+Placed on the branch 2026-08-22 (placement session): this file, the copy
+pack (homepage, meta/OG, About panel, Tools subheading), the `/tools`
+canonical fix, the capture swap, and `/policy-template` with its redirect.
 
 Remaining before relaunch, in order: ToolCard + filters session (DPIA chip,
 jobs chips with contains-matching, three sector toggles, last_checked
