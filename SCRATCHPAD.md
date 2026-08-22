@@ -212,6 +212,12 @@ artwork for the re-point, the ToolCard and filters session (DPIA chip, jobs
 chips with contains-matching, three sector toggles, `last_checked` display),
 and the October content week.
 
+**Next step:** the ToolCard and filters session. Nothing else on the branch
+needs doing first. The three pre-October actions from the previous session
+still stand (localhost API key on port 8080, Sheet headers G-M, row triage),
+and the localhost key is the one that unblocks real local verification: every
+route in this session was checked against 403ing data.
+
 ### 2026-08-22 (overhaul data layer — branch overhaul/sector-axis)
 
 **Branch: overhaul/sector-axis** — all work is on this branch. Nothing has

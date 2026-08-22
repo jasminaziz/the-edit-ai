@@ -207,3 +207,49 @@ Session corrections and rules built up over time. Add entries; do not delete his
   proceeds. Note: "Resource not accessible by integration" is GitHub's error
   for BOTH an expired PAT AND insufficient permissions — check expiry first,
   then permissions.
+
+- **Verify a DOM finding with a screenshot before reporting it as a bug
+  (2026-08-22).** The browser `javascript_tool` eval context reported
+  `[data-rh]` 0, zero canonical tags and zero JSON-LD on pages that were
+  rendering them correctly. The tell was in the same payload: it also
+  reported `window.innerWidth` as 0 while the page was visibly rendering at
+  800px, and reported a nav link as absent that a screenshot showed present.
+  A DOM query returning zeros from a context that misreports the viewport is
+  not evidence. Screenshot first, or confirm via a second signal (the browser
+  tab title updates on real navigation), before writing a serious finding into
+  a permanent queue item.
+
+- **Do not infer a supply-chain problem from a registry mirror URL
+  (2026-08-22).** `bun.lock` resolving `react-helmet-async@3.0.0` from
+  `europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache` was read as a
+  fabricated package because "3.0.0 isn't on public npm". It is a genuine
+  upstream release from `staylor/react-helmet-async`, and the URL is a mirror,
+  not an origin. Check the installed package's actual contents and upstream
+  releases before calling a dependency suspect. The real risk in a private
+  mirror entry is availability (a clean `--frozen-lockfile` install fails if
+  the mirror dies), not authenticity.
+
+- **A guard clause placed above the hero can blank an entire page
+  (2026-08-22).** `Subscribe.tsx` opened with
+  `if (!SUPABASE_URL || !SUPABASE_KEY) return null;` — intended to hide a
+  form, but positioned above the component's whole return, so any environment
+  missing those vars rendered the page as nothing. When removing a feature,
+  check for guards that were scoped to that feature but placed at component
+  top level.
+
+- **Adding a link before its route exists creates a site-wide dead link
+  (2026-08-22).** A footer CTA pointing at `/policy-template` shipped one
+  commit before the route did, and the footer renders on every page, so for
+  one commit every page carried a link into the `NotFound` catch-all. When a
+  step sequence separates a link from its destination, say so at the time and
+  confirm the route lands in the same session.
+
+- **Redirect an emptied page rather than leaving two near-duplicates
+  (2026-08-22).** `/subscribe` and `/policy-template` briefly both existed
+  with near-identical copy, near-identical meta descriptions and distinct
+  canonicals — a thin-duplicate signal to search engines. Resolved with
+  `<Route path="/subscribe" element={<Navigate to="/policy-template" replace />} />`,
+  matching the existing `/whats-new` → `/ai-news` pattern. Keep the redirect
+  even after removing every in-app link to it: it still catches indexed and
+  external links. Use `replace` so the dead URL does not accumulate history
+  entries.
