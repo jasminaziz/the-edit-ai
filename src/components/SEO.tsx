@@ -13,6 +13,11 @@ export const SEO = ({ title, description, canonical, googleVerification, jsonLd 
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     {googleVerification && (
       <meta name="google-site-verification" content={googleVerification} />
     )}
