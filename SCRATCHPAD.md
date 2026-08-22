@@ -93,6 +93,16 @@ Cowork folder: None
     if that mirror stops serving, a clean `bun install --frozen-lockfile`
     fails, including on Vercel. Not urgent. Re-resolve against the public
     registry at some later point.
+    **Escalation closed 2026-08-22.** The late-evening session saw 403s from
+    the mirror on several packages and flagged that its own sandbox egress
+    proxy might be the cause. Reproduced from the Mac on a normal network:
+    all four named tarballs serve, `react-helmet-async@3.0.0` (25,690b),
+    `gopd@1.2.0` (4,584b), `math-intrinsics@1.1.0` (6,355b) and
+    `call-bind-apply-helpers@1.0.2` (6,067b), each HTTP 200 following the
+    307 the registry issues. The sandbox proxy was the 403. A cold install
+    does **not** fail today, so no lockfile re-resolve is needed before
+    relaunch. Item stays as originally filed: an availability risk for
+    later, not urgent.
 
 12. **Live site redirects non-www to www (2026-08-22, new finding).**
     Opening `https://theeditai.co.uk/` in Chrome lands on
