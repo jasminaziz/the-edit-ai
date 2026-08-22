@@ -345,6 +345,19 @@ columns G-M empty. Nothing has passed any check yet. The copy only becomes
 true after the October triage. **If triage slips, this must not reach main.**
 Either the triage lands or the caption reverts.
 
+**RESOLVED 2026-08-22 (night), commit `f514b0a`.** Fixed the number, not the
+words, so the approved caption is untouched and no copy was authored. The
+counter now renders `tools.filter(t => t.last_checked.trim() !== "").length`
+instead of `tools.length`. `last_checked` is stamped when a row's fact fields
+are verified, so it is the marker for a row that has been through the checks.
+Reads 0 while columns G-M are empty and rises on its own as the October
+triage fills them, so no code change is needed at triage. It also fails safe:
+if triage slips the homepage shows 0 rather than a false 66. Known
+imprecision: `last_checked` marks a row as checked, not as passed, so a
+deliberate "judged, not recommended" row would be counted. No field
+distinguishes them today; the overcount is bounded and far smaller than
+counting every untriaged row. **No longer a merge blocker.**
+
 **Still open, explicitly not this session:** per-page OG in `SEO.tsx` (it emits
 no OG or Twitter tags at all today, so social cards fall back to the static
 `index.html` block sitewide), `/submit` and `/stack` meta, new `og-image.png`

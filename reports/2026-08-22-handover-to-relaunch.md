@@ -255,7 +255,7 @@ a site that does not match.
 
 | # | Task | Owner | Status |
 |---|---|---|---|
-| F1 | **The counter blocker.** The homepage now reads "Passed the checks" over "tools that passed the checks", above `tools.length`. With 66 untriaged rows and empty axis columns that is untrue. A3 must be done before the merge, or the counter must change. This is the single item that would embarrass publicly. | J | Blocking |
+| F1 | ~~**The counter blocker.**~~ **Closed 22 Aug, commit `f514b0a`.** The counter was reading `tools.length` under "tools that passed the checks" with 66 untriaged rows. Fixed by changing the number, not the approved caption: it now counts rows with a non-empty `last_checked`, the field stamped when a row's facts are verified. Reads 0 until the October triage fills columns G-M, then rises on its own with no further code change, and fails safe if triage slips. Caveat: `last_checked` marks checked, not passed, so a "judged, not recommended" row would count; no field distinguishes them today. **No longer blocking the merge, and A3 no longer gates it.** | J+S | Closed |
 | F2 | **Relaunch check.** The live site reads sector-first on every surface reachable in two clicks. Every visible row has its axis fields. The gate delivers the template end to end from a clean browser. Rows without completed fields stay hidden, so the site relaunches smaller and grows back verified. | J+S | Not started |
 | F3 | **Merge to `main`.** Only with Jasmin's explicit sign-off, and only when she has a clear day afterwards to watch the deploy. Vercel builds silently: a failed build serves the last good deploy, so check the Deployments tab if nothing changes within five minutes. | J | Blocked on C3, F1 |
 | F4 | Then D1 to D5, in any order. | J | Blocked on F3 |
