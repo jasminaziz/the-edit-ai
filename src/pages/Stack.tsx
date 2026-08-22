@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchTools, type Tool } from "@/lib/sheets";
 import { slugifyToolName } from "@/utils/slugify";
+import { SEO } from "@/components/SEO";
 
 function escapeHtml(s: string): string {
   return s
@@ -129,6 +130,11 @@ export default function Stack() {
 
   return (
     <div style={{ backgroundColor: "#FAF8F4", minHeight: "100vh" }}>
+      <SEO
+        title="Build Your AI Stack | The Edit"
+        description="Pick the tools that fit your organisation and build your own AI stack. Every tool checked for data location, training policy and nonprofit pricing first."
+        canonical="https://theeditai.co.uk/stack"
+      />
       {/* Top bar */}
       <header
         style={{

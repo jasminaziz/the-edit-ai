@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CobaltZone } from "@/components/CobaltZone";
 import { FloatingArrow } from "@/components/Illustrations";
+import { SEO } from "@/components/SEO";
 
 const Submit = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -24,6 +25,11 @@ const Submit = () => {
 
   return (
     <>
+      <SEO
+        title="Submit a Tool | The Edit"
+        description="Suggest an AI tool for The Edit. Everything goes through the same checks: data, training policy, nonprofit pricing and the trustee test. No sponsored listings."
+        canonical="https://theeditai.co.uk/submit"
+      />
       <CobaltZone
         heading="Submit a Tool"
         subheading="Spotted something worth adding to the stack? Tell me about it."
