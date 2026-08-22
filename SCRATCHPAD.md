@@ -115,16 +115,16 @@ Cowork folder: None
     (currently a locked decision). No session should change canonicals
     before that call.
 
-13. **Helmet tags may go stale on SPA navigation (2026-08-22, one trial,
-    needs a second look).** After a client-side click from `/` to `/tools`
-    on live, `document.title`, the canonical, the description and the
-    JSON-LD all stayed the homepage's, even 9+ seconds after route change.
-    A full load of `/tools` injected the correct per-route values. Crawlers
-    fetch full loads, so ranking impact is limited, but share/copy actions
-    after in-app navigation would carry the wrong canonical and title.
-    Verify with a second measurement before treating as real; if real, it
-    is a live-main behaviour that predates the branch. Relevant to the B4
-    per-page OG session.
+13. **Helmet tags may go stale on SPA navigation — CLOSED 2026-08-22, not
+    reproduced.** Second measurement, fresh Chrome tab on live, timestamped
+    probe snapshots instead of ad hoc reads: on a client-side click from `/`
+    to `/tools`, title, canonical and `[data-rh]` all updated to the correct
+    per-route values within 250ms and held at 1s, 3s and 8s; a second hop
+    `/tools` to `/my-stack` updated within 300ms. Helmet tracks SPA
+    navigation correctly on live. The first trial's staleness was an
+    instrument artifact (the third false measurement of the day, alongside
+    the dev-server helmet zeros and the sandbox mirror 403s). The per-page
+    OG tags added in B4(a) inherit this correct behaviour. Nothing to fix.
 
 Done since the 2026-06-16 queue: my_stack live (21 rows), design_kit live
 (45 rows), nav/footer IA restructure, homepage attribution, font-display swap,
