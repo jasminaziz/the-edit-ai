@@ -62,7 +62,14 @@ Jasmin's judgement and are NEVER written by any automation or code session.
   in the Supabase project but is orphaned: nothing writes to it, nothing
   reads it. Capture is a gated Substack post (see Conversion). Do not
   rebuild against the Supabase table.
-- SEO: react-helmet-async
+- SEO: react-helmet-async. `SEO.tsx` emits per-page title, description,
+  canonical, `og:title`, `og:description`, `og:url`, `twitter:title` and
+  `twitter:description`, all derived from the props each page passes. It
+  deliberately does **not** emit `og:image` or `og:type`: the static block in
+  `index.html` owns those sitewide, and remains the fallback for scrapers
+  that do not run JS. Do not add per-page `og:image` without replacing that
+  split deliberately. Every page must pass title, description and canonical;
+  `/submit` and `/stack` shipped no meta at all until 2026-08-22.
 - Analytics: GA4 (G-QHYYEWC2C0)
 
 ### Branch discipline (until the October 2026 relaunch)
@@ -125,6 +132,15 @@ with the production key and a `https://www.theeditai.co.uk/` referer.
 Canonical base: `https://theeditai.co.uk` (no www). Every canonical in the
 code is non-www. Do not add www. The Sheets API referer header is the
 exception and uses `https://www.theeditai.co.uk/`.
+
+Infrastructure matches this as of 2026-08-22: **Vercel serves the bare
+domain as primary and www 308s to it.** It was the other way round until
+that date, which meant every injected canonical pointed at a host the site
+redirected away from. Do not flip it back. The production Sheets API key's
+referrer list covers **both** `theeditai.co.uk/*` and
+`www.theeditai.co.uk/*`; that is what makes the bare-host primary safe. If
+either host is ever removed from that list, data fetches 403 and the
+directory renders empty.
 
 Routes: `/`, `/tools`, `/stack` (visitor's own Build Your Own Stack page),
 `/my-stack`, `/design-kit`, `/learning`, `/ai-news`, `/policy-template`,
@@ -222,14 +238,19 @@ canonical fix, the capture swap, and `/policy-template` with its redirect.
 
 Remaining before relaunch, in order: ToolCard + filters session (DPIA chip,
 jobs chips with contains-matching, three sector toggles, last_checked
-display); SEO repairs (/submit and /stack meta, per-page OG in SEO.tsx);
+display, plus the two approved C4 CTA strings from the copy pack addendum);
 October content week (axis final-lock, row triage, top-10 field fill and
 verdicts); capture live (template scrub, gated Substack post); merge and
 relaunch check. The full sequence with estimates is the audit, section 7.
 
 Pre-existing debt not in overhaul scope: gates-audit findings (contrast,
-heading skips, matter-js weight), Submit form discarding submissions, GA
-consent mode, dependency bumps. Parked, tracked in SCRATCHPAD.md.
+heading skips, matter-js weight), GA consent mode, dependency bumps. Parked,
+tracked in SCRATCHPAD.md.
+
+Closed 2026-08-22: the Submit form discarded every submission (`handleSubmit`
+only flipped state). The page now offers a mailto link instead. Its form code
+is unreachable but still on disk for the dead-code sweep, alongside
+`Subscribe.tsx` and `StatusBadge.tsx`.
 
 Also parked, SCRATCHPAD queue item 1: the Routine prompt still instructs
 curl dispatch and still contains PAT 16554137 (revoke it, GitHub never sees
