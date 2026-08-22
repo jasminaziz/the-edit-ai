@@ -150,7 +150,33 @@ Pixel values only in Lovable prompts, never vague adjectives.
 - "Your stack" not "my stack" in all visitor-facing copy
 - Verdicts: direct, frank, name the catch, do not bury limitations
 
-## Current state (as at 2026-07-03)
+## Current state (as at 2026-08-22)
+
+**OVERHAUL IN PROGRESS — branch `overhaul/sector-axis`.** The site is being
+repositioned from general marketing/comms to charities, cultural organisations
+and heritage. Full diagnosis and action plan: `reports/2026-08-22-overhaul-audit.html`.
+October admin week (19–23 Oct 2026) is the implementation window. All work
+stays on `overhaul/sector-axis` until then — nothing merges to main, the live
+site is unchanged. Start any session with `git checkout overhaul/sector-axis`.
+
+Data layer done on the branch (2026-08-22):
+- `Tool` interface has seven new sector-axis fields: `jobs` (string[]),
+  `data_location`, `trains_on_input`, `nonprofit_tier`, `dpia_flag`,
+  `trustee_note`, `last_checked`. All default safely to `[]` / `''` while
+  Sheet columns are unpopulated.
+- `fetchTools()` rebuilt to header-based column lookup via exported
+  `parseToolRows()`. Fixed-index reading retired.
+- 19 vitest tests passing (`src/test/sheets.test.ts`).
+
+Pre-October actions needed (see SCRATCHPAD.md for detail):
+1. Localhost API key (port 8080) — needed to verify locally
+2. Sheet column headers G–M added to the tools tab
+3. Row triage and top-10 research pass
+
+Code session one (October): ToolCard sector fields, DPIA chip, jobs filter,
+sector toggles, SEO repairs, CLAUDE.md full rewrite.
+
+## Current state (as at 2026-07-03, superseded above for overhaul items)
 
 Live and working: Home, AI Toolkit, AI News, My Stack (21 rows, full verdicts,
 Claude featured), Design Kit (45 rows, 6 phases), Learning, Subscribe, Build
@@ -311,4 +337,6 @@ No prompt template needed, but keep the same discipline as the Lovable era:
   Supabase is subscriber capture only
 - Never reintroduce DM Mono
 - Never use electric lime (#C8F04A) as a category colour or badge
-- Never put charity-sector framing on the site
+- Never apply the old "no charity-sector framing" rule — it is
+  superseded by the 2026-08-22 overhaul audit. The site is being
+  re-pointed to charities, cultural organisations and heritage.
