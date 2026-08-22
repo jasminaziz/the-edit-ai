@@ -12,7 +12,6 @@ import MyStack from "./pages/MyStack";
 import Learning from "./pages/Learning";
 import Submit from "./pages/Submit";
 import DesignKit from "./pages/DesignKit";
-import Subscribe from "./pages/Subscribe";
 import PolicyTemplate from "./pages/PolicyTemplate";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
@@ -39,7 +38,7 @@ const App = () => (
             <Route path="/learning" element={<Learning />} />
             <Route path="/submit" element={<Submit />} />
             <Route path="/design-kit" element={<DesignKit />} />
-            <Route path="/subscribe" element={<Subscribe />} />
+            <Route path="/subscribe" element={<Navigate to="/policy-template" replace />} />
             <Route path="/policy-template" element={<PolicyTemplate />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />

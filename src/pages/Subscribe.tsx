@@ -38,7 +38,7 @@ export default function Subscribe() {
         </p>
       </section>
 
-      {/* Template section — cream */}
+      {/* Template section: cream */}
       <section
         style={{ backgroundColor: "#FAF8F4" }}
         className="px-4 sm:px-10 md:px-16 py-16 sm:py-24"

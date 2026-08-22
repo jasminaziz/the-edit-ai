@@ -9,7 +9,7 @@ export default function PolicyTemplate() {
         description="A free, adaptable AI-use policy template for charity, cultural and heritage organisations. What to say about data, tools, DPIAs and disclosure."
         canonical="https://theeditai.co.uk/policy-template"
       />
-      {/* Hero — mirrors Subscribe */}
+      {/* Hero: mirrors Subscribe */}
       <section
         className="relative min-h-[40vh] sm:min-h-[70vh] flex flex-col justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
         style={{ backgroundColor: "#2D35C9" }}
@@ -27,7 +27,7 @@ export default function PolicyTemplate() {
         </h1>
       </section>
 
-      {/* Template section — cream */}
+      {/* Template section: cream */}
       <section
         style={{ backgroundColor: "#FAF8F4" }}
         className="px-4 sm:px-10 md:px-16 py-16 sm:py-24"
