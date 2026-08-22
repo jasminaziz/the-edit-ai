@@ -13,8 +13,12 @@ Last verified from live data: 2026-07-03. Sector-axis columns added to schema 20
 
 ## tools (66 rows as at 2026-08-22)
 
-**Column layout is fixed-position** — `fetchTools()` reads by index, not
-by header name. Never reorder or insert columns mid-table. Append only.
+**Column layout is read by header name** on `overhaul/sector-axis`:
+`parseToolRows()` matches normalised header strings, so column order no
+longer breaks the site. One alias: the header `cost` maps to `pricing`.
+Header strings themselves are load-bearing and must match the field names.
+On `main` the fetcher is still positional A-F until the merge, so do not
+reorder columns before then.
 
 Status values: `in_stack` or `on_radar`. Only `in_stack` renders a badge.
 Status column is legacy; it will be retired once the sector-axis fields are
