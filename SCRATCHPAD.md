@@ -352,12 +352,23 @@ artwork for the re-point, the ToolCard and filters session (DPIA chip, jobs
 chips with contains-matching, three sector toggles, `last_checked` display),
 and the October content week.
 
-**Next step (updated 2026-08-22, late):** blocked on Jasmin, not on code.
-Six approved strings are the single gate on all remaining code work: four for
-B4b (a title and a description for each of `/submit` and `/stack`) and two C4
-CTA strings for the ToolCard session. Once they land, B3 (ToolCard and
-filters) and B4b can both run. Everything on the branch that could be done
-without her copy is done. Queue items 10, 11, 12 and 13 are all closed.
+**Next step (updated 2026-08-22, night):** B3, the ToolCard and filters
+session. It is unblocked: the two C4 CTA strings it needs are approved and
+sit in `reports/2026-08-22-copy-pack-addendum.md` (the in-grid template card
+after the first six tools, and the line under every Amber or Red DPIA flag).
+
+**B4 is fully closed.** (a) per-page OG in `SEO.tsx` as `869dc5f`; (b) meta
+for `/submit` and `/stack` as `6b7b221`, all four approved strings placed
+verbatim. Stack.tsx bypasses the Layout chrome so its placement was verified
+in-browser rather than assumed; the app-level `HelmetProvider` covers it.
+
+**B6 is implemented** as `e3e1add`: the Submit form, which discarded every
+submission, is now a mailto link to hello@jasminaziz.co.uk. No new
+visitor-facing copy was needed or authored, because the CobaltZone heading
+and subheading already carry the invitation. The form's dead code is left in
+place for the queue item 7 sweep.
+
+Queue items 10, 11, 12 and 13 are all closed.
 
 **Earlier next-step note, still true for the branch itself:** the ToolCard
 and filters session is the next code work. Nothing else on the branch
