@@ -121,7 +121,11 @@ flashes on iOS elastic scroll bounce).
 ### 2026-08-22 (placement session — branch overhaul/sector-axis)
 
 **Branch: overhaul/sector-axis.** Nothing merged to main. The live site is
-unchanged. Nine commits, pushed to the branch remote only. No PR opened.
+unchanged. Ten commits, pushed to the branch remote only. No PR opened.
+An eleventh follow-up commit points the desktop and mobile nav straight at
+`/policy-template` and relabels it "Get the template", since "Get the
+digest" no longer described where it went. The `/subscribe` redirect stays
+in place for old and external links.
 
 Second session of the day. Purpose was placement, not authorship: every
 visitor-facing string came in pre-approved and was placed verbatim.

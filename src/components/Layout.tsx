@@ -135,11 +135,11 @@ export function Layout({ children }: { children: ReactNode }) {
                         );
                       })}
                       <Link
-                        to="/subscribe"
+                        to="/policy-template"
                         onClick={() => setMobileOpen(false)}
                         className="font-body text-base font-medium px-4 py-3 rounded-lg transition-colors text-white/70 hover:text-white hover:bg-white/10"
                       >
-                        Get the digest →
+                        Get the template →
                       </Link>
                       {SUBSTACK_LIVE && (
                         <a
@@ -217,10 +217,10 @@ export function Layout({ children }: { children: ReactNode }) {
                       </a>
                     )}
                     <Link
-                      to="/subscribe"
+                      to="/policy-template"
                       className={`font-body text-sm font-medium whitespace-nowrap transition-colors text-primary-foreground/70 hover:text-primary-foreground`}
                     >
-                      Get the digest →
+                      Get the template →
                     </Link>
                   </div>
                   <span aria-hidden="true" className="w-px h-5 bg-white/15" />
