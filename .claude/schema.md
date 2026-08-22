@@ -7,24 +7,44 @@ live immediately without a deploy. The Google Drive connector can read the
 spreadsheet but may return only the first tab; for reliable per-tab reads use
 the Sheets values API (production key + theeditai.co.uk referer).
 
-Last verified from live data: 2026-07-03.
+Last verified from live data: 2026-07-03. Sector-axis columns added to schema 2026-08-22 (branch overhaul/sector-axis); Sheet columns G–M not yet populated.
 
 ---
 
-## tools (61 rows)
+## tools (66 rows as at 2026-08-22)
 
-Status values: `in_stack` (22) or `on_radar` (39). No blank status — both
-values are active. Only `in_stack` renders a badge on the site; `on_radar`
-displays nothing (see CLAUDE.md, Badge states).
+**Column layout is fixed-position** — `fetchTools()` reads by index, not
+by header name. Never reorder or insert columns mid-table. Append only.
 
-| Col | Field    | Notes                        |
-|-----|----------|------------------------------|
-| A   | name     |                              |
-| B   | category |                              |
-| C   | status   | `in_stack` or `on_radar`     |
-| D   | cost     | Code maps this to `pricing`  |
-| E   | verdict  |                              |
-| F   | url      |                              |
+Status values: `in_stack` or `on_radar`. Only `in_stack` renders a badge.
+Status column is legacy; it will be retired once the sector-axis fields are
+populated and the UI is updated (see overhaul audit, section 06).
+
+### Original columns A–F (live, unchanged)
+
+| Col | Field    | Notes                                    |
+|-----|----------|------------------------------------------|
+| A   | name     |                                          |
+| B   | category | Legacy tool-type categories (Writing, Research, Design, Video, Automation, Building). Will be replaced by `jobs` in the UI once G–M are populated. |
+| C   | status   | `in_stack` or `on_radar` (legacy, retiring) |
+| D   | cost     | Code maps this to `pricing`              |
+| E   | verdict  | Being rewritten against the sector axis in Oct 2026 |
+| F   | url      |                                          |
+
+### Sector-axis columns G–M (appended 2026-08-22, empty until Oct research pass)
+
+All values are strings. Empty cells are safe — `fetchTools()` returns empty
+string for unpopulated rows, and no UI currently reads these fields.
+
+| Col | Field            | Allowed values / format                                    |
+|-----|------------------|------------------------------------------------------------|
+| G   | jobs             | Comma-separated comms jobs: `Appeals & fundraising`, `Case studies & storytelling`, `Social`, `Internal comms`, `Accessibility`, `Translation`. Multi-value, e.g. `"Social · Appeals & fundraising"` |
+| H   | data_location    | `UK` · `EU` · `EU option` · `US` · `Unclear`              |
+| I   | trains_on_input  | `No` · `No by default` · `Yes unless you opt out` · `Yes` · `Varies by tier` |
+| J   | nonprofit_tier   | Programme description, e.g. `"Canva Pro free for registered charities"`, or `"None"` (confirmed absent, not unchecked) |
+| K   | dpia_flag        | `Green` · `Amber` · `Red` · `` (empty = unverified). Green: no personal data leaves you in typical comms use. Amber: DPIA territory if supporter/beneficiary data goes in. Red: assume DPIA before adoption. |
+| L   | trustee_note     | One sentence for a board meeting with no follow-up questions |
+| M   | last_checked     | Date facts were last verified, e.g. `Oct 2026`            |
 
 ---
 

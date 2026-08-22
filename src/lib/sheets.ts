@@ -6,6 +6,14 @@ export interface Tool {
   pricing: string;
   verdict: string;
   url: string;
+  // Sector-axis fields (cols G–M). Empty string until the Sheet is populated.
+  jobs: string;           // comma-separated comms jobs, e.g. "Appeals · Social"
+  data_location: string;  // UK | EU | EU option | US | Unclear
+  trains_on_input: string; // No | No by default | Yes unless you opt out | Yes | Varies by tier
+  nonprofit_tier: string; // programme description, or "None"
+  dpia_flag: string;      // Green | Amber | Red (or empty while unverified)
+  trustee_note: string;   // one sentence for a board meeting
+  last_checked: string;   // date the facts were last verified, e.g. "Oct 2026"
 }
 
 export interface WhatsNew {
@@ -43,6 +51,14 @@ export async function fetchTools(): Promise<Tool[]> {
       pricing: stripEmoji(r[3] || ''),
       verdict: stripEmoji(r[4] || ''),
       url: r[5] || '',
+      // Sector-axis fields (cols G–M). Empty until the Sheet columns are populated.
+      jobs: stripEmoji(r[6] || ''),
+      data_location: stripEmoji(r[7] || ''),
+      trains_on_input: stripEmoji(r[8] || ''),
+      nonprofit_tier: stripEmoji(r[9] || ''),
+      dpia_flag: stripEmoji(r[10] || ''),
+      trustee_note: stripEmoji(r[11] || ''),
+      last_checked: stripEmoji(r[12] || ''),
     }));
   } catch {
     return [];
