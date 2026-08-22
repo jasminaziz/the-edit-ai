@@ -2,18 +2,18 @@ export interface Tool {
   name: string;
   category: string;
   status: 'in_stack' | 'on_radar';
-  what_it_does: string;
+  what_it_does: string;   // vestigial — no Sheet column, always ''
   pricing: string;
   verdict: string;
   url: string;
-  // Sector-axis fields (cols G–M). Empty string until the Sheet is populated.
-  jobs: string;           // comma-separated comms jobs, e.g. "Appeals · Social"
-  data_location: string;  // UK | EU | EU option | US | Unclear
+  // Sector-axis fields (cols G–M). Empty / [] when the column is absent from the Sheet.
+  jobs: string[];          // parsed from comma-, ·-, or •-separated cell
+  data_location: string;   // UK | EU | EU option | US | Unclear
   trains_on_input: string; // No | No by default | Yes unless you opt out | Yes | Varies by tier
-  nonprofit_tier: string; // programme description, or "None"
-  dpia_flag: string;      // Green | Amber | Red (or empty while unverified)
-  trustee_note: string;   // one sentence for a board meeting
-  last_checked: string;   // date the facts were last verified, e.g. "Oct 2026"
+  nonprofit_tier: string;  // programme description, or "None"
+  dpia_flag: string;       // Green | Amber | Red (or '' while unverified)
+  trustee_note: string;    // one sentence for a board meeting
+  last_checked: string;    // date the facts were last verified, e.g. "Oct 2026"
 }
 
 export interface WhatsNew {
@@ -36,30 +36,87 @@ function sheetsUrl(tab: string): string {
   return `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(tab)}?key=${apiKey}`;
 }
 
+/** Normalise a header cell to a safe identifier key. Matches the pattern used in
+ *  fetchMyStack and fetchDesignKit so all fetchers behave consistently. */
+function normHeader(s: unknown): string {
+  return String(s ?? '')
+    .toLowerCase()
+    .trim()
+    .replace(/[\s-]+/g, '_')
+    .replace(/[^a-z0-9_]/g, '');
+}
+
+/**
+ * Parse raw Sheets rows (including header row) into Tool objects.
+ * Exported so it can be unit-tested without mocking fetch.
+ *
+ * Column lookup is by header name, not fixed position, so adding or reordering
+ * Sheet columns does not silently break anything. The header row must be row 0.
+ * "cost" is accepted as an alias for "pricing" (the Sheet uses "cost").
+ */
+export function parseToolRows(rows: string[][]): Tool[] {
+  if (rows.length < 2) return [];
+
+  const header = (rows[0] || []).map(normHeader);
+  const findIdx = (...keys: string[]): number => {
+    for (const k of keys) {
+      const i = header.indexOf(k);
+      if (i >= 0) return i;
+    }
+    return -1;
+  };
+
+  const iName     = findIdx('name');
+  const iCategory = findIdx('category');
+  const iStatus   = findIdx('status');
+  const iPricing  = findIdx('pricing', 'cost'); // Sheet header is "cost"
+  const iVerdict  = findIdx('verdict');
+  const iUrl      = findIdx('url');
+  // Sector-axis — absent until the Sheet columns are added; findIdx returns -1,
+  // cell() returns '', which is the safe default.
+  const iJobs         = findIdx('jobs');
+  const iDataLocation = findIdx('data_location');
+  const iTrains       = findIdx('trains_on_input');
+  const iNonprofit    = findIdx('nonprofit_tier');
+  const iDpia         = findIdx('dpia_flag');
+  const iTrustee      = findIdx('trustee_note');
+  const iLastChecked  = findIdx('last_checked');
+
+  const cell = (r: string[], i: number): string =>
+    i >= 0 && i < r.length ? r[i] : '';
+
+  return rows
+    .slice(1)
+    .filter(r => r.length > 0 && cell(r, iName))
+    .map(r => {
+      const rawJobs = cell(r, iJobs);
+      return {
+        name:            stripEmoji(cell(r, iName)),
+        category:        stripEmoji(cell(r, iCategory)),
+        status:          (cell(r, iStatus) || 'on_radar') as Tool['status'],
+        what_it_does:    '',
+        pricing:         stripEmoji(cell(r, iPricing)),
+        verdict:         stripEmoji(cell(r, iVerdict)),
+        url:             cell(r, iUrl),
+        jobs:            rawJobs
+                           ? rawJobs.split(/[,·•]+/).map(s => stripEmoji(s).trim()).filter(Boolean)
+                           : [],
+        data_location:   stripEmoji(cell(r, iDataLocation)),
+        trains_on_input: stripEmoji(cell(r, iTrains)),
+        nonprofit_tier:  stripEmoji(cell(r, iNonprofit)),
+        dpia_flag:       stripEmoji(cell(r, iDpia)),
+        trustee_note:    stripEmoji(cell(r, iTrustee)),
+        last_checked:    stripEmoji(cell(r, iLastChecked)),
+      };
+    });
+}
+
 export async function fetchTools(): Promise<Tool[]> {
   try {
     const res = await fetch(sheetsUrl('tools'));
     if (!res.ok) return [];
     const data = await res.json();
-    const rows: string[][] = data.values || [];
-    if (rows.length < 2) return [];
-    return rows.slice(1).filter(r => r.length > 0 && r[0]).map(r => ({
-      name: stripEmoji(r[0] || ''),
-      category: stripEmoji(r[1] || ''),
-      status: (r[2] || 'on_radar') as Tool['status'],
-      what_it_does: '',
-      pricing: stripEmoji(r[3] || ''),
-      verdict: stripEmoji(r[4] || ''),
-      url: r[5] || '',
-      // Sector-axis fields (cols G–M). Empty until the Sheet columns are populated.
-      jobs: stripEmoji(r[6] || ''),
-      data_location: stripEmoji(r[7] || ''),
-      trains_on_input: stripEmoji(r[8] || ''),
-      nonprofit_tier: stripEmoji(r[9] || ''),
-      dpia_flag: stripEmoji(r[10] || ''),
-      trustee_note: stripEmoji(r[11] || ''),
-      last_checked: stripEmoji(r[12] || ''),
-    }));
+    return parseToolRows(data.values || []);
   } catch {
     return [];
   }
