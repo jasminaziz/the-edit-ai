@@ -21,5 +21,7 @@ export const SUBSTACK_LIVE = true;
 
 export const SUBSTACK_URL = "https://jasminaziz.substack.com";
 
-// LinkedIn profile — update with your actual profile URL.
-export const LINKEDIN_URL = "https://www.linkedin.com/in/jasminaziz";
+export const SUBSTACK_SUBSCRIBE_URL = "https://jasminaziz.substack.com/subscribe";
+
+// LinkedIn profile.
+export const LINKEDIN_URL = "https://www.linkedin.com/in/jasmin-r-aziz/";
