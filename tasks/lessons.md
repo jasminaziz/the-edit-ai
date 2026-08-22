@@ -166,6 +166,37 @@ Session corrections and rules built up over time. Add entries; do not delete his
   is a decade-old, well-catalogued WebKit issue with a known fix pattern,
   not something worth rediscovering by trial and error.
 
+- **Use header-based column lookup in all Sheets fetchers, never fixed index
+  (2026-08-22).** `fetchTools()` was rebuilt from fixed-index (r[0], r[1]…)
+  to header-name lookup, matching the pattern `fetchMyStack` and
+  `fetchDesignKit` already use. Fixed-index breaks silently if a column is
+  inserted before an existing one, or if the Sheet header row ever shifts.
+  Header-name lookup is resilient to both. Pattern: `norm()` → `header =
+  rows[0].map(norm)` → `findIdx(...keys)` → `cell(r, i)`. Apply this to any
+  new fetcher added in future.
+
+- **Extract a pure parse function from Sheets fetchers for unit testability
+  (2026-08-22).** `fetchTools()` now calls `parseToolRows(rows)`, which is
+  exported and tested directly. This avoids the need to mock `fetch` or
+  `import.meta.env` in tests — the parsing logic is a pure function of the
+  raw row data. Pattern: `export function parseFooRows(rows)` + slim
+  `fetchFoo()` that calls it. Applied in `src/test/sheets.test.ts` (19 tests,
+  all passing via `bun test`).
+
+- **Multi-value Sheet fields must be typed string[] from the start
+  (2026-08-22).** `jobs` was initially typed as `string` in the first
+  session's interface draft, then corrected to `string[]` this session. The
+  Sheet stores it as a comma- (or ·- or •-) separated string; parse it
+  immediately in the fetcher with `.split(/[,·•]+/).map(s => s.trim()).filter
+  (Boolean)`. A `string` type in the interface misleads consumers and makes
+  the array type a breaking change later.
+
+- **This project's dev server runs on port 8080, not the Vite default 5173
+  (2026-08-22).** Confirmed in `vite.config.ts` (`port: 8080`) and
+  `.claude/launch.json`. The localhost-scoped Google Sheets API key referrer
+  restriction must be `http://localhost:8080/*` — not `http://localhost:5173/*`.
+  Wrong port = 403 on every local Sheets fetch despite the key existing.
+
 - **The Routines sandbox proxy requires repos to be explicitly connected
   (2026-07-03).** Even with a valid PAT, the Routine's GitHub API dispatch
   call returns HTTP 403 "GitHub access to this repository is not enabled for

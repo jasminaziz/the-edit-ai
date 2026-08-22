@@ -89,6 +89,55 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-22 (overhaul data layer — branch overhaul/sector-axis)
+
+**Branch: overhaul/sector-axis** — all work is on this branch. Nothing has
+merged to main. The live site is unchanged. Next code session MUST start with
+`git checkout overhaul/sector-axis`, not main.
+
+Context: an overhaul audit (reports/2026-08-22-overhaul-audit.html, prepared
+same day) diagnoses the site's current positioning as incoherent and lays out
+a full re-point to charities, cultural organisations and heritage. The audit
+supersedes the "never charity-sector framing" rule in CLAUDE.md (that rule is
+live and will fight future build sessions until CLAUDE.md is rewritten —
+audit action list item 4, scheduled for October admin week).
+
+Built and verified this session:
+- `Tool` interface extended with seven sector-axis fields: `jobs` (typed as
+  `string[]`), `data_location`, `trains_on_input`, `nonprofit_tier`,
+  `dpia_flag`, `trustee_note`, `last_checked`. All default to `[]` / `''`
+  when absent — safe before the Sheet is updated.
+- `fetchTools()` rebuilt to use header-name lookup (matching the pattern of
+  `fetchMyStack` and `fetchDesignKit`) via a new exported `parseToolRows()`
+  function. Fixed-index column reading retired. "cost" accepted as alias for
+  "pricing" (the Sheet header is "cost").
+- `parseToolRows()` extracted and exported so it can be tested without mocking
+  fetch or import.meta.env.
+- 19 vitest tests written and passing (`src/test/sheets.test.ts`): full
+  columns, absent columns, jobs splitting on `,` `·` `•`, whitespace trim,
+  emoji strip on text fields, url not stripped, status fallback, empty-name
+  row skipped.
+- `bun test`: 19 pass, 0 fail. `bunx tsc --noEmit`: clean.
+- `.claude/schema.md` updated to document new column layout (G–M), the
+  fixed-position constraint (now retired), and allowed values per field.
+- Branch pushed to remote:
+  github.com/jasminaziz/the-edit-ai/tree/overhaul/sector-axis
+
+Three outstanding actions before code session one (October):
+1. **Localhost API key** — create a new Google Sheets API key in Cloud
+   Console (`jasminaziz1@gmail.com`), restrict to Sheets API and referrer
+   `http://localhost:8080/*` (this project's dev port — confirmed in
+   vite.config.ts), and replace `VITE_GOOGLE_SHEETS_API_KEY` in `.env.local`
+   with it. Until then local data loads fail with 403.
+2. **Add header columns to the Sheet** — append `jobs`, `data_location`,
+   `trains_on_input`, `nonprofit_tier`, `dpia_flag`, `trustee_note`,
+   `last_checked` as column headers G–M in the tools tab. The fetcher is
+   already reading them; the Sheet just needs the headers.
+3. **October triage and research pass** — row triage (keep/cut/judged-not-
+   recommended per audit section 4), then fill sector fields for the top 10
+   rows with verified sources before code session one (ToolCard, filters,
+   DPIA chip).
+
 ### 2026-08-05 (PWA install scaffold)
 
 Scaffold only: manifest and plugin config for an installable iPhone PWA.
