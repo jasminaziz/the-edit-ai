@@ -6,6 +6,7 @@ import { HomeGravity } from "@/components/HomeGravity";
 import { Counter } from "@/components/ui/animated-counter";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SEO } from "@/components/SEO";
+import { AboutPanel } from "@/components/AboutPanel";
 import { WORK_WITH_ME_HREF } from "@/lib/links";
 const CATEGORY_COLOURS: Record<string, { bg: string; text: string }> = {
   "New Release": { bg: "#2D35C9", text: "#FFFFFF" },
@@ -42,8 +43,8 @@ const Index = () => {
   return (
     <div className="relative">
       <SEO
-        title="The Edit | Curated AI Tools for Marketing & Comms Professionals"
-        description="An opinionated AI tools directory built by Jasmin Aziz. Real verdicts, no sponsored lists. Updated regularly."
+        title="The Edit | AI Tools for Charity & Cultural Comms Teams"
+        description="An opinionated AI tools directory for charity, cultural and heritage comms teams. Data location, training policy and nonprofit pricing checked on every tool. No sponsored lists."
         canonical="https://theeditai.co.uk/"
         googleVerification="2_93U4mtnkpPZgW6fZZJaOIQ7tEKv7__f8JSMuO0HC8"
         jsonLd={{
@@ -52,7 +53,7 @@ const Index = () => {
           name: "The Edit",
           url: "https://theeditai.co.uk",
           description:
-            "A curated AI tools directory for marketing and communications professionals. Built and maintained by Jasmin Aziz.",
+            "An opinionated directory of AI tools for communications teams in charities, cultural organisations and heritage. Built and maintained by Jasmin Aziz.",
           author: {
             "@type": "Person",
             name: "Jasmin Aziz",
@@ -131,7 +132,7 @@ const Index = () => {
                 marginBottom: 10,
               }}
             >
-              A curated directory of AI tools that actually work, with honest verdicts from someone who builds with them every day. Made for people who want to use AI well, without having to become an expert first.
+              An opinionated directory of AI tools for communications teams in charities, cultural organisations and heritage. Judged on where your data sits, whether the tool trains on what you type into it, and whether you could defend it to a trustee. No sponsored listings, no affiliate links.
             </p>
             <p
               style={{
@@ -173,6 +174,8 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      <AboutPanel />
 
       {/* Dashboard Preview Strip */}
       <section className="bg-background pt-4 pb-6 sm:pt-6 sm:pb-12 px-6 sm:px-12">
@@ -267,7 +270,7 @@ const Index = () => {
           {/* Tools Count */}
           <div className="space-y-4">
             <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-muted">
-              In the directory
+              Passed the checks
             </h2>
             {loading ? (
               <div className="h-20 bg-border rounded animate-pulse" />
@@ -278,7 +281,7 @@ const Index = () => {
                   fontSize={isMobile ? 56 : 80}
                   className="text-primary"
                 />
-                <p className="font-body text-[15px] text-muted">AI tools in the directory</p>
+                <p className="font-body text-[15px] text-muted">tools that passed the checks</p>
               </>
             )}
             <Link

@@ -21,10 +21,10 @@ export default defineConfig(({ mode }) => ({
       // Reuse the existing brand icon set as-is — never regenerate or reinterpret.
       includeAssets: ["favicon.ico", "favicon.svg", "favicon-16.png", "favicon-32.png", "favicon-64.png"],
       manifest: {
-        name: "The Edit: Honest AI Tool Verdicts",
+        name: "The Edit: AI Tools for Charity Comms",
         short_name: "The Edit",
         description:
-          "An independent tracker of AI tools, built for people who want a real opinion, not a feature list.",
+          "An opinionated AI tools directory for charity, cultural and heritage comms teams. Data location, training policy and nonprofit pricing checked on every tool. No sponsored lists.",
         theme_color: "#2D35C9",
         background_color: "#FAF8F4",
         display: "standalone",
