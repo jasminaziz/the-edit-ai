@@ -72,25 +72,18 @@ Cowork folder: None
    shipping — no full Xcode install on this Mac as at 2026-08-05, so no
    local iOS Simulator testing available until that's set up.
 
-10. **react-helmet-async may be injecting nothing at runtime (2026-08-22,
-    UNVERIFIED)** — during the placement session, dev-server readings on `/`
-    and `/tools` returned `[data-rh]` count 0, `link[rel=canonical]` count 0,
-    JSON-LD count 0, and an unchanged `document.title` after a forced reload.
-    If that holds, every SEO title, description and canonical placed in that
-    session is inert, including the `/tools` canonical fix.
-    **Treat as unconfirmed.** The same measurement context also reported
-    `window.innerWidth` as 0 while the page visibly rendered at 800px, so the
-    instrument was unreliable. Contradicting evidence from the same session:
-    `/policy-template` returned `[data-rh]` 2 with the correct canonical, and
-    the browser tab title updated correctly per route on real navigation.
-    **Next step before anything else: check the live site.** theeditai.co.uk
-    builds from main and is untouched by the overhaul branch. View source and
-    check for a canonical link and the homepage JSON-LD block. If live emits
-    them, this is a dev-server artifact and the item closes. If live emits
-    nothing, it is a long-standing bug and predates the overhaul entirely.
-    Do not change `SEO.tsx`, `main.tsx`, `package.json` or `bun.lock` before
-    that check. Note `index.html`'s static meta is unaffected and does work,
-    which is why the index.html edits in that session mattered.
+10. **react-helmet-async runtime injection — RESOLVED 2026-08-22 (evening
+    session): helmet works on live.** Measured in a real Chrome on
+    theeditai.co.uk (builds from main, untouched by the branch), per handover
+    B2. Homepage after settle: `link[rel=canonical]` 1 (href
+    `https://theeditai.co.uk/`), `[data-rh]` 4 (canonical, description,
+    google-site-verification, JSON-LD), JSON-LD 1. `/tools` on a full load:
+    canonical 1 (href `https://theeditai.co.uk/toolkit` — the known dead-route
+    bug, confirmed live; the fix is already on the branch), `[data-rh]` 2,
+    title "AI Toolkit | The Edit". Both numbers non-zero, so B2 closes: the
+    dev-server zeros were an instrument artifact and every SEO string placed
+    on the branch is live-capable, not inert. B4 (SEO repairs) is unblocked.
+    Two new findings from the same measurements are logged as items 12 and 13.
 
 11. **bun.lock resolves react-helmet-async from a Lovable-era registry
     mirror (2026-08-22)** — the lock entry for `react-helmet-async@3.0.0`
@@ -100,6 +93,28 @@ Cowork folder: None
     if that mirror stops serving, a clean `bun install --frozen-lockfile`
     fails, including on Vercel. Not urgent. Re-resolve against the public
     registry at some later point.
+
+12. **Live site redirects non-www to www (2026-08-22, new finding).**
+    Opening `https://theeditai.co.uk/` in Chrome lands on
+    `https://www.theeditai.co.uk/`. Every canonical in the code is non-www
+    and CLAUDE.md locks the canonical base as non-www, so the injected
+    canonicals point at a host the site redirects away from. Almost
+    certainly Vercel domain config (www set as primary). Jasmin's decision:
+    either flip Vercel so the bare domain is primary (matches the locked
+    canonical base, no code change), or relitigate the canonical base
+    (currently a locked decision). No session should change canonicals
+    before that call.
+
+13. **Helmet tags may go stale on SPA navigation (2026-08-22, one trial,
+    needs a second look).** After a client-side click from `/` to `/tools`
+    on live, `document.title`, the canonical, the description and the
+    JSON-LD all stayed the homepage's, even 9+ seconds after route change.
+    A full load of `/tools` injected the correct per-route values. Crawlers
+    fetch full loads, so ranking impact is limited, but share/copy actions
+    after in-app navigation would carry the wrong canonical and title.
+    Verify with a second measurement before treating as real; if real, it
+    is a live-main behaviour that predates the branch. Relevant to the B4
+    per-page OG session.
 
 Done since the 2026-06-16 queue: my_stack live (21 rows), design_kit live
 (45 rows), nav/footer IA restructure, homepage attribution, font-display swap,
@@ -117,6 +132,73 @@ flashes on iOS elastic scroll bounce).
 ---
 
 ## Session notes
+
+### 2026-08-22 (late evening — B4a: per-page OG in SEO.tsx)
+
+Same Cowork session as the B2 verification below, continued into the B4
+mechanical half. One job: `SEO.tsx` now also emits `og:title`,
+`og:description`, `og:url`, `twitter:title` and `twitter:description`,
+every value derived from the existing `title`/`description`/`canonical`
+props the seven pages already pass. No new copy authored anywhere. Not
+touched: `index.html` (its static OG block stays as the sitewide fallback
+for non-JS scrapers, which is most of them), every page file, `main.tsx`,
+`package.json`, `bun.lock`. No per-page `og:image` or `og:type` — the
+statics own those until B5 delivers the new artwork.
+
+New test file `src/test/seo.test.tsx`: 5 tests through Helmet's SSR
+context (`HelmetProvider.canUseDOM = false`, the documented test hook,
+since jsdom otherwise sends Helmet down the async browser path). Asserts
+the og/twitter emission, the og:image/og:type absence, and the existing
+title/description/canonical behaviour.
+
+**Verification caveat.** Her machine's `node_modules` has macOS natives and
+the device VM is Linux, so the suite ran in the Cowork cloud sandbox from a
+source snapshot with a FRESH public-registry resolve, not `bun.lock`:
+`tsc --noEmit` clean, 24/24 tests pass (19 existing + 5 new). Jasmin should
+run `bunx tsc --noEmit && bun test` on the Mac as the canonical check
+before committing. Snapshot tarball left at
+`_to_delete/verify-snapshot-2026-08-22.tgz` (sessions can't delete files);
+bin the folder.
+
+**Queue item 11 escalation, same session:** `bun install --frozen-lockfile`
+in the sandbox got HTTP 403 from the Lovable mirror on MULTIPLE packages
+(gopd, math-intrinsics, call-bind-apply-helpers, and it stopped there), not
+just react-helmet-async. Caveat: the sandbox egress proxy may itself be the
+403, so reproduce from a neutral network before panicking. If it 403s from
+the Mac too, a cold install fails today, including any cold Vercel build,
+and item 11 stops being "not urgent".
+
+Working tree at wrap (branch `overhaul/sector-axis`, nothing committed by
+the session): modified `SEO.tsx`, `SCRATCHPAD.md`, handover report; new
+`src/test/seo.test.tsx`. Commit is Jasmin's call.
+
+**Remaining in B4:** the `/submit` and `/stack` meta half, blocked on two
+approved strings from Jasmin (title + description for each).
+
+### 2026-08-22 (evening — B2 verification, no code changed)
+
+Verification only. No checkout, no file in `src/` touched, nothing
+committed. Ran handover task B2 against the live site in a real Chrome via
+the desktop bridge (Cowork session; the cloud sandbox cannot reach
+theeditai.co.uk, and Chrome needed "Allow JavaScript from Apple Events"
+enabled first).
+
+- **B2 closed: react-helmet-async injects on live.** Homepage canonical
+  count 1, second route canonical count 1. Full numbers in queue item 10,
+  now marked resolved. The placed SEO strings on the branch are not inert.
+- `/tools` canonical → `/toolkit` confirmed live on main, exactly as queue
+  item 8 recorded. The branch fix is correct and waiting on the merge.
+- Two new findings logged: the non-www to www redirect against non-www
+  canonicals (item 12, needs Jasmin's Vercel decision) and possible helmet
+  staleness on SPA navigation (item 13, one trial, unverified).
+- Handover updated: B2 status, open question 1 answered, B4 unblocked with
+  a note that `/submit` and `/stack` meta strings must come from Jasmin
+  before that half of B4 can be placed.
+
+**Next step:** B4's mechanical half (per-page OG in `SEO.tsx` reusing the
+approved placed titles and descriptions) can start any time. The `/submit`
+and `/stack` meta half waits on Jasmin's strings. B3 still waits on B1,
+A4 rows and C4 strings.
 
 ### 2026-08-22 (placement session — branch overhaul/sector-axis)
 
