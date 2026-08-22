@@ -114,6 +114,26 @@ Cowork folder: None
     canonical base, no code change), or relitigate the canonical base
     (currently a locked decision). No session should change canonicals
     before that call.
+    **CLOSED 2026-08-22. Vercel flipped, bare domain is primary.** Decision:
+    keep the locked non-www base and align reality to it, rather than
+    relitigate a www preference nobody chose deliberately. Relitigating would
+    have meant touching every canonical, the JSON-LD, the og:url now emitted
+    by SEO.tsx, and CLAUDE.md.
+    Precondition checked first by Jasmin in Cloud Console
+    (jasminaziz1@gmail.com): the production Sheets key's referrer list covers
+    both `theeditai.co.uk/*` and `www.theeditai.co.uk/*`. This was
+    load-bearing. The key had only ever been exercised on www, because every
+    visitor arrived there; had the bare host been absent, flipping would have
+    403'd every data fetch and rendered the live directory empty.
+    Verified after the flip, independently from the Mac:
+    `https://www.theeditai.co.uk/` returns **308** with
+    `location: https://theeditai.co.uk/`; `https://theeditai.co.uk/` returns
+    **200**, no redirect; and `https://theeditai.co.uk/tools` renders real
+    tool data in a browser (names, categories, pricing, IN MY STACK badges,
+    no error state), confirming the Sheets API accepted the bare-host
+    referer. The live directory never went empty.
+    Canonicals, JSON-LD and og:url now point at the host the site actually
+    serves. No code change was needed.
 
 13. **Helmet tags may go stale on SPA navigation — CLOSED 2026-08-22, not
     reproduced.** Second measurement, fresh Chrome tab on live, timestamped

@@ -295,12 +295,16 @@ a site that does not match.
 ## 7. Open questions
 
 1. ~~Does react-helmet-async inject anything?~~ Answered 22 Aug: yes, it
-   injects on live. B2 closed, B4 unblocked. One successor question remains:
-   which host is primary, www or bare domain (SCRATCHPAD item 12, Jasmin's
-   Vercel decision — check the Sheets key's referrer list covers the bare
-   host BEFORE flipping, or every data fetch 403s). The other successor
-   (helmet staleness on SPA navigation, item 13) closed 22 Aug: not
-   reproduced on a second measurement, tags update within 300ms per hop.
+   injects on live. B2 closed, B4 unblocked. Both successor questions are now
+   closed too. Helmet staleness on SPA navigation (item 13): not reproduced
+   on a second measurement, tags update within 300ms per hop. Primary host
+   (item 12): **decided and done, the bare domain is primary and www 308s to
+   it.** The locked non-www canonical base stands; reality was aligned to the
+   decision rather than the decision to reality. The Sheets key's referrer
+   list was confirmed to cover the bare host before the flip, which was the
+   load-bearing precondition, and live `/tools` served real data immediately
+   after. No code change was required and none should be made: canonicals,
+   JSON-LD and `og:url` already pointed at the bare host.
 2. Which brand does the policy template carry? See C2.
 3. Does the Substack re-point, or does The Edit stop implying it will? See D2
    and D3.
