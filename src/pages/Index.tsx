@@ -31,6 +31,10 @@ const Index = () => {
   }, []);
 
   const stackTools = tools.filter((t) => t.status === "in_stack").slice(0, 4);
+  // "Passed the checks" counts rows that have actually been through the axis
+  // checks, not every row in the Sheet. last_checked is stamped when the fact
+  // fields are verified, so this reads 0 until the October triage fills them.
+  const checkedTools = tools.filter((t) => t.last_checked.trim() !== "").length;
   const isMobile = useIsMobile();
   const latestNews = [...news]
     .sort((a, b) => {
@@ -277,7 +281,7 @@ const Index = () => {
             ) : (
               <>
                 <Counter
-                  end={tools.length}
+                  end={checkedTools}
                   fontSize={isMobile ? 56 : 80}
                   className="text-primary"
                 />
