@@ -302,13 +302,13 @@ const Tools = () => {
   return (
     <>
       <SEO
-        title="AI Toolkit | The Edit"
-        description="49 curated AI tools across Writing, Research, Design, Video, Automation and Building. Honest verdicts from someone who uses them."
-        canonical="https://theeditai.co.uk/toolkit"
+        title="AI Tools Directory for Charity & Heritage Comms | The Edit"
+        description="Curated AI tools for charity, cultural and heritage communications, with data location, training policy, nonprofit pricing and a DPIA flag on every verdict."
+        canonical="https://theeditai.co.uk/tools"
       />
       <CobaltZone
         heading="Tools"
-        subheading="Things on my radar. Breadth matters."
+        subheading="Every tool judged on data, cost and whether you could defend it to a trustee."
       />
 
       {hasStackParam ? (
