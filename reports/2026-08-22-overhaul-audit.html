@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Edit Overhaul Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:'Inter', system-ui, -apple-system, sans-serif;
+    background:#faf8f5; color:#2d2926;
+    font-size:16px; line-height:1.7;
+    padding:56px 24px 96px;
+  }
+  .page { max-width:760px; margin:0 auto; }
+  h1 { font-size:30px; font-weight:700; color:#1a1714; line-height:1.25; letter-spacing:-0.01em; }
+  h2 { font-size:21px; font-weight:600; color:#1a1714; margin-top:64px; margin-bottom:14px; line-height:1.3; }
+  h3 { font-size:16px; font-weight:600; color:#1a1714; margin-top:32px; margin-bottom:8px; }
+  p { margin-bottom:16px; }
+  .kicker {
+    font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase;
+    color:#b5763a; margin-bottom:10px;
+  }
+  .meta { font-size:14px; color:#7a736b; margin-top:12px; margin-bottom:0; }
+  .rule { border:none; border-top:1px solid #e0dbd4; margin:40px 0; }
+  .secnum { color:#b5763a; font-weight:600; margin-right:10px; }
+  .box {
+    background:#ffffff; border:1px solid #e0dbd4; border-radius:8px;
+    padding:22px 26px; margin:24px 0;
+  }
+  .box p:last-child { margin-bottom:0; }
+  .box .label {
+    font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase;
+    color:#b5763a; margin-bottom:10px;
+  }
+  table {
+    width:100%; border-collapse:collapse; margin:20px 0 24px;
+    font-size:14.5px; line-height:1.55; background:#ffffff;
+    border:1px solid #e0dbd4; border-radius:8px; overflow:hidden;
+  }
+  th {
+    text-align:left; font-weight:600; color:#1a1714; font-size:13px;
+    letter-spacing:0.03em; padding:10px 14px;
+    border-bottom:1px solid #e0dbd4; background:#f4f0ea;
+    vertical-align:bottom;
+  }
+  td { padding:10px 14px; border-bottom:1px solid #eee9e2; vertical-align:top; }
+  tr:last-child td { border-bottom:none; }
+  .fieldname { font-weight:600; white-space:nowrap; }
+  .tablewrap { overflow-x:auto; }
+  strong { font-weight:600; color:#1a1714; }
+  em { font-style:italic; }
+  .effort { color:#7a736b; font-size:13.5px; white-space:nowrap; }
+  .verify { color:#b5763a; font-size:13px; }
+  ul, ol { margin:0 0 16px 22px; }
+  li { margin-bottom:8px; }
+  .footnote { font-size:13.5px; color:#7a736b; }
+  .toolname { font-weight:600; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<p class="kicker">Internal · Prep for the October admin week</p>
+<h1>The Edit Overhaul Audit</h1>
+<p class="meta">theeditai.co.uk · re-point to charity, cultural and heritage communications teams<br>
+Prepared 22 August 2026 · for implementation 19&ndash;23 October 2026 · nothing in this document is a now-task</p>
+
+<hr class="rule">
+
+<h2 style="margin-top:0">What this audit is based on, and what it assumes</h2>
+
+<p>The build state is verified, not assumed. I read the repo (<em>the-edit-ai</em>, including CLAUDE.md, the schema doc, the scratchpad, the page components and the data layer) and pulled the live Google Sheet today. So every claim below about structure, copy, taxonomy and row counts comes from the actual site as it stands on 22 August. One correction to your framing: the tools tab holds <strong>66 rows</strong> today, not 68. Either two rows have gone since you last counted, or the 68 included my_stack overlap. The migration maths below uses 66.</p>
+
+<p>Three things I could not verify, so I am assuming them, and the plan flags where each assumption carries weight:</p>
+
+<div class="box">
+<p class="label">Assumptions</p>
+<p><strong>Traffic is low.</strong> I have no GA4 access from here. Given the site went live this spring, has a 64/100 mobile PageSpeed score, thin page count, and a canonical bug actively pointing <em>/tools</em> at a dead route, I am assuming organic search traffic is negligible and total traffic is tens to low hundreds of sessions a month, mostly LinkedIn and direct. If GA4 says otherwise, the SEO items in section 6 move up the order, and nothing else changes.</p>
+<p><strong>The audience is near zero.</strong> The subscriber table in Supabase is write-only by design, so I cannot see the count. I am assuming under 50, probably far under. This matters because it means there is nothing to migrate and no one to apologise to: the re-point can be total, with no legacy-audience hedging.</p>
+<p><strong>The AI-use policy template is client-ready.</strong> The plan treats it as built and needing only a public-version scrub (including the BNJC-not-referenced check that applies to the whole training suite). If it needs real work, add half a day to section 5.</p>
+</div>
+
+<h2><span class="secnum">01</span>Current state diagnosis</h2>
+
+<p>The feedback you had is right, and the evidence is specific. Here is what the old brief actually did to the site.</p>
+
+<h3>The positioning contradicts itself across surfaces</h3>
+<p>The homepage meta title says the site is for <em>&ldquo;Marketing &amp; Comms Professionals&rdquo;</em>. The on-page intro says it is for <em>&ldquo;people who want to use AI well, without having to become an expert first&rdquo;</em>, which is everyone, which is no one. The project context file (CLAUDE.md) says the audience is <em>&ldquo;smart women in marketing and communications&rdquo;</em>. Three surfaces, three audiences, none of them your buyer. And the fourth surface is the one that will actively fight you: <strong>CLAUDE.md contains a standing rule that reads &ldquo;Never put charity-sector framing on the site&rdquo;</strong>. That rule enforced the old two-track firewall, the firewall is lifted, and the rule is still live. Any build session you run in October will obey it unless it is rewritten first. It goes early in the action list for that reason.</p>
+
+<h3>The taxonomy describes tools, not jobs</h3>
+<p>Six categories: Writing, Research, Design, Video, Automation, Building. These classify what a tool <em>is</em>, which is how every general directory organises, and exactly what a comms lead does not think in. Nobody opens a directory holding the problem &ldquo;I need a Writing tool&rdquo;. They hold &ldquo;the spring appeal needs to go out&rdquo; or &ldquo;we have to caption everything now&rdquo;. Worse, the biggest category is <strong>Building, with 21 of 66 rows</strong>: Cursor, Windsurf, Postman, Replit, Gemini CLI, Dify, OpenClaw, and fourteen more. Nearly a third of the directory is developer tooling that documents your own build journey. That story belongs on My Stack, where it already lives and works as proof of practice. In the buyer-facing directory it is ballast.</p>
+
+<h3>The rows cannot answer the buyer's questions</h3>
+<p>Each row carries name, category, status, cost, verdict, url. Not one field answers what a charity comms lead actually needs to know: where the data sits, whether the tool trains on input, whether a nonprofit tier exists, whether adoption likely triggers a DPIA, whether it can be explained to a trustee. The gap is visible even inside rows that are otherwise fine: the Canva row prices it at &ldquo;Free tier / Pro from &pound;13/mo&rdquo; while Canva Pro is free for registered charities. The single most valuable fact about that tool for your audience is absent from its row.</p>
+
+<h3>The verdicts are capability judgements in a general voice</h3>
+<p>The verdicts are well written and honest, which is worth saying because it means the voice survives the re-point intact. But they judge on capability: &ldquo;The workhorse&rdquo;, &ldquo;The category leader for no-code automation&rdquo;, &ldquo;My primary tool&rdquo;. A general reader learns whether a tool is good. Your buyer needs to know whether it is <em>safe, fundable and defensible</em>, and no verdict currently touches that. This is why pausing the 68 rewrites was the right call: every one written before the new axis exists gets written twice.</p>
+
+<h3>The status axis is about you, not the reader</h3>
+<p>in_stack versus on_radar records your usage. Under the new premise, the reader's question is &ldquo;has this passed the checks&rdquo;, not &ldquo;does Jasmin run it&rdquo;. And the current implementation half-works anyway: only in_stack renders a badge, so the 47 on_radar rows, 71% of the directory, display no signal at all.</p>
+
+<h3>The conversion layer is a form into a void</h3>
+<p>The only capture on the site is &ldquo;Get The Edit in your inbox&rdquo;, a footer form writing to a Supabase table that nothing reads and nothing sends from. There is no welcome email, no asset exchanged, no delivery mechanism of any kind. A visitor who subscribes today hears nothing, ever. The Subscribe page promises a &ldquo;fortnightly digest&rdquo; that does not exist. Separately, the Submit-a-tool form silently discards every submission (a known finding from the July security audit). The one working piece of conversion infrastructure is the &ldquo;Work with me&rdquo; link in the nav and footer, which is real and stays.</p>
+
+<h3>Site debt that matters for this overhaul, and the debt that does not</h3>
+<p>From the August gates audit, exactly three findings earn a place in this plan, because the re-point is partly an SEO play (&ldquo;AI tools for charities&rdquo; is a winnable query in a way &ldquo;AI tools&rdquo; never was): <em>/tools</em> canonicalises to a dead <em>/toolkit</em> route, so the most important page on the site tells Google to index a 404; <em>/submit</em> and <em>/stack</em> ship no meta; and every non-home page reuses the homepage OG card. The rest of the gates list (contrast failures, heading skips, matter-js bundle weight) stays parked. It fails the two-week rule and none of it blocks the re-point.</p>
+
+<h2><span class="secnum">02</span>Re-pointed positioning</h2>
+
+<p>The premise, as it should read on the About panel, and the source for every meta description, OG title and homepage intro rewrite in section 6:</p>
+
+<div class="box">
+<p><strong>The Edit is an opinionated directory of AI tools for communications teams in charities, cultural organisations and heritage.</strong> Every tool here is judged on the questions this sector actually has to answer before adopting anything: where your data sits, whether the tool trains on what you type into it, whether there is a nonprofit price, whether using it is likely to need a DPIA, and whether you could explain it to a trustee in one sentence. No sponsored listings, no affiliate links, and no tool appears until it has been through the checks. Built and maintained by Jasmin Aziz, a strategic communications consultant who works with exactly these teams.</p>
+</div>
+
+<p>Two deliberate choices in that paragraph. &ldquo;No tool appears until it has been through the checks&rdquo; converts the shrinking row count from a weakness into the product. And the last sentence does the consultancy hand-off without a pitch: the reader who wants more than a directory has already been told who built it and why she knows.</p>
+
+<h2><span class="secnum">03</span>New evaluation axis and taxonomy</h2>
+
+<h3>The five sector fields</h3>
+
+<p>These become columns on every row. Definitions matter more than names, because loose definitions are how this collapses back into a general directory. Precision here is also credibility: this audience contains people who run DPIAs, and sloppy language about them reads as marketing.</p>
+
+<div class="tablewrap"><table>
+<tr><th style="width:24%">Field</th><th style="width:30%">Allowed values</th><th>Definition</th></tr>
+<tr><td class="fieldname">Data location</td><td>UK · EU · EU option · US · Unclear</td><td>Where inputs are processed and stored on the tier a small charity would actually buy. &ldquo;EU option&rdquo; means residency exists but must be chosen or paid for. &ldquo;Unclear&rdquo; is a legitimate published value and is itself a warning.</td></tr>
+<tr><td class="fieldname">Trains on your content</td><td>No · No by default · Yes unless you opt out · Yes · Varies by tier</td><td>Recorded per tier where it differs, because it usually does: free tiers train, business tiers don't, and that one distinction is buying advice no general directory gives.</td></tr>
+<tr><td class="fieldname">Nonprofit tier</td><td>Free text, or None</td><td>The actual programme and what it gives, e.g. &ldquo;Canva Pro free for registered charities&rdquo;. None means confirmed absent, not unchecked.</td></tr>
+<tr><td class="fieldname">DPIA flag</td><td>Green · Amber · Red</td><td>Not whether the tool &ldquo;needs a DPIA&rdquo; (organisations do DPIAs, tools don't): whether typical comms use is likely to trigger one. Green: used as directed, no personal data leaves you. Amber: fine for general work, DPIA territory once supporter, beneficiary or staff data goes in. Red: assume a DPIA before adoption.</td></tr>
+<tr><td class="fieldname">Trustee note</td><td>One sentence</td><td>The sentence you could say at a board meeting with no follow-up questions you can't answer. If it can't be written, that is the verdict.</td></tr>
+</table></div>
+
+<p>The verdict column stays, rewritten against this axis: the sector lens becomes the argument of the verdict, and the five fields are its evidence. The in_stack/on_radar status column is retired and replaced by what actually matters now, a <strong>Recommended / Judged, not recommended</strong> distinction covered in section 4.</p>
+
+<h3>The comms-job taxonomy</h3>
+
+<p>Six jobs replace the six tool-type categories: <strong>Appeals &amp; fundraising · Case studies &amp; storytelling · Social · Internal comms · Accessibility · Translation</strong>. One structural change from the current build: a tool can hold more than one job. Canva is Social and Appeals; Descript is Accessibility and Case studies. So jobs is a multi-value field (comma-separated in the Sheet) and the filter matches on contains rather than equals. That is a small, contained change in the code and it is what makes six jobs enough; without multi-tagging you would need a &ldquo;General&rdquo; category within a fortnight, and that is the first step back toward the directory you are leaving.</p>
+
+<h3>What a rebuilt row looks like</h3>
+
+<p>Three examples, chosen because each shows the axis doing work a capability rating cannot. Field values marked <span class="verify">verify</span> are illustrative and get confirmed during the October research pass; the verification <em>is</em> the product, so none of these ship unchecked.</p>
+
+<div class="tablewrap"><table>
+<tr><th style="width:22%"></th><th>Canva</th><th>ChatGPT</th><th>Microsoft Copilot</th></tr>
+<tr><td class="fieldname">Jobs</td><td>Social · Appeals · Case studies</td><td>Appeals · Internal comms · Case studies</td><td>Internal comms · Appeals</td></tr>
+<tr><td class="fieldname">Data location</td><td>US <span class="verify">verify</span></td><td>US; EU residency on business tiers <span class="verify">verify</span></td><td>Inside your Microsoft 365 tenant, UK/EU residency available <span class="verify">verify</span></td></tr>
+<tr><td class="fieldname">Trains on your content</td><td>No by default for Canva AI <span class="verify">verify</span></td><td>Yes unless you opt out on Free/Plus; No on Team/Enterprise <span class="verify">verify</span></td><td>No, under commercial data protection <span class="verify">verify</span></td></tr>
+<tr><td class="fieldname">Nonprofit tier</td><td>Canva Pro free for registered charities</td><td>None meaningful</td><td>Microsoft 365 nonprofit grants and discounts</td></tr>
+<tr><td class="fieldname">DPIA flag</td><td>Green; Amber if uploading identifiable beneficiary photos</td><td>Amber; Red the moment supporter or case data goes in on a consumer tier</td><td>Amber</td></tr>
+<tr><td class="fieldname">Trustee note</td><td>&ldquo;Our design tool, free for us as a charity, and it doesn't learn from our files.&rdquo;</td><td>&ldquo;We use it for drafting only; nothing that identifies a supporter or beneficiary goes into it, and that rule is written down.&rdquo;</td><td>&ldquo;It runs inside the Microsoft system we already have, under the same data terms we already accepted.&rdquo;</td></tr>
+</table></div>
+
+<p>Copilot is the proof case for the whole re-point. On capability, where general directories rate it, it sits mid-table and always has. On this axis it is close to the top, because most charities already live in Microsoft 365, the nonprofit licensing is real, and the trustee note writes itself. A directory that surfaces that inversion is doing something There's An AI For That structurally cannot.</p>
+
+<h2><span class="secnum">04</span>Content migration plan</h2>
+
+<p>Judged row by row against the new axis, the live 66 splits four ways.</p>
+
+<h3>Survive and re-verdict: roughly 30 rows</h3>
+<p>The core assistants (Claude, ChatGPT, Gemini, Copilot, Google Workspace AI, Notion AI), the research set (Perplexity, NotebookLM, Granola, Notion), the design set a comms team would actually run (Canva, Adobe Suite, Firefly, Ideogram, Photoroom), the accessible-content set (Descript, ElevenLabs, Opus Clip, Submagic, HeyGen), presentation and drafting (Gamma, Wispr Flow), and the workflow layer (Zapier, Airtable, HubSpot). Every one keeps its name and url and gets new sector fields plus a rewritten verdict. Nothing survives as-is: a row without the five fields is by definition not finished, so the honest answer to &ldquo;which survive untouched&rdquo; is none.</p>
+
+<h3>Cut: roughly 33 rows</h3>
+<p>All of Building except nothing: the full 21 (Lovable, Vercel, GitHub, Supabase, Claude Code, Cursor, Windsurf, Postman, Replit, Gemini CLI, Dify, OpenClaw, 21st.dev, Google Stitch, Manus, Glaze, Framer, Netlify, Floot, Zo Computer, Google AI Studio) leave the directory. The ones you personally run already live on My Stack, which stays exactly as it is; the build-journey story is portfolio proof and loses nothing by moving out of the buyer's way. Then the prosumer generative tail and the tools with no comms job to claim them: Seedance, Kling, Luma, Krea, Flux, Suno, Veo, Runway, Palmier, BigSpy, minimi, Blotato, n8n. Midjourney, Recraft and Nano Banana are your triage calls: each survives only if a job claims it and its data story can be told to a trustee. Cutting is deleting rows in the Sheet; it takes minutes once the triage list exists.</p>
+
+<h3>Keep as &ldquo;Judged, not recommended&rdquo;: 3 to 5 rows</h3>
+<p>DeepSeek, Grok and Grok Imagine stay listed, and fail publicly. &ldquo;Can we use DeepSeek?&rdquo; is a question your audience is actually being asked by curious colleagues, and &ldquo;no, and here is the one-sentence reason&rdquo; is the most trustee-ready content the site can carry. A directory that only lists passes looks like every other list; the visible failures are the evaluation axis made legible. This is not a licence to pad: it holds at a handful, each earning its place by being a question the sector genuinely asks.</p>
+
+<h3>Add: 6 to 8 rows that exist nowhere in the current data</h3>
+<div class="tablewrap"><table>
+<tr><th style="width:34%">Row</th><th>Why it earns a place</th></tr>
+<tr><td class="toolname">Canva for Nonprofits</td><td rowspan="3">The nonprofit access programmes get their own rows rather than living only as pricing footnotes, because for this audience they are the front door: the reader's first question is &ldquo;what can we get free or discounted&rdquo;, and no general directory answers it. Each row's verdict explains eligibility and what the programme actually unlocks.</td></tr>
+<tr><td class="toolname">Google for Nonprofits</td></tr>
+<tr><td class="toolname">Microsoft for Nonprofits (incl. tt-exchange via Charity Digital)</td></tr>
+<tr><td class="toolname">DeepL</td><td>The translation job currently has no tool at all; DeepL is the defensible answer, with a clean data story on paid tiers. <span class="verify">verify</span></td></tr>
+<tr><td class="toolname">Mailchimp (AI features)</td><td>The appeals job as most small charities actually run it; nonprofit discount exists. <span class="verify">verify</span></td></tr>
+<tr><td class="toolname">Buffer or equivalent</td><td>Social scheduling with a nonprofit discount; pick one, not three. <span class="verify">verify</span></td></tr>
+</table></div>
+
+<div class="box">
+<p class="label">Final count</p>
+<p><strong>30 rebuilt + 3 judged-not-recommended + 7 added &asymp; 40 rows</strong>, inside your predicted 35&ndash;45, with a working ceiling of 45: any new row past that point must displace an existing one. The homepage counter drops from 66 and that is the point; the reframe in section 6 makes the smaller number carry the premise.</p>
+</div>
+
+<h2><span class="secnum">05</span>Capture mechanism</h2>
+
+<p>The structural decision first: <strong>do not build email infrastructure</strong>. The Supabase table is a dead end (nothing reads it, nothing sends), and standing up an email platform to gate one file is exactly the over-building your standing rule exists to catch. You already own the delivery mechanism: Substack. Gate the template as a <strong>subscriber-only Substack post</strong>. Substack handles the capture, the confirmation email, the delivery and the list, all built, all free, all yours. The funnel you drew (directory attracts &rarr; template captures &rarr; Substack builds trust &rarr; site converts) keeps every stage; capture and trust simply happen on the same platform, which for a solo operator is a simplification with no cost. The Supabase table stays as a historical record and takes no further writes.</p>
+
+<h3>The flow, end to end</h3>
+<div class="tablewrap"><table>
+<tr><th style="width:8%"></th><th style="width:36%">Step</th><th>What happens</th></tr>
+<tr><td>1</td><td>Visitor lands on the directory</td><td>Arrives from search, LinkedIn or Substack, holding a sector problem.</td></tr>
+<tr><td>2</td><td>Meets the template CTA</td><td>&ldquo;Get the AI-use policy template&rdquo; appears in three places: an in-grid card after the first six tools, a line beneath every Amber or Red DPIA flag (&ldquo;Not sure what your policy should say? Start with the template&rdquo;), and the footer, replacing the current generic form.</td></tr>
+<tr><td>3</td><td>/policy-template page</td><td>One new page: what the template is, who it is for, what is in it, one screenshot, one button. The button is the Substack subscribe link.</td></tr>
+<tr><td>4</td><td>Substack subscribe</td><td>Substack's own flow. The welcome email links the subscriber-only post holding the template. Nothing to build or maintain.</td></tr>
+<tr><td>5</td><td>Trust builds on its own</td><td>Every future Substack piece lands with everyone the template captured. The list is visible in Substack's dashboard, which also finally gives you a real audience number.</td></tr>
+<tr><td>6</td><td>Conversion path already exists</td><td>&ldquo;Work with me&rdquo; in the nav and footer, and the byline link. Already live, already pointing at the consultancy site.</td></tr>
+</table></div>
+
+<p>The Subscribe page gets rewritten from &ldquo;fortnightly digest&rdquo; (a promise the site cannot keep) to the template offer, and the footer form is replaced with a template CTA linking to /policy-template. One template, one gate, one list. Before the gate goes live the template itself needs its public-version pass: scrub anything client-specific, run the BNJC-not-referenced check, and export it as the branded PDF it deserves to be, because this document is the first work product most captured readers will ever see from you.</p>
+
+<h2><span class="secnum">06</span>Site and IA changes</h2>
+
+<p>The build barely changes, which is the good news the diagnosis earns: Sheets stays the content layer, Vercel stays the host, no CMS, no database work, no redesign. Everything below is Sheet columns, one new page, copy, and two contained code sessions in Claude Code.</p>
+
+<div class="tablewrap"><table>
+<tr><th style="width:30%">Change</th><th>Detail</th></tr>
+<tr><td class="fieldname">tools tab: six new columns</td><td>Append jobs, data_location, trains_on_input, nonprofit_tier, dpia_flag, trustee_note as columns G&ndash;L, plus <strong>last_checked</strong> as column M, stamped by the checks engine and shown on the card: a directory that displays when every row was last verified is a trust signal no competitor carries, and it is what makes the fortnightly automation visible as a feature rather than plumbing. Append, never reorder: the tools fetcher reads fixed positions A&ndash;F (unlike the header-based my_stack and design_kit fetchers), so inserting a column mid-table silently breaks the live site. The old status column stays in place, ignored, until the code stops reading it.</td></tr>
+<tr><td class="fieldname">Data layer + card</td><td>One Claude Code session: fetchTools reads G&ndash;L; ToolCard renders the DPIA flag as a labelled chip (text label always, never colour alone: lime is banned as a category colour and the site already has AA contrast debt), nonprofit tier as a highlighted line, and the trustee note inside the expanded verdict.</td></tr>
+<tr><td class="fieldname">Filters</td><td>CATEGORIES becomes the six jobs; matching switches from equals to contains for multi-tagged tools. Add three sector toggles above the grid: Has nonprofit pricing · Doesn't train on your content · DPIA green. Those toggles are the moat made interactive; no competitor can copy them without doing the research.</td></tr>
+<tr><td class="fieldname">Homepage + About</td><td>Rewrite the intro block, meta title, description, OG and JSON-LD from the section 2 paragraph. Build the About panel (currently nonexistent, long on the backlog) holding that paragraph verbatim. Reframe the counter: &ldquo;40 tools that passed the checks&rdquo; beats &ldquo;66 AI tools in the directory&rdquo;.</td></tr>
+<tr><td class="fieldname">/policy-template route</td><td>One new page per section 5. New routes need only a React Router entry; the SPA rewrite already covers it.</td></tr>
+<tr><td class="fieldname">SEO repairs (3 only)</td><td>Fix the /tools&rarr;/toolkit canonical (one line, Tools.tsx:303), add meta to /submit and /stack, give key pages their own OG description. In scope because sector-specific queries are now winnable.</td></tr>
+<tr><td class="fieldname">CLAUDE.md rewrite</td><td>New identity paragraph, new audience, and deletion of the &ldquo;never charity-sector framing&rdquo; rule. Load-bearing: this file steers every future build session.</td></tr>
+<tr><td class="fieldname">The two automations become one system</td><td>
+<p style="margin-bottom:12px">The site has two automated writers, and neither survives the re-point unchanged, because both were architected for the old brief. The principle for their rebuild is the one already locked on the Transition Board for the delivery build: <strong>machines maintain facts, you own judgement.</strong> Split the seven fields accordingly: pricing, nonprofit tier, data location and training policy are machine-verifiable against published sources; the DPIA flag, trustee note and verdict are judgement, and no automation ever writes them.</p>
+<p style="margin-bottom:12px"><strong>The fortnightly Cowork task becomes the checks engine.</strong> Today it writes tool rows against the old brief (verified in the account registry by absence: it is a desktop task, and the 61-to-66 row growth since July in the old voice looks like its work; confirm its prompt in the Cowork app). Rebuilt, its job is: re-fetch the sources behind the fact fields for every live row, update them with a source link, stamp <em>last_checked</em>, and where a factual change touches a judgement field (a training policy changes, so a DPIA flag may need moving) flag it to you and write nothing. Before October, trim it to flag-only or pause it so it stops writing old-brief rows.</p>
+<p style="margin-bottom:12px"><strong>The whats_new daily Routine gets re-pointed, not left alone.</strong> Piping five general AI stories a day at a sector audience is the last prosumer surface on the site, and it is derivative content with no moat. One prompt edit changes the extraction rule from &ldquo;up to 5 stories&rdquo; to &ldquo;only stories touching tools in the directory or the sector: nonprofit programmes, data and training policy changes, regulation, accessibility&rdquo;. Zero-story days become correct behaviour. The checks engine feeds the same surface for free: &ldquo;Canva changed its AI training terms, checked 3 Nov&rdquo; is currency no general directory can publish, and What&rsquo;s New becomes the changelog of the checks rather than a newsletter summary.</p>
+<p><strong>The pipeline itself can likely shrink from four hops to one.</strong> The Routine&rsquo;s GitHub Actions relay exists solely because the 2026 Routine sandbox could not reach script.google.com. Tested from the Cowork cloud environment on 22 Aug: script.google.com <em>is</em> reachable (the request connected and drew an application response; the redirect-following behaviour still needs a two-minute verification before committing). If that verifies, both writers become task &rarr; Apps Script &rarr; Sheet, the shared secret finally goes into the Apps Script, and the GitHub relay and its watchdog get deleted. If it does not verify, keep the relay: it works and is monitored, and a working ugly pipe beats an elegant broken one mid-relaunch. Either way the pipe work is not week-critical, because it changes nothing a visitor sees; it can follow the relaunch.</p>
+</td></tr>
+<tr><td class="fieldname">Left alone, on purpose</td><td>My Stack (proof of practice, already works), Design Kit (general-audience but zero-cost to leave; revisit only if a client conversation touches it), nav structure, the Submit page decision (pull it or wire it, 20 minutes, but it fails the two-week rule and can wait), and all remaining gates-audit debt.</td></tr>
+</table></div>
+
+<h2><span class="secnum">07</span>Prioritised action list</h2>
+
+<p>Sequenced for one non-technical operator in one admin week, using Claude Code for the two code sessions. The order runs axis &rarr; triage &rarr; verification &rarr; code &rarr; copy &rarr; capture, because each step defines the input to the next. Estimates are honest, which means the full re-verdicting deliberately does not fit in the week; item 10 explains why that is fine.</p>
+
+<div class="tablewrap"><table>
+<tr><th style="width:6%"></th><th style="width:52%">Task</th><th style="width:22%">Effort</th><th>Day</th></tr>
+<tr><td>1</td><td><strong>Lock the evaluation axis.</strong> The five fields, their allowed values, the Green/Amber/Red definitions and the trustee-note format, exactly as in section 3, amended where you disagree, then frozen. On paper or in the Sheet, no code.</td><td class="effort">1&ndash;2 hours</td><td>Mon</td></tr>
+<tr><td>2</td><td><strong>Row triage.</strong> One pass through the 66 against the locked axis: keep / cut / judged-not-recommended, plus the add-list from section 4. Then delete the cuts.</td><td class="effort">1&ndash;2 hours</td><td>Mon</td></tr>
+<tr><td>3</td><td><strong>Add columns G&ndash;L</strong> to the tools tab and fill the five fields for the top 10 tools only, with sources checked: privacy policies, training-data terms, nonprofit programme pages. This is the research that makes the moat real, so it gets the week's best attention.</td><td class="effort">Half-day</td><td>Tue</td></tr>
+<tr><td>4</td><td><strong>Rewrite the standing instructions, all three</strong>: CLAUDE.md (new identity, new audience, delete the no-charity-framing rule); the fortnightly task's brief, rebuilt as the checks engine on the machines-maintain-facts principle; and the Rundown Routine's extraction rule, re-pointed to sector-relevant stories only. One pre-week action sits outside the admin week: trim the fortnightly task to flag-only or pause it now, two minutes in the Cowork app, so it stops writing old-brief rows between now and October. The pipeline collapse (dropping the GitHub relay if the direct Apps Script call verifies) is deliberately not in the week: it changes nothing a visitor sees and follows the relaunch.</td><td class="effort">1.5&ndash;2 hours</td><td>Tue</td></tr>
+<tr><td>5</td><td><strong>Code session one</strong>: fetchTools columns, ToolCard fields, DPIA chip, jobs filter, sector toggles, canonical fix, missing meta.</td><td class="effort">Half-day</td><td>Wed</td></tr>
+<tr><td>6</td><td><strong>Verdict sprint one</strong>: rewrite the top 10 verdicts against the axis, including the three or four public failures.</td><td class="effort">2&ndash;3 hours</td><td>Wed/Thu</td></tr>
+<tr><td>7</td><td><strong>Positioning copy</strong>: homepage intro, meta/OG/JSON-LD, About panel, counter reframe.</td><td class="effort">1&ndash;2 hours</td><td>Thu</td></tr>
+<tr><td>8</td><td><strong>Template gate</strong>: public-version scrub and BNJC check, branded PDF export, subscriber-only Substack post, /policy-template page (code session two, small), footer and Subscribe rewrite.</td><td class="effort">Half-day</td><td>Fri</td></tr>
+<tr><td>9</td><td><strong>Relaunch check</strong>: live site reads sector-first on every surface a visitor can reach in two clicks; every visible row has its five fields; the gate delivers the template end to end from a clean browser.</td><td class="effort">1 hour</td><td>Fri</td></tr>
+<tr><td>10</td><td><strong>Rolling re-verdicts</strong> for the remaining ~25 keep-rows, batched after the admin week at whatever pace holds. Rows without completed fields stay hidden until done, so the site never shows an unverified row. It relaunches smaller and grows back verified, which is the premise behaving as designed.</td><td class="effort">15&ndash;20 min/row</td><td>After</td></tr>
+</table></div>
+
+<hr class="rule">
+
+<h2 style="margin-top:0">The recommendation</h2>
+
+<p><strong>First task, Monday morning of the admin week: lock the evaluation axis.</strong> Not the code, not the copy, not the Sheet. Ninety minutes with section 3 of this document, amend what you disagree with, freeze the five fields and their definitions, and only then touch anything else.</p>
+
+<p>It goes first because it is the only task every other task depends on: the triage needs it to judge rows, the research pass needs it to know what to verify, the verdicts need it to have an argument, the card design needs it to know what to render, and the capture copy needs it to name what the checks are. It is also the moat itself; the rows, the filters and the template are all just the axis made visible. You have already paid once for building content before the brief existed, when 68 verdicts started getting rewritten against a positioning you were about to abandon. Locking the axis first is the same lesson, applied in advance this time.</p>
+
+<p class="footnote" style="margin-top:40px">Prepared 22 August 2026 against the live repo and Sheet. Row counts, category splits and code references verified same day. Field values marked &ldquo;verify&rdquo; are illustrative pending the October research pass.</p>
+
+</div>
+</body>
+</html>
