@@ -72,6 +72,35 @@ Cowork folder: None
    shipping — no full Xcode install on this Mac as at 2026-08-05, so no
    local iOS Simulator testing available until that's set up.
 
+10. **react-helmet-async may be injecting nothing at runtime (2026-08-22,
+    UNVERIFIED)** — during the placement session, dev-server readings on `/`
+    and `/tools` returned `[data-rh]` count 0, `link[rel=canonical]` count 0,
+    JSON-LD count 0, and an unchanged `document.title` after a forced reload.
+    If that holds, every SEO title, description and canonical placed in that
+    session is inert, including the `/tools` canonical fix.
+    **Treat as unconfirmed.** The same measurement context also reported
+    `window.innerWidth` as 0 while the page visibly rendered at 800px, so the
+    instrument was unreliable. Contradicting evidence from the same session:
+    `/policy-template` returned `[data-rh]` 2 with the correct canonical, and
+    the browser tab title updated correctly per route on real navigation.
+    **Next step before anything else: check the live site.** theeditai.co.uk
+    builds from main and is untouched by the overhaul branch. View source and
+    check for a canonical link and the homepage JSON-LD block. If live emits
+    them, this is a dev-server artifact and the item closes. If live emits
+    nothing, it is a long-standing bug and predates the overhaul entirely.
+    Do not change `SEO.tsx`, `main.tsx`, `package.json` or `bun.lock` before
+    that check. Note `index.html`'s static meta is unaffected and does work,
+    which is why the index.html edits in that session mattered.
+
+11. **bun.lock resolves react-helmet-async from a Lovable-era registry
+    mirror (2026-08-22)** — the lock entry for `react-helmet-async@3.0.0`
+    points at `europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache`
+    rather than the public registry. The package itself is a genuine upstream
+    release, so this is not a supply-chain problem. The risk is availability:
+    if that mirror stops serving, a clean `bun install --frozen-lockfile`
+    fails, including on Vercel. Not urgent. Re-resolve against the public
+    registry at some later point.
+
 Done since the 2026-06-16 queue: my_stack live (21 rows), design_kit live
 (45 rows), nav/footer IA restructure, homepage attribution, font-display swap,
 whats_new automation fixed via MCP dispatch (2026-07-11), PWA install
@@ -88,6 +117,96 @@ flashes on iOS elastic scroll bounce).
 ---
 
 ## Session notes
+
+### 2026-08-22 (placement session — branch overhaul/sector-axis)
+
+**Branch: overhaul/sector-axis.** Nothing merged to main. The live site is
+unchanged. Nine commits, pushed to the branch remote only. No PR opened.
+
+Second session of the day. Purpose was placement, not authorship: every
+visitor-facing string came in pre-approved and was placed verbatim.
+
+**Preflight (three commits).** The tree was dirty at the start, so it was
+cleaned before any placement work.
+- `README.md` rewritten against the sector positioning and the bun rules. The
+  old one still carried the Lovable boilerplate and, worse, instructed
+  `npm install` — the one command this repo must never run, since it resolves
+  against and rewrites the stale `package-lock.json`. It now documents bun,
+  port 8080, the four env var names, and the referrer-restricted production
+  Sheets key.
+- `.superpowers/` added to `.gitignore` (local brainstorming mockups).
+- The four 22 Aug report artefacts committed as produced. They were untracked
+  despite `.claude/CLAUDE.md` already pointing at the audit HTML.
+
+**`.claude/CLAUDE.md` replaced** with the approved rewrite from
+`reports/2026-08-22-claude-md-rewrite-draft.md` (left in place, unmodified),
+DRAFT blockquote removed and twelve amendments applied. Two are load-bearing:
+- The audit no longer outranks CLAUDE.md on implementation detail. The audit
+  is canonical on strategy only; it predates this branch and is stale in three
+  places (five axis fields not seven, G-L not G-M, and a fixed-position A-F
+  fetcher that has been retired). Where they conflict on implementation,
+  CLAUDE.md wins.
+- The canonical base is **non-www**. Every canonical in the code is non-www.
+  The Sheets API referer header is the only www exception.
+
+**`.claude/schema.md` corrected.** The tools tab note said column layout is
+fixed-position and read by index. True of main, false of this branch, where
+`parseToolRows()` matches normalised headers. Now says so, with the warning
+that main stays positional until the merge.
+
+**Copy placed.** Homepage (`Index.tsx` SEO, JSON-LD, intro paragraph, counter
+block), `index.html` (title, description, og and twitter title/description),
+the PWA manifest in `vite.config.ts`, and the tools page. New `AboutPanel.tsx`
+on the homepage between the intro and the dashboard strip: presentational
+only, no props, no state, no fetching, `h2` at 28px so the page gains no third
+`h1`.
+
+**`/tools` canonical bug fixed.** It pointed at `https://theeditai.co.uk/toolkit`,
+a route that does not exist, so every crawl of `/tools` was told the real page
+lived somewhere dead. The site's own SEO guide had already documented this
+exact trap once before. Now `/tools`. Zero `toolkit` references remain in the
+codebase.
+
+**Supabase capture killed.** Both write points are gone and no file in `src/`
+imports the Supabase client or calls `.insert()`.
+- `FooterEmailCapture.tsx` is now a link block, not a form. Keeps its
+  container, border, padding, 480px column and heading typography.
+- `Subscribe.tsx` had a load-bearing bug: it opened with
+  `if (!SUPABASE_URL || !SUPABASE_KEY) return null;` **above the hero**, so any
+  environment missing those vars rendered the whole page as nothing. Removed
+  with the form.
+- `links.ts` gains `SUBSTACK_SUBSCRIBE_URL` and corrects `LINKEDIN_URL`, which
+  pointed at a dead profile slug.
+
+**`/policy-template` added** as the gated destination, mirroring the Subscribe
+layout with no new colours or components. **`/subscribe` now redirects to it**
+(`Navigate ... replace`, following the existing `/whats-new` to `/ai-news`
+pattern), so **`src/pages/Subscribe.tsx` is dead on disk**: still present,
+unimported, unreachable. It joins the dead-code sweep in queue item 7. It was
+deliberately not deleted. `Layout.tsx` is untouched; the nav still links to
+`/subscribe` and the redirect handles it.
+
+**Verified:** `bunx tsc --noEmit` clean, `bun test` 19 pass / 0 fail
+throughout. All routes checked on the dev server at port 8080 (data 403s
+everywhere, expected, no localhost-scoped key yet).
+
+**Two new queue items added (10 and 11)** covering the possible
+react-helmet-async runtime problem and the `bun.lock` registry mirror. Item 10
+is explicitly unverified and names the live-site check as the first step.
+
+**FLAG for the relaunch check — the counter now lies.** The homepage counter
+reads "Passed the checks" over "tools that passed the checks", but it still
+renders `tools.length`, and the Sheet still holds 66 untriaged rows with
+columns G-M empty. Nothing has passed any check yet. The copy only becomes
+true after the October triage. **If triage slips, this must not reach main.**
+Either the triage lands or the caption reverts.
+
+**Still open, explicitly not this session:** per-page OG in `SEO.tsx` (it emits
+no OG or Twitter tags at all today, so social cards fall back to the static
+`index.html` block sitewide), `/submit` and `/stack` meta, new `og-image.png`
+artwork for the re-point, the ToolCard and filters session (DPIA chip, jobs
+chips with contains-matching, three sector toggles, `last_checked` display),
+and the October content week.
 
 ### 2026-08-22 (overhaul data layer — branch overhaul/sector-axis)
 
