@@ -163,6 +163,26 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-22 (night — copy authoring: C4 and B4b strings, B6 decided)
+
+Cowork session, no code changed. Six visitor-facing strings authored with
+Cowork Claude and approved by Jasmin as exact strings, banked in
+`reports/2026-08-22-copy-pack-addendum.md`: the C4 pair (in-grid template
+card heading/body/CTA, and the line under Amber/Red DPIA flags) for the
+B3 session, and the B4(b) pair (`/submit` and `/stack` title +
+description) ready for a small placement session. The C4a CTA label is
+"Get the template", identical to the nav and footer per CLAUDE.md.
+
+B6 decided in the same sitting: keep the Submit page, swap the form for
+an email link to `hello@jasminaziz.co.uk` (the hello@theeditai.co.uk
+address is still unconfirmed, see Blocked). No new infrastructure. Spec
+in the addendum; follow the FooterEmailCapture link-block pattern. That
+answers handover open question 4 — the only section 7 questions left are
+the template brand (C2) and the Substack pair (D2/D3).
+
+Next code session: place the B4(b) metas and implement the B6 swap, two
+commits, one job each.
+
 ### 2026-08-22 (late evening — B4a: per-page OG in SEO.tsx)
 
 Same Cowork session as the B2 verification below, continued into the B4
@@ -332,7 +352,15 @@ artwork for the re-point, the ToolCard and filters session (DPIA chip, jobs
 chips with contains-matching, three sector toggles, `last_checked` display),
 and the October content week.
 
-**Next step:** the ToolCard and filters session. Nothing else on the branch
+**Next step (updated 2026-08-22, late):** blocked on Jasmin, not on code.
+Six approved strings are the single gate on all remaining code work: four for
+B4b (a title and a description for each of `/submit` and `/stack`) and two C4
+CTA strings for the ToolCard session. Once they land, B3 (ToolCard and
+filters) and B4b can both run. Everything on the branch that could be done
+without her copy is done. Queue items 10, 11, 12 and 13 are all closed.
+
+**Earlier next-step note, still true for the branch itself:** the ToolCard
+and filters session is the next code work. Nothing else on the branch
 needs doing first. The three pre-October actions from the previous session
 still stand (localhost API key on port 8080, Sheet headers G-M, row triage),
 and the localhost key is the one that unblocks real local verification: every

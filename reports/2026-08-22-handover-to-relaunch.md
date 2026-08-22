@@ -109,6 +109,7 @@ SCRATCHPAD.
 | `reports/2026-08-22-claude-md-rewrite-draft.md` | The approved CLAUDE.md draft. Already placed. Historical. |
 | `reports/2026-08-22-copy-pack-draft.md` | The approved copy pack. Already placed, and amended in the placement session. Historical: the placed strings are the truth, not this file. |
 | `reports/2026-08-22-ai-use-policy-template-draft.md` | The policy template first draft. Awaiting Jasmin's edit. |
+| `reports/2026-08-22-copy-pack-addendum.md` | Approved exact strings for C4 and B4(b), plus the B6 decision and spec. Live until placed, then historical. |
 | `reports/2026-08-22-cowork-project-seed.md` | Project instructions seed. Historical. |
 | `reports/2026-07-04-security-audit.md` | Security audit. Findings still partly open. |
 | `reports/site-gates-2026-08-05.md` | Accessibility, performance, SEO, observability audit. Mostly parked. |
@@ -210,9 +211,9 @@ it. **J+S** means a session drafts and Jasmin decides.
 | B1 | Create the localhost Sheets API key. Cloud Console as `jasminaziz1@gmail.com`, restricted to the Sheets API and referrer `http://localhost:8080/*`, then replace `VITE_GOOGLE_SHEETS_API_KEY` in `.env.local`. Without it local dev renders but every page 403s. | J | Not started |
 | B2 | **Verify react-helmet-async actually injects tags.** Done 22 Aug (evening session, real Chrome via the desktop bridge). Homepage canonical count 1, `/tools` full-load canonical count 1. Both non-zero, closed. Full numbers and two new findings (www redirect, possible SPA-navigation staleness) in SCRATCHPAD items 10, 12 and 13. | J | **Closed 22 Aug** |
 | B3 | **ToolCard and filters session.** Render the axis fields on the card, DPIA flag as a text-labelled chip (never colour alone), nonprofit tier as a highlighted line, trustee note inside the expanded verdict. `CATEGORIES` becomes the six comms jobs with contains-matching for multi-tagged tools. Three sector toggles above the grid: Has nonprofit pricing, Doesn't train on your content, DPIA green. Needs B1 and two or three filled rows from A4. Needs two CTA strings authored first (see C4). | S | Not started |
-| B4 | **SEO repairs.** (a) per-page OG in `SEO.tsx`: **done 22 Aug** (late evening session) — og:title/og:description/og:url plus twitter:title/twitter:description derived from the existing props, 5 new tests, suite 24/24, tsc clean; verified in the cloud sandbox against a fresh resolve; the Mac check was then run against `bun.lock` (tsc clean, 24/24) and it is **committed** as `869dc5f`. (b) meta for `/submit` and `/stack`: needs Jasmin to author **four** strings first, a title and a description for each page (visitor-facing copy rule). With the two C4 CTA strings that is six in total waiting on Jasmin. Full notes in SCRATCHPAD. | S | (a) done and committed; (b) waits on four strings |
+| B4 | **SEO repairs.** (a) per-page OG in `SEO.tsx`: **done 22 Aug** (late evening session) — og:title/og:description/og:url plus twitter:title/twitter:description derived from the existing props, 5 new tests, suite 24/24, tsc clean; verified in the cloud sandbox against a fresh resolve; the Mac check was then run against `bun.lock` (tsc clean, 24/24) and it is **committed** as `869dc5f`. (b) meta for `/submit` and `/stack`: all four strings authored with Cowork Claude and approved by Jasmin 22 Aug (night). Exact strings in `reports/2026-08-22-copy-pack-addendum.md`; a code session places them via the `SEO` component. | S | (a) done and committed; (b) strings approved, ready to place |
 | B5 | New `og-image.png`. The current one carries the old brand message. Design work, not code. | J | Not started |
-| B6 | **Decide the Submit form.** It silently discards every submission (`handleSubmit` only flips state). Either wire it to a destination or pull the page. Do not relaunch with a form that bins what people send it. | J+S | Not started |
+| B6 | **Decide the Submit form.** Decided by Jasmin 22 Aug (night): keep the page, swap the form for an email link to `hello@jasminaziz.co.uk`. No new infrastructure, nothing gets binned. Implementation spec in `reports/2026-08-22-copy-pack-addendum.md` (follow the FooterEmailCapture link-block pattern); any new visible copy comes back to Jasmin first. A code session implements. | J+S | Decided, ready to implement |
 | B7 | Dead-code sweep: `src/pages/Subscribe.tsx` (now unrouted), `StatusBadge.tsx`, roughly 44 unused shadcn components, `lovable-tagger`, `bun.lockb`, `package-lock.json`. Optional before relaunch. | S | Not started |
 
 ### C. The capture layer
@@ -222,7 +223,7 @@ it. **J+S** means a session drafts and Jasmin decides.
 | C1 | **Edit the policy template draft.** `reports/2026-08-22-ai-use-policy-template-draft.md`. Known gaps flagged in it: no training section despite step five of the frame promising one; section 7 (where AI does not belong) is deliberately unfinished and needs a real list; consider adding retention/deletion of chat histories and a line on copyright in AI-generated images. | J | Draft delivered |
 | C2 | **Decide the template's brand** and produce the branded file. The Edit (cobalt, Chillax) or the consultancy (ochre, Source Serif 4). Currently credited to Jasmin as consultant with The Edit as the channel. Also decide the format: the copy promises a document "written to be adapted", so an editable file matters more than a beautiful PDF. | J | Not started |
 | C3 | **Publish the gated Substack post** that delivers the template, and confirm the whole flow works from a clean browser. Until this exists, the footer, the nav and `/policy-template` all point at nothing. This is the hard blocker on the merge. | J | Not started |
-| C4 | Author two CTA strings the ToolCard session needs: the in-grid template card after the first six tools, and the line under every Amber or Red DPIA flag ("Not sure what your policy should say? Start with the template"). | J+S | Not started |
+| C4 | Author two CTA strings the ToolCard session needs: the in-grid template card after the first six tools, and the line under every Amber or Red DPIA flag. Done 22 Aug (night): both authored with Cowork Claude and approved. Exact strings banked in `reports/2026-08-22-copy-pack-addendum.md` for the B3 session to place. | J+S | Done, banked for B3 |
 
 ### D. Cross-channel reference wording
 
@@ -308,7 +309,9 @@ a site that does not match.
 2. Which brand does the policy template carry? See C2.
 3. Does the Substack re-point, or does The Edit stop implying it will? See D2
    and D3.
-4. Wire the Submit form or pull the page? See B6.
+4. ~~Wire the Submit form or pull the page?~~ Answered 22 Aug: keep the
+   page, swap the form for an email link to hello@jasminaziz.co.uk. See B6
+   and the copy-pack addendum.
 
 ---
 

@@ -253,3 +253,47 @@ Session corrections and rules built up over time. Add entries; do not delete his
   even after removing every in-app link to it: it still catches indexed and
   external links. Use `replace` so the dead URL does not accumulate history
   entries.
+
+- **Measure it yourself before writing "verified" into a permanent record
+  (2026-08-22).** When Jasmin reported the domain flip verified from her side,
+  the right move was still to re-run all three checks locally, because the
+  result was about to be committed as a closure. Transcribing someone else's
+  reading as your own verification is how an unchecked claim becomes
+  permanent. Cheap checks get re-run; that is the point of them.
+
+- **Three instrument artifacts in one day, all of which would have caused
+  real changes if acted on (2026-08-22).** (1) Dev-server DOM reads showed
+  helmet injecting nothing; live measurement showed it working. (2) A cloud
+  sandbox got 403s from the npm mirror; a normal network got 200s. (3) One
+  browser trial showed helmet tags going stale on SPA navigation; a
+  timestamped second measurement showed 300ms updates. Rule: a negative
+  result from a constrained environment (dev server, sandbox, eval context)
+  is a hypothesis, not a finding. Reproduce from the environment that
+  matters before recording it or acting on it.
+
+- **Check a headline count against its own detail (2026-08-22).** A handover
+  note read "blocked on two approved strings from Jasmin (title + description
+  for each)" of two pages, which is four, not two. The contradiction was
+  inside the same sentence and got repeated downstream because the headline
+  number was taken at face value. When a document states a count next to an
+  enumeration, do the arithmetic.
+
+- **Verify the precondition that would make a config change fail, before
+  making it (2026-08-22).** Flipping Vercel's primary domain to the bare host
+  would have 403'd every Sheets fetch and rendered the live directory empty
+  if the API key's referrer restriction had not included the bare form. The
+  key had only ever been exercised on www. Before an infrastructure change,
+  ask what the site depends on that is scoped to the old state. Say plainly
+  when the check needs a console you cannot reach, and who must run it.
+
+- **Follow redirects before calling a registry dead (2026-08-22).** A bare
+  `curl -I` against the npm mirror returns 307 for most packages, which reads
+  like a failure. `curl -sL` returns 200 with the real tarball. Use
+  `-w "%{http_code} %{size_download}"` with `-L` so the payload size confirms
+  a real download rather than a redirect stub.
+
+- **Do not commit another session's uncommitted work without asking
+  (2026-08-22).** A Cowork session deliberately left `SEO.tsx` and its test
+  uncommitted with "Commit is Jasmin's call" in its own notes. Report what is
+  there, run the check it asked for, recommend, then wait. Passing tests are
+  not authorisation.
