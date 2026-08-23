@@ -388,12 +388,20 @@ export async function fetchMyStack(): Promise<MyStackItem[]> {
   }
 }
 
+/**
+ * The filter rail above the directory grid: the six comms jobs from the locked
+ * axis, not tool types. The re-point judges a tool by the job it serves, so
+ * "Writing / Research / Design / Video / Automation / Building" is retired.
+ *
+ * A tool can hold more than one job, so the filter matches on contains, not
+ * equals. See reports/2026-08-23-axis-locked.md.
+ */
 export const CATEGORIES = [
   'ALL',
-  'Writing',
-  'Research',
-  'Design',
-  'Video',
-  'Automation',
-  'Building',
+  'Appeals & fundraising',
+  'Case studies & storytelling',
+  'Social',
+  'Internal comms',
+  'Accessibility',
+  'Translation',
 ];

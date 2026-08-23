@@ -173,8 +173,18 @@ const Tools = () => {
 
   const filtered = tools.filter((t) => {
     const q = search.toLowerCase();
-    const matchSearch = !q || t.name.toLowerCase().includes(q) || t.category.toLowerCase().includes(q) || t.what_it_does.toLowerCase().includes(q);
-    const matchCat = category === "ALL" || t.category === category;
+    const matchSearch =
+      !q ||
+      t.name.toLowerCase().includes(q) ||
+      t.jobs.some((j) => j.toLowerCase().includes(q)) ||
+      t.category.toLowerCase().includes(q) ||
+      t.what_it_does.toLowerCase().includes(q);
+    // Contains, not equals: a tool can hold more than one job. Compared
+    // case-insensitively so a mis-cased Sheet value still filters — unlike
+    // dpia_flag, a job value is not validated before it reaches the card.
+    const matchCat =
+      category === "ALL" ||
+      t.jobs.some((j) => j.toLowerCase() === category.toLowerCase());
     return matchSearch && matchCat;
   });
 
