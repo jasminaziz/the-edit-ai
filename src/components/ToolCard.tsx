@@ -1,6 +1,47 @@
 import { useState } from "react";
 import { X } from "lucide-react";
-import type { Tool } from "@/lib/sheets";
+import { normaliseDpiaFlag, type Tool } from "@/lib/sheets";
+
+/**
+ * DPIA chip, one per flag value. Colours are locked and AA-verified against
+ * both the white card and the cream page ground (axis spec, 23 Aug 2026).
+ * Text and border share a hex; the tint is the background. Do not substitute.
+ *
+ * The label carries the meaning, so the chip never relies on colour alone —
+ * "Green" only reads to someone who already knows the scheme. Labels are
+ * approved copy from the B3 microcopy pack: do not reword them.
+ */
+const DPIA_CHIP = {
+  Green: { label: "DPIA unlikely", ink: "#2D6A4F", tint: "#E4F0E9" },
+  Amber: { label: "DPIA likely once personal data goes in", ink: "#7A5200", tint: "#FAF0DB" },
+  Red: { label: "Assume a DPIA before adopting", ink: "#A8261C", tint: "#FBE9E6" },
+} as const;
+
+/** One labelled axis fact. Label strings are approved copy — do not reword. */
+const AxisLine = ({
+  label,
+  value,
+  isSelected,
+}: {
+  label: string;
+  value: string;
+  isSelected: boolean;
+}) => (
+  <div className="mt-2.5">
+    <p
+      className="font-body text-[11px] leading-tight"
+      style={{ color: isSelected ? "rgba(250,248,244,0.6)" : "#9A8F82", margin: 0 }}
+    >
+      {label}
+    </p>
+    <p
+      className="font-body text-[13px] leading-snug"
+      style={{ color: isSelected ? "#FAF8F4" : "#1A1510", margin: 0, marginTop: 1 }}
+    >
+      {value}
+    </p>
+  </div>
+);
 
 interface ToolCardProps {
   tool: Tool;
@@ -26,6 +67,11 @@ export const ToolCard = ({
   onDismissCoachmark,
 }: ToolCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  // normaliseDpiaFlag resolves casing, and returns "" for anything that is not
+  // one of the three allowed values, so an unrecognised flag renders no chip
+  // rather than an empty one. isComplete() keeps such a row off the grid anyway.
+  const flag = normaliseDpiaFlag(tool.dpia_flag);
+  const dpia = flag ? DPIA_CHIP[flag] : null;
 
   return (
     <div
@@ -71,18 +117,23 @@ export const ToolCard = ({
         </h3>
       )}
 
-      {/* Category + Status badges */}
+      {/* Jobs + Status badges. The jobs chips replace the legacy tool-type
+          category chip: the re-point judges a tool by the comms job it serves,
+          not by what kind of tool it is. Column B stays in the data. */}
       <div className="flex flex-wrap gap-2 mt-2">
-        <span
-          className="inline-block px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full"
-          style={
-            isSelected
-              ? { backgroundColor: "#9B9FE0", color: "#FFFFFF" }
-              : { backgroundColor: "#EEF0FB", color: "#2D35C9" }
-          }
-        >
-          {tool.category}
-        </span>
+        {tool.jobs.map((job) => (
+          <span
+            key={job}
+            className="inline-block px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full"
+            style={
+              isSelected
+                ? { backgroundColor: "#9B9FE0", color: "#FFFFFF" }
+                : { backgroundColor: "#EEF0FB", color: "#2D35C9" }
+            }
+          >
+            {job}
+          </span>
+        ))}
         {tool.status === "in_stack" && (
           <span
             className="inline-block px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full"
@@ -115,6 +166,60 @@ export const ToolCard = ({
         </p>
       )}
 
+      {/* Sector axis — the moat. Every label below is approved copy from the
+          B3 microcopy pack, placed verbatim. */}
+      {tool.data_location && (
+        <AxisLine label="Where your data sits" value={tool.data_location} isSelected={isSelected} />
+      )}
+      {tool.trains_on_input && (
+        <AxisLine label="Trains on your content" value={tool.trains_on_input} isSelected={isSelected} />
+      )}
+
+      {/* Nonprofit pricing — highlighted, because it is the line that decides
+          whether a tool is affordable for this audience at all. */}
+      {tool.nonprofit_tier && (
+        <div
+          className="mt-2.5 rounded-lg"
+          style={{
+            backgroundColor: isSelected ? "rgba(250,248,244,0.15)" : "#EEF0FB",
+            padding: "8px 10px",
+          }}
+        >
+          <p
+            className="font-body text-[11px] leading-tight"
+            style={{ color: isSelected ? "rgba(250,248,244,0.75)" : "#2D35C9", margin: 0 }}
+          >
+            Nonprofit pricing
+          </p>
+          <p
+            className="font-body text-[13px] font-medium leading-snug"
+            style={{ color: isSelected ? "#FAF8F4" : "#2D35C9", margin: 0, marginTop: 1 }}
+          >
+            {tool.nonprofit_tier}
+          </p>
+        </div>
+      )}
+
+      {/* DPIA chip. Colours are held constant through the hover state: the
+          chip carries its own background, so its contrast holds on the cobalt
+          card, and the three pairings are locked. */}
+      {dpia && (
+        <div className="mt-3">
+          <span
+            className="inline-block font-body text-[12px] font-medium leading-snug"
+            style={{
+              backgroundColor: dpia.tint,
+              color: dpia.ink,
+              border: `1px solid ${dpia.ink}`,
+              borderRadius: 999,
+              padding: "3px 10px",
+            }}
+          >
+            {dpia.label}
+          </span>
+        </div>
+      )}
+
       {/* Verdict button */}
       <button
         onClick={(e) => {
@@ -127,8 +232,10 @@ export const ToolCard = ({
         {isExpanded ? "Honest verdict ↑" : "Honest verdict ↓"}
       </button>
 
-      {/* Expanded verdict */}
-      {isExpanded && tool.verdict && (
+      {/* Expanded verdict, with the trustee note inside it. The note is the
+          sentence you could say at a board meeting, so it belongs with the
+          judgement, not with the facts above. */}
+      {isExpanded && (tool.verdict || tool.trustee_note) && (
         <div
           className="mt-3 pt-4 font-body text-sm leading-relaxed"
           style={{
@@ -138,7 +245,33 @@ export const ToolCard = ({
           }}
         >
           {tool.verdict}
+          {tool.trustee_note && (
+            <div style={{ marginTop: tool.verdict ? 12 : 0 }}>
+              <p
+                className="font-body text-[11px] leading-tight"
+                style={{ color: isSelected ? "rgba(250,248,244,0.6)" : "#9A8F82", margin: 0 }}
+              >
+                Say this to a trustee
+              </p>
+              <p
+                className="font-body text-sm leading-relaxed"
+                style={{ margin: 0, marginTop: 2 }}
+              >
+                {tool.trustee_note}
+              </p>
+            </div>
+          )}
         </div>
+      )}
+
+      {/* "Checked" is a prefix, per the microcopy pack: Checked 23 Aug 2026. */}
+      {tool.last_checked && (
+        <p
+          className="mt-3 font-body text-[12px]"
+          style={{ color: isSelected ? "rgba(250,248,244,0.6)" : "#9A8F82" }}
+        >
+          Checked {tool.last_checked}
+        </p>
       )}
 
       {/* Visit tool button — lime pill */}
