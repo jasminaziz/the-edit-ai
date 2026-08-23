@@ -27,12 +27,15 @@ implementation, this file wins.
 ## The evaluation axis (the moat)
 
 Seven fields per tool row beyond the basics. Field names are frozen (code
-reads them); definitions live in the audit, section 3.
+reads them). Allowed values and definitions were locked by Jasmin on
+2026-08-23 and live in `reports/2026-08-23-axis-locked.md`, which supersedes
+audit section 3 on every value and definition, including the DPIA chip
+colours and the three toggle rules.
 
 - `jobs` — one or more of: Appeals & fundraising, Case studies &
   storytelling, Social, Internal comms, Accessibility, Translation.
   Multi-value, comma-separated in the Sheet.
-- `data_location` — UK / EU / EU option / US / Unclear
+- `data_location` — UK / EU / EU option / US / Your tenant / Unclear
 - `trains_on_input` — No / No by default / Yes unless you opt out / Yes /
   Varies by tier
 - `nonprofit_tier` — free text, or None (confirmed absent, not unchecked)

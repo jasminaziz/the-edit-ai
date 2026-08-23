@@ -163,6 +163,61 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-23 (Cowork sitting: A1, the axis is locked)
+
+No code changed. The evaluation axis is frozen and the spec is
+`reports/2026-08-23-axis-locked.md`, which now supersedes audit section 3 on
+every allowed value and definition. Twelve rulings were put to Jasmin as
+committed recommendations and all twelve were adopted.
+
+Three had real consequence. `Your tenant` joins `data_location` as a sixth
+allowed value, because the audit's own Copilot example produced a value the
+set could not hold and tenant-resident tools are the proof case for the
+re-point. `dpia_flag` holds one value per row and never a compound, judged on
+typical comms use, taking the cautious side on boundaries, with conditionals
+pushed into the verdict or trustee note; the chip, the template line and the
+green toggle all need a single value. And the Green chip reuses forest green
+`#2D6A4F` with Jasmin's explicit sign-off, despite it also being the IN MY
+STACK badge colour, because a solid badge and a tinted labelled chip read
+differently and a second near-identical green would be palette drift.
+
+Chip colours settled and AA-verified against both the white card and cream
+ground: Green `#2D6A4F` on `#E4F0E9` (5.46:1), Amber `#7A5200` on `#FAF0DB`
+(6.11:1), Red `#A8261C` on `#FBE9E6` (6.05:1). Burnt orange `#E8572A` was
+ruled out on measurement, not taste: 3.60:1 on white, fails AA.
+
+The nine mechanical rulings: six job names stand, soft cap of three jobs per
+tool, `Varies by tier` reserved for genuinely ambiguous buying tiers,
+`nonprofit_tier` one line of roughly 60 characters, trustee notes stored bare
+and first person plural, `last_checked` in DD MMM YYYY matching `whats_new`,
+and fixed pass rules for all three toggles.
+
+**Two findings that were not on anyone's list.**
+
+1. **B3 needs microcopy that does not exist.** Roughly twelve visitor-facing
+   strings: three DPIA chip labels, five card field labels, three toggle
+   labels, the filter empty state. The copy pack and its addendum hold none
+   of them, and code sessions never author copy. This blocks B3 alongside the
+   seed rows and needs a short Cowork authoring sitting.
+
+2. **The counter and the grid should share one predicate.** B3 hides
+   incomplete rows; the counter currently reads non-empty `last_checked`
+   (`f514b0a`). A row could carry a date and still be missing its trustee
+   note, so the counter would count a row the grid refuses to show. The
+   locked spec defines completeness once, for both.
+
+Measurement note: the cloud sandbox could not read the Sheet to verify
+whether the G1:M1 headers exist. `sheets.googleapis.com` returns a 403 on
+CONNECT through the egress proxy. Instrument, not site, and consistent with
+the sandbox 403s already logged in queue item 11. Not chased.
+
+Also committed this session: the pre-October roadmap and the A1 decision
+sheet, both of which had been sitting untracked on disk since they were
+written.
+
+**Next:** A2 headers and seed rows (Jasmin, ~20 min in the Sheet), then the
+microcopy sitting, then B3 is clear to run.
+
 ### 2026-08-22 (night — copy authoring: C4 and B4b strings, B6 decided)
 
 Cowork session, no code changed. Six visitor-facing strings authored with
