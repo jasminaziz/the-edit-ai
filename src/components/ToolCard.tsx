@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { X } from "lucide-react";
 import { normaliseDpiaFlag, type Tool } from "@/lib/sheets";
 
@@ -217,6 +218,19 @@ export const ToolCard = ({
           >
             {dpia.label}
           </span>
+
+          {/* C4(b), approved copy. Fires on Amber or Red only: the flag says a
+              DPIA is in play, and the policy is the thing that answers it. */}
+          {(flag === "Amber" || flag === "Red") && (
+            <Link
+              to="/policy-template"
+              onClick={(e) => e.stopPropagation()}
+              className="block mt-2 font-body text-[12px] leading-snug no-underline hover:underline"
+              style={{ color: isSelected ? "#C8F04A" : "#2D35C9" }}
+            >
+              Not sure what your policy should say? Start with the template.
+            </Link>
+          )}
         </div>
       )}
 

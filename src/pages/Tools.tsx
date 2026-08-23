@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   fetchTools,
   isComplete,
@@ -339,6 +339,59 @@ const Tools = () => {
     );
   };
 
+  /**
+   * C4(a), approved copy. Sits after the sixth tool card, or at the end when
+   * the grid is shorter, and only when no filter is active: someone who has
+   * narrowed to "DPIA unlikely plus nonprofit pricing" is working, and a promo
+   * card in the middle of a result set is noise. The offer is not lost in
+   * filtered views, because every Amber and Red card carries the C4(b) line.
+   *
+   * The CTA label keeps the trailing arrow the nav and footer already carry, so
+   * a visitor sees one identical label in all four places.
+   */
+  const templateCard = (
+    <RevealItem key="__template-card">
+      <div
+        className="rounded-xl border p-5 flex flex-col h-full"
+        style={{ backgroundColor: "#2D35C9", borderColor: "#2D35C9" }}
+      >
+        <h3 className="font-heading font-semibold text-xl" style={{ color: "#FAF8F4" }}>
+          The tools are the easy part
+        </h3>
+        <p
+          className="mt-3 font-body text-sm leading-relaxed"
+          style={{ color: "rgba(250,248,244,0.85)" }}
+        >
+          If your organisation doesn't have an AI-use policy yet, start there. Free, written for charity, cultural and heritage teams, and written to be adapted.
+        </p>
+        <div className="mt-auto pt-4">
+          <Link
+            to="/policy-template"
+            className="font-body inline-block no-underline"
+            style={{
+              fontSize: "13px",
+              fontWeight: 500,
+              color: "#1A1510",
+              backgroundColor: "#C8F04A",
+              borderRadius: "20px",
+              padding: "10px 20px",
+            }}
+          >
+            Get the template →
+          </Link>
+        </div>
+      </div>
+    </RevealItem>
+  );
+
+  /** The grid's children: tool cards, with the template card spliced in. */
+  const gridItems = (list: Tool[]) => {
+    const cards = list.map(renderCard);
+    if (filtersActive) return cards;
+    const at = Math.min(6, cards.length);
+    return [...cards.slice(0, at), templateCard, ...cards.slice(at)];
+  };
+
   const mobileBanner = bannerVisible && !hasStackParam ? (
     <div className="sm:hidden px-4 pt-3">
       <div
@@ -456,7 +509,7 @@ const Tools = () => {
                   key={`${category}-${search}`}
                   className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
                 >
-                  {filtered.map(renderCard)}
+                  {gridItems(filtered)}
                 </RevealGroup>
               )}
             </div>
@@ -480,7 +533,7 @@ const Tools = () => {
                   key={`${category}-${search}`}
                   className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
                 >
-                  {filtered.map(renderCard)}
+                  {gridItems(filtered)}
                 </RevealGroup>
               )}
             </div>
