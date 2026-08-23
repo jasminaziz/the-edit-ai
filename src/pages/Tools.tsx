@@ -1,6 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { fetchTools, isComplete, type Tool, CATEGORIES } from "@/lib/sheets";
+import {
+  fetchTools,
+  isComplete,
+  hasNonprofitPricing,
+  doesNotTrainOnInput,
+  isDpiaGreen,
+  type Tool,
+  CATEGORIES,
+} from "@/lib/sheets";
 
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
@@ -24,6 +32,11 @@ const Tools = () => {
   const [error, setError] = useState(false);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("ALL");
+  // The three sector toggles. Pass rules live in sheets.ts, held by tests, so
+  // they cannot be widened here by accident.
+  const [onlyNonprofit, setOnlyNonprofit] = useState(false);
+  const [onlyNoTraining, setOnlyNoTraining] = useState(false);
+  const [onlyDpiaGreen, setOnlyDpiaGreen] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [searchParams] = useSearchParams();
@@ -185,8 +198,35 @@ const Tools = () => {
     const matchCat =
       category === "ALL" ||
       t.jobs.some((j) => j.toLowerCase() === category.toLowerCase());
-    return matchSearch && matchCat;
+    // Toggles combine with AND: each one narrows what the others left.
+    const matchToggles =
+      (!onlyNonprofit || hasNonprofitPricing(t)) &&
+      (!onlyNoTraining || doesNotTrainOnInput(t)) &&
+      (!onlyDpiaGreen || isDpiaGreen(t));
+    return matchSearch && matchCat && matchToggles;
   });
+
+  const filtersActive =
+    search.trim() !== "" ||
+    category !== "ALL" ||
+    onlyNonprofit ||
+    onlyNoTraining ||
+    onlyDpiaGreen;
+
+  // Approved copy, for a filter or toggle combination that matches no visible
+  // row. The generic EmptyState stays for nothing-active-and-zero-rows: that
+  // state should not reach live, and stretching an approved string over a state
+  // it was not written for would be authoring copy.
+  const filterEmptyState = (
+    <div className="flex flex-col items-center justify-center py-20 text-center">
+      <p
+        className="font-body text-[15px] leading-relaxed"
+        style={{ color: "#9A8F82", maxWidth: 520 }}
+      >
+        Nothing matches that combination yet. The directory is deliberately small, and it grows as tools come through the checks.
+      </p>
+    </div>
+  );
 
   const filterBar = (
     <section
@@ -246,6 +286,33 @@ const Tools = () => {
             }`}
           />
         </div>
+      </div>
+
+      {/* Sector toggles. Labels are approved copy (B3 microcopy pack); the
+          third matches the Green chip label exactly so the filter and the card
+          use one vocabulary. Cobalt on cream when on, per the locked rule for
+          new buttons. */}
+      <div className="max-w-[1280px] mx-auto mt-2.5 flex flex-wrap gap-2">
+        {[
+          { label: "Has nonprofit pricing", on: onlyNonprofit, set: setOnlyNonprofit },
+          { label: "Doesn't train on your content", on: onlyNoTraining, set: setOnlyNoTraining },
+          { label: "DPIA unlikely", on: onlyDpiaGreen, set: setOnlyDpiaGreen },
+        ].map(({ label, on, set }) => (
+          <button
+            key={label}
+            type="button"
+            aria-pressed={on}
+            onClick={() => set((v) => !v)}
+            className="shrink-0 px-3.5 py-1.5 font-body text-xs font-medium rounded-full border transition-colors duration-150"
+            style={
+              on
+                ? { backgroundColor: "#2D35C9", borderColor: "#2D35C9", color: "#FAF8F4" }
+                : { backgroundColor: "transparent", borderColor: "#E8E2D8", color: "#1A1510" }
+            }
+          >
+            {label}
+          </button>
+        ))}
       </div>
     </section>
   );
@@ -383,7 +450,7 @@ const Tools = () => {
               ) : error ? (
                 <ErrorState />
               ) : filtered.length === 0 ? (
-                <EmptyState />
+                filtersActive ? filterEmptyState : <EmptyState />
               ) : (
                 <RevealGroup
                   key={`${category}-${search}`}
@@ -407,7 +474,7 @@ const Tools = () => {
               ) : error ? (
                 <ErrorState />
               ) : filtered.length === 0 ? (
-                <EmptyState />
+                filtersActive ? filterEmptyState : <EmptyState />
               ) : (
                 <RevealGroup
                   key={`${category}-${search}`}
