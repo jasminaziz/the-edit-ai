@@ -111,6 +111,81 @@ export function parseToolRows(rows: string[][]): Tool[] {
     });
 }
 
+// ---------------------------------------------------------------------------
+// Sector-axis predicates
+// ---------------------------------------------------------------------------
+
+/** Trim and lowercase. The single normalisation used for every axis value
+ *  comparison, so casing or stray whitespace in the Sheet never changes
+ *  behaviour. */
+function normValue(s: string): string {
+  return String(s ?? '').trim().toLowerCase();
+}
+
+/**
+ * Resolve a raw dpia_flag cell to its canonical value, or '' when it is not
+ * one of the three allowed values. "green", " Green " and "GREEN" all
+ * resolve; "Amberish" does not.
+ *
+ * The DPIA chip has no fallback rendering, so an unrecognised flag must never
+ * reach the card. isComplete() uses this to keep such a row hidden, and the
+ * chip lookup uses it so a lower-case Sheet value still renders.
+ */
+export function normaliseDpiaFlag(flag: string): 'Green' | 'Amber' | 'Red' | '' {
+  switch (normValue(flag)) {
+    case 'green': return 'Green';
+    case 'amber': return 'Amber';
+    case 'red':   return 'Red';
+    default:      return '';
+  }
+}
+
+/**
+ * A row is complete when all seven axis fields hold a value. "None" counts as
+ * a value (a confirmed finding); blank does not (unfinished work). dpia_flag
+ * must additionally be a canonical Green / Amber / Red.
+ *
+ * Used in exactly two places, deliberately: the directory grid renders
+ * complete rows only, and the homepage counter counts them. One predicate
+ * means the number on the homepage and the cards on the grid cannot disagree.
+ * See reports/2026-08-23-axis-locked.md.
+ */
+export function isComplete(tool: Tool): boolean {
+  return (
+    tool.jobs.length > 0 &&
+    tool.data_location.trim() !== '' &&
+    tool.trains_on_input.trim() !== '' &&
+    tool.nonprofit_tier.trim() !== '' &&
+    tool.trustee_note.trim() !== '' &&
+    tool.last_checked.trim() !== '' &&
+    normaliseDpiaFlag(tool.dpia_flag) !== ''
+  );
+}
+
+// The three sector toggles. Pass rules are frozen in the locked axis spec and
+// must not be widened here. Incomplete rows never reach a toggle because they
+// never render.
+
+/** Toggle "Has nonprofit pricing": any nonprofit_tier value except None. */
+export function hasNonprofitPricing(tool: Tool): boolean {
+  const v = normValue(tool.nonprofit_tier);
+  return v !== '' && v !== 'none';
+}
+
+/** Toggle "Doesn't train on your content": No and No by default only.
+ *  "Varies by tier" deliberately does not pass. */
+export function doesNotTrainOnInput(tool: Tool): boolean {
+  const v = normValue(tool.trains_on_input);
+  return v === 'no' || v === 'no by default';
+}
+
+/** Toggle "DPIA unlikely": a dpia_flag of Green only. Named for the data
+ *  value it reads, not the chip label it drives. Do not rename it to match
+ *  the microcopy: the label can change, the Sheet value cannot. */
+export function isDpiaGreen(tool: Tool): boolean {
+  return normaliseDpiaFlag(tool.dpia_flag) === 'Green';
+}
+
 export async function fetchTools(): Promise<Tool[]> {
   try {
     const res = await fetch(sheetsUrl('tools'));

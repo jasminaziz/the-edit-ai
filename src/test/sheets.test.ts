@@ -1,5 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { parseToolRows } from '@/lib/sheets';
+import {
+  parseToolRows,
+  isComplete,
+  normaliseDpiaFlag,
+  hasNonprofitPricing,
+  doesNotTrainOnInput,
+  isDpiaGreen,
+  type Tool,
+} from '@/lib/sheets';
 
 // ---------------------------------------------------------------------------
 // Fixtures
@@ -205,5 +213,171 @@ describe('parseToolRows', () => {
     ];
     const [tool] = parseToolRows(rows);
     expect(tool.status).toBe('in_stack');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Sector-axis predicates
+// ---------------------------------------------------------------------------
+
+/** A row with all seven axis fields filled. Overrides blank one field at a time. */
+const COMPLETE: Tool = {
+  name: 'Canva',
+  category: 'Design',
+  status: 'in_stack',
+  what_it_does: '',
+  pricing: 'Free / Pro',
+  verdict: 'Some verdict',
+  url: 'https://canva.com',
+  jobs: ['Social', 'Appeals & fundraising'],
+  data_location: 'US',
+  trains_on_input: 'No by default',
+  nonprofit_tier: 'Canva Pro free for registered charities',
+  dpia_flag: 'Green',
+  trustee_note: 'Our design tool, free for us as a charity.',
+  last_checked: '23 Aug 2026',
+};
+
+const tool = (overrides: Partial<Tool> = {}): Tool => ({ ...COMPLETE, ...overrides });
+
+describe('normaliseDpiaFlag', () => {
+  it('passes the three canonical values through unchanged', () => {
+    expect(normaliseDpiaFlag('Green')).toBe('Green');
+    expect(normaliseDpiaFlag('Amber')).toBe('Amber');
+    expect(normaliseDpiaFlag('Red')).toBe('Red');
+  });
+
+  it('resolves case and surrounding whitespace', () => {
+    expect(normaliseDpiaFlag('green')).toBe('Green');
+    expect(normaliseDpiaFlag('  AMBER  ')).toBe('Amber');
+    expect(normaliseDpiaFlag('rEd')).toBe('Red');
+  });
+
+  it('returns "" for a value that is not one of the three', () => {
+    expect(normaliseDpiaFlag('Amberish')).toBe('');
+    expect(normaliseDpiaFlag('Grey')).toBe('');
+    expect(normaliseDpiaFlag('')).toBe('');
+    expect(normaliseDpiaFlag('   ')).toBe('');
+  });
+});
+
+describe('isComplete', () => {
+  it('is true when all seven axis fields hold a value', () => {
+    expect(isComplete(COMPLETE)).toBe(true);
+  });
+
+  it('is false when jobs is empty', () => {
+    expect(isComplete(tool({ jobs: [] }))).toBe(false);
+  });
+
+  const stringFields: Array<keyof Tool> = [
+    'data_location',
+    'trains_on_input',
+    'nonprofit_tier',
+    'dpia_flag',
+    'trustee_note',
+    'last_checked',
+  ];
+
+  for (const field of stringFields) {
+    it(`is false when ${field} is blank`, () => {
+      expect(isComplete(tool({ [field]: '' } as Partial<Tool>))).toBe(false);
+    });
+
+    it(`is false when ${field} is whitespace only`, () => {
+      expect(isComplete(tool({ [field]: '   ' } as Partial<Tool>))).toBe(false);
+    });
+  }
+
+  it('counts "None" as a value — a confirmed absence is a finding, not a gap', () => {
+    expect(isComplete(tool({ nonprofit_tier: 'None' }))).toBe(true);
+  });
+
+  it('accepts a lower-case dpia_flag', () => {
+    expect(isComplete(tool({ dpia_flag: 'green' }))).toBe(true);
+  });
+
+  it('is false when dpia_flag is not one of Green / Amber / Red', () => {
+    // The chip has no fallback label, so a near-miss value must stay hidden
+    // rather than render a chip with nothing in it.
+    expect(isComplete(tool({ dpia_flag: 'Amberish' }))).toBe(false);
+  });
+
+  it('is false for a legacy row parsed without the axis columns', () => {
+    const rows = [
+      LEGACY_HEADERS,
+      ['Perplexity', 'Research', 'on_radar', 'Free', 'Good for research', 'https://perplexity.ai'],
+    ];
+    const [parsed] = parseToolRows(rows);
+    expect(isComplete(parsed)).toBe(false);
+  });
+
+  it('is true for a fully seeded row parsed straight from the Sheet', () => {
+    const rows = [
+      FULL_HEADERS,
+      [
+        'Canva', 'Design', 'in_stack', 'Free / Pro',
+        'Some verdict', 'https://canva.com',
+        'Social,Appeals & fundraising', 'US', 'No by default',
+        'Canva Pro free for registered charities',
+        'Green', 'Our design tool, free for us as a charity.', '23 Aug 2026',
+      ],
+    ];
+    const [parsed] = parseToolRows(rows);
+    expect(isComplete(parsed)).toBe(true);
+  });
+});
+
+describe('toggle predicates', () => {
+  describe('hasNonprofitPricing', () => {
+    it('passes any real programme value', () => {
+      expect(hasNonprofitPricing(tool({ nonprofit_tier: 'Canva Pro free for charities' }))).toBe(true);
+    });
+
+    it('fails on "None", which is a confirmed absence', () => {
+      expect(hasNonprofitPricing(tool({ nonprofit_tier: 'None' }))).toBe(false);
+      expect(hasNonprofitPricing(tool({ nonprofit_tier: 'none' }))).toBe(false);
+    });
+
+    it('fails on a blank cell', () => {
+      expect(hasNonprofitPricing(tool({ nonprofit_tier: '' }))).toBe(false);
+    });
+  });
+
+  describe('doesNotTrainOnInput', () => {
+    it('passes "No"', () => {
+      expect(doesNotTrainOnInput(tool({ trains_on_input: 'No' }))).toBe(true);
+    });
+
+    it('passes "No by default", any casing', () => {
+      expect(doesNotTrainOnInput(tool({ trains_on_input: 'No by default' }))).toBe(true);
+      expect(doesNotTrainOnInput(tool({ trains_on_input: 'no by default' }))).toBe(true);
+    });
+
+    it('does NOT pass "Varies by tier" — the locked rule, do not widen it', () => {
+      expect(doesNotTrainOnInput(tool({ trains_on_input: 'Varies by tier' }))).toBe(false);
+    });
+
+    it('does not pass either Yes value', () => {
+      expect(doesNotTrainOnInput(tool({ trains_on_input: 'Yes' }))).toBe(false);
+      expect(doesNotTrainOnInput(tool({ trains_on_input: 'Yes unless you opt out' }))).toBe(false);
+    });
+  });
+
+  describe('isDpiaGreen', () => {
+    it('passes Green only, in any casing', () => {
+      expect(isDpiaGreen(tool({ dpia_flag: 'Green' }))).toBe(true);
+      expect(isDpiaGreen(tool({ dpia_flag: 'green' }))).toBe(true);
+    });
+
+    it('does not pass Amber or Red', () => {
+      expect(isDpiaGreen(tool({ dpia_flag: 'Amber' }))).toBe(false);
+      expect(isDpiaGreen(tool({ dpia_flag: 'Red' }))).toBe(false);
+    });
+
+    it('does not pass a blank or unrecognised flag', () => {
+      expect(isDpiaGreen(tool({ dpia_flag: '' }))).toBe(false);
+      expect(isDpiaGreen(tool({ dpia_flag: 'Amberish' }))).toBe(false);
+    });
   });
 });
