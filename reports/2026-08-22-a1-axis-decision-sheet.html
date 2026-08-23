@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A1 Decision Sheet: Lock the Evaluation Axis</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:'Inter', system-ui, -apple-system, sans-serif;
+    background:#faf8f5; color:#2d2926;
+    font-size:16px; line-height:1.7;
+    padding:56px 24px 96px;
+  }
+  .page { max-width:760px; margin:0 auto; }
+  h1 { font-size:28px; font-weight:600; color:#1a1714; line-height:1.3; }
+  h2 { font-size:20px; font-weight:600; color:#1a1714; margin-top:56px; margin-bottom:12px; padding-top:20px; border-top:1px solid #e0dbd4; }
+  h3 { font-size:16px; font-weight:600; color:#1a1714; margin-top:28px; margin-bottom:8px; }
+  p { margin-bottom:14px; }
+  .kicker { font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#b5763a; margin-bottom:10px; }
+  .meta { font-size:14px; color:#7a736b; margin-top:10px; }
+  .fieldnum { color:#b5763a; font-weight:600; margin-right:8px; }
+  code { background:#f1ede7; padding:1px 5px; border-radius:3px; font-size:13.5px; }
+  .box { background:#ffffff; border:1px solid #e0dbd4; border-radius:8px; padding:20px 24px; margin:20px 0; }
+  .box p:last-child { margin-bottom:0; }
+  .box .label { font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#b5763a; margin-bottom:8px; }
+  .ruling { border-left:3px solid #b5763a; padding:2px 0 2px 14px; margin:16px 0; }
+  .ruling p { margin-bottom:10px; }
+  .ruling p:last-child { margin-bottom:0; }
+  table { width:100%; border-collapse:collapse; margin:18px 0 22px; font-size:14.5px; line-height:1.55; background:#ffffff; border:1px solid #e0dbd4; border-radius:8px; overflow:hidden; }
+  th { text-align:left; font-weight:600; color:#1a1714; font-size:13px; padding:9px 13px; border-bottom:1px solid #e0dbd4; background:#f4f0ea; vertical-align:bottom; }
+  td { padding:9px 13px; border-bottom:1px solid #eee9e2; vertical-align:top; }
+  tr:last-child td { border-bottom:none; }
+  .tablewrap { overflow-x:auto; }
+  strong { font-weight:600; color:#1a1714; }
+  ul, ol { margin:0 0 14px 22px; }
+  li { margin-bottom:7px; }
+  .chip { display:inline-block; font-size:13px; font-weight:600; padding:3px 12px; border-radius:999px; margin-right:10px; }
+  .chip-demo { background:#ffffff; border:1px solid #e0dbd4; border-radius:8px; padding:18px 22px; margin:14px 0; }
+  .chip-demo .demo-label { font-size:12px; color:#7a736b; margin-bottom:10px; }
+  .footnote { font-size:13.5px; color:#7a736b; }
+  .frozen { font-size:13px; color:#7a736b; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<p class="kicker">The Edit · Internal · Sitting 1 prep</p>
+<h1>A1 Decision Sheet: Lock the Evaluation Axis</h1>
+<p class="meta">Prepared 22 August 2026 for this evening's sitting. Source: audit section 3, corrected against <code>.claude/CLAUDE.md</code> where the audit is stale. Roughly 90 minutes of the 2.5 hour block.</p>
+
+<h2 style="margin-top:32px; border-top:none; padding-top:0;">How to use this sheet</h2>
+<p>The seven field names are already frozen: code on the branch reads them by header and they appear in this exact order as columns G to M. What you freeze tonight is everything else: the allowed values, the Green/Amber/Red definitions, the trustee-note format and the date format. Work top to bottom. Each field carries the proposal as it stands, then the rulings only you can make, with a recommendation where I have one. Amend anything, then freeze the lot. Everything downstream (triage, the fact research, the verdicts, the card design) builds on what leaves this sitting.</p>
+<p>The audit says five fields, columns G to L, because it predates the branch. The real axis is seven fields, G to M: the five sector fields plus <code>jobs</code> and <code>last_checked</code>. This sheet covers all seven.</p>
+
+<h2><span class="fieldnum">1</span><code>jobs</code></h2>
+<p class="frozen">Column G · multi-value, comma-separated in the Sheet (the parser also splits on · and •)</p>
+<p><strong>Proposed allowed values:</strong> Appeals &amp; fundraising · Case studies &amp; storytelling · Social · Internal comms · Accessibility · Translation.</p>
+<p><strong>Proposed definition:</strong> the comms jobs a tool serves, not what the tool is. A tool can hold more than one job; the filter matches on contains. Multi-tagging is what makes six jobs enough. Without it a General category appears within a fortnight, and that is the first step back toward the directory you are leaving.</p>
+<div class="ruling">
+<p><strong>Ruling 1a: are the six job names final?</strong> This is the cheapest moment to rename any of them. After tonight they go into the Sheet headers' allowed values, the B3 <code>CATEGORIES</code> constant and the filter labels, and a later rename touches all three. Recommendation: keep all six as they stand. They match how the audit maps the surviving rows, and Translation gains its first tool (DeepL) in the add list.</p>
+<p><strong>Ruling 1b: a cap per tool.</strong> The audit's example rows carry at most three jobs. Recommendation: soft cap of three, so cards stay scannable and a tool that seems to do every job forces the sharper question of what it is actually for.</p>
+</div>
+
+<h2><span class="fieldnum">2</span><code>data_location</code></h2>
+<p class="frozen">Column H · single value</p>
+<p><strong>Proposed allowed values:</strong> UK · EU · EU option · US · Unclear.</p>
+<p><strong>Proposed definition:</strong> where inputs are processed and stored on the tier a small charity would actually buy. EU option means residency exists but must be chosen or paid for. Unclear is a legitimate published value and is itself a warning.</p>
+<div class="ruling">
+<p><strong>Ruling 2a: the tenant problem.</strong> The audit's own Copilot example gives a value the allowed set cannot hold: inside your Microsoft 365 tenant, UK/EU residency available. Tenant-resident tools are the proof case for the whole re-point, and the current set has no home for them. Recommendation: add a sixth value, <strong>Your tenant</strong>, meaning the tool runs inside infrastructure the organisation already controls under terms it already accepted. Nothing in code constrains the value set (the fetcher passes strings through and no filter reads this column), so the cost of adding it is zero and the Copilot inversion becomes visible in the data rather than buried in a verdict.</p>
+<p><strong>Ruling 2b: mixed cases.</strong> ChatGPT is US on consumer tiers with EU residency on business tiers. One value per row, resolved by the definition: judge the tier a small charity would buy. The fuller story belongs in the verdict.</p>
+</div>
+
+<h2><span class="fieldnum">3</span><code>trains_on_input</code></h2>
+<p class="frozen">Column I · single value</p>
+<p><strong>Proposed allowed values:</strong> No · No by default · Yes unless you opt out · Yes · Varies by tier.</p>
+<p><strong>Proposed definition:</strong> whether the tool trains on what you type into it, recorded for the tier a small charity would buy, the same convention as data location. Free tiers train and business tiers don't, and that one distinction is buying advice no general directory gives.</p>
+<div class="ruling">
+<p><strong>Ruling 3a: when Varies by tier is allowed.</strong> If every value is judged on the buying tier, Varies by tier should be rare. Recommendation: reserve it for tools where the buying tier itself is genuinely ambiguous for this audience, and treat it as a flag that the verdict must name the tiers.</p>
+<p><strong>Ruling 3b: what the toggle counts.</strong> B3 ships a &ldquo;Doesn't train on your content&rdquo; toggle. It needs a rule for which values pass. Recommendation: <strong>No</strong> and <strong>No by default</strong> pass; everything else fails, including Varies by tier. Freezing this now means the B3 session implements a rule instead of inventing one.</p>
+</div>
+
+<h2><span class="fieldnum">4</span><code>nonprofit_tier</code></h2>
+<p class="frozen">Column J · free text, or None</p>
+<p><strong>Proposed definition:</strong> the actual programme and what it gives, e.g. Canva Pro free for registered charities. <strong>None means confirmed absent, not unchecked.</strong> An empty cell means unchecked, and under the hidden-row mechanic an empty axis field keeps the whole row off the grid. The distinction between None and empty is load-bearing: one is a finding, the other is unfinished work.</p>
+<div class="ruling">
+<p><strong>Ruling 4a: length.</strong> This renders as a highlighted line on the card. Recommendation: one line, roughly 60 characters. Eligibility detail and what the programme unlocks belong in the verdict.</p>
+<p><strong>Ruling 4b: what the toggle counts.</strong> The &ldquo;Has nonprofit pricing&rdquo; toggle passes any value other than None. Empty never reaches the toggle because empty rows are hidden. Recommendation: freeze that rule alongside 3b.</p>
+</div>
+
+<h2><span class="fieldnum">5</span><code>dpia_flag</code></h2>
+<p class="frozen">Column K · single value · never written by any automation or session</p>
+<p><strong>Proposed allowed values and definitions</strong> (audit section 3, verbatim in substance):</p>
+<div class="box">
+<p class="label">Green / Amber / Red</p>
+<p>Not whether the tool needs a DPIA (organisations do DPIAs, tools don't): whether typical comms use is likely to trigger one.</p>
+<p><strong>Green:</strong> used as directed, no personal data leaves you.</p>
+<p><strong>Amber:</strong> fine for general work, DPIA territory once supporter, beneficiary or staff data goes in.</p>
+<p><strong>Red:</strong> assume a DPIA before adoption.</p>
+</div>
+<div class="ruling">
+<p><strong>Ruling 5a: one value, not a compound.</strong> The audit's example rows carry compound flags: Green; Amber if uploading identifiable beneficiary photos. The chip renders one state, the C4(b) template line fires on Amber or Red, and the DPIA green toggle needs a yes or no. The Sheet has to hold a single value. Recommendation: one flag per row, judged on typical comms use as the definitions already say, with the conditional carried in the verdict or the trustee note. Where a tool sits on a boundary, the flag takes the cautious side: the site should never be the reason someone skipped a DPIA they needed.</p>
+</div>
+
+<h2><span class="fieldnum">6</span><code>trustee_note</code></h2>
+<p class="frozen">Column L · one sentence · never written by any automation or session</p>
+<p><strong>Proposed definition:</strong> the sentence you could say at a board meeting with no follow-up questions you can't answer. If it can't be written, that is the verdict. Renders inside the expanded verdict on the card.</p>
+<div class="ruling">
+<p><strong>Ruling 6a: quote marks.</strong> The audit's examples wrap the note in quotes as a spoken line. Verdicts ban inline quote marks, and the note renders inside the verdict block. Recommendation: store the sentence bare, no quote marks. If it should read as speech on the card, that is a rendering treatment for the B3 session to propose, not punctuation in the data.</p>
+<p><strong>Ruling 6b: voice.</strong> The examples run first person plural: our design tool, we use it for drafting only. That is what makes the sentence sayable at a board meeting. Recommendation: keep it as the format's convention.</p>
+</div>
+
+<h2><span class="fieldnum">7</span><code>last_checked</code></h2>
+<p class="frozen">Column M · date, stamped when the fact fields were last verified</p>
+<p><strong>Proposed definition:</strong> stamped when a row's fact fields (data location, training policy, nonprofit tier, pricing) were last verified against sources. The homepage counter counts rows where this is non-empty, and B3 displays it on the card. It marks checked, not passed: a judged-not-recommended row still carries a date.</p>
+<div class="ruling">
+<p><strong>Ruling 7a: format.</strong> The project already enforces exactly one date format, DD MMM YYYY, in the <code>whats_new</code> pipeline, where it is strict and load-bearing. Recommendation: the same format here, e.g. 22 Aug 2026. One date format across the whole Sheet, and it reads cleanly on the card without parsing work.</p>
+</div>
+
+<h2>DPIA chip colours: the recommendation</h2>
+<p>You asked for a call rather than a menu, so here it is, with the arithmetic done. All three chips are text-labelled (the words Green, Amber, Red), never colour alone, per the locked design rule. Each chip is a tinted pill with a 1px border and text in the same hex. Every pairing below passes WCAG AA for normal text, checked programmatically against both the white card and the cream page ground.</p>
+
+<div class="chip-demo">
+<p class="demo-label">Rendered at the recommended values, on white:</p>
+<span class="chip" style="background:#E4F0E9; color:#2D6A4F; border:1px solid #2D6A4F;">DPIA: Green</span>
+<span class="chip" style="background:#FAF0DB; color:#7A5200; border:1px solid #7A5200;">DPIA: Amber</span>
+<span class="chip" style="background:#FBE9E6; color:#A8261C; border:1px solid #A8261C;">DPIA: Red</span>
+</div>
+
+<div class="tablewrap"><table>
+<tr><th>Chip</th><th>Text and border</th><th>Tint background</th><th>Contrast on tint</th><th>Contrast on white</th></tr>
+<tr><td><strong>Green</strong></td><td><code>#2D6A4F</code></td><td><code>#E4F0E9</code></td><td>5.46:1</td><td>6.39:1</td></tr>
+<tr><td><strong>Amber</strong></td><td><code>#7A5200</code></td><td><code>#FAF0DB</code></td><td>6.11:1</td><td>6.92:1</td></tr>
+<tr><td><strong>Red</strong></td><td><code>#A8261C</code></td><td><code>#FBE9E6</code></td><td>6.05:1</td><td>7.10:1</td></tr>
+</table></div>
+
+<p><strong>The Green chip reuses forest green <code>#2D6A4F</code>, which needs your explicit sign-off.</strong> The catch, named: it is the IN MY STACK badge colour, so the same hue would carry two meanings on one card. I recommend reusing it anyway. The badge is a solid fill; the chip is a pale tint with dark green text and a label that says what it is, so the two treatments read differently at a glance. The alternative is a second green a few steps away (<code>#1E6A45</code> passes at 5.60:1 on the same tint), and two near-identical greens in one locked palette reads as drift, not restraint. One green, two clearly different treatments, is the tighter system. If you veto the reuse, <code>#1E6A45</code> is the drop-in.</p>
+<p><strong>Burnt orange <code>#E8572A</code> is ruled out for the Amber chip.</strong> Not a taste call: it measures 3.60:1 as text on white and fails AA. The recommended amber is a deep ochre that sits naturally against the cream and clears the bar with room. Electric lime was never in contention: accent only, never a badge, per the locked rule.</p>
+
+<h2>After the freeze: the rest of the sitting</h2>
+<p>Once the axis is frozen, the remaining Sitting 1 work is mechanical. In order:</p>
+<ol>
+<li><strong>A2, the headers.</strong> Add to <code>G1:M1</code> of the <code>tools</code> tab, in this exact order: <code>jobs</code>, <code>data_location</code>, <code>trains_on_input</code>, <code>nonprofit_tier</code>, <code>dpia_flag</code>, <code>trustee_note</code>, <code>last_checked</code>. Lower case with underscores, exactly as written: the branch fetcher matches normalised header names. Safe any time, since main's fetcher ignores columns past F. Two minutes.</li>
+<li><strong>Seed rows for B3.</strong> Pick two or three tools you know cold (Canva, ChatGPT and Copilot are the audit's worked examples if you want a head start) and fill all seven fields: provisional fact values inside the frozen allowed sets, your own first-pass <code>dpia_flag</code> and <code>trustee_note</code>. These are yours alone to write and they get corrected by the A4 sourced pass, so provisional is fine. Leave one kept row deliberately empty across G to M so the B3 session has a real hidden-row case to build against. Fifteen minutes.</li>
+<li><strong>Chip colours.</strong> One yes or no on the forest green reuse above, and the three hexes are settled for the B3 session.</li>
+</ol>
+<p>That unblocks Session A (B3, ToolCard and filters) entirely, and A3 triage becomes runnable whenever you next have 90 minutes.</p>
+
+<p class="footnote" style="margin-top:40px">Prepared 22 August 2026 from audit section 3 and .claude/CLAUDE.md. Contrast ratios computed with the WCAG 2.1 relative luminance formula. Field names and column order are already frozen on the branch; everything else in this sheet is yours to amend before it freezes.</p>
+
+</div>
+</body>
+</html>

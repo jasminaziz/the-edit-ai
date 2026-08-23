@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Edit — Roadmap to Relaunch</title>
+<style>
+  body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #faf8f5; color: #2d2926; font-size: 16px; line-height: 1.7; margin: 0; padding: 48px 24px; }
+  main { max-width: 760px; margin: 0 auto; }
+  h1 { color: #1a1714; font-weight: 600; font-size: 28px; line-height: 1.3; margin: 0 0 8px; }
+  h2 { color: #1a1714; font-weight: 600; font-size: 20px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid #e0dbd4; }
+  h3 { color: #1a1714; font-weight: 600; font-size: 16px; margin: 24px 0 8px; }
+  p { margin: 0 0 14px; }
+  .meta { color: #b5763a; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; margin-bottom: 24px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; margin: 16px 0; }
+  th { text-align: left; font-weight: 600; color: #1a1714; border-bottom: 2px solid #e0dbd4; padding: 8px 10px 8px 0; }
+  td { border-bottom: 1px solid #e0dbd4; padding: 8px 10px 8px 0; vertical-align: top; }
+  code { background: #f1ede7; padding: 1px 5px; border-radius: 3px; font-size: 13.5px; }
+  .done { color: #6b7a5e; font-weight: 600; }
+  .gate { color: #a04a2a; font-weight: 600; }
+  ul { margin: 0 0 14px; padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  .note { border-left: 3px solid #b5763a; padding: 2px 0 2px 14px; margin: 16px 0; }
+</style>
+</head>
+<body>
+<main>
+
+<div class="meta">The Edit · Internal · 22 August 2026, night</div>
+<h1>Roadmap to Relaunch</h1>
+<p><strong>The decision this document exists to serve: the relaunch finishes before October.</strong> Jasmin's call, made 22 August. It supersedes the "19–23 October admin week" scheduling in CLAUDE.md and the handover, which was a calendar preference, not a dependency. The actual merge gates are unchanged and named below. CLAUDE.md's October timing language gets corrected at merge (listed as a task).</p>
+<p>How this document relates to the others: <code>reports/2026-08-22-handover-to-relaunch.md</code> remains the canonical state ledger, and its section 5 statuses continue to be updated at every wrap. This roadmap adds the sequencing and estimates for the accelerated push. Where the two disagree on <em>status</em>, the handover wins. Where they disagree on <em>timing</em>, this document wins.</p>
+
+<h2>1 · Where things stand (22 Aug, end of day)</h2>
+<p>The day closed fourteen open items. Done and verified: <span class="done">B1</span> localhost Sheets key created; <span class="done">B2</span> helmet injection confirmed on live; <span class="done">B4 in full</span> — per-page OG shipped with tests, and the <code>/submit</code> and <code>/stack</code> metas placed; <span class="done">B6</span> Submit form swapped for an email link to hello@jasminaziz.co.uk; <span class="done">C4</span> both CTA strings authored and approved; <span class="done">queue items 10–13</span> all closed (three were measurement artifacts); the <span class="done">domain flip</span> executed and verified — bare domain primary, www 308s to it, Sheets data confirmed loading on the bare host.</p>
+<p>Approved exact strings live in <code>reports/2026-08-22-copy-pack-addendum.md</code>. E1 (fortnightly task trimmed to flag-only) was instructed but not confirmed — first item of the next session is to confirm it happened.</p>
+
+<h2>2 · The merge gates</h2>
+<p>Three things stand between the branch and <code>main</code>. Nothing else does.</p>
+<ul>
+  <li><span class="gate">Gate 1 — the counter must be true (F1).</span> The homepage reads "Passed the checks" over <code>tools.length</code>. Either triage lands and B3 hides unverified rows (which makes the counter true automatically — see B3 scope), or the caption reverts. This is the single item that would embarrass publicly.</li>
+  <li><span class="gate">Gate 2 — the capture flow works end to end (C3).</span> The gated Substack post must exist and deliver the template from a clean browser. Until then, nav, footer and <code>/policy-template</code> all point at nothing.</li>
+  <li><span class="gate">Gate 3 — Jasmin's explicit sign-off,</span> with a clear day after to watch the deploy. Unchanged, non-negotiable, and the only calendar constraint left.</li>
+</ul>
+
+<h2>3 · The plan, in order</h2>
+<p>Structured as sittings (Jasmin's focused blocks) and sessions (Claude, code or Cowork). Sessions interleave between sittings; the sittings are the critical path. Estimated Jasmin time to merge: <strong>roughly 12–15 focused hours</strong>. The capture track runs parallel to the axis track and they only converge at the relaunch check.</p>
+
+<h3>Sitting 1 — Lock the axis and seed the data (~2.5 h)</h3>
+<ul>
+  <li><strong>A1.</strong> Ninety minutes with audit section 3: the seven fields, allowed values, Green/Amber/Red definitions, trustee-note format. Amend, then freeze. Everything downstream depends on it.</li>
+  <li><strong>A2.</strong> Add headers <code>jobs</code>, <code>data_location</code>, <code>trains_on_input</code>, <code>nonprofit_tier</code>, <code>dpia_flag</code>, <code>trustee_note</code>, <code>last_checked</code> to G1:M1 of the <code>tools</code> tab. Two minutes, safe any time — main's fetcher ignores them.</li>
+  <li><strong>Seed rows for B3.</strong> Fill the axis fields for two or three tools Jasmin knows cold, provisional fact values within the frozen allowed sets, her own first-pass <code>dpia_flag</code> and <code>trustee_note</code>. Leave one row deliberately empty so B3 builds the empty state. Fifteen minutes, corrected later by the A4 sourced pass.</li>
+  <li><strong>Chip colours.</strong> Decide the three DPIA chip hex values (text-labelled chips, never colour alone; forest green and burnt orange need explicit sign-off to reuse). Either pre-decide or make the call live in the B3 session — the session cannot invent them.</li>
+</ul>
+
+<h3>Session A — B3, ToolCard and filters (code session)</h3>
+<p>The last big code block. Scope: render the axis fields on the card; DPIA flag as a text-labelled chip; nonprofit tier highlighted; trustee note inside the expanded verdict; <code>CATEGORIES</code> becomes the six comms jobs with contains-matching; three sector toggles above the grid (Has nonprofit pricing / Doesn't train on your content / DPIA green); <code>last_checked</code> display; place both C4 strings from the addendum verbatim.</p>
+<div class="note"><p><strong>Add to B3's scope, load-bearing:</strong> rows without completed axis fields are hidden from the grid, and the counter counts only visible rows. This is what makes Gate 1 self-resolving — the site relaunches smaller and grows back verified, exactly as F2 intends. Without it, triage alone doesn't make the counter true.</p></div>
+
+<h3>Sitting 2 — Row triage (~1.5–2 h)</h3>
+<p><strong>A3.</strong> One pass through the 66 rows against the locked axis: keep, cut, or judged-not-recommended. Delete the cuts. Roughly 21 rows are developer tooling that belongs on My Stack, not the buyer-facing directory. Keeps the three or four public "judged, not recommended" rows (DeepSeek, Grok). Ceiling 45, target roughly 40.</p>
+
+<h3>Session B — A4, fact research for the top ten (Cowork session)</h3>
+<p>Data location, training policy on the specific tier, nonprofit tier, pricing — each with a source link, delivered as a table for Jasmin's review. Facts only; the session writes no judgement fields. Needs A1 and A3 done so the ten rows are known.</p>
+
+<h3>Sitting 3 — The judgement sprint (~3–4 h, split across days if needed)</h3>
+<ul>
+  <li><strong>A5.</strong> Rewrite the top ten verdicts against the axis, including the public failures. The tone change made real: name the sector catch.</li>
+  <li><strong>A6.</strong> Fill <code>dpia_flag</code> and <code>trustee_note</code> for the same ten. Never automated.</li>
+</ul>
+
+<h3>Capture track — parallel to everything above</h3>
+<ul>
+  <li><strong>C1.</strong> Edit <code>reports/2026-08-22-ai-use-policy-template-draft.md</code> (~1–2 h). Known gaps flagged in the draft: no training section despite step five promising one; section 7 needs a real list; consider retention/deletion of chat histories and a line on image copyright.</li>
+  <li><strong>C2.</strong> Decide brand (The Edit's cobalt/Chillax or the consultancy's ochre/Source Serif 4) and format. The copy promises a document "written to be adapted", so an editable file outranks a beautiful PDF. Once decided, a session produces the branded file.</li>
+  <li><strong>C3.</strong> Publish the gated Substack post that delivers the template, then test the whole flow from a clean browser: site → gate → subscribe → template in hand. This is Gate 2.</li>
+</ul>
+
+<h3>The admin hour — automations (E series)</h3>
+<p>One sitting, roughly an hour, any time before merge:</p>
+<ul>
+  <li><strong>E1.</strong> Confirm the fortnightly task is actually in flag-only mode (instructed 22 Aug, unconfirmed).</li>
+  <li><strong>E3.</strong> Re-point the Rundown Routine's extraction rule to sector-relevant stories only. Do not pause the Routine — it writes dated rows and gaps hurt.</li>
+  <li><strong>E4.</strong> Revoke PAT 16554137. Exposure with no function, open since July.</li>
+  <li><strong>E5.</strong> Rewrite the Routine's dispatch step to the GitHub MCP tool; delete the curl instructions and the PAT from the prompt.</li>
+  <li><strong>E6.</strong> Paste the dedupe and shared-secret code into the Apps Script; hand-delete the duplicate 3 and 6 July <code>whats_new</code> batches.</li>
+</ul>
+
+<h3>Optional before merge</h3>
+<ul>
+  <li><strong>B5.</strong> New <code>og-image.png</code> — the current artwork carries the old brand message. Design work; a session can draft options, Jasmin decides. Ship-without risk: social cards show stale artwork, not wrong facts. Fine to do post-merge if time is tight.</li>
+  <li><strong>B7.</strong> Dead-code sweep (Subscribe.tsx, StatusBadge, ~44 unused shadcn components, lovable-tagger, stale lockfiles). Session job, explicitly optional.</li>
+</ul>
+
+<h3>Relaunch sequence</h3>
+<ul>
+  <li><strong>F2.</strong> The relaunch check: sector-first on every surface within two clicks; every visible row has its axis fields; the gate delivers the template from a clean browser; hidden-row mechanic confirmed live. Includes the CLAUDE.md edit removing the October-week timing language.</li>
+  <li><strong>F3.</strong> Merge to <code>main</code> with sign-off and a clear day to watch. Vercel builds silently — check the Deployments tab if nothing changes in five minutes.</li>
+  <li><strong>F4 = D1–D5, at or just after merge, any order:</strong> consultancy site Edit description (D1); Substack about page (D2); the cadence contradiction — Substack promises weekly, The Edit promises nothing, decide which gives (D3); LinkedIn featured/about (D4); launch announcement — "no tool appears until it has been through the checks" does the work (D5). Sessions draft D1, D4 and D5 with Jasmin; D2 and D3 are decisions before they are edits.</li>
+</ul>
+
+<h2>4 · Dependency summary</h2>
+<table>
+  <tr><th>Item</th><th>Owner</th><th>Blocked by</th><th>Est.</th></tr>
+  <tr><td>A1 axis lock</td><td>J</td><td>—</td><td>90 min</td></tr>
+  <tr><td>A2 headers + seed rows + chip colours</td><td>J</td><td>A1</td><td>~45 min</td></tr>
+  <tr><td>B3 ToolCard/filters (incl. hidden-row mechanic)</td><td>S</td><td>Seeds, chip colours</td><td>1 session</td></tr>
+  <tr><td>A3 triage</td><td>J</td><td>A1</td><td>1.5–2 h</td></tr>
+  <tr><td>A4 fact table, top ten</td><td>S→J review</td><td>A1, A3</td><td>1 session</td></tr>
+  <tr><td>A5 + A6 verdicts and judgement fields</td><td>J</td><td>A4</td><td>3–4 h</td></tr>
+  <tr><td>C1 template edit</td><td>J</td><td>—</td><td>1–2 h</td></tr>
+  <tr><td>C2 brand + format, then file build</td><td>J, then S</td><td>C1</td><td>30 min + session</td></tr>
+  <tr><td>C3 gated post + flow test</td><td>J</td><td>C2</td><td>~1 h</td></tr>
+  <tr><td>E1/E3–E6 admin hour</td><td>J</td><td>—</td><td>~1 h</td></tr>
+  <tr><td>B5 og-image (optional pre-merge)</td><td>J+S</td><td>—</td><td>~1 h</td></tr>
+  <tr><td>B7 dead-code sweep (optional)</td><td>S</td><td>—</td><td>1 session</td></tr>
+  <tr><td>F2 relaunch check</td><td>J+S</td><td>All gates</td><td>~1 h</td></tr>
+  <tr><td>F3 merge + watch</td><td>J</td><td>F2, sign-off</td><td>clear day</td></tr>
+  <tr><td>F4 / D1–D5 cross-channel</td><td>J+S</td><td>F3</td><td>2–3 h</td></tr>
+</table>
+
+<h2>5 · Post-launch backlog (unchanged, deliberately deferred)</h2>
+<ul>
+  <li>Rolling re-verdicts for the remaining ~25 keep-rows, 15–20 minutes each; rows stay hidden until done and the directory grows back verified.</li>
+  <li>E2 rebuild of the fortnightly task as the checks engine; E7 optional pipeline collapse (direct Apps Script call, delete the GitHub relay) once the redirect check passes.</li>
+  <li>Gates-audit debt: five AA contrast failures, heading skips, two homepage <code>&lt;h1&gt;</code>s, matter-js on every route.</li>
+  <li>GA4 consent mode — the banner records a choice nothing reads.</li>
+  <li><code>bun.lock</code> re-resolve off the Lovable mirror (serves fine today, availability risk remains).</li>
+  <li>Dependency bumps via bun, never <code>npm audit fix</code>; mobile header fix confirmation on a real iPhone.</li>
+</ul>
+
+<h2>6 · Standing rules, unchanged by the acceleration</h2>
+<p>Nothing merges without Jasmin's explicit sign-off. Positioning is "charities, cultural organisations and heritage", never "values-led organisations". Machines maintain facts; the DPIA flag, trustee note and verdict are Jasmin's alone. Copy arrives as approved exact strings. Row ceiling 45. UK English, contractions, no em dashes anywhere. Suspect measurements get reproduced from a neutral context before anyone acts on them. Wraps update the handover's sections 2 and 5 and SCRATCHPAD, every session, including the fast ones.</p>
+
+</main>
+</body>
+</html>
