@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { fetchTools, type Tool, CATEGORIES } from "@/lib/sheets";
+import { fetchTools, isComplete, type Tool, CATEGORIES } from "@/lib/sheets";
 
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
@@ -113,8 +113,14 @@ const Tools = () => {
 
   useEffect(() => {
     fetchTools().then((t) => {
+      // The error state keys off the raw fetch, not the filtered list: zero
+      // complete rows is a legitimate result (the directory relaunches small
+      // and grows back verified), whereas a zero-row fetch is a 403.
       if (t.length === 0 && import.meta.env.VITE_GOOGLE_SHEETS_ID) setError(true);
-      setTools(t);
+      // Incomplete rows do not appear anywhere in the directory. Filtering
+      // here, at the source, rather than at each render site means nothing
+      // downstream — grid, search, shared stack — can reintroduce a hidden row.
+      setTools(t.filter(isComplete));
       setLoading(false);
     });
   }, []);
