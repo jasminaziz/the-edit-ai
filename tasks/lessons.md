@@ -297,3 +297,47 @@ Session corrections and rules built up over time. Add entries; do not delete his
   uncommitted with "Commit is Jasmin's call" in its own notes. Report what is
   there, run the check it asked for, recommend, then wait. Passing tests are
   not authorisation.
+
+- **To test a component whose content fields you are forbidden from authoring,
+  patch `fetch` in the browser with obviously-marked placeholder data
+  (2026-08-23).** B3 had to prove the ToolCard, the DPIA chips, the job filter
+  and the three toggles all worked, but no Sheet row passed the completeness
+  predicate yet and this project forbids any session from writing `dpia_flag`,
+  `trustee_note` or a verdict. Waiting for Jasmin to seed rows would have meant
+  shipping eight commits with no render check at all.
+
+  The method: in the dev-server tab, wrap `window.fetch` so a request whose URL
+  contains `values/tools` resolves to `{ok: true, json: () => ({values: ROWS})}`
+  with a hand-built header row plus data rows, and everything else falls
+  through to the original. Then force the component to remount by clicking
+  through the SPA nav (a page reload discards the patch). Nothing is written to
+  disk, to the repo or to the Sheet.
+
+  Three rules that make it safe rather than a way of faking a green result:
+  1. **Mark the invented text.** Every verdict and trustee note in the fixture
+     read "PLACEHOLDER ..." so a screenshot could never be mistaken for real
+     copy, and so no fabricated sentence could leak into a report as if it
+     were Jasmin's judgement.
+  2. **Reload afterwards and confirm the fixture is gone**, then re-read the
+     real state. Leaving a patched `fetch` in the tab would have left the next
+     person looking at synthetic data believing it was live.
+  3. **Say in the wrap that the check was fixture-based, and record the re-run
+     checklist.** A fixture proves the code paths; it does not prove the thing
+     works on real data. B3 was recorded as "built, not finally verified" for
+     exactly this reason and F2 was gated on repeating the checks for real.
+
+  Use the fixture to exercise the case that is hardest to get from real data:
+  here, a row with `trains_on_input: "Varies by tier"` that was otherwise
+  complete and Green, to prove the training toggle refused it. That single row
+  tested the locked rule most likely to be silently widened later. The
+  constraint that forced this will recur on every judgement field this project
+  has, so reach for the fixture rather than for a weaker check.
+
+- **A completeness gate stated as "every visible row has X" is vacuously true
+  when nothing is visible (2026-08-23).** The F2 relaunch check read "every
+  visible row has its axis fields", which an empty directory passes perfectly.
+  Since B3 also made the grid hide incomplete rows, the failure mode and the
+  gate cancelled each other out: the emptier the site, the cleaner the check.
+  Fixed by adding an explicit floor (no merge below ten complete rows). When a
+  quality gate is written as a universal over a filtered set, ask what it says
+  when the set is empty, and put a floor under it.

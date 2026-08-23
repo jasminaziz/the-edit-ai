@@ -163,6 +163,68 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-23 (B3: ToolCard and filters — branch overhaul/sector-axis)
+
+**Branch: overhaul/sector-axis.** Eight commits, `54e8a6a` through `aabc6f2`,
+one job each. `bunx tsc --noEmit` clean and `bun test` green before every
+commit. Suite 24 to 56 (32 new tests). Nothing merged to main.
+
+Built, in the order Jasmin set:
+
+1. `54e8a6a` — `isComplete()` in `sheets.ts`, plus `normaliseDpiaFlag()` and the
+   three toggle predicates `hasNonprofitPricing`, `doesNotTrainOnInput`,
+   `isDpiaGreen`. All exported and tested.
+2. `d06041b` — the directory renders complete rows only, filtered once at the
+   fetch site so grid, search and shared-stack all work off the same list.
+3. `457d9c9` — the homepage counter uses the same predicate. Caption untouched.
+4. `c9ab5d0` — the seven axis fields on the ToolCard.
+5. `108b9f4` — `CATEGORIES` becomes the six comms jobs, contains-matching.
+6. `b7f7180` — the three sector toggles, plus the approved filter empty state.
+7. `f1da4a2` — the two C4 strings placed.
+8. `aabc6f2` — stale allowed-value comments corrected.
+
+**Two decisions taken during the session, both Jasmin's:**
+
+- `dpia_flag` must match Green / Amber / Red canonically (case-insensitive,
+  trimmed) for a row to count as complete. It is the only field driving a
+  visual with no fallback, so `Amberish` would otherwise have left a complete,
+  visible row rendering a chip with no label. The same normalisation feeds the
+  chip lookup, so a lower-case Sheet value still resolves. `isDpiaGreen` is
+  named for the data value, not the chip label: **do not rename it to match
+  the microcopy.**
+- The in-grid CTA renders `Get the template →`, with the arrow, though the
+  addendum banks it without one. The arrow is the affordance the nav and footer
+  already carry and CLAUDE.md requires a visitor to see identical labels.
+  Recorded in the commit message so a later reader does not "correct" it back.
+
+**Status: BUILT, NOT FINALLY VERIFIED.** No row in the Sheet passes the
+predicate yet, so the directory renders empty and the counter reads 0 — both
+correct behaviour. Every browser check therefore ran against a throwaway
+browser-side fixture, not real data. The ten-point re-run checklist lives in
+the B3 row of section 5 of the handover. **F2 cannot be signed off until it has
+been repeated against real Sheet rows.**
+
+**Confirmed, correcting the handover:** the localhost Sheets key works. Real
+tool names rendered from the live Sheet on the homepage hero. B1 is done.
+
+**Next step:** Jasmin adds the four seed rows (Canva, ChatGPT, Microsoft
+Copilot, DeepSeek) plus the deliberately blank Descript keeper, then a session
+runs the B3 checklist against them. After that: A3 triage, A4 fact research,
+the A5 and A6 judgement sprint, the C1 to C3 capture track, then F2.
+
+**Three items raised for the relaunch check, all needing Jasmin not code:**
+F2a homepage hero pills (positioning question, logged 23 Aug), F2b shared-stack
+links dropping incomplete tools (confirmed correct behaviour, logged so it is
+not read as a regression), and **F2c, new: filter rail overflow** — the six job
+labels are far longer than the six tool types they replace, so the rail wraps
+to two lines on desktop and clips its last chip when scrolled. Pre-existing
+treatment, made prominent by the longer labels. Wanted before the merge, not
+after, because the six jobs are the taxonomy the re-point is expressed in.
+
+**F2 gained a floor:** the merge does not proceed with fewer than ten complete
+rows in the grid. "Every visible row has its axis fields" was vacuously true
+with nothing visible, so an empty directory would have passed the gate.
+
 ### 2026-08-23 (Cowork sitting: A1, the axis is locked)
 
 No code changed. The evaluation axis is frozen and the spec is

@@ -54,8 +54,10 @@ captures the email through a gated Substack post, the Substack builds trust,
 rows, six tool-type categories, Supabase email form in the footer. Nothing
 about the re-point is public yet.
 
-**Branch `overhaul/sector-axis`:** eleven commits, `da7fe13` through
-`88961d5`, pushed. Nothing merged.
+**Branch `overhaul/sector-axis`:** pushed, nothing merged. Eleven commits
+`da7fe13` through `88961d5` from the 22 Aug sessions, then three doc commits on
+23 Aug, then the eight B3 commits `54e8a6a` through `aabc6f2` (23 Aug, this
+Mac). Test suite went 24 to 56.
 
 Done on the branch:
 
@@ -92,11 +94,31 @@ and commit. And a queue item 11 escalation: the Lovable registry mirror
 a neutral network; if real, cold Vercel builds are exposed today. Details in
 SCRATCHPAD.
 
-**The Sheet:** 66 rows in `tools`, untriaged. Columns G to M do not exist yet.
+**The Sheet:** roughly 66 rows in `tools`, untriaged. **Columns G to M now
+exist:** the A2 headers were added 23 Aug and verified independently through
+the Drive connector, which read row 1 as name, category, status, cost,
+verdict, url, jobs, data_location, trains_on_input, nonprofit_tier,
+dpia_flag, trustee_note, last_checked. That same read parsed 67 data rows
+rather than 66; the connector is flaky enough that this is a glance-at-it
+during A3, not a correction. Seed rows are Jasmin's to add and must be
+confirmed in the Sheet before any session builds against them.
 
 **The axis:** locked 23 Aug. `reports/2026-08-23-axis-locked.md` is the frozen
 spec and outranks audit section 3 on all allowed values and definitions. The
 A1 decision sheet is historical now that its rulings are settled.
+
+**B3: built, NOT finally verified.** The eight commits above deliver the whole
+of B3 against the locked spec, tsc clean and 56/56 at every commit. But no row
+in the Sheet passes the completeness predicate yet, so the directory currently
+renders empty and the counter reads 0, and every browser check ran against a
+throwaway browser-side fixture rather than real data. The code is trustworthy;
+the claim that it works on the real Sheet is not yet earned. The re-run
+checklist is in the B3 row of section 5. **F2 cannot be signed off until those
+checks have been repeated against real Sheet data.**
+
+Confirmed same session, correcting this document: the localhost Sheets key
+works. Live tool names rendered from the real Sheet on the homepage hero. B1 is
+done.
 
 ---
 
@@ -212,9 +234,9 @@ it. **J+S** means a session drafts and Jasmin decides.
 
 | # | Task | Owner | Status |
 |---|---|---|---|
-| B1 | Create the localhost Sheets API key. Cloud Console as `jasminaziz1@gmail.com`, restricted to the Sheets API and referrer `http://localhost:8080/*`, then replace `VITE_GOOGLE_SHEETS_API_KEY` in `.env.local`. Without it local dev renders but every page 403s. | J | Not started |
+| B1 | Create the localhost Sheets API key. Cloud Console as `jasminaziz1@gmail.com`, restricted to the Sheets API and referrer `http://localhost:8080/*`, then replace `VITE_GOOGLE_SHEETS_API_KEY` in `.env.local`. Without it local dev renders but every page 403s. **Confirmed done 23 Aug** by the B3 session: real Sheet data rendered on localhost:8080. | J | **Done** |
 | B2 | **Verify react-helmet-async actually injects tags.** Done 22 Aug (evening session, real Chrome via the desktop bridge). Homepage canonical count 1, `/tools` full-load canonical count 1. Both non-zero, closed. Full numbers and two new findings (www redirect, possible SPA-navigation staleness) in SCRATCHPAD items 10, 12 and 13. | J | **Closed 22 Aug** |
-| B3 | **ToolCard and filters session.** Render the axis fields on the card, DPIA flag as a text-labelled chip (never colour alone), nonprofit tier as a highlighted line, trustee note inside the expanded verdict. `CATEGORIES` becomes the six comms jobs with contains-matching for multi-tagged tools. Three sector toggles above the grid: Has nonprofit pricing, Doesn't train on your content, DPIA green. Needs B1 (done) and seed rows from A2. The two C4 CTA strings are banked. **New blocker found 23 Aug: the card and filter microcopy does not exist.** Roughly twelve visitor-facing strings are unwritten (three DPIA chip labels, five card field labels, three toggle labels, the filter empty state). Code sessions never author copy, so these must be authored with Cowork Claude and banked as exact strings before B3 runs. Also in scope per the locked spec: one completeness predicate driving both the grid filter and the homepage counter. | S | Blocked on seed rows and microcopy |
+| B3 | **ToolCard and filters session. BUILT 23 Aug, NOT finally verified.** Eight commits, `54e8a6a` through `aabc6f2`, one job each, tsc clean and green at every one; suite 24 to 56. Delivered: `isComplete()` in `sheets.ts` driving both the grid and the homepage counter; `dpia_flag` canonicalised so a near-miss value (`Amberish`) fails completeness rather than rendering a chip with no label; the three toggle pass rules extracted as tested predicates so `Varies by tier` cannot quietly start passing; the seven axis fields on the card with all twelve microcopy strings placed verbatim; jobs chips replacing the legacy category chip; `CATEGORIES` as the six comms jobs with case-insensitive contains-matching; the three toggles as `aria-pressed` buttons, cobalt on cream; the approved filter empty state, shown only when a filter is active; and both C4 strings. **The CTA renders as `Get the template →`, with the arrow, on Jasmin's explicit ruling of 23 Aug — the addendum banks it without one. Do not strip it back off.** **Why not verified:** no Sheet row passes the predicate, so every browser check ran against a throwaway fixture. **Re-run checklist, once the seed rows are in — do not reconstruct this, and do not run it against a fixture:** (1) the grid shows exactly the complete rows and Descript does not appear; (2) the homepage counter equals the number of cards on screen; (3) all three DPIA chips render their locked colours, and hold them on the hovered cobalt card; (4) a job filter returns multi-job tools as well as single-job ones; (5) a row with `Varies by tier` fails the training toggle; (6) `Has nonprofit pricing` excludes every `None` row; (7) C4(b) appears under Amber and Red and never under Green; (8) the template card sits after the sixth card and vanishes under any active filter; (9) all four `Get the template →` labels are identical; (10) an empty filter combination shows the approved string, not "Back to Home". | S | **Built, awaiting verification against real rows** |
 | B4 | **SEO repairs.** (a) per-page OG in `SEO.tsx`: **done 22 Aug** (late evening session) — og:title/og:description/og:url plus twitter:title/twitter:description derived from the existing props, 5 new tests, suite 24/24, tsc clean; verified in the cloud sandbox against a fresh resolve; the Mac check was then run against `bun.lock` (tsc clean, 24/24) and it is **committed** as `869dc5f`. (b) meta for `/submit` and `/stack`: **done and committed 22 Aug** as `6b7b221`. All four approved strings placed verbatim via the `SEO` component. Stack.tsx bypasses the Layout chrome, so its placement was verified in-browser rather than assumed: the app-level `HelmetProvider` covers it and both tab titles resolve correctly on a forced reload. **B4 is now fully closed.** | S | Closed. (a) `869dc5f`, (b) `6b7b221` |
 | B5 | New `og-image.png`. The current one carries the old brand message. Design work, not code. | J | Not started |
 | B6 | **Decide the Submit form.** Decided by Jasmin 22 Aug (night): keep the page, swap the form for an email link to `hello@jasminaziz.co.uk`. No new infrastructure, nothing gets binned. Implementation spec in `reports/2026-08-22-copy-pack-addendum.md` (follow the FooterEmailCapture link-block pattern); any new visible copy comes back to Jasmin first. **Implemented and committed 22 Aug** as `e3e1add`. No new visitor-facing copy was needed: the CobaltZone heading and subheading already carry the invitation, so the email address itself is the only visible text in the block, and it reuses the old submit button's exact classes, colours and hover. The form's dead code (FormField, the state hooks, handleSubmit, handleChange) is left in place for B7. | J+S | Done, `e3e1add` |
@@ -260,7 +282,10 @@ a site that does not match.
 | # | Task | Owner | Status |
 |---|---|---|---|
 | F1 | ~~**The counter blocker.**~~ **Closed 22 Aug, commit `f514b0a`.** The counter was reading `tools.length` under "tools that passed the checks" with 66 untriaged rows. Fixed by changing the number, not the approved caption: it now counts rows with a non-empty `last_checked`, the field stamped when a row's facts are verified. Reads 0 until the October triage fills columns G-M, then rises on its own with no further code change, and fails safe if triage slips. Caveat: `last_checked` marks checked, not passed, so a "judged, not recommended" row would count; no field distinguishes them today. **No longer blocking the merge, and A3 no longer gates it.** | J+S | Closed |
-| F2 | **Relaunch check.** The live site reads sector-first on every surface reachable in two clicks. Every visible row has its axis fields. The gate delivers the template end to end from a clean browser. Rows without completed fields stay hidden, so the site relaunches smaller and grows back verified. **Hard gate added 23 Aug: every visible row's fact fields must have been through A4 with sources before merge, or the row gets blanked back to hidden.** The seed rows carry provisional values from the audit's worked examples plus a `last_checked` stamp, which makes them complete, visible and countable. Left unchecked that lets the homepage claim rows passed checks that never happened, which is the F1 problem returning through a side door. | J+S | Not started |
+| F2a | **Homepage hero consistency, Jasmin's ruling needed.** `HomeGravity` draws up to 18 pills from every `in_stack` row regardless of completeness, and the "What I'm running" strip has the same property, so the hero can name tools the directory refuses to show while the counter reads 4. Found by the B3 session 23 Aug. Not a bug fix: it is a positioning question, because the fix direction depends on whether the hero makes a checked claim or a personal one. Filter to complete rows, or reword the strip. | J | Not started |
+| F2b | **Shared stack links drop incomplete tools.** A saved `?stack=` link naming a row that is no longer complete quietly drops it, and `/stack` shows its "Tool details unavailable" fallback for the same rows. Correct behaviour, logged so the relaunch check does not read it as a regression. | S | Confirmed correct |
+| F2c | **Filter rail overflow, Jasmin's design judgement needed BEFORE merge.** The six comms jobs are much longer strings than the six tool types they replace ("Case studies & storytelling" against "Design"), so the filter rail now wraps to two lines on desktop, and in its compact scrolled state it becomes a horizontal scroller with the last chip clipped behind the existing gradient fade. The overflow treatment is pre-existing and was not introduced by B3; the longer labels are what made it prominent. This is a judgement call, not a bug fix, and it is wanted before the merge rather than after: the six jobs are the taxonomy the whole re-point is expressed in, and a clipped chip hides part of that taxonomy from the visitor. Found by the B3 session 23 Aug. **Do not fix it against a fixture** — it needs the real rail at real widths. | J | Not started |
+| F2 | **Relaunch check.** The live site reads sector-first on every surface reachable in two clicks. Every visible row has its axis fields. The gate delivers the template end to end from a clean browser. Rows without completed fields stay hidden, so the site relaunches smaller and grows back verified. **Hard gate added 23 Aug: every visible row's fact fields must have been through A4 with sources before merge, or the row gets blanked back to hidden.** The seed rows carry provisional values from the audit's worked examples plus a `last_checked` stamp, which makes them complete, visible and countable. Left unchecked that lets the homepage claim rows passed checks that never happened, which is the F1 problem returning through a side door. **Floor added 23 Aug: the merge does not proceed with fewer than ten complete rows rendering in the grid.** As originally written, "every visible row has its axis fields" is vacuously true when nothing is visible, so an empty directory would have passed this gate. Ten tracks the A4 and A5 top-ten pass, so it is achievable rather than arbitrary. **Also required before sign-off: the B3 re-run checklist, against real Sheet data.** See F2a, F2b and F2c for the three items this gate inherits. | J+S | Not started |
 | F3 | **Merge to `main`.** Only with Jasmin's explicit sign-off, and only when she has a clear day afterwards to watch the deploy. Vercel builds silently: a failed build serves the last good deploy, so check the Deployments tab if nothing changes within five minutes. | J | Blocked on C3, F1 |
 | F4 | Then D1 to D5, in any order. | J | Blocked on F3 |
 
