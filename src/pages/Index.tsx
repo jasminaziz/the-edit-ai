@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchTools, fetchWhatsNew, type Tool, type WhatsNew } from "@/lib/sheets";
+import { fetchTools, fetchWhatsNew, isComplete, type Tool, type WhatsNew } from "@/lib/sheets";
 import { parseDate } from "@/components/WhatsNewCard";
 import { HomeGravity } from "@/components/HomeGravity";
 import { Counter } from "@/components/ui/animated-counter";
@@ -31,10 +31,12 @@ const Index = () => {
   }, []);
 
   const stackTools = tools.filter((t) => t.status === "in_stack").slice(0, 4);
-  // "Passed the checks" counts rows that have actually been through the axis
-  // checks, not every row in the Sheet. last_checked is stamped when the fact
-  // fields are verified, so this reads 0 until the October triage fills them.
-  const checkedTools = tools.filter((t) => t.last_checked.trim() !== "").length;
+  // "Passed the checks" counts complete rows, using the same predicate the
+  // directory grid renders on, so this number and the cards on /tools cannot
+  // disagree. It previously counted a non-empty last_checked, which would have
+  // counted a row that carried a date but was still missing its trustee note —
+  // a row the grid refuses to show. Reads 0 until the axis fields are filled.
+  const checkedTools = tools.filter(isComplete).length;
   const isMobile = useIsMobile();
   const latestNews = [...news]
     .sort((a, b) => {
