@@ -201,6 +201,12 @@ Colours (hex only, never names):
   colour or badge) · `#1A1510` text · `#9A8F82` muted · `#E8E2D8` borders
 - `#2D6A4F` forest green (In My Stack badge only) · `#E8572A` burnt orange
   (legacy On My Radar badge, renders nowhere)
+- `#EEF0FB` cobalt tint, the established chip and badge background paired
+  with `#2D35C9` text (index.css, ToolCard, Learning, Stack). Documented
+  2026-08-23: it was already in four places and missing from this list.
+- DPIA chips, locked 2026-08-23: Green `#2D6A4F` on `#E4F0E9`, Amber
+  `#7A5200` on `#FAF0DB`, Red `#A8261C` on `#FBE9E6`, text and 1px border in
+  the same hex. AA-verified against both `#FFFFFF` and `#FAF8F4`.
 
 Fonts: Chillax 700 display (Fontshare); Plus Jakarta Sans 400/500/600 body
 (Google Fonts). DM Mono permanently retired.
