@@ -52,14 +52,21 @@ Single value.
 - EU option
 - US
 - Your tenant
+- Other
 - Unclear
 
 **Definition.** Where inputs are processed and stored on the tier a small
 charity would actually buy. `EU option` means residency exists but must be
 chosen or paid for. `Your tenant` means the tool runs inside infrastructure
 the organisation already controls, under terms it already accepted, and it
-is the value Microsoft Copilot and its like take. `Unclear` is a legitimate
-published value and is itself a warning.
+is the value Microsoft Copilot and its like take. `Other` means a
+jurisdiction outside the UK, EU and US, named in the verdict; it exists
+because the judged-not-recommended rows are exactly the ones the first six
+values could not describe, and calling a known jurisdiction `Unclear` would
+be a lie. `Unclear` is a legitimate published value and is itself a warning.
+
+**Amended 23 August 2026,** after seeding surfaced that DeepSeek had no
+representable value. This is the only amendment to the locked axis so far.
 
 Where a tool differs by tier, one value per row, resolved by the buying-tier
 rule above. The fuller story belongs in the verdict.

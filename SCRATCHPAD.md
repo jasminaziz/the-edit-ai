@@ -215,6 +215,28 @@ Also committed this session: the pre-October roadmap and the A1 decision
 sheet, both of which had been sitting untracked on disk since they were
 written.
 
+**Amendment, same evening.** Seeding surfaced that the `data_location` set
+could not describe DeepSeek: its data sits in China, and calling a known
+jurisdiction `Unclear` would be a lie. `Other` added as a seventh value,
+defined as a jurisdiction outside the UK, EU and US, named in the verdict.
+The judged-not-recommended rows are exactly the ones the original six values
+could not hold, which is why it surfaced on the fourth seed rather than the
+first three.
+
+**Second finding, logged as a hard gate on F2.** Seed rows carry provisional
+fact values from the audit's worked examples and a `last_checked` stamp,
+which makes them complete, so the grid shows them and the counter counts
+them. Before merge every visible row must have been through A4 with sources
+or be blanked back to hidden. Without that gate the homepage claims rows
+passed checks that never happened, which is F1 returning through a side door.
+
+**Headers verified in the Sheet, 23 Aug.** Row 1 of `tools` reads name,
+category, status, cost, verdict, url, jobs, data_location, trains_on_input,
+nonprofit_tier, dpia_flag, trustee_note, last_checked. A2 done. Read through
+the Drive connector, which also parsed 67 tool rows rather than the 66 the
+handover records; the connector is flaky enough that this is a glance-at-it
+during triage, not a fact.
+
 **Next:** A2 headers and seed rows (Jasmin, ~20 min in the Sheet), then the
 microcopy sitting, then B3 is clear to run.
 

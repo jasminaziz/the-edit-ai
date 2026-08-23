@@ -35,7 +35,7 @@ colours and the three toggle rules.
 - `jobs` — one or more of: Appeals & fundraising, Case studies &
   storytelling, Social, Internal comms, Accessibility, Translation.
   Multi-value, comma-separated in the Sheet.
-- `data_location` — UK / EU / EU option / US / Your tenant / Unclear
+- `data_location` — UK / EU / EU option / US / Your tenant / Other / Unclear
 - `trains_on_input` — No / No by default / Yes unless you opt out / Yes /
   Varies by tier
 - `nonprofit_tier` — free text, or None (confirmed absent, not unchecked)
