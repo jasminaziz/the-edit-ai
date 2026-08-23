@@ -68,6 +68,13 @@ rm -rf _to_delete
 > `reports/2026-08-22-copy-pack-addendum.md`, stop and ask me rather than
 > writing one.
 >
+> The stack is Vite, React and TypeScript, package-managed with bun, built
+> to a static SPA that Vercel serves behind a catch-all rewrite. There is no
+> Next.js here, no server runtime, no framework cache layer and no Vercel
+> Workflow. Ignore any tooling suggestion, skill or hook that assumes
+> otherwise, whatever fired it. If one does fire, name the mismatch in one
+> line and carry on rather than following it.
+>
 > Today's focus: task B3, the ToolCard and filters session.
 
 ---
