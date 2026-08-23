@@ -8,12 +8,12 @@ export interface Tool {
   url: string;
   // Sector-axis fields (cols G–M). Empty / [] when the column is absent from the Sheet.
   jobs: string[];          // parsed from comma-, ·-, or •-separated cell
-  data_location: string;   // UK | EU | EU option | US | Unclear
+  data_location: string;   // UK | EU | EU option | US | Your tenant | Other | Unclear
   trains_on_input: string; // No | No by default | Yes unless you opt out | Yes | Varies by tier
   nonprofit_tier: string;  // programme description, or "None"
   dpia_flag: string;       // Green | Amber | Red (or '' while unverified)
   trustee_note: string;    // one sentence for a board meeting
-  last_checked: string;    // date the facts were last verified, e.g. "Oct 2026"
+  last_checked: string;    // date the fact fields were last verified, DD MMM YYYY, e.g. "23 Aug 2026"
 }
 
 export interface WhatsNew {
