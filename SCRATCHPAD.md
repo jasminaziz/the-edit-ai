@@ -175,6 +175,73 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-24 (A4 fact pass, then the B3 checklist against real rows)
+
+Two jobs, no code changed, nothing committed by the session.
+
+**A4 for the four seed rows.** Sourced values with links in
+`reports/2026-08-24-a4-fact-pass-seed-rows.md`, which is the audit trail the
+F2 hard gate requires for every visible row. Both `None` values were wrong:
+OpenAI runs a nonprofit programme putting ChatGPT Business at $8 per user
+against $20 list, and Microsoft gives 15% off Copilot with Copilot Chat
+included free on a Microsoft 365 subscription. Canva and ChatGPT both became
+`Varies by tier`, each for a documented reason: Canva does not publish whether
+a Nonprofits account is treated as Pro (opt-out live) or Teams (excluded), and
+ChatGPT's free, Plus and nonprofit Business tiers give opposite training
+answers with no single tier a charity obviously lands on. DeepSeek moved from
+`Yes` to `Yes unless you opt out` because an opt-out toggle exists. Jasmin
+placed all twelve cells by hand. `last_checked` now reads 24 Aug 2026 on all
+four, which is the first date the stamp is true.
+
+**B3 re-run checklist, against real Sheet rows in a real browser.** Nine of
+ten pass. Item 8's first half is the only one outstanding and it is not a
+defect: proving the template card sits after the sixth card needs seven
+complete rows, and there are four. Its second half, vanishing under any active
+filter, passes.
+
+Passing: grid renders the four complete rows and Descript stays hidden; the
+homepage counter reads 4 against four cards; all three chips render the locked
+hex values exactly, text and 1px border matching; contains-matching returns
+multi-job and single-job tools together; **both `Varies by tier` rows fail the
+training toggle**, which is the rule the predicates were extracted to protect;
+the nonprofit toggle excludes the `None` row; the template line fires under
+Amber and Red and never under Green; the empty state renders the approved
+string verbatim with no Back to Home; and three of the four
+`Get the template →` labels are identical and point at `/policy-template`.
+
+Two caveats on method, both honest limits rather than findings. The chip hover
+condition was verified structurally, not with a real pointer: the chip colours
+are inline styles and no hover rule in any stylesheet targets them, so a
+hovered card cannot recolour them. And the fourth `Get the template →` label
+lives in the mobile nav, which only renders with the menu open at a narrow
+width; three of four confirmed.
+
+**F2c does not reproduce at full desktop width.** At a 1470px viewport the
+rail lays out on one line, all seven chips visible, `Translation` ending at
+1345px inside a rail box ending at 1375px. Nothing clips and nothing wraps.
+The wrap and clip seen on 23 August was a narrow-window artifact. The margin
+is 30px, so a 1280 or 1366 laptop will very likely clip; that needs one
+measurement at a narrower width before F2c can be closed rather than
+downgraded.
+
+**F2a confirmed, and larger than logged.** The homepage hero names eighteen
+tools. Three of them are in the directory. The other fifteen sit directly
+above the line reading 4 tools that passed the checks, and the What I'm
+running strip names Lovable, Vercel, GitHub and Claude Code, all four of which
+A3 removes from the directory entirely. Still Jasmin's positioning call, now
+with numbers on it.
+
+**Instrument note.** Page reads through the Chrome bridge run against
+whichever tab is focused unless a tab id is passed, which produced one round
+of nonsense results mid-session. Every check above was re-run pinned to the
+tools tab from a clean filter reset. Pass a tab id.
+
+**Outstanding for Jasmin:** the trustee-note drafting rule; whether Copilot
+stays Green given Bing web grounding sits outside the DPA and the EU Data
+Boundary by default with an admin switch to disable it; DeepSeek's note now
+that the Italy ban, the Berlin DSA report and the ICO letter are on file; and
+the three over-long notes, which are verdicts sitting in the wrong column.
+
 ### 2026-08-23 (late — Cowork state check, no code changed)
 
 Verification only. Nothing in `src/` touched, nothing committed to code.
