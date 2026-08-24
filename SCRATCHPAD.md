@@ -146,6 +146,18 @@ Cowork folder: None
     the dev-server helmet zeros and the sandbox mirror 403s). The per-page
     OG tags added in B4(a) inherit this correct behaviour. Nothing to fix.
 
+14. **CLAUDE.md contradicts itself on the DPIA chip colours
+    (2026-08-23).** Its design system section documents the locked pairings
+    (Green `#2D6A4F` on `#E4F0E9`, Amber `#7A5200` on `#FAF0DB`, Red
+    `#A8261C` on `#FBE9E6`) and then states thirty lines later that chip
+    colours are not yet assigned and that forest green must not be reused
+    without Jasmin's sign-off. Both sit in the operational source of truth,
+    so a code session could correctly refuse the locked Green. Also stale in
+    the same file: the "Current state" block still says the Sheet awaits its
+    G1:M1 headers and that the localhost key does not exist. Both are done.
+    Fix in one pass alongside the October timing language, which the roadmap
+    already books for merge.
+
 Done since the 2026-06-16 queue: my_stack live (21 rows), design_kit live
 (45 rows), nav/footer IA restructure, homepage attribution, font-display swap,
 whats_new automation fixed via MCP dispatch (2026-07-11), PWA install
@@ -162,6 +174,50 @@ flashes on iOS elastic scroll bounce).
 ---
 
 ## Session notes
+
+### 2026-08-23 (late — Cowork state check, no code changed)
+
+Verification only. Nothing in `src/` touched, nothing committed to code.
+Branch confirmed as `overhaul/sector-axis` at `e6b3d27`, in sync with origin,
+tree clean apart from two untracked files (`.claude/settings.local.json`,
+`reports/2026-08-23-next-thread-handover-prompt.md`). `main` still `47a0d1e`.
+
+**The Sheet, read rather than trusted.** The `tools` tab carries the G1:M1
+headers, so A2 is done and its section 5 status was stale. **No seed rows
+exist: G through M are empty on every row.** Every row emits all thirteen
+cells in the export, so this is a positive read of emptiness rather than an
+export dropping trailing blanks. The directory correctly renders nothing and
+the counter correctly reads 0.
+
+**Row count is 67, not 66.** Two reads now agree, but both came from the
+Drive connector, so it is one instrument twice. Confirm by eye during A3.
+
+Instrument note: `sheets.googleapis.com` is blocked from both the cloud
+sandbox and the device shell, so the localhost key cannot be exercised from
+a session at all. The Drive connector is the only Sheet read path a session
+currently has. Worth knowing before anyone plans a verification around it.
+
+**Three stale lines found in the docs.** Section 5 showed A2 as not started
+and E1 as not started; both corrected in the handover, E1 confirmed
+flag-only. `.claude/CLAUDE.md` still says chip colours are not yet assigned
+and forest green must not be reused without sign-off, roughly thirty lines
+below the locked pairings the same file now documents. A code session obeying
+the source of truth would refuse the locked Green chip. Logged as queue item
+14.
+
+**Decision taken, logged in handover section 4: no second, general,
+rebranded directory.** Asked and answered 23 Aug. The developer rows A3
+removes move to My Stack, so there is nothing to rescue; a general directory
+has no axis and therefore no moat; generality needs a row count one person
+cannot keep checked; and a mainstream audience is traffic the consultancy
+cannot sell to. The cost is the standing maintenance load, not the build. A
+broader impulse belongs in D2 and D3, not in a second product.
+
+**Next, unchanged:** the seed rows (Canva, ChatGPT, Microsoft Copilot and
+DeepSeek complete, Descript deliberately blank across G to M), then the B3
+re-run checklist against real rows in a real browser, capturing F2a and F2c
+for Jasmin in the same pass. Seed row mechanics, including the Sheets
+date-coercion trap on column M, were written out in the Cowork thread.
 
 ### 2026-08-23 (B3: ToolCard and filters — branch overhaul/sector-axis)
 

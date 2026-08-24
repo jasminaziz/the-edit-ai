@@ -103,6 +103,18 @@ rather than 66; the connector is flaky enough that this is a glance-at-it
 during A3, not a correction. Seed rows are Jasmin's to add and must be
 confirmed in the Sheet before any session builds against them.
 
+**Re-read 23 Aug, late.** The headers are there. **No seed rows exist: G
+through M are empty on every row**, so nothing passes the completeness
+predicate, the grid renders nothing and the counter reads 0, all correct
+behaviour. Every row emitted all thirteen cells, so this is a positive read
+of emptiness rather than truncated trailing blanks. The row count read 67
+again; two reads agree but both came from the Drive connector, so treat 67
+as likely and confirm by eye during A3. Note for any session planning a
+verification: `sheets.googleapis.com` is blocked from both the cloud sandbox
+and the device shell, so the Drive connector is the only Sheet read path a
+session has, and the localhost key can only be exercised in Jasmin's own
+browser.
+
 **The axis:** locked 23 Aug. `reports/2026-08-23-axis-locked.md` is the frozen
 spec and outranks audit section 3 on all allowed values and definitions. The
 A1 decision sheet is historical now that its rulings are settled.
@@ -210,6 +222,14 @@ done.
 - **Canonical base is `https://theeditai.co.uk`, no www.**
 - **New buttons on cream grounds are cobalt `#2D35C9` with `#FAF8F4` text.**
   Lime `#C8F04A` stays on dark grounds and is never a category colour or badge.
+- **No second, general, rebranded directory.** Asked and answered 23 Aug.
+  The roughly 21 developer rows A3 removes move to My Stack rather than being
+  lost, so there is nothing to rescue. A general directory carries no
+  evaluation axis and therefore no moat, generality needs a row count one
+  person cannot keep checked, and a mainstream audience is traffic the
+  consultancy cannot sell to. The cost is the permanent maintenance load, not
+  the build. A broader impulse belongs in the Substack decisions D2 and D3,
+  not in a second product.
 - **Nothing merges to `main` without Jasmin's explicit sign-off.**
 
 ---
@@ -224,7 +244,7 @@ it. **J+S** means a session drafts and Jasmin decides.
 | # | Task | Owner | Status |
 |---|---|---|---|
 | A1 | **Lock the evaluation axis.** Done 23 Aug (Cowork sitting). Twelve rulings taken, all adopted: `Your tenant` added as a sixth `data_location` value, one DPIA flag per row (never compound, cautious on boundaries), `last_checked` in DD MMM YYYY, trustee notes stored bare and first person plural, toggle pass rules fixed, chip colours signed off including the forest green reuse. Frozen spec is `reports/2026-08-23-axis-locked.md` and it now outranks audit section 3 on values and definitions. | J | **Locked 23 Aug** |
-| A2 | Add headers `jobs`, `data_location`, `trains_on_input`, `nonprofit_tier`, `dpia_flag`, `trustee_note`, `last_checked` to cells G1:M1 of the `tools` tab. Safe any time; main's fetcher ignores them. | J | Not started |
+| A2 | Add headers `jobs`, `data_location`, `trains_on_input`, `nonprofit_tier`, `dpia_flag`, `trustee_note`, `last_checked` to cells G1:M1 of the `tools` tab. Safe any time; main's fetcher ignores them. **Done. Headers confirmed in the Sheet 23 Aug and re-confirmed by a second read the same night: row 1 of `tools` reads name, category, status, cost, verdict, url, jobs, data_location, trains_on_input, nonprofit_tier, dpia_flag, trustee_note, last_checked.** | J | **Done 23 Aug** |
 | A3 | **Row triage.** One pass through the 66 rows against the locked axis: keep, cut, or judged-not-recommended. Delete the cuts. Roughly 21 of 66 are developer tooling (Cursor, Windsurf, Replit and similar) which belongs on My Stack, not in the buyer-facing directory. | J | Not started |
 | A4 | **Fact research for the top ten rows.** Data location, training policy on the specific tier, nonprofit tier, pricing, each with a source link. A session can do this and hand over a table. | J+S | Not started |
 | A5 | **Verdict sprint.** Rewrite the top ten verdicts against the axis, including the public failures. This is the tone-of-voice change made real: the old verdicts speak to a general reader, the new ones name the sector catch. Jasmin writes these. | J | Not started |
@@ -269,7 +289,7 @@ a site that does not match.
 
 | # | Task | Owner | Status |
 |---|---|---|---|
-| E1 | **Trim the fortnightly Cowork task to flag-only.** Do this first, before anything else in this section. It currently writes tool rows against the old brief, so every fortnight adds rows the triage has to delete. Flag-only means it still sweeps and reports to Jasmin but writes nothing to the Sheet. Two minutes in the Cowork app. | J | Not started |
+| E1 | **Trim the fortnightly Cowork task to flag-only.** Do this first, before anything else in this section. It currently writes tool rows against the old brief, so every fortnight adds rows the triage has to delete. Flag-only means it still sweeps and reports to Jasmin but writes nothing to the Sheet. Two minutes in the Cowork app. **Confirmed done 23 Aug: the task is in flag-only mode.** | J | **Done, confirmed 23 Aug** |
 | E2 | **Rebuild it as the checks engine.** Its job becomes: re-fetch the sources behind the fact fields for every live row, update them with a source link, stamp `last_checked`, and where a factual change touches a judgement field, flag it and write nothing. | J+S | Not started |
 | E3 | **Re-point the Rundown daily Routine.** One prompt edit changes the extraction rule from "up to 5 stories" to "only stories touching tools in the directory or the sector: nonprofit programmes, data and training policy changes, regulation, accessibility". Zero-story days become correct behaviour. Do NOT pause this Routine; it writes dated rows and gaps are painful to backfill. | J | Not started |
 | E4 | **Revoke PAT 16554137.** Named in the Routine prompt and in transcripts. GitHub never sees it (the sandbox proxy strips it), so it is exposure with no function. Security item, open since July. | J | Not started |
