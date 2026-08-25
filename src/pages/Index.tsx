@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchTools, fetchWhatsNew, isComplete, type Tool, type WhatsNew } from "@/lib/sheets";
+import { fetchTools, fetchWhatsNew, fetchMyStack, isComplete, type Tool, type WhatsNew, type MyStackItem } from "@/lib/sheets";
 import { parseDate } from "@/components/WhatsNewCard";
 import { HomeGravity } from "@/components/HomeGravity";
 import { Counter } from "@/components/ui/animated-counter";
@@ -18,14 +18,19 @@ const CATEGORY_COLOURS: Record<string, { bg: string; text: string }> = {
 
 const Index = () => {
   const [tools, setTools] = useState<Tool[]>([]);
+  // Sourced from the my_stack tab, not from tools: the hero pills are
+  // decoration and my_stack is a personal claim, so they cannot contradict
+  // the "tools that passed the checks" counter further down the page.
+  const [myStack, setMyStack] = useState<MyStackItem[]>([]);
   const [news, setNews] = useState<WhatsNew[]>([]);
   const [loading, setLoading] = useState(true);
   const pillsSectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    Promise.all([fetchTools(), fetchWhatsNew()]).then(([t, n]) => {
+    Promise.all([fetchTools(), fetchWhatsNew(), fetchMyStack()]).then(([t, n, m]) => {
       setTools(t);
       setNews(n);
+      setMyStack(m);
       setLoading(false);
     });
   }, []);
@@ -77,7 +82,7 @@ const Index = () => {
       >
         {/* Pills layer — sits IN FRONT of the headlines so they can be dragged across the type, on every device */}
         <div className="absolute inset-0 z-20">
-          {!loading && <HomeGravity tools={tools} />}
+          {!loading && <HomeGravity names={myStack.map((i) => i.name)} />}
         </div>
 
         {/* Typography layer */}

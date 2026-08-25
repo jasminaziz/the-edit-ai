@@ -1,7 +1,6 @@
 import { Gravity, MatterBody } from "@/components/ui/gravity";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { DragHint } from "@/components/DragHint";
-import type { Tool } from "@/lib/sheets";
 
 // Brand palette. Lime is rare-only (used as accent), so we exclude it from the
 // main rotation and only assign it to ~1 in 8 pills.
@@ -50,12 +49,19 @@ function pillStyle(label: string, isMobile: boolean): React.CSSProperties {
 
 const MAX_PILLS = 18;
 
-export function HomeGravity({ tools }: { tools: Tool[] }) {
+/**
+ * The falling pills are decoration, not a claim. Jasmin's ruling, 2026-08-25.
+ *
+ * They take plain names rather than any data shape, because the component has
+ * no business knowing what a Tool is. Index.tsx sources them from the `my_stack`
+ * tab, which is a personal claim by definition, so the pills can never
+ * contradict the directory counter beneath them. They previously filtered the
+ * `tools` array on status === "in_stack", which meant the hero drifted every
+ * time the triage changed and could name tools the directory refuses to show.
+ */
+export function HomeGravity({ names }: { names: string[] }) {
   const isMobile = useIsMobile();
-  const pills = tools
-    .filter((t) => t.status === "in_stack")
-    .map((t) => t.name)
-    .slice(0, MAX_PILLS);
+  const pills = names.slice(0, MAX_PILLS);
 
   if (pills.length === 0) return null;
 
