@@ -175,6 +175,332 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-25 (Cowork: rulings, C1 v2, C2 built, C3 drafted)
+
+No code changed, nothing committed to `src/`. Four files written to `reports/`.
+
+**Sheet verified directly before anything else, two Drive reads.** 67 rows in
+`tools`. 4 complete, 12 at five of seven, 5 at three of seven, 2 at two of
+seven, 44 empty across G to M. The twelve are missing K and L only and all
+twelve already carry `last_checked` of 24 Aug 2026: HubSpot, Adobe Suite,
+Adobe Firefly, Perplexity, NotebookLM, ElevenLabs, Descript, Claude, Gemini,
+Google Workspace AI, Wispr Flow, Notion AI. The 24 Aug ledger line is exact.
+Twelve flags and twelve notes takes the grid from 4 to 16 and clears the
+ten-row floor with six to spare. Method caveat: both reads returned
+byte-identical exports, consistent with a true read and also with one cached
+response served twice.
+
+**Rulings taken.**
+
+1. **`None` versus blank in `nonprofit_tier`: record `None`** for Granola,
+   Ideogram, Gamma, Grok and Seedance. The asymmetry that settles it is that a
+   nonprofit tier is a customer-acquisition asset vendors advertise, so silence
+   is near-conclusive, whereas silence on a training policy serves the vendor.
+   An evidence standard goes into the axis file: nothing on the vendor's
+   pricing, nonprofit or education pages, and nothing via TechSoup or Charity
+   Digital Exchange. Note these five sit at three of seven, so this unblocks
+   nothing on its own.
+2. **`trains_on_input` gains `Unclear`.** Costs no code, verified in
+   `sheets.ts`: `passesTrainingToggle` is an allowlist of `No` and
+   `No by default`, so `Unclear` fails the toggle automatically, and
+   `isComplete` only tests for non-empty. One line in the axis file. Mirrors
+   `data_location`, where `Unclear` is already a published value and a warning
+   in itself. Unblocks Submagic and Blotato.
+3. **Trustee notes may be drafted by a session, with Jasmin supplying the
+   flag.** Refined mid-session by a real finding: **the four entries already in
+   column L are verdicts, not trustee notes.** Canva's runs four sentences and
+   recommends hiring a brand designer; ChatGPT's and Copilot's are first person
+   singular; none is the single first-person-plural sentence the axis
+   specifies. Pattern-matching off them would have produced twelve more
+   verdicts under a card label reading "Say this to a trustee". Two worked
+   extractions approved instead, both pulled out of Jasmin's own existing text:
+
+   > We use Copilot for anything sensitive because it keeps our data inside our
+   > own Microsoft tenancy, and we've turned web search off so nothing we type
+   > goes out to Bing.
+
+   > We don't put anything about a real person into DeepSeek, because it trains
+   > on what we type unless we turn that off and it's processed outside the UK
+   > and EU.
+
+   Plan: ten new notes plus four rewrites, with the long originals moved to
+   column E as verdict text so nothing written is lost. **Blocked on the twelve
+   flags, which remain Jasmin's alone.**
+4. **Microsoft Copilot goes Amber**, with the nuance in the trustee note rather
+   than the chip. Checked against Microsoft's current documentation rather than
+   memory, and it is narrower than the framing suggested: the prompt does not
+   go to Bing, Copilot generates a condensed few-word query from it, and
+   Microsoft states plainly that the DPA, HIPAA and the EU Data Boundary do not
+   apply to those generated queries. Web search is on by default in commercial
+   tenants, disabled via the Cloud Policy "Allow web search in Copilot" setting
+   or a per-user toggle. Named cost of Amber: Copilot is probably the most-used
+   AI tool in this audience because of charity M365 licensing, so the
+   "DPIA unlikely" toggle now excludes the tool most readers already have.
+5. **C2 format and brand: The Edit's cobalt and Chillax, `.docx` primary with a
+   PDF secondary.** The PDF question came from Jasmin and improved the answer.
+   Once the PDF carries the proof job, the `.docx` no longer has to, so its body
+   font can be chosen purely for reliability at no cost.
+6. **F2a: the cascading hero pills are decoration, deliberately.** Jasmin's
+   ruling, and it beats both options that were offered. Not a checked claim, and
+   the drag interaction stays. Consequence found in code: the pills currently
+   filter `tools` on `status === "in_stack"` (19 rows) while the
+   "What I'm running" strip below already reads the separate `my_stack` tab
+   (19 rows, growing to about 27 once A3's eight dev rows land there). Point
+   both at `my_stack`: one Sheet-editable list, a count that grows rather than
+   thins, and permanent immunity from the directory counter because My Stack is
+   a personal claim by definition. `in_stack` in `tools` then means only
+   "render the badge", which is what CLAUDE.md already says it does.
+
+**Still unruled: the radar** (own tab or stays in `tools` with blank axis
+fields) and confirmation that the ceiling of 45 counts published rows.
+
+**C1 done, v2 at `reports/2026-08-25-ai-use-policy-template-v2.md`.** The 22 Aug
+draft is untouched as the audit trail. Four changes plus a closing block. New
+section 10, How people learn this, built from Jasmin's own published position on
+training rather than a generic commitment: the event is not the thing, so the
+section commits to induction, the arrival of a new tool as the training moment,
+somewhere to ask, and a check-in already in the diary. Section 7 now carries a
+real list of eleven exclusions rather than six bracketed blanks. Section 6
+gained a retention block covering chat histories as records. New section 11
+covers images, rights and attribution. Old sections 10 to 13 shift to 12 to 15
+and the one moved cross-reference is fixed. Section 13 lost its induction
+sentences and its AI-images bullet, both now owned properly elsewhere.
+
+**Three lines in v2 flagged for Jasmin, deliberately not resolved.** The
+"community none of us belongs to" exclusion and the "composite face in a
+fundraising appeal is a lie about who we serve" sentence are both more
+opinionated than their neighbours. And section 11's "UK law does not clearly
+grant copyright in a wholly AI-generated image" is the only genuine legal claim
+in a document that says it is not legal advice. It is defensible because of
+"clearly", since CDPA section 9(3) exists and whether it survives contact with
+modern generative AI is exactly what is contested, but it is the line a lawyer
+would poke.
+
+**C2 built, two variants.** `reports/AI-Use-Policy-Template.docx` (Calibri, the
+one subscribers download) and `reports/AI-Use-Policy-Template-brand-fonts.docx`
+(Chillax and Plus Jakarta Sans, the one Jasmin exports the PDF from on a machine
+that has the fonts). Eleven pages. Lime rule over the cobalt title, cobalt
+headings and bullet markers, `#EEF0FB` table headers, `#E8E2D8` borders, the
+"If you get stuck" block as a cream callout with a cobalt left rule, Appendix A
+on its own page as a one-page form with fill-in-height rows. Footer on every
+page carrying Jasmin's name and both URLs.
+
+**Font finding.** Chillax and Plus Jakarta Sans are both webfonts loaded from
+CDNs (`index.html` line 39 pulls Chillax from Fontshare); there are no font
+files anywhere in the repo, and both CDNs are blocked from the cloud sandbox, so
+a brand-accurate PDF cannot be rendered here. Hence the two-variant split.
+**Unverified: whether Chillax is actually installed on Jasmin's Mac.** If Word
+substitutes there too, the brand-font variant is useless and the PDF becomes the
+safe variant exported. Post-relaunch option worth noting: putting both font
+files in `public/fonts/` would fix this permanently and drop two CDN
+dependencies off the live site, which is the same class of availability risk as
+the Lovable registry mirror already on the books.
+
+**C3 drafted, banked at `reports/2026-08-25-copy-pack-c3-substack.md`, marked
+draft rather than approved.**
+
+**The C3 finding.** `/policy-template` links `SUBSTACK_SUBSCRIBE_URL`, the
+subscribe page, not a post, and the placed copy reads "Subscribe and you'll get
+the link straight away". So the thing that actually delivers the template is the
+**Substack welcome email**, not the post. C3 is two pieces of copy, not one, and
+a welcome email that never gets configured fails silently: the site looks
+correct right up until a real person subscribes. Both pieces are drafted. No
+cadence is promised anywhere in either, deliberately, because D3 is still open.
+
+**Open C3 decision: where the files live.** Attached to the gated post means the
+reader must be logged into Substack, which loses the subscriber who taps the
+link on a phone. Public URLs on theeditai.co.uk (`public/`, served by Vercel)
+linked straight from the welcome email makes the subscribe itself the gate.
+Recommendation is the second, links in both places, accepting that the file
+could be hotlinked.
+
+**Deliberately deferred by Jasmin: the final review of the template.** Not read
+line by line this session, on the reasoning that changes are likely anyway. It
+goes into one final check before launch alongside the C3 copy.
+
+**Code jobs this session created, none of them started.** Point `HomeGravity` at
+`my_stack`; add `Unclear` to the `trains_on_input` comment in `sheets.ts` (no
+logic change needed); a label string near the hero pills, which needs Jasmin's
+copy first; put both template files in `public/`.
+
+**Governance sense-check run, and applied. v3 at
+`reports/2026-08-25-ai-use-policy-template-v3.md`.** Jasmin ran both documents
+through her AI governance Cowork project against a prompt written in this
+thread. Twenty-nine findings, sourced. Fourteen applied to the template, three
+to the C3 copy. The `.docx` pair was rebuilt from v3: twelve pages now, and
+Appendix A still fits on one, so the one-page claim holds.
+
+**Verification done here before applying finding 5.** The reviewer flagged that
+legislation.gov.uk had blocked its fetch, so the CDPA wording came from
+secondary sources. Re-checked: section 178's definition of computer-generated
+came back verbatim from legislation.gov.uk and matches; section 9 is
+robots-blocked there, but an independent legal source confirms the section 9(3)
+wording exactly, confirms it is in force though rarely relied on, and adds that
+a prompter is unlikely to qualify as the person making the arrangements unless
+the input is detailed enough to be expression rather than idea. The March 2026
+Copyright and AI report and its proposal to remove section 9(3) are corroborated
+across several independent firms.
+
+**The substantive corrections.** DPIAs are an Article 35 requirement, not "an
+ICO requirement", and the "often" now carries its mechanism (innovative
+technology plus a second risk factor, which this sector nearly always supplies).
+The tier ladder in section 6 was organised by plan name when the thing that
+actually varies is the Article 28 written contract, so tiers 1 and 2 now say
+so; that was the sharpest structural finding in the review. Section 14 gained
+the 72-hour clock running from awareness, the Article 34 duty to tell the people
+affected, and **a serious-incident report to the Charity Commission, OSCR or
+CCNI**, which was the biggest sector-specific gap and the only place in the
+document where the three UK charity regulators matter. The gate went from eight
+questions to ten, adding the data processing agreement and whether a subject
+access request could be answered from the tool at all. Section 9 went from three
+questions to five, adding connector scope and logging, both of which section 2
+had already set up as risks and the check had omitted. The ICO registration line
+is now bracketed as a choice, because the not-for-profit fee exemption means it
+is often untrue for this audience. Section 11 names section 9(3) and the
+Government's proposal to remove it, and the loose "we may not be able to stop
+anyone else using it" clause is cut.
+
+**Two things held back for Jasmin, deliberately.**
+
+1. **Provenance.** Finding 22 imported framing from the AI GOVERNANCE project
+   (the Article 9 and 9(2)(d) analysis in the Deployment-Edge Primer), flagged
+   by the reviewer as instructed. Only the plain Article 9 list went into the
+   template, which is standard UK GDPR. The intends-to-infer-belief nuance was
+   **not** carried across. Jasmin confirms that line.
+2. **A placed approved string overclaims.** `/policy-template` lists "When a
+   DPIA is needed" among what the template covers. The template asks that
+   question rather than answering it, which is the same overclaim the review
+   caught in the Substack post. Changing placed approved copy needs Jasmin's
+   sign-off, so it is flagged, not fixed. Suggested replacement, unapproved:
+   `How to work out whether a DPIA is needed.`
+
+**One judgement call made rather than asked:** the connector review default
+moved from `[ANNUALLY]` to `[QUARTERLY / TWICE A YEAR]` to match section 10.
+Easily reverted.
+
+**Findings not taken, consciously:** output that infringes a third party's
+rights (the style and supplied-material clauses cover the behaviour that causes
+it), abuse-monitoring and retention continuing regardless of the training toggle
+(too deep for this document), and a lawful basis section (the reviewer agreed it
+belongs in the data protection policy, not here). The three-versus-five framing
+inconsistency is not an error: the three are what governance is, the five are
+what the policy sets up.
+
+**Currency infrastructure assessed and started, logged as E8 and E9 in the
+handover.** Dependency register built at
+`reports/2026-08-25-template-dependency-register.md`. Eighteen clauses, each
+mapped to its source and marked dated or wrong. Key finding: legislation.gov.uk
+is unreachable to automated fetching from here on every route tried, so the two
+clauses that can become wrong rather than dated cannot be agent-watched at all,
+and the quarterly human pass is the only control on them. ICO fetches cleanly
+and independently confirmed the §12 mechanism. Assessed as **E2 with a second
+watchlist rather than a new build**. Register and currency line pre-launch,
+change detector post-launch.
+
+**Three axis amendments taken, recorded in `reports/2026-08-23-axis-locked.md`
+under a new Amendments section.** `trains_on_input` gains `Unclear` (no code
+change, the toggle is an allowlist). `nonprofit_tier` gains an evidence standard
+for `None`. `jobs` gains **`Research`, placed first in the list.**
+
+**Why `Research` was forced, from the data rather than from taste.** Job tags
+across the 23 published rows: Internal comms 11, Case studies & storytelling 11,
+Social 7, Accessibility 5, Appeals & fundraising 2, Translation 1. Two generic
+categories carried 22 tags; the two sector-specific ones carried three. Case
+studies & storytelling had become the catch-all, and Perplexity and NotebookLM
+were in it only because there was nowhere else. Jasmin spotted it from the rows,
+not from the numbers.
+
+**F2c is reopened and is now blocking, not downgraded.** `CATEGORIES` holds
+`ALL` plus six jobs, which is the seven chips measured at 1470px with
+`Translation` ending 30px inside the rail. An eighth chip very likely clips at
+1470 and almost certainly at 1366. Adding `Research` did not create the problem;
+it removes the option of ignoring a measurement that was owed since 24 Aug.
+Needs the dev server running on Jasmin's Mac at a narrow width.
+
+**A4 re-checked on the two Adobe rows, at Jasmin's prompting, and she was right
+that they could not both be true.** Written up at
+`reports/2026-08-25-a4-adobe-recheck.md` with sources. Adobe's own help pages
+settle the training question: no generative AI training on customer content at
+all, and content analysis for product improvement is a separate thing that is
+on by default for personal accounts and **automatically off for business, team
+and school accounts**. Buying-tier rule therefore gives `No` on both rows. The
+personal-account default belongs in the verdict as a real catch.
+
+**Two things the re-check did not settle, both material.** Data location is
+unsourced on both rows: the `EU` on Adobe Suite has no source this pass could
+find, and an unsourced `EU` is worse than an honest `Unclear` because it is a
+false reassurance on the axis the site is built on. Proposed `Unclear` on both
+pending a source. And the Firefly row's nonprofit tier describes Adobe Express,
+not Firefly, because nobody buys Firefly standalone. **Proposed to Jasmin:
+rename the rows to `Adobe Creative Cloud` and `Adobe Express`**, keeping them
+separate because the two nonprofit routes genuinely differ.
+
+**Flagging paused deliberately.** Jasmin's five edits turned out to be fact and
+taxonomy problems rather than flags, and flagging on top of unsettled facts
+would bake errors into the one field nobody can quietly correct later. The
+twelve go back to her once Adobe and the job retags land.
+
+**ELEVEN FLAGS AND FIFTEEN NOTES LANDED. The grid renders 15.** Verified
+against the real completeness predicate rather than the paste: 15 complete rows,
+no invalid job values, no non-canonical `dpia_flag`, every `last_checked` in
+`DD MMM YYYY`. Flags: 2 Red, 12 Amber, 1 Green.
+
+**The rule changed to get here, and Jasmin took it deliberately.** She extended
+the drafting permission from trustee notes to the DPIA flags themselves, on a
+draft-for-sign-off basis. Every flag was proposed with its reasoning shown
+against her own locked definitions so what she signed was auditable rather than
+handed down. **The standing rule is now: a session may draft flags, notes and
+verdicts as proposals; nothing reaches the Sheet without Jasmin's explicit
+sign-off.** That is a real loosening of the original absolute and should be read
+as such by later sessions.
+
+**Amendment 4 to the axis, and it decided eleven rows at once.** "Used as
+directed" in the Green definition means the tool **as it arrives, in default
+configuration**, not as a competent admin would configure it. Recorded in
+`reports/2026-08-23-axis-locked.md`. Consequence accepted rather than
+discovered: Green is rare, the `DPIA unlikely` toggle returns one row, and the
+better-configured story lives in the trustee note. Microsoft Copilot moved
+Green to Amber on this ruling.
+
+**Two more A4 fact corrections, both on the axis the site is built on, both
+found by Jasmin questioning a row rather than by any check.** Adobe: two rows
+that could not both be true, resolved at
+`reports/2026-08-25-a4-adobe-recheck.md`, renamed to `Adobe Creative Cloud` and
+`Adobe Express`, both to `No` on training (Adobe does not train generative AI on
+customer content at all; content analysis for product improvement is a separate
+thing that is off by default for business accounts), both to `Unclear` on
+location because the previous `EU` had no source. Google Workspace AI:
+`Unclear` was a false negative, corrected to `Your tenant` with sources at
+`reports/2026-08-25-a4-workspace-ai-recheck.md`, which is what makes it the
+single Green row.
+
+**Evidential rule established, worth keeping.** A boundary case takes the
+cautious side. An *undocumented* case does not automatically take the cautious
+side by analogy to a documented one. Copilot went Amber on a sourced exception;
+Workspace AI stays Green on a sourced containment claim with no sourced
+exception, and the open question (does Workspace Gemini ground against the
+public web by default, and is that inside the CDPA) is recorded for the
+quarterly pass.
+
+**Jasmin's four original column L entries preserved** at
+`reports/2026-08-25-preserved-column-L.md` before they were replaced. They were
+verdicts, not trustee notes, and column E already held real verdicts on all four
+rows, so they could not simply be moved. They are source material for **A5**,
+which is hers and has not started.
+
+**Two things this unblocks.** F2's ten-row floor is cleared with five to spare.
+And **B3 item 8 is finally testable**: proving the in-grid template card sits
+after the sixth tool card needed seven complete rows and there were four. B3 can
+close at ten of ten rather than nine.
+
+**Stale check to fix before anyone re-runs the B3 list:** item 1 reads "the grid
+shows exactly the complete rows and Descript does not appear." Descript is
+complete now and should appear. Read literally, a pass would now be recorded as
+a failure.
+
+**Next:** the radar ruling, the three copy calls, the template's final review,
+then C3. F2c's rail measurement is blocking and needs the dev server.
+
 ### 2026-08-24 (afternoon: A3 triage, A4 on the published set, currency correction)
 
 **A3 done.** 67 rows sorted against the locked axis. 20 keeps, 3 public
@@ -927,3 +1253,10 @@ Local dev environment set up; Claude Code is now the primary build path
   blanks, col D is `cost`); my_stack 21; design_kit 45; learning 26.
 - Dead code found: StatusBadge.tsx unused; STATUS_MAP.on_radar renders
   nowhere (background task chip spawned for cleanup).
+
+**Correction, 25 Aug, recorded because it was asserted as fact and repeated into
+the handover.** The homepage "What I'm running" strip did **not** read the
+`my_stack` tab. `Index.tsx` filtered the same `tools` array on
+`status === "in_stack"` for both the strip and the gravity pills, and
+`fetchMyStack` was called only by `MyStack.tsx`. Caught when the code session
+opened the file. The strip still reads `tools`; only the pills were moved.

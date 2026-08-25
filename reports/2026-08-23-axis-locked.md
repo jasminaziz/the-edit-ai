@@ -231,3 +231,125 @@ on every value and definition above. Where this file and `.claude/CLAUDE.md`
 disagree on a field name or column position, CLAUDE.md wins; where they
 disagree on an allowed value or a definition, this file wins and CLAUDE.md
 gets corrected.*
+
+
+---
+
+# Amendments, 25 August 2026
+
+Three amendments, all taken by Jasmin on 25 August, all forced by real vendor
+data rather than by preference. Recorded here in the same way as the `Other`
+amendment of 23 August. Everything above stands unless contradicted below.
+
+## 1. `I · trains_on_input` gains `Unclear`
+
+**New allowed value set:** No / No by default / Yes unless you opt out / Yes /
+Varies by tier / **Unclear**
+
+`Unclear` means the vendor publishes no position on training at all. It is not
+the same as `Varies by tier`, which means the vendor publishes several and the
+buying tier is genuinely ambiguous. Forced by Submagic and Blotato, neither of
+which publishes anything, so neither row could be completed honestly.
+
+This mirrors `data_location`, where `Unclear` is already a legitimate published
+value and a warning in its own right.
+
+**Toggle rule: `Unclear` does not pass "Doesn't train on your content".** This
+needs no code change. `passesTrainingToggle` in `src/lib/sheets.ts` is an
+allowlist of `No` and `No by default`, so `Unclear` fails it automatically, and
+`isComplete` only tests for a non-empty value. Verified 25 August.
+
+## 2. `J · nonprofit_tier` gains an evidence standard for `None`
+
+The definition of `None` as confirmed absent is unchanged. What was missing was
+the standard of proof, which left five vendors uncompletable: Granola, Ideogram,
+Gamma, Grok and Seedance publish no programme and no denial of one.
+
+**`None` may be recorded when all of these hold:** nothing on the vendor's
+pricing page, nothing on any nonprofit or education page they run, and nothing
+via TechSoup or the Charity Digital Exchange.
+
+The reasoning, which is why this differs from amendment 1: a nonprofit tier is a
+customer-acquisition asset, so vendors advertise it, and silence is close to
+conclusive. A training policy is a liability, so vendors are vague about it, and
+silence proves nothing. Same evidential question, opposite answers, and the
+asymmetry is the reason.
+
+Where a programme exists in some markets but not for UK charities, the cell
+still reads `None`, because the cell is one line of roughly sixty characters and
+the qualification belongs in the verdict. HubSpot is the live example.
+
+## 3. `G · jobs` gains `Research`
+
+**New allowed value set:** Research / Appeals & fundraising / Case studies &
+storytelling / Social / Internal comms / Accessibility / Translation
+
+`Research` goes **first** in the list, so it renders as the first job chip after
+`ALL`. Two reasons: it is the shortest label in the set, so it is the chip least
+likely to be lost to rail overflow, and research precedes the work the other six
+describe.
+
+**Why this was necessary.** Across the 23 published rows the tags fell like
+this: Internal comms 11, Case studies & storytelling 11, Social 7,
+Accessibility 5, Appeals & fundraising 2, Translation 1. Two generic categories
+carried 22 tags between them while the two sector-specific ones carried three.
+`Case studies & storytelling` had become a catch-all, and Perplexity and
+NotebookLM were sitting in it only because there was nowhere else to put them.
+A taxonomy whose largest category is the one that means "other" is not
+describing the sector it was built to describe.
+
+The soft cap of three jobs per tool is unchanged.
+
+**This one is not free, and the cost is the filter rail.** `CATEGORIES` in
+`src/lib/sheets.ts` currently holds `ALL` plus six jobs, which is the seven
+chips F2c measured at a 1470px viewport with `Translation` ending 30px inside
+the rail box. An eighth chip will very likely clip at 1470 and almost certainly
+at 1366. **F2c is therefore reopened and is now blocking rather than
+downgraded.** Adding `Research` did not create that problem; the rail was
+already marginal at laptop widths and the confirming measurement was never
+taken. It removes the option of continuing to ignore it.
+
+**Code changes required:** add `'Research'` to `CATEGORIES` immediately after
+`'ALL'`, and solve the rail overflow treatment. Nothing else. Contains-matching
+already handles a new value with no further work.
+
+---
+
+*Amendments recorded 25 August 2026. Jasmin's explicit decision on all three.*
+
+---
+
+# Amendment 4, 25 August 2026: what "used as directed" means
+
+**Jasmin's ruling, 25 August 2026.** The `Green` definition reads "used as
+directed, no personal data leaves you." That phrase was doing undeclared work,
+and it decides eleven rows rather than one.
+
+**Ruling: "as directed" means the tool as it arrives, in its default
+configuration.** Not the tool as a competent administrator would configure it.
+
+**Why.** The reader is a charity with no IT function. They sign up and start
+typing without changing a setting, and that is the moment the flag exists to
+protect them at. A flag describing well-configured behaviour describes a
+situation many readers will never be in.
+
+**Where the better-configured story goes:** the trustee note and the verdict.
+Those can and should say what to switch off. Microsoft Copilot is the worked
+example: the flag is Amber because web search is on by default and those queries
+sit outside the DPA, and the trustee note reads that the organisation has turned
+web search off so nothing leaves its tenancy. The flag describes the tool, the
+note describes what this organisation did about it.
+
+**The known consequence, accepted rather than discovered.** Green becomes rare.
+Almost nothing in this market keeps personal data inside the organisation, which
+is arguably the single most useful thing the directory says. It also means the
+`DPIA unlikely` toggle returns very few rows. That is a product fact to design
+around, not a reason to soften a flag.
+
+**Evidential rule that follows, and it is not the same as caution.** A boundary
+case takes the cautious side. An *undocumented* case does not automatically take
+the cautious side by analogy to a documented one, because the absence of a
+sourced risk can never be proven and treating it as proof would make every row
+Amber forever. Where a vendor makes an affirmative, sourced containment claim
+and no exception is documented, the claim stands and the open question is
+recorded for the next check.
