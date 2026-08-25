@@ -44,7 +44,7 @@ export default function PolicyTemplate() {
               marginBottom: 24,
             }}
           >
-            Most AI policies are written for organisations with a legal team. This one is written for yours: a working AI-use policy for charity, cultural and heritage organisations, covering the questions that actually come up. Which tools staff can use and for what. What must never go into them. When a DPIA is needed. What you tell trustees, funders and supporters. It's the starting point I use with consultancy clients, ready to adapt to your organisation.
+            Most AI policies are written for organisations with a legal team. This one is written for yours: a working AI-use policy for charity, cultural and heritage organisations, covering the questions that actually come up. Which tools staff can use and for what. What must never go into them. How to work out whether a DPIA is needed. What you tell trustees, funders and supporters. It's the starting point I use with consultancy clients, ready to adapt to your organisation.
           </p>
           <p
             className="font-body"
