@@ -98,8 +98,16 @@ export function parseToolRows(rows: string[][]): Tool[] {
         pricing:         stripEmoji(cell(r, iPricing)),
         verdict:         stripEmoji(cell(r, iVerdict)),
         url:             cell(r, iUrl),
+        // Trailing punctuation is stripped because the job filter compares with
+        // ===, not a substring match, so a single stray full stop in the Sheet
+        // ("Accessibility.") silently removes a tool from that filter with no
+        // visible error. Unlike dpia_flag there is no canonical value set to
+        // fall back on, so normalise instead. Found in the Sheet 2026-08-25.
         jobs:            rawJobs
-                           ? rawJobs.split(/[,·•]+/).map(s => stripEmoji(s).trim()).filter(Boolean)
+                           ? rawJobs
+                               .split(/[,·•]+/)
+                               .map(s => stripEmoji(s).replace(/^[\s.;:]+|[\s.;:]+$/g, ''))
+                               .filter(Boolean)
                            : [],
         data_location:   stripEmoji(cell(r, iDataLocation)),
         trains_on_input: stripEmoji(cell(r, iTrains)),
@@ -389,7 +397,7 @@ export async function fetchMyStack(): Promise<MyStackItem[]> {
 }
 
 /**
- * The filter rail above the directory grid: the six comms jobs from the locked
+ * The filter rail above the directory grid: the seven comms jobs from the locked
  * axis, not tool types. The re-point judges a tool by the job it serves, so
  * "Writing / Research / Design / Video / Automation / Building" is retired.
  *
@@ -398,6 +406,7 @@ export async function fetchMyStack(): Promise<MyStackItem[]> {
  */
 export const CATEGORIES = [
   'ALL',
+  'Research',
   'Appeals & fundraising',
   'Case studies & storytelling',
   'Social',

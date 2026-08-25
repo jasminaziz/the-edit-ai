@@ -154,6 +154,27 @@ describe('parseToolRows', () => {
       const [tool] = parseToolRows(rows);
       expect(tool.jobs).toEqual(['Case studies & storytelling']);
     });
+
+    // The job filter compares with ===, not a substring match, so a single
+    // stray full stop in the Sheet silently removes a tool from that filter
+    // with no visible error. Found live on the ChatGPT row, 2026-08-25.
+    it('strips a trailing full stop so the job still matches the filter', () => {
+      const rows = [JOBS_HEADERS, [...BASE_ROW, 'Research, Translation, Accessibility.']];
+      const [tool] = parseToolRows(rows);
+      expect(tool.jobs).toEqual(['Research', 'Translation', 'Accessibility']);
+    });
+
+    it('strips stray semicolons and colons around a job', () => {
+      const rows = [JOBS_HEADERS, [...BASE_ROW, ' ;Social: , Internal comms; ']];
+      const [tool] = parseToolRows(rows);
+      expect(tool.jobs).toEqual(['Social', 'Internal comms']);
+    });
+
+    it('keeps the ampersand inside a job value untouched', () => {
+      const rows = [JOBS_HEADERS, [...BASE_ROW, 'Appeals & fundraising.']];
+      const [tool] = parseToolRows(rows);
+      expect(tool.jobs).toEqual(['Appeals & fundraising']);
+    });
   });
 
   // -------------------------------------------------------------------------
