@@ -175,6 +175,82 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-24 (afternoon: A3 triage, A4 on the published set, currency correction)
+
+**A3 done.** 67 rows sorted against the locked axis. 20 keeps, 3 public
+failure rows (Grok, DeepSeek, Seedance), 8 to My Stack, 36 to the radar.
+**23 rows published, not the roughly 40 the roadmap assumed.** A strict read of
+the axis lands far short of the ceiling, so the exercise turned out to be what
+is missing rather than what to cut. Named gaps: Translation has one row,
+ElevenLabs, and DeepL is absent; Appeals and fundraising is thin.
+
+Jasmin's rulings during triage: HubSpot reinstated (it serves Appeals and
+fundraising, the thinnest job), Notion AI kept and the Notion platform row cut,
+Recraft cut, Grok Imagine cut with Grok staying as the public failure row.
+Working file `reports/2026-08-24-a3-triage-decision-list-v2.xlsx`.
+
+**Nothing is deleted.** The hidden-row mechanic and the unused `on_radar`
+status already give Jasmin the tool tracker she founded the site to keep, so
+A3 is a publishing decision rather than a cull. Open: whether the radar lives
+in its own tab or stays in `tools` with blank axis fields. Settle also that the
+ceiling of 45 counts published rows, not rows in the Sheet.
+
+**A4 done for every published row.** Sourced values with links in
+`reports/2026-08-24-a4-fact-pass-published-rows.md`, which together with the
+seed-row file is the audit trail the F2 hard gate requires. Twelve rows pasted
+by Jasmin the same afternoon.
+
+**Sheet state at wrap, read directly:** 4 rows complete (the seeds), 12 rows at
+five of seven fields, 5 rows at three of seven, 2 rows at two of seven, 67 rows
+total. **The only fields missing on those twelve are K and L.** The entire
+remaining axis blocker is Jasmin's judgement work.
+
+**Two gaps in the locked axis, both surfaced by real vendors, both needing a
+ruling.** `trains_on_input` has no equivalent of `Unclear`, and Submagic and
+Blotato publish no position on training at all, so neither row can be completed
+honestly. And `None` in `nonprofit_tier` means confirmed absent, while the
+common real case is a vendor that publishes no programme and denies nothing:
+that affects Granola, Ideogram, Gamma, Grok and Seedance. Same shape as the
+DeepSeek `Other` amendment on 23 Aug.
+
+**Currency: a real methodological fault, caught by Jasmin.** The research
+agents fetched from a US IP, so several vendors served dollars and "no GBP
+published" was recorded as a fact about the vendor. Re-checked through Chrome
+on Jasmin's UK connection: Claude (£15 annual, £18 monthly), ChatGPT (Plus
+**£20**, not the £16 currently in the Sheet, which came from a third-party
+comparison site), Notion (£8.50 and £16.50), Gamma (from £7, against an earlier
+finding of no price in any currency) and Wispr Flow (£12) all publish sterling.
+ElevenLabs, Descript, Granola and Ideogram genuinely bill in dollars even to a
+UK visitor. Perplexity, HubSpot, Submagic and Seedance were not re-checked.
+**Policy applied: GBP where the vendor publishes GBP, the published currency
+plus a "billed in USD" note where they do not, and nothing converted.** A
+converted figure is an unchecked number on a site that promises everything is
+checked, and it goes stale silently.
+
+**Buyer widening: assessed, not decided.** A strategy prompt proposed
+redefining the buyer by problem shape, any organisation holding sensitive data
+and answering to a board, rather than by sector. Assessment given in thread:
+the code is sector-neutral apart from `nonprofit_tier` being a completeness
+requirement and `Appeals & fundraising` being a data value on every row;
+everything else is strings. Jasmin's own conclusion was to widen the
+consultancy site rather than The Edit, then to park it and finish the build.
+Recorded as open. A related question was raised and left open: whether what she
+described is a wider comms consultancy or the AI governance practice arriving
+early.
+
+**Operational lessons worth keeping.** The Drive connector is the only Sheet
+read path a session has, and it served a stale export once today, so read twice
+before reporting a blank cell. Chrome reads run against whichever tab is
+focused unless a tab id is passed. Research agents fetching from a US IP
+misreport currency and sometimes whether a price exists at all. And sessions
+should not run git in this repo: the device shell has no identity and cannot
+unlink its own lock files, which left a stale `.git/index.lock` for Jasmin to
+clear.
+
+**Next:** C1, the policy template edit. The axis track has nothing left that a
+session can do until the verdicts and trustee notes exist, and C3 remains
+Gate 2 with nothing started.
+
 ### 2026-08-24 (A4 fact pass, then the B3 checklist against real rows)
 
 Two jobs, no code changed, nothing committed by the session.
