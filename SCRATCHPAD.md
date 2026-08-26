@@ -465,10 +465,75 @@ verdict renders only inside the expanded panel, so it costs nothing in layout.
 A tighter pass toward the originals' punchier register is available if she wants
 it.
 
-**Next:** the four rulings in one sitting, Jasmin's editing pass on the fifteen
-second-pass drafts, the template's section 12 and section 5 calls, then one code
-session takes the lot. C3 and Gate 2 remain the merge blocker and are Jasmin's
-alone.
+**Card architecture reopened by Jasmin, and it found the biggest hole on the
+site.** Full proposal at `reports/2026-08-26-toolcard-restructure.md`.
+
+**The card has no step one.** Jasmin's journey is explore the tool, understand
+the governance risk, take action. The only element that says what a tool is for
+is the verdict, at the bottom behind a toggle, so a visitor scanning the grid
+never learns what any of these things are. **The slot exists and was never
+filled:** `ToolCard` renders a description paragraph but `parseToolRows`
+hardcodes `what_it_does: ''`, because the `tools` tab has no such column.
+**This is very likely why the A5 first pass drifted governance:** the card's
+entire visible surface is governance, so the verdict had nothing else to be.
+
+**"It is a CRM tool."** Same hole from another angle. `jobs` answers which of my
+problems does this solve, not what kind of thing is this. Restoring column B is
+not the fix; it is stale, and the A3 sheet has HubSpot filed as `Automation`.
+The one-line description is the fix and it carries CRM naturally. `my_stack`
+already has the column and the right register.
+
+**Grouping correction.** An earlier version of the proposal put nonprofit
+pricing in one spec block with data location and trains on input. That groups by
+data model. **Nonprofit pricing is a buying fact, the other two are risk facts**,
+and the journey splits them.
+
+**Proposed card: three zones.** Name, one-line description, job chips, price and
+nonprofit price, then a `RISK` block holding data location, trains, the DPIA
+chip and the C4(b) line, then the verdict toggle sharing a row with `Checked`,
+then `Visit tool`. **Only one new label renders, `RISK`,** and it is Jasmin's
+string; `THE CHECKS` is the alternative and ties the card to the headline claim.
+Only the risk zone gets a label, because the rest is self-evident. Thirteen
+elements to eight or nine, five coloured regions to two, roughly 190px off a
+~490px card, computed rather than measured.
+
+**Chip labels stay unchanged.** An earlier proposal to rewrite all three was
+withdrawn: the three states are a prediction, a condition and a precondition, so
+the differing grammar follows the meaning, and the new layout gives the long
+Amber label room.
+
+**DPIA literacy gap, checked in code.** `AboutPanel` is the only thing on the
+site that explains the term and **it renders on the homepage only**, not on
+`/tools`. So a visitor arriving from a sector search meets DPIA eleven-plus
+times with no explanation on the page. Keep the term, because it is what the
+board and the DPO use and it is the field nobody else publishes; add one
+definition line above the grid. Draft is in the restructure file.
+
+**C4(b) fires on 14 of 15 cards.** Scoped when Green was expected to be common,
+and amendment 4 made Green rare, so a line meant to appear sometimes now appears
+nearly always and reads as furniture. Restricting it to Red puts it on 2.
+
+**Add to my stack is not just crowding, it is outranking.** It renders full
+width while `Visit tool` is a right-aligned pill, so the secondary action is
+styled as the primary one. **Sixth argument for cutting Stack, and it is the
+ruling that gates the card work**, because the bottom of the card cannot be
+settled while an unresolved feature sits in it.
+
+**Verdict sector rule, after Jasmin flagged over-reference to funder reports and
+appeals.** Counted: appeal in 5 of 15, funder report in 2, six of fifteen carry
+funder, appeal or board pack. Two rules fix it. **The sector example comes from
+the row's own `jobs` values**, which two drafts currently contradict: Adobe
+Express is tagged Social and Case studies but says appeal and funder report,
+ChatGPT is tagged Research, Translation and Accessibility but says appeal copy.
+**And keep the detail only where the advice would change for a non-charity.**
+Deals rather than donations earns it; the image going in an appeal does not. On
+that test **four of the fifteen need editing and eleven do not.**
+
+**Next:** the Build Your Own Stack ruling first, because it gates the card work.
+Then the fifteen `what_it_does` descriptions and Jasmin's editing pass on the
+verdicts, the three remaining rulings, the `RISK` label and the DPIA line, the
+template's section 12 and section 5 calls, then one code session takes the lot.
+C3 and Gate 2 remain the merge blocker and are Jasmin's alone.
 
 ### 2026-08-25 (Cowork: rulings, C1 v2, C2 built, C3 drafted)
 

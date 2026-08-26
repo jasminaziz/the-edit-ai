@@ -151,7 +151,13 @@ Four rulings are outstanding: the F2c treatment, the radar tab, Build Your Own
 Stack, and the pills. **A fifth was taken and closed the same day: the site's
 identity.** The Edit is a comms resource first, with a compliance edge, now in
 CLAUDE.md with the three-slot split between the axis, the verdict and the
-trustee note. Nothing was committed to `src/`.
+trustee note. **Late in the day Jasmin reopened the ToolCard architecture and it
+found the biggest hole on the site: the card has no step one.** `ToolCard`
+renders a description paragraph, `parseToolRows` hardcodes it empty, and the
+`tools` tab has no such column, so nothing on a card says what a tool actually
+is. Full proposal, the verdict sector rule and the DPIA literacy gap at
+`reports/2026-08-26-toolcard-restructure.md`. **The card work is gated on the
+Build Your Own Stack ruling.** Nothing was committed to `src/`.
 
 **The axis:** locked 23 Aug. `reports/2026-08-23-axis-locked.md` is the frozen
 spec and outranks audit section 3 on all allowed values and definitions. The
@@ -298,7 +304,7 @@ it. **J+S** means a session drafts and Jasmin decides.
 | B4 | **SEO repairs.** (a) per-page OG in `SEO.tsx`: **done 22 Aug** (late evening session) — og:title/og:description/og:url plus twitter:title/twitter:description derived from the existing props, 5 new tests, suite 24/24, tsc clean; verified in the cloud sandbox against a fresh resolve; the Mac check was then run against `bun.lock` (tsc clean, 24/24) and it is **committed** as `869dc5f`. (b) meta for `/submit` and `/stack`: **done and committed 22 Aug** as `6b7b221`. All four approved strings placed verbatim via the `SEO` component. Stack.tsx bypasses the Layout chrome, so its placement was verified in-browser rather than assumed: the app-level `HelmetProvider` covers it and both tab titles resolve correctly on a forced reload. **B4 is now fully closed.** | S | Closed. (a) `869dc5f`, (b) `6b7b221` |
 | B5 | New `og-image.png`. The current one carries the old brand message. Design work, not code. | J | Not started |
 | B6 | **Decide the Submit form.** Decided by Jasmin 22 Aug (night): keep the page, swap the form for an email link to `hello@jasminaziz.co.uk`. No new infrastructure, nothing gets binned. Implementation spec in `reports/2026-08-22-copy-pack-addendum.md` (follow the FooterEmailCapture link-block pattern); any new visible copy comes back to Jasmin first. **Implemented and committed 22 Aug** as `e3e1add`. No new visitor-facing copy was needed: the CobaltZone heading and subheading already carry the invitation, so the email address itself is the only visible text in the block, and it reuses the old submit button's exact classes, colours and hover. The form's dead code (FormField, the state hooks, handleSubmit, handleChange) is left in place for B7. | J+S | Done, `e3e1add` |
-| B7 | Dead-code sweep: `src/pages/Subscribe.tsx` (now unrouted), `StatusBadge.tsx`, roughly 44 unused shadcn components, `lovable-tagger`, `bun.lockb`, `package-lock.json`. Optional before relaunch. | S | Not started |
+| B7 | **Note 26 Aug: the empty `what_it_does` paragraph in ToolCard is NOT dead code and must not be swept.** The slot is wanted; the `tools` tab is missing the column that fills it. See `reports/2026-08-26-toolcard-restructure.md`. Dead-code sweep: `src/pages/Subscribe.tsx` (now unrouted), `StatusBadge.tsx`, roughly 44 unused shadcn components, `lovable-tagger`, `bun.lockb`, `package-lock.json`. Optional before relaunch. | S | Not started |
 
 ### C. The capture layer
 
