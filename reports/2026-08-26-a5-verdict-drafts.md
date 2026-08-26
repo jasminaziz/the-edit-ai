@@ -122,10 +122,10 @@ cultural and heritage half of the audience specifically.
 
 ### Adobe Express · Sheet row 29 · Amber · Social, Case studies & storytelling
 
-> The AI image generator to reach for when the image is going in an appeal or a
-> funder report, because Firefly is trained on Adobe Stock and licensed content
-> rather than whatever was scraped. That matters more in this sector than most:
-> you're publishing to people who will ask where things came from. Free Premium
+> The AI image generator to reach for when the picture is going out under your
+> name, because Firefly is trained on Adobe Stock and licensed content rather
+> than whatever was scraped. That matters more here than most: you're publishing
+> to people who will ask where things came from. Free Premium
 > for charities on 50 seats. It isn't the most inventive generator on the
 > market, and if your team already lives in Canva, a second design tool costs
 > more in confusion than it saves in output.
@@ -222,9 +222,9 @@ people default to, which is rare enough to say.
 > The one everyone already has, which is exactly why it's worth being deliberate
 > about what you use it for. It's the best brainstormer here and the widest
 > general knowledge, and voice mode is genuinely useful for thinking out loud on
-> a commute. It's also agreeable, and it will tell you your appeal copy is
-> strong when it isn't, so ask it to argue against you rather than to improve
-> you. Keep donor records, financial reporting and anything about a named
+> a commute. It's also agreeable, and it'll validate the framing you walked in
+> with rather than test it, so ask it to argue against you rather than to
+> improve you. Keep donor records, financial reporting and anything about a named
 > beneficiary out of it, and put that work on a tool that sits on your own
 > tenancy.
 
@@ -357,3 +357,45 @@ been checked.
 stopped it. Written against the locked axis, the A4 fact passes, the preserved
 column L text and the nineteen `my_stack` verdicts. Nothing here is approved.
 A5 remains Jasmin's.*
+
+---
+
+## The fifteen `what_it_does` lines
+
+**Drafted 26 August 2026. Fact field, so a session may draft it, but it still
+needs Jasmin's sign-off before it reaches the Sheet.**
+
+These fill the description slot `ToolCard` already renders and
+`parseToolRows` currently hardcodes empty. Each one answers **what kind of
+thing is this**, which the `jobs` chips deliberately do not. Register taken
+from the existing `my_stack` `what_it_does` column. All fit two lines at 13px
+in a three-column card.
+
+| Sheet row | Tool | Line |
+|---|---|---|
+| 3 | HubSpot | Sales and marketing CRM with a usable free tier, plus email, forms and pipelines. |
+| 27 | Canva | Design platform for social graphics, presentations, print and video, with brand templates. |
+| 28 | Adobe Creative Cloud | The professional creative suite: Photoshop, Illustrator, InDesign and Premiere, with Firefly AI built in. |
+| 29 | Adobe Express | Quick-turnaround design and AI image generation, built on Adobe's licensed content. |
+| 39 | Perplexity | AI search engine that answers with cited sources, and runs multi-step research reports. |
+| 40 | NotebookLM | Upload documents and question them. Turns a set of sources into summaries, briefings and audio. |
+| 45 | ElevenLabs | AI voice generation and cloning. Turns written text into natural-sounding speech. |
+| 46 | Descript | Video and podcast editor you drive by editing the transcript. Also captions and transcribes. |
+| 57 | Claude | AI assistant for writing, analysis and strategy, with projects, custom skills and a coding agent. |
+| 58 | ChatGPT | General-purpose AI assistant with image generation, voice mode and custom GPTs. |
+| 60 | Microsoft Copilot | AI built into Microsoft 365. Drafts and summarises across Word, Outlook, Teams and SharePoint. |
+| 61 | Google Workspace AI | Gemini built into Docs, Sheets, Gmail and Drive, working on the files you already have. |
+| 63 | Wispr Flow | Voice dictation that works in any app, turning speech into clean formatted text. |
+| 65 | Notion AI | AI inside the Notion workspace, reading and writing across your existing pages and databases. |
+| 66 | DeepSeek | Open-weight AI models from a Chinese lab, available as a free chat app and a low-cost API. |
+
+**To use these:** add a `what_it_does` header to the `tools` tab, paste the
+column, and add two lines to `parseToolRows` so it reads the header instead of
+hardcoding `''`. `fetchMyStack` already does exactly this.
+
+**Note on the row count for the sector rule.** An earlier message in the thread
+said four of the fifteen verdicts needed the sector edit. On a recount it is
+**two clear cases, both fixed below, plus one borderline**. Perplexity's
+"sector statistics for an appeal" uses an appeal as the output of a research
+job rather than as the job itself, which is defensible; it is left alone and
+flagged here rather than changed.
