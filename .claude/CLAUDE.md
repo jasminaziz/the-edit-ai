@@ -217,10 +217,11 @@ dead-code sweep in SCRATCHPAD queue item 7. Do not "fix" it by wiring it
 back into the router.
 
 Badge states: only IN MY STACK renders (forest green `#2D6A4F`,
-`status === "in_stack"`, ToolCard.tsx). `on_radar` is live data and still in
-`STATUS_MAP`, but nothing renders it; `StatusBadge.tsx` is unused dead code.
-Blank status cells fall back to `on_radar`, so blanks and `on_radar` are
-indistinguishable to the site.
+`status === "in_stack"`, ToolCard.tsx). `on_radar` is live data but nothing
+renders it. Blank status cells fall back to `on_radar`, so blanks and
+`on_radar` are indistinguishable to the site. `StatusBadge.tsx` and
+`STATUS_MAP` were both deleted on 2026-07-03 (commit `3e55953`); this
+paragraph claimed they were still on disk until 2026-08-26.
 
 ## Design system (locked)
 
@@ -316,7 +317,7 @@ tracked in SCRATCHPAD.md.
 Closed 2026-08-22: the Submit form discarded every submission (`handleSubmit`
 only flipped state). The page now offers a mailto link instead. Its form code
 is unreachable but still on disk for the dead-code sweep, alongside
-`Subscribe.tsx` and `StatusBadge.tsx`.
+`Subscribe.tsx`. (`StatusBadge.tsx` was long gone; see Badge states.)
 
 Also parked, SCRATCHPAD queue item 1: the Routine prompt still instructs
 curl dispatch and still contains PAT 16554137 (revoke it, GitHub never sees
