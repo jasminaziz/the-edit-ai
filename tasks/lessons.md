@@ -19,6 +19,16 @@ Session corrections and rules built up over time. Add entries; do not delete his
   successful deploy. If a change has not appeared after 5 min, check the
   Deployments tab manually for a red failed build.
 
+- **`tsc --noEmit` is not the build. Run `bun run build` before every commit.**
+  Added 2026-08-26. The pre-commit gate had been tsc plus vitest. A code
+  session ran `bun run build` for the first time and found it exercises a
+  different path: Vite resolves imports, assets and plugin config at bundle
+  time and can fail on things tsc passes cleanly. Combined with the silent
+  Vercel failure above, a build nobody ran locally is a deploy that dies
+  quietly and serves stale content. Three commands, every commit: `bunx tsc
+  --noEmit`, `bun test`, `bun run build`. The chunk-size warning is the known
+  matter-js debt, not a failure.
+
 - **Google account split:** Sheets API key and Apps Script Web App are under
   jasminaziz1@gmail.com. All other Google tools (Search Console, GA4, Cloud
   Console) are under hello@jasminaziz.co.uk. Always check which account applies
@@ -341,3 +351,59 @@ Session corrections and rules built up over time. Add entries; do not delete his
   Fixed by adding an explicit floor (no merge below ten complete rows). When a
   quality gate is written as a universal over a filtered set, ask what it says
   when the set is empty, and put a floor under it.
+
+- **When correcting a document for staleness, verify every factual claim in
+  it, not just the ones the brief named (2026-08-26).** Job 7 was "correct the
+  stale Current state block". I corrected the five named items and rewrote the
+  block around them — and in doing so *carried forward* a claim that
+  `StatusBadge.tsx` was dead code on disk. The file was deleted on 2026-07-03
+  in commit `3e55953`, along with `STATUS_MAP`, which the same document also
+  still asserted existed. Both survived a rewrite whose entire purpose was
+  removing stale statements, because I treated the brief's list as the scope
+  of the staleness rather than as the symptoms of it. The fix is mechanical
+  and cheap: when a doc block names a file, a symbol or a count, check it
+  against the tree before you re-commit the sentence around it. A one-line
+  `ls` and `grep` over every named artefact would have caught both.
+
+- **A source document's claim is not verification, even a ruling you are
+  executing (2026-08-26).** Handover B8 said the Stack cut closes "all three
+  visitor-facing em dashes on the branch". I repeated that in a commit message,
+  which reads as *the branch now has none*. It does not: `WhatsNew.tsx` still
+  renders "Show more — {hiddenCount} remaining", against the locked voice rule.
+  B8's three were the ones inside the stack files and its claim was true as far
+  as it went; the sentence I wrote was broader than the fact. Before restating
+  a source's claim as an outcome of your own work, run the check that would
+  falsify it. Same class as the earlier lesson about counts contradicting their
+  own enumeration — B8 also says "three files" while naming four.
+
+- **`tsc --noEmit` is not a build (2026-08-26).** Seven commits went in on
+  typecheck plus vitest alone; `bun run build` was not run until the audit at
+  the end. It passed, but it exercises a different path (Vite transform,
+  rollup, the PWA plugin's precache manifest) and this repo's own rule is that
+  Vercel build failures are silent and serve the last good deploy. Run
+  `bun run build` before the final commit of any session that deletes modules
+  or changes imports — a dangling import can typecheck clean against a stale
+  incremental cache and still break the bundle.
+
+- **The static `index.html` title is the confounder when SPA meta looks broken
+  (2026-08-26).** Chasing an apparently stale `document.title` on `/tools`, the
+  browser eval context reported the homepage title, zero `[data-rh]` nodes and
+  no canonical — the exact artifact signature already recorded above, confirmed
+  again by `window.innerWidth: 0` on a page rendering at 800px. The extra
+  wrinkle worth banking: Vite serves the same `index.html` for every route, so
+  the "wrong" title was simply the pre-hydration static one, which `curl`
+  confirms in a second. When helmet looks broken, `curl` the route and compare
+  against `index.html`'s own `<title>` before opening any investigation. The
+  session's own first `get_page_text` had already shown the injected title,
+  which was the disconfirming evidence sitting in the transcript.
+
+- **A ruling that names one conditional may still have a sibling keyed on the
+  same state (2026-08-26).** F2c said to delete
+  `scrolled ? "" : "sm:flex-wrap sm:overflow-visible"` so the filter rail always
+  wraps. The gradient fade beside the rail is keyed on the same `scrolled`
+  flag and exists only to signal horizontal overflow; left conditional it would
+  have drawn a 40px strip over the right edge of the newly wrapped chips, which
+  is the clipping the ruling exists to stop. Fixing only the named line would
+  have satisfied the letter of the ruling and reintroduced its symptom. When a
+  ruling removes a state-dependent behaviour, grep for every other use of that
+  state in the same block before committing.

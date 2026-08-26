@@ -20,8 +20,10 @@ Cowork folder: None
    the prompt, (b) revoke PAT 16554137, (c) paste dedupe + shared-secret code
    into the Apps Script, (d) manually delete the duplicate 3/6 Jul batches
    from the Sheet.
-2. Create the localhost-scoped Google Sheets API key and put it in .env.local
-   (until then local dev renders but data 403s)
+2. ~~Create the localhost-scoped Google Sheets API key and put it in
+   .env.local~~ **DONE.** Confirmed working 2026-08-26: the dev server loads
+   real Sheet data at localhost:8080, and the key reads the API directly from
+   curl with an `http://localhost:8080/` referer.
 3. Update the Make copy in the my_stack tab (and homepage strip) — it still
    credits the retired Make.com automation with the whats_new pipeline
 4. About panel (homepage attribution is done; no panel exists in the codebase)
@@ -166,6 +168,23 @@ maskable icon, plus two same-day regression fixes confirmed on device
 (status bar reverted to default, html background-color set to stop white
 flashes on iOS elastic scroll bounce).
 
+## Found 2026-08-26, not in that session's scope — Jasmin's call
+
+- **`public/sitemap.xml` is materially stale.** All seven URLs use `www.`,
+  which 308s to the bare domain, so every entry points at a host the site
+  redirects away from (the bare host became primary on 2026-08-22). It lists
+  `/whats-new` and `/subscribe`, both now redirects, and omits `/ai-news`,
+  `/policy-template`, `/submit` and the three legal pages. `/stack` was never
+  listed, so the 26 Aug cut did not make it worse. Wants owning before the
+  October merge, since it is the file search engines are pointed at by
+  robots.txt.
+- **One visitor-facing em dash survives on the branch**, against the locked
+  voice rule: `WhatsNew.tsx`, "Show more — {hiddenCount} remaining". Handover
+  B8's "all three visitor-facing em dashes" were the three inside the stack
+  files; this is a fourth and pre-existing.
+- **Minor, for the record:** B8 says "About 950 lines, three files" while
+  naming four files. Four were deleted and the diff was 1,128 lines.
+
 ## Blocked
 
 - Conversion layer prompts (Work with me, Subscribe rewrite, Substack link-out):
@@ -174,6 +193,147 @@ flashes on iOS elastic scroll bounce).
 ---
 
 ## Session notes
+
+### 2026-08-26 (code session: the card restructure, the Stack cut, F2c)
+
+**Nine commits, `75792c1f` through `b4c5a7cb`, one job each, tree clean, `main`
+untouched at `47a0d1e`.** All nine items on the restructure change list are in
+the code. No residual stack references anywhere in the repo. No test file
+references anything deleted.
+
+1. `75792c1f` `parseToolRows` reads `what_it_does` from the Sheet
+2. `792360a5` Cut Build Your Own Stack
+3. `b7e9f2ec` Restructure ToolCard into explore, buying and checks zones
+4. `719f8edb` F2c: the filter rail always wraps at `sm` and up
+5. `8d14ae6e` C4(b) fires on Red only
+6. `786b643e` Place the two approved card-restructure strings
+7. `6749ada2` Correct CLAUDE.md and schema.md against live data
+8. `4f6eb0f8` Correct two false claims in CLAUDE.md badge states
+9. `b4c5a7cb` Fix a comment that was stale the moment it was written
+
+**The finding worth keeping, and it is Jasmin's.** She ran `bun run build` for
+the first time, which nobody had done, and pointed out that **`tsc --noEmit`
+does not exercise the same path**: Vite resolves imports, assets and plugin
+config at bundle time and can fail on things tsc passes. Combined with the
+lessons.md entry that **Vercel build failures are silent**, a build nobody ran
+locally is a deploy that dies quietly and keeps serving stale content. **The
+pre-commit gate is now three commands, not two:** `bunx tsc --noEmit`,
+`bun test`, `bun run build`. Written into CLAUDE.md's working discipline and
+`tasks/lessons.md`. The build succeeds; the chunk-size warning is the known
+matter-js debt.
+
+**Two false claims found in CLAUDE.md by the code session.**
+`StatusBadge.tsx` and `STATUS_MAP` were **deleted on 2026-07-03 in commit
+`3e55953`** and have not been on disk since. CLAUDE.md, the handover's B7 row
+and the 2026-07-04 security audit all carried them as live dead code for seven
+weeks, so the dead-code sweep would have gone hunting for a file that was
+already gone. B7's sweep list corrected.
+
+**B3 re-run checklist item 7 is now stale and is flagged in place.** It reads
+"C4(b) appears under Amber and Red and never under Green". C4(b) now fires on
+**Red only**, so run as written the item would record correct behaviour as a
+failure. **That is the second time this checklist has sprung the same trap**,
+after item 1's Descript line, so the item now carries the correction inline
+rather than a note elsewhere.
+
+**UNPUSHED at the time of writing.** Local tip `b4c5a7cb`, `origin` still at
+`0f307e2f`. All nine commits exist only on the Mac.
+
+**Not verified in a browser.** The card changed structurally and nothing has
+been looked at on localhost:8080. That is an F2 prerequisite and the next thing
+to do.
+
+**Not in scope and untouched, correctly:** `HomeGravity`, `MAX_PILLS` and
+everything to do with the homepage pills. That ruling is still outstanding.
+
+### 2026-08-26 (code session: seven briefed jobs, Stack cut, card restructure)
+
+Branch `overhaul/sector-axis`. **Nine commits, `75792c1` to `b4c5a7c`.** tsc
+clean and 61 tests green before every commit; `bun run build` verified at the
+end. Nothing merged. `main` untouched at `47a0d1e`.
+
+**The seven briefed jobs, one commit each, in Jasmin's stated order** (the
+order was load-bearing: the Stack cut removes props from ToolCard, so it had
+to land first):
+
+1. `75792c1` — `parseToolRows` reads `what_it_does` from Sheet column N, by
+   header name with `fetchMyStack`'s aliases. The card had rendered an empty
+   paragraph for it all along. Two tests added.
+2. `792360a` — **Build Your Own Stack cut** (handover B8). 1,128 lines.
+   `Stack.tsx`, `StackBar.tsx`, `StackTooltip.tsx`, `slugify.ts` deleted; stack
+   state, share-link merge, mobile banner, tooltip, coachmark and the duplicated
+   `hasStackParam` branch stripped from `Tools.tsx`; add control and coachmark
+   removed from `ToolCard`; `Layout`'s `isBare` branch removed with them.
+   `/stack` is now `Navigate replace` to `/tools` — the third redirect. Closes
+   F2b, the StackBar www bug, one AA contrast failure, one design-system
+   violation, and the card's competing CTAs.
+3. `b7e9f2e` — **ToolCard restructured into explore / buying / checks / act.**
+   Description now precedes the job chips. Nonprofit pricing moved to sit with
+   the price, `#EEF0FB` tint dropped, value bold. Verdict toggle and `Checked`
+   share one row, `Checked` at 11px muted. Description guarded like every other
+   field.
+4. `719f8ed` — **F2c closed.** Filter rail always wraps at `sm` and up. The
+   gradient fade became mobile-only as a consequence (see below).
+5. `8d14ae6` — **C4(b) fires on Red only.** String unchanged, condition moved.
+6. `786b643` — the two approved strings placed verbatim: `The checks` as the
+   risk-zone label, and the DPIA definition line on `/tools`.
+7. `6749ada` — `.claude/CLAUDE.md` and `.claude/schema.md` corrected.
+
+**Plus two from the self-audit at the end:** `4f6eb0f` (CLAUDE.md asserted
+`STATUS_MAP` and `StatusBadge.tsx` still exist; both deleted 2026-07-03 in
+`3e55953`, and I had carried the StatusBadge claim *forward* into the block I
+was correcting) and `b4c5a7c` (a code comment that was stale when written).
+
+**Verified against live Sheet data, not fixtures.** This partially discharges
+the B3 "built, not finally verified" caveat. `tools` is 67 rows, headers A-N.
+**15 rows complete and rendering; 12 Amber, 2 Red, 1 Green.** All 15 carry a
+`what_it_does`. `my_stack` is **19 rows, not 21** as the docs claimed. Checked
+in the browser: zone order as specified, C4(b) on HubSpot alone, rail wrapping
+with all eight chips visible in *both* scroll states, `/stack?stack=...`
+redirecting, no console errors.
+
+**Judgement call made in-session and flagged:** the gradient fade beside the
+filter rail is keyed on the same `scrolled` state F2c named. Left conditional
+it would have washed a 40px strip over the right edge of the newly wrapped
+chips — the clipping F2c exists to stop. Made unconditionally `sm:hidden`.
+
+**Sequencing call, flagged up front and not objected to:** job 3 shipped the
+checks zone's hairline rule without its label; job 6 placed the label. Keeps
+copy placement auditable in one commit.
+
+**Chased and dismissed, not a defect:** page titles read stale in the browser.
+It is the static `index.html` title Vite serves pre-hydration, read by an eval
+context that also reported `innerWidth: 0` on a page rendering at 800px. The
+session's own first `get_page_text` had shown the injected title. See
+`tasks/lessons.md`.
+
+**Two findings flagged, NOT fixed — outside the seven jobs, Jasmin's call:**
+
+- **`public/sitemap.xml` is materially stale.** All seven URLs use `www.`,
+  which 308s to the bare domain, so every entry points at a host the site
+  redirects away from. Lists `/whats-new` and `/subscribe`, both now redirects.
+  Omits `/ai-news`, `/policy-template`, `/submit` and the three legal pages.
+  `/stack` was never in it, so the cut did not make this worse. Wants owning
+  before the October merge.
+- **One visitor-facing em dash survives on the branch:** `WhatsNew.tsx`,
+  "Show more — {hiddenCount} remaining", against the locked voice rule. B8's
+  "all three visitor-facing em dashes" were the ones inside the stack files;
+  this is a fourth and pre-existing.
+
+**Deliberately untouched, per the brief:** `HomeGravity`, `MAX_PILLS` and
+anything to do with the homepage pills — that ruling is outstanding, and its
+parked label sits in the card copy pack.
+
+**Next step:** the remaining content pass (axis fields and verdicts for rows
+still short of complete, A4 with sources and A5 against the sector rule), then
+the two outstanding rulings (homepage pills, radar tab), then capture live,
+then merge in the 19-23 October week against F2's gates. The ten-row merge
+floor is already cleared at 15.
+
+**Timing note worth carrying:** the content work was pulled forward into
+August, so October is the merge-and-relaunch window, not the do-the-work
+window. Any doc still reading "waits for October" against content is stale.
+
 
 ### 2026-08-26 (Cowork: F2c measured, B3 closed, template spacing, A5 drafted)
 
