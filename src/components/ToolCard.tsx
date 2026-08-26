@@ -216,9 +216,16 @@ export const ToolCard = ({
             {dpia.label}
           </span>
 
-          {/* C4(b), approved copy. Fires on Amber or Red only: the flag says a
-              DPIA is in play, and the policy is the thing that answers it. */}
-          {(flag === "Amber" || flag === "Red") && (
+          {/* C4(b), approved copy, string unchanged. Red only, approved
+              26 Aug. It was scoped when Green was expected to be common, and
+              amendment 4 made Green rare, so a line meant to appear sometimes
+              was appearing on 14 of the 15 published cards and reading as
+              furniture. Red puts it on two, HubSpot and DeepSeek, which are
+              the rows where a reader needs a policy before going near the
+              tool. The counter was weighed and lost: Amber is arguably where
+              people need the policy most, but the template already has three
+              other placements and a prompt nobody reads captures nothing. */}
+          {flag === "Red" && (
             <Link
               to="/policy-template"
               onClick={(e) => e.stopPropagation()}
