@@ -281,6 +281,27 @@ const Tools = () => {
 
       <section className="bg-background py-10 px-6 sm:px-12 pb-[72px]">
         <div className="max-w-[1280px] mx-auto">
+          {/* The DPIA definition, approved copy, 26 Aug. Rendered once per
+              page, here and nowhere else: AboutPanel is the only other thing
+              on the site that explains the term and it renders on the homepage
+              only, so a visitor arriving at /tools from a sector search met
+              DPIA eleven-plus times with no explanation anywhere on the page.
+
+              It sits below the toggles and above the grid rather than inside
+              the sticky filter bar, which has a compact scrolled state and no
+              room for a two-sentence paragraph.
+
+              It says the organisation carries out the assessment, matching the
+              policy template's wording and the sector-precision rule: a DPIA
+              is something an organisation does, not something a tool needs.
+              Do not reverse that. */}
+          <p
+            className="font-body text-[13px] leading-relaxed mb-6"
+            style={{ color: "#9A8F82", maxWidth: 720 }}
+          >
+            A DPIA is the assessment your organisation carries out before using personal data in a way that could put people at risk. The flag on each card says how likely typical comms use is to trigger one.
+          </p>
+
           {loading ? (
             <LoadingSpinner />
           ) : error ? (

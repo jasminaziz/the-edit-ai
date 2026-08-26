@@ -182,9 +182,21 @@ export const ToolCard = ({
 
       {/* ZONE 3, the checks. The only zone that earns a heading: a name, a
           description, chips and a price are self-evident, whereas this block
-          contains an acronym and is the part nobody else publishes. The rule
-          renders now; its approved label is placed with the copy pack. */}
+          contains an acronym and is the part nobody else publishes.
+
+          "The checks" is approved copy, 26 Aug. It stays sentence case in the
+          source and is uppercased by CSS, the treatment the job chips already
+          use. It is not "Risk": the site's headline claim is that no tool
+          appears until it has been through the checks, and this block is where
+          that claim is evidenced. "Risk" would also mislabel its own contents,
+          because "Where your data sits: US" is a fact, not a risk. */}
       <div className="mt-4 flex items-center gap-3">
+        <span
+          className="font-body text-[11px] font-semibold uppercase tracking-[0.05em] shrink-0"
+          style={{ color: isSelected ? "rgba(250,248,244,0.75)" : "#9A8F82" }}
+        >
+          The checks
+        </span>
         <div
           className="h-px flex-1"
           style={{ backgroundColor: isSelected ? "rgba(250,248,244,0.3)" : "#E8E2D8" }}
