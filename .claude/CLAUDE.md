@@ -11,6 +11,27 @@ DPIA, and whether it can be explained to a trustee in one sentence. No
 sponsored listings, no affiliate links, and no tool appears until it has
 been through the checks.
 
+**The Edit is a comms resource first, with a compliance edge.** Jasmin's
+ruling, 2026-08-26, taken after an A5 verdict rewrite drifted into a set of
+governance notes. The axis is how tools get filtered and flagged. It is not
+what the site is about. Three slots, three jobs, and they do not overlap:
+
+- **The axis filters and gates.** The seven fields and the DPIA chip. It
+  answers whether a tool can be adopted safely, and it decides whether a row
+  appears at all.
+- **The verdict recommends.** What the tool is for, whether it is worth the
+  reader's time, where it lets them down. Centre of gravity is the comms work.
+  Governance enters a verdict only where a governance fact is the reason to
+  use or avoid that specific tool: Copilot, DeepSeek, HubSpot.
+- **The trustee note is the sentence for the board.**
+
+A ToolCard already renders five governance elements. A verdict that restates
+them makes the card say one thing six times and never say whether the tool is
+any good. Verdict voice: first person where it is evidence Jasmin has earned,
+second person for the recommendation; the job is sector-specific, the tool
+assessment is not re-derived for charities. Full spec and the fifteen worked
+examples in `reports/2026-08-26-a5-verdict-drafts.md`.
+
 Built and maintained by Jasmin Aziz. The site is a lead engine for the
 consultancy at jasminaziz.co.uk: the audience it serves is exactly the
 audience the consultancy sells to. Charity-sector framing is the premise of

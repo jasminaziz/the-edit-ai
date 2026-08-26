@@ -175,6 +175,301 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-26 (Cowork: F2c measured, B3 closed, template spacing, A5 drafted)
+
+No code changed, nothing committed to `src/`. Four files written to `reports/`,
+two `.docx` and one `.pdf` rebuilt, `public/` kept in step.
+
+**F2c measured and a two-day-old reading corrected.** The rail has two
+layouts and they had been treated as one. Unscrolled it is
+`sm:flex-wrap sm:overflow-visible` and wraps, so it never clips. Scrolled it is
+`flex-nowrap overflow-x-auto` behind a 40px gradient, so it does. Chip content
+is **1084.2px** at every width; chip widths do not change with viewport.
+
+Measured at 1261 (Jasmin's window), then at simulated container widths of 1184
+and 1270 by overriding the section's own width in the DOM. That is exact rather
+than approximate: the filter bar carries **no `xl:` or `2xl:` classes**, checked
+in the rendered HTML, so nothing between 1261 and 1366 changes except the
+container, which is `min(1280, viewport - 96)`.
+
+| Viewport | Unscrolled | Scrolled |
+|---|---|---|
+| 1261 | 749 box, wraps 5 + 3 | 893 box, **191px hidden**, Translation gone |
+| 1280 | 768 box, wraps 5 + 3 | 912 box, **172px hidden**, Translation gone |
+| 1366 | 854 box, wraps 6 + 2 | 998 box, **86px hidden**, Translation 31 of 117px and all of it under the gradient |
+
+**The correction.** The 24 Aug reading, recorded as "at a 1470px viewport the
+rail is one line, all seven chips visible, `Translation` ending 30px inside the
+rail box", was the **compact scrolled state**, not the desktop unscrolled one.
+Run the model at 1470 with seven chips and scrolled: chips start at 367,
+`Translation` ends at **1345.3**, rail box ends at **1375**. Two independent
+numbers matching the record to a tenth of a pixel. So the 23 Aug "wraps to two
+lines on desktop" finding was never a narrow-window artifact, the 24 Aug "does
+not reproduce at desktop width" conclusion measured a different state, and the
+30px margin everyone reasoned from belonged to the other state. Amendment 3's
+note that an eighth chip would clip is right about the compact state and
+understates the unscrolled one, which was already wrapping.
+
+**Recommended treatment, not yet ruled:** delete the
+`scrolled ? "" : "sm:flex-wrap sm:overflow-visible"` conditional so the rail
+always wraps at `sm` and up. One conditional, no copy, no axis amendment, 38px
+of vertical cost in the compact state. Ruled out: shortening labels (they are
+`jobs` values, so it needs an amendment or a display map that gives the filter
+and the card two vocabularies), and shrinking the search box or chip padding
+(`px-3.5` to `px-3` saves 32px against a gap of 86 to 172).
+
+**B3 closes at ten of ten.** Item 8 passes: 16 grid items, template card at
+position 7, gone under an active `Social` filter which returns 2. Item 1 passes
+read against the corrected expectation, Descript appears. The fourth
+`Get the template` label is confirmed identical to the desktop one by source
+inspection, `Layout.tsx:142` against `Layout.tsx:224`, byte for byte including
+the arrow. Recorded as source inspection, not a browser check.
+
+**Sheet re-read through a second instrument.** The live Sheets API on the
+localhost key, not the Drive connector, and it agrees: **67 rows, 15 complete,
+52 hidden.** Payload 39.8KB of which **19.1KB is verdict text on rows that never
+render**. `my_stack` holds **19** rows, not the 21 in schema.md. The
+"What I'm running" strip currently names **Lovable, Vercel, GitHub, Claude
+Code**, all four of which A3 removes.
+
+**Rulings put to Jasmin, all outstanding.**
+
+1. **Radar: own tab, before merge.** Reasoning: 19.1KB of unpublished verdict
+   copy ships to every visitor; `tools` is doing two jobs with one mechanism so
+   every sentence about it needs a qualifier; an unbounded research list sharing
+   a tab with a capped published one is how the cap erodes. Costs no code, and
+   the A3 sheet already has the four-way sort. Side effect: moving the radar
+   rows out takes the four dev tools out of the strip by accident, which argues
+   for pointing the strip at `my_stack` deliberately in the same code job.
+2. **The ceiling counts published rows.** It caps maintenance load, and a radar
+   row costs a line in a Sheet. Counting Sheet rows would put it at 67 against
+   45 today and force deleting research to publish a tool.
+3. **Build Your Own Stack: cut it.** Case both ways written up. Against: the
+   proposition thinned when the directory did; five interruptions on `/tools`
+   for the feature that captures nothing against one card for the one that
+   captures the email; F2b decays as E2 blanks rows; no nav entry, so it needs
+   the coachmark, tooltip and banner to be found; four "my stack" labels meaning
+   two things. Cost of cutting: ~950 lines, three files, `Tools.tsx` loses its
+   duplicated `hasStackParam` render branch, `/stack` becomes a redirect,
+   **no new copy needed**, and the B4(b) meta is the whole loss.
+4. **Pills: keep `my_stack` as the source.** `my_stack` has 19 names,
+   `MAX_PILLS` is 18, so one is already dropped, and the published directory has
+   15, so sourcing from the tools page gives **fewer** pills. Raise the cap to
+   30, add a mobile cap via the `useIsMobile` already in the component, and the
+   gap between pills and counter becomes the argument rather than the problem.
+   Label draft, unapproved: `Everything I run. The directory below is a shorter
+   list.`
+
+**Found in `src/`, no decision needed.**
+
+- `StackBar.tsx:55` builds the share URL as `https://www.theeditai.co.uk/stack`.
+  **With www.** Every shared link takes a 308 hop since the 22 Aug flip.
+- All three visitor-facing em dashes on the branch are in the Stack feature:
+  `Stack.tsx:44`, `Stack.tsx:49`, `StackBar.tsx:207`. None went through the
+  approved-strings process.
+- `HomeGravity` is measured clean on desktop: 230 frames, mean 16.67ms, p95
+  17.7, zero long tasks at 18 pills. But `Gravity` runs matter-js's own
+  `Render` alongside the DOM transform loop, and every body is created with
+  `fillStyle: "#00000000"` and `lineWidth: 0`. **It draws nothing, every frame,
+  at `devicePixelRatio`.** Deleting `Render` is free and it is the half that
+  scales worst on a phone. `enableSleeping = false` is the deliberate mobile
+  Safari fix and should stay.
+- `App.tsx` has no lazy routes, so matter-js ships to every visitor including
+  anyone landing straight on `/policy-template` from the welcome email.
+- `tool.what_it_does` is vestigial with no Sheet column, but ToolCard still
+  renders its `<p class="line-clamp-2">`. Measured live: 15 empty paragraphs,
+  height 0, 12px top margin each. Dead markup for B7.
+- Mobile-device measurement is still not possible from here.
+
+**Template: three edits, then a spacing audit, then five fixes.**
+
+Jasmin attached the Fonts folder, which changed what was possible. Chillax OTF
+and WEB builds and Plus Jakarta Sans statics are all there, so **the brand PDF
+now renders here through LibreOffice with no Word and no Font Book**. Two
+Chillax OTFs (Medium, Bold) are hardlinked in iCloud and refuse to stage; the
+`CHILLAX/WEB/fonts/` TTFs of the same weights work. Only Chillax Bold appears in
+the document.
+
+Edits Jasmin asked for, all applied to both `.docx` variants: the lime rule
+moved from above the title block to below it, cover spacing opened up
+(96 / 8+14 / 11 / 20 / 16 / rule 130 / 4 / 5), the 19 Chillax heading runs
+retyped to Plus Jakarta Sans leaving the cover title as the only Chillax in the
+document, and the template version number removed from the cover line and from
+the footer on all twelve pages.
+
+**Consequence that needed a decision: removing the version broke section 15.**
+The sentence existed to stop the template's version colliding with the adopting
+organisation's. Rewritten, **unapproved, Jasmin's to rule**:
+`The table below records [ORGANISATION]'s own policy versions. The date this
+template was last checked against UK law and ICO guidance is in the footer of
+every page. Adopting a newer template does not renumber your policy.`
+
+**Spacing audit, measured off the rendered PDF rather than the docx settings.**
+Consistent: all 18 headings identical, all 78 body paragraphs identical, all 53
+list items 4.5pt apart, the bold-question-then-regular-explanation pattern holds.
+Four real faults plus one dead definition:
+
+1. **Numbered lists were not lists.** 22 items used real Word bullets, **31 were
+   hand-typed `1.` `2.` into paragraphs indented 400/400 twips.** Bullet markers
+   sat at x=81.1 with text at 92.1; numbered markers sat at x=72.1 with text
+   landing between **84.05 and 91.45** depending on the width of the typed
+   number, and wraps at 92.1, so no first line aligned with its own wrap and
+   item 10 sat 7.4pt right of item 1 in the same list.
+2. **Tables had 10.1pt above and 29.4pt below**, and 63.1pt below the section 15
+   table because the callout was preceded by two stacked empty paragraphs.
+3. **Sub-headings had 5.7pt above, the same as body**, against 11.6 for a
+   heading. Three levels of hierarchy, two of spacing. Two paragraphs affected.
+4. **Lists did not close:** 3.2pt from last item to the next paragraph, against
+   5.7 between paragraphs.
+5. A second numbering definition, Word's default at `left 720 hanging 360`,
+   defined and referenced by nothing.
+
+**All five fixed.** Numbered lists became real Word lists on a new decimal
+definition at `left 560 hanging 380`, chosen so the marker lands at 180 twips,
+the same column as the bullets, and the 380 hanging clears `10.` so a two-digit
+item cannot push its own text. After: **markers all at 81.1, text all at 100.1,
+wraps at 100.1.** Tables now 21.1 above and 21.4 below. Sub-headings 12pt above,
+between body's 7 and a heading's 20. List endings 7pt. Dead definition deleted.
+
+**One thing had to be added back:** Word merges adjacent `w:tbl` elements, so
+removing every spacer left the section 15 table and the callout touching. A 1pt
+separator paragraph carries the gap without a line of its own.
+
+Verified after: 12 pages, Appendix A on 11 and B on 12 so the one-page claim
+holds against the render, fonts embedded and subsetted, zero leftover manual
+indents, zero leftover typed numbers, 53 list items in both variants.
+
+**Licence, checked properly because the first reading was wrong.** Clause 03
+explicitly permits PDF embedding and unlimited distribution of the resulting
+PDFs, and all thirteen font files carry `fsType = 0x0000`, Installable
+Embedding, the least restrictive setting. **So the PDF should stay unencrypted**;
+"secured, read-only mode" is satisfied by the subsetted embed, and encrypting
+would cost screen-reader access for no licence benefit. Clause 02's ban on
+transmitting the font "in font serving or for font replacement by means of
+technologies such as EOT, Cufon, sIFR" reads like a ban on self-hosting, and is
+not: clause 01 grants use in Web, and the download ships a `CHILLAX/WEB/` folder
+whose README gives step-by-step self-hosting instructions. **The post-launch plan
+to put fonts in `public/` stands.** Accepted caveat: a file in `public/` is
+hotlinkable. Plus Jakarta Sans is OFL.
+
+**Gate 2 finding.** `vercel.json` rewrites `/(.*)` to `/index.html`, and Vercel
+serves `public/` before applying rewrites, so a file that exists serves and a
+file that does not **returns 200 with `text/html`, never 404**. Confirmed on the
+dev server: the `.docx` returns 200 and 21437 bytes matching disk, the
+`.pdf` also returns 200 and there is no PDF. So the clean-browser test must
+check **content type and file size**, not that the link resolves, and it must run
+on `theeditai.co.uk` after the deploy.
+
+**PDF is in `reports/`, deliberately not `public/`.** The content is not final
+until the section 12 sentence, the section 5 addition and the section 15 rewrite
+are ruled. Every page carries `Last checked 25 Aug 2026`, so the date moves to
+the sign-off date and the PDF is rebuilt then. It is the last thing built before
+C3, not the first.
+
+**Template review, the three lines Jasmin held.** Both stay unchanged. Section
+7's community-none-of-us-belongs-to line is the only exclusion in the list that
+names a failure mode rather than a category, and the preamble already invites
+deletion, so the risk is bounded by design. Section 11's composite-face sentence
+sits under the operative rule as its justification, so an organisation that
+finds it strong deletes it and still has the rule. **Section 5's Article 9 list
+is clean:** two mentions of Article 9 in the whole file, no `9(2)`, no
+inference-of-belief framing, nothing from the governance project. Suggested
+addition, one phrase: **trade union membership**, the omitted Article 9 category
+this audience is likeliest to hit and least likely to guess.
+
+**Found unasked, section 12.** The paragraph closes on "This is the law, not
+regulator guidance" attached to a mechanism that is regulator guidance. The
+ICO's own wording: "In most cases, a combination of two of these factors
+indicates the need for a DPIA. However, this is not a strict rule." Article
+35(1) and 35(3) are the law; the two-factor screening test is the ICO's and is
+explicitly not strict. Reads as the governance review's Article 35 correction
+over-rotating one step. Jasmin's to rule.
+
+**A5 drafted.** All fifteen verdicts, `reports/2026-08-26-a5-verdict-drafts.md`,
+proposals with the reasoning shown against the locked definitions.
+
+**The finding that settles Jasmin's open question:** the existing fifteen do not
+clear F2's sector-first test, and it is not marginal. **Not one names a charity,
+a trustee, a funder, a supporter or a beneficiary.** Four are written for the
+consultancy's buyer (client deliverables, client work). Several are My Stack's
+first person singular. The nonprofit tier never appears in a verdict, including
+Canva's. Copilot's never names the catch that made it Amber. **DeepSeek is a
+public failure row whose verdict reads as a buying case**, closing on frontier
+capability becoming a commodity with nothing about data location or training.
+So: **merge after the verdict sprint, not before it.**
+
+Drafts run 410 to 676 characters against 265 to 596, mean 331 to 517. That costs
+nothing in layout: the verdict renders only inside the expanded panel behind the
+`Honest verdict` toggle, so collapsed card height is unaffected.
+
+**Fact error found while drafting:** ChatGPT's column D still reads
+`Plus from £16/mo`. The 24 Aug currency re-check established **£20**, and the
+£16 came from a third-party comparison site. Recorded then, never pasted.
+
+**The first A5 pass was wrong and Jasmin stopped it. The correction is the
+useful part.** Every one of the fifteen had turned into a governance note. Her
+words: the verdicts need to be centred on the use of the tools, and this is not
+a governance-only website.
+
+**The structural proof.** A ToolCard already renders `Where your data sits`,
+`Trains on your content`, `Nonprofit pricing`, the DPIA chip and
+`Say this to a trustee`. **Five governance elements.** A sixth in the verdict
+makes the card say one thing six times and never say whether the tool is any
+good. The drafting notes for pass one contained the right test, that a verdict
+must not restate the fields, and then failed it.
+
+**The audit settles it and should have been read on day one.** Its diagnosis was
+that the rows carried name, category, status, cost, verdict and url, and that
+not one field answered where the data sits, whether it trains on input, whether
+a nonprofit tier exists, whether adoption triggers a DPIA, whether it can be
+explained to a trustee. **The seven fields were added because the verdict could
+not answer those questions.** The audit never asked for the verdict to become
+one, and it describes rows like Canva's as otherwise fine. **A5 is an audience
+change, not a subject change.**
+
+**The model was already in the Sheet.** Nineteen `my_stack` verdicts in Jasmin's
+own voice, and only one is about data governance: Microsoft Copilot, where
+governance is the reason to use the tool. Pass one took Copilot's shape and
+applied it to all fifteen.
+
+**Identity ruled by Jasmin, 26 Aug: The Edit is a comms resource first, with a
+compliance edge.** Placed in `.claude/CLAUDE.md` under project identity, because
+that file steers every future session and its absence is what let this drift.
+Three slots recorded there: **the axis filters and gates**, **the verdict
+recommends**, **the trustee note is the sentence for the board.** Governance
+enters a verdict only where a governance fact is the reason to use or avoid that
+specific tool, which is Copilot, DeepSeek and HubSpot.
+
+**Two more rulings taken the same moment.** Voice: **first person where it is
+evidence Jasmin has earned, second person for the recommendation**; four of the
+fifteen carry it. Sector translation: **the job is sector-specific** (a funder
+report, an appeal, a board pack, an exhibition text, a supporter's testimony),
+**the tool assessment is not re-derived for charities**, because Descript
+removing the barrier to captioning is true everywhere.
+
+**Catch, read wider than pass one read it.** The catch is whatever disappoints:
+a free tier that is useless, a setup cost, a learning curve, output needing more
+editing than writing fresh, an editorial line you should not cross. Sometimes it
+is the data problem. Usually it is not. The second pass carries catches like
+HubSpot thinking in deals rather than donations, Adobe being worthless to a team
+with nobody who can drive it, ChatGPT telling you your appeal copy is strong
+when it is not, and Descript making it far too easy to reshape a beneficiary's
+testimony by deleting words from a transcript.
+
+**Second pass written, same file.** `reports/2026-08-26-a5-verdict-drafts.md`
+now holds the settled spec, the record of what pass one got wrong, and fifteen
+use-led drafts. **Length note, flagged rather than fixed:** originals averaged
+331 characters, pass one 517, pass two 534. So the rewrite fixed the subject and
+not the length. Jasmin's own `my_stack` verdicts run to this length, and the
+verdict renders only inside the expanded panel, so it costs nothing in layout.
+A tighter pass toward the originals' punchier register is available if she wants
+it.
+
+**Next:** the four rulings in one sitting, Jasmin's editing pass on the fifteen
+second-pass drafts, the template's section 12 and section 5 calls, then one code
+session takes the lot. C3 and Gate 2 remain the merge blocker and are Jasmin's
+alone.
+
 ### 2026-08-25 (Cowork: rulings, C1 v2, C2 built, C3 drafted)
 
 No code changed, nothing committed to `src/`. Four files written to `reports/`.
