@@ -94,9 +94,9 @@ part nobody else publishes.
 | 4 | Delete nothing: the empty paragraph becomes the description | layout | ready |
 | 5 | Nonprofit pricing loses its `#EEF0FB` tint, value goes bold, moves up to sit with price | layout | ready |
 | 6 | Verdict toggle and `Checked` share one row, `Checked` at 11px muted | layout | ready |
-| 7 | C4(b) template line restricted to **Red only** | placement | **Jasmin's call** |
-| 8 | `Add to my stack` removed | layout | **blocked on the Stack ruling** |
-| 9 | The `RISK` label string | copy | **Jasmin's.** `THE CHECKS` is the alternative and ties the card to the headline claim |
+| 7 | C4(b) template line restricted to **Red only** | placement | **APPROVED 26 Aug** |
+| 8 | `Add to my stack` removed, `Visit tool` becomes the only CTA | layout | **UNBLOCKED. Stack cut, ruled 26 Aug** |
+| 9 | The zone label. **APPROVED 26 Aug as `The checks`**, rendered uppercase like the job chips. Banked in `reports/2026-08-26-copy-pack-card-restructure.md` | copy | **APPROVED** |
 
 **Chip labels stay unchanged.** An earlier version proposed rewriting all three.
 That was wrong: the three states are genuinely different kinds of statement, a
@@ -170,6 +170,8 @@ Decorative:
 
 ---
 
-*Recorded 26 August 2026. Nothing here is approved. The card work is blocked on
-the Build Your Own Stack ruling, because the bottom of the card cannot be
-settled while an unresolved feature sits in it.*
+*Recorded 26 August 2026. **Build Your Own Stack was cut on 26 Aug, so the
+card's bottom is settled and change 8 is unblocked.** **All three remaining copy calls were approved the
+same day** and are banked in `reports/2026-08-26-copy-pack-card-restructure.md`:
+the zone label `The checks`, the DPIA definition line, and C4(b) restricted to
+Red. **The card work has everything it needs for a code session.**

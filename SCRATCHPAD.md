@@ -529,10 +529,71 @@ ChatGPT is tagged Research, Translation and Accessibility but says appeal copy.
 Deals rather than donations earns it; the image going in an appeal does not. On
 that test **four of the fifteen need editing and eleven do not.**
 
-**Next:** the Build Your Own Stack ruling first, because it gates the card work.
-Then the fifteen `what_it_does` descriptions and Jasmin's editing pass on the
-verdicts, the three remaining rulings, the `RISK` label and the DPIA line, the
-template's section 12 and section 5 calls, then one code session takes the lot.
+**Two rulings taken 26 Aug, late.**
+
+**1. Build Your Own Stack is CUT.** Jasmin's ruling. Scope of the cut, all
+subtractive: delete `src/pages/Stack.tsx` (401 lines),
+`src/components/StackBar.tsx` (237), `src/components/StackTooltip.tsx` (86) and
+`src/utils/slugify.ts` (24, no other consumer). Strip the stack machinery from
+`Tools.tsx`: three localStorage keys, five state blocks, three dismiss handlers,
+`toggleStack`, both `?stack=` effects, the `matchedSharedTools` memo, the mobile
+banner, and **the entire `hasStackParam` branch that duplicates the grid
+section**, which is what makes `Tools.tsx` a materially simpler file
+afterwards. Remove the add control and coachmark from `ToolCard`. Point
+`/stack` at `/tools` with the same `Navigate replace` pattern `/subscribe`
+already uses, so indexed and shared links land somewhere real. Roughly **950
+lines and three files gone**, and **no new copy is needed**.
+
+What the cut also closes, without anyone having to do it separately:
+
+- **F2b is moot.** Shared `?stack=` links dropping incomplete rows stops being
+  a decaying property because the links stop existing.
+- **The `StackBar.tsx:55` www bug is moot.** It built the share URL as
+  `https://www.theeditai.co.uk/stack`, taking a 308 hop since the 22 Aug flip.
+- **All three visitor-facing em dashes on the branch go**, at `Stack.tsx:44`,
+  `Stack.tsx:49` and `StackBar.tsx:207`. None had been through the
+  approved-strings process.
+- **One of the five known AA contrast failures goes**, StackBar text on
+  periwinkle at 2.75:1.
+- **A design-system violation goes.** StackBar painted itself periwinkle
+  `#7B7FD4`, which is reserved for the homepage hero.
+- **The card's bottom resolves.** `Visit tool` becomes the only CTA, so the
+  secondary action stops being styled as the primary one.
+
+Accepted cost: the approved B4(b) `/stack` title and description are spent.
+That is the whole loss.
+
+**2. F2c: always wrap.** Jasmin took the recommendation. Delete the
+`scrolled ? "" : "sm:flex-wrap sm:overflow-visible"` conditional so the rail
+wraps at `sm` and up in both scroll states. One conditional, no copy, no axis
+amendment, **38px of vertical cost in the compact state**, and nothing is ever
+hidden behind the gradient again. **F2c closes on the code job.**
+
+**ChatGPT's price corrected in the Sheet** by Jasmin the same session, from the
+third-party `£16` to the sourced `£20`.
+
+**The fifteen `what_it_does` descriptions are signed off and pasted** into a new
+column N. Nothing renders until `parseToolRows` stops hardcoding the field
+empty, which is two lines mirroring `fetchMyStack`.
+
+**All three card copy calls approved 26 Aug** and banked as a third copy pack,
+`reports/2026-08-26-copy-pack-card-restructure.md`: the zone label **`The
+checks`** rendered uppercase like the job chips, the DPIA definition line for
+above the grid, and **C4(b) restricted to Red**, taking it from 14 cards to 2.
+`The checks` won over `Risk` because the site's headline claim is that no tool
+appears until it has been through them, and because `Risk` would mislabel its
+own contents: `Where your data sits: US` is a fact, not a risk. The Amber
+counter-argument on C4(b) is recorded in the pack rather than lost.
+
+**The hero pills label stays parked**, because the pills ruling is outstanding
+and the source and cap change what the label has to do.
+
+**Next:** the code session now has everything it needs for the card restructure,
+the Stack cut and F2c. Still outstanding: the radar and pills rulings, Jasmin's
+editing pass on the fifteen verdicts, and the template's section 12 and section
+5 calls. C3 and Gate 2 remain the merge blocker and are Jasmin's alone. Then Jasmin's editing pass on the
+verdicts, the radar and pills rulings, the template's section 12 and section 5
+calls, then one code session takes the lot.
 C3 and Gate 2 remain the merge blocker and are Jasmin's alone.
 
 ### 2026-08-25 (Cowork: rulings, C1 v2, C2 built, C3 drafted)
