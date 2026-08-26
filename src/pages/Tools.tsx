@@ -133,11 +133,13 @@ const Tools = () => {
         </div>
 
         <div className="relative w-full sm:flex-1 min-w-0">
-          <div
-            className={`flex gap-2 flex-nowrap overflow-x-auto no-scrollbar scroll-smooth ${
-              scrolled ? "" : "sm:flex-wrap sm:overflow-visible"
-            }`}
-          >
+          {/* F2c, ruled 26 Aug: the rail wraps at sm and up in both scroll
+              states. The compact state used to become a horizontal scroller,
+              which clipped 172px at 1280 and lost Translation entirely behind
+              the gradient fade. The six comms jobs are the taxonomy the whole
+              re-point is expressed in, so hiding one is not a fair trade for
+              38px of vertical. */}
+          <div className="flex gap-2 flex-nowrap overflow-x-auto no-scrollbar scroll-smooth sm:flex-wrap sm:overflow-visible">
             {CATEGORIES.map((c) => (
               <button
                 key={c}
@@ -153,11 +155,14 @@ const Tools = () => {
               </button>
             ))}
           </div>
+          {/* The fade signals horizontal overflow, so it follows the rail: it
+              is mobile-only now, because at sm and up the rail wraps in both
+              states and there is nothing left to scroll. Left conditional it
+              would wash a 40px strip over the right edge of the wrapped chips,
+              which is the clipping F2c was raised to stop. */}
           <div
             aria-hidden="true"
-            className={`pointer-events-none absolute top-0 right-0 h-full w-10 bg-gradient-to-l from-background to-transparent ${
-              scrolled ? "" : "sm:hidden"
-            }`}
+            className="pointer-events-none absolute top-0 right-0 h-full w-10 bg-gradient-to-l from-background to-transparent sm:hidden"
           />
         </div>
       </div>
