@@ -53,12 +53,14 @@ reads them). Allowed values and definitions were locked by Jasmin on
 audit section 3 on every value and definition, including the DPIA chip
 colours and the three toggle rules.
 
-- `jobs` — one or more of: Appeals & fundraising, Case studies &
+- `jobs` — one or more of: Research, Appeals & fundraising, Case studies &
   storytelling, Social, Internal comms, Accessibility, Translation.
-  Multi-value, comma-separated in the Sheet.
+  Multi-value, comma-separated in the Sheet. `Research` was added by
+  amendment on 2026-08-25 and sorts first.
 - `data_location` — UK / EU / EU option / US / Your tenant / Other / Unclear
 - `trains_on_input` — No / No by default / Yes unless you opt out / Yes /
-  Varies by tier
+  Varies by tier / Unclear (added by amendment 2026-08-25: the vendor
+  publishes no position at all). Only No and No by default pass the toggle.
 - `nonprofit_tier` — free text, or None (confirmed absent, not unchecked)
 - `dpia_flag` — Green / Amber / Red
 - `trustee_note` — one sentence, sayable at a board meeting
@@ -93,7 +95,8 @@ Jasmin's judgement and are NEVER written by any automation or code session.
   `index.html` owns those sitewide, and remains the fallback for scrapers
   that do not run JS. Do not add per-page `og:image` without replacing that
   split deliberately. Every page must pass title, description and canonical;
-  `/submit` and `/stack` shipped no meta at all until 2026-08-22.
+  `/submit` shipped no meta at all until 2026-08-22. (`/stack` was the other
+  offender; it was cut on 2026-08-26.)
 - Analytics: GA4 (G-QHYYEWC2C0)
 
 ### Branch discipline (until the October 2026 relaunch)
@@ -132,20 +135,23 @@ Google-authenticated.
 Spreadsheet ID: `1RIO-WY9H75gML_UgdQbHGgDl-R0MfaG3CRPUp3PtAUI`
 
 Tabs: `tools`, `my_stack`, `design_kit`, `learning`, `whats_new`. Tab names
-are case-sensitive. Content changes in Sheets go live immediately — no
-deploy needed — which is why row edits against the new axis wait for the
-October week even though code lives safely on the branch.
+are case-sensitive. Content changes in Sheets go live immediately, with no
+deploy, and that cuts both ways: the axis columns were populated in August
+rather than October, and because `main`'s fetcher ignores them the live site
+is unaffected. What still waits for October is the merge, not the content.
 
 `tools` columns: A name, B category, C status (legacy, being retired),
-D cost, E verdict, F url, then G-M the seven axis fields in the order
-listed above. The fetcher on `overhaul/sector-axis` parses by header name
+D cost, E verdict, F url, then G-M the seven axis fields in the order listed
+above, then N what_it_does (added 2026-08-26: the one-line description the
+card leads with). The fetcher on `overhaul/sector-axis` parses by header name
 (same pattern as `fetchMyStack`), so column order no longer breaks it;
 main's fetcher is still positional A-F until the merge. Header strings must
 normalise to the field names exactly, with one alias: the Sheet header
 `cost` maps to `pricing`.
 
-See `.claude/schema.md` for the other tabs (last verified 2026-07-03;
-tools count verified at 66 rows on 2026-08-22).
+See `.claude/schema.md` for the other tabs (last verified against live data
+2026-08-26: `tools` 67 rows of which 15 are complete and render, `my_stack`
+19 rows).
 
 The Google Drive connector can read the spreadsheet by ID but may return
 only the first tab. For reliable per-tab reads use the Sheets values API
@@ -166,14 +172,16 @@ referrer list covers **both** `theeditai.co.uk/*` and
 either host is ever removed from that list, data fetches 403 and the
 directory renders empty.
 
-Routes: `/`, `/tools`, `/stack` (visitor's own Build Your Own Stack page),
-`/my-stack`, `/design-kit`, `/learning`, `/ai-news`, `/policy-template`,
-`/submit`, `/privacy-policy`, `/terms-of-service`, `/cookie-policy`.
+Routes: `/`, `/tools`, `/my-stack`, `/design-kit`, `/learning`, `/ai-news`,
+`/policy-template`, `/submit`, `/privacy-policy`, `/terms-of-service`,
+`/cookie-policy`.
 
-Two redirects: `/whats-new` to `/ai-news`, and `/subscribe` to
-`/policy-template` (both `Navigate ... replace`). `/subscribe` no longer
-renders. Nothing in the UI links to it; the redirect is kept only to catch
-old, indexed and external links, so do not delete it.
+Three redirects, all `Navigate ... replace`: `/whats-new` to `/ai-news`,
+`/subscribe` to `/policy-template`, and `/stack` to `/tools`. None of the
+three renders a page and nothing in the UI links to any of them. The
+redirects are kept only to catch old, indexed and external links, so do not
+delete them. `/stack` in particular was shared as a link by design, so live
+share URLs point at it.
 
 Fixed on the branch: the `/tools` canonical, previously pointing at a dead
 `/toolkit` route. New routes need only a React Router entry —
@@ -195,9 +203,10 @@ three labels identical to each other and to the page they land on.
 
 ## Codebase conventions
 
-`src/utils/slugify.ts` is the single source of truth for URL encoding.
-Tool names store as raw strings in localStorage; slugs are for URL
-construction only. Never duplicate this logic elsewhere.
+`src/utils/slugify.ts` was deleted with the Stack cut on 2026-08-26. It
+existed only to build `?stack=` share URLs, and nothing slugifies a tool name
+any more. If URL encoding is ever needed again, add one module and keep it
+single-source, as that file was.
 
 `stripEmoji` in `src/lib/sheets.ts` applies to all text fields parsed from
 the Sheet. Preserve it in any fetcher change.
@@ -223,8 +232,11 @@ Colours (hex only, never names):
 - `#2D6A4F` forest green (In My Stack badge only) · `#E8572A` burnt orange
   (legacy On My Radar badge, renders nowhere)
 - `#EEF0FB` cobalt tint, the established chip and badge background paired
-  with `#2D35C9` text (index.css, ToolCard, Learning, Stack). Documented
-  2026-08-23: it was already in four places and missing from this list.
+  with `#2D35C9` text (index.css, ToolCard job chips, Learning). Documented
+  2026-08-23: it was already in four places and missing from this list. The
+  Stack page was the fourth and is gone; ToolCard's nonprofit-pricing block
+  dropped the tint in the 2026-08-26 restructure, so job chips are now its
+  only use on the card.
 - DPIA chips, locked 2026-08-23: Green `#2D6A4F` on `#E4F0E9`, Amber
   `#7A5200` on `#FAF0DB`, Red `#A8261C` on `#FBE9E6`, text and 1px border in
   the same hex. AA-verified against both `#FFFFFF` and `#FAF8F4`.
@@ -233,9 +245,11 @@ Fonts: Chillax 700 display (Fontshare); Plus Jakarta Sans 400/500/600 body
 (Google Fonts). DM Mono permanently retired.
 
 DPIA flags render as text-labelled chips, never colour alone (the site
-already carries AA contrast debt; do not add to it). Chip colours are not
-yet assigned: do not reuse forest green or burnt orange for Green/Amber/Red
-without Jasmin's sign-off.
+already carries AA contrast debt; do not add to it). The chip colours are the
+locked trio listed above, signed off 2026-08-23. That sign-off included the
+deliberate reuse of forest green `#2D6A4F` for the Green chip, so the earlier
+instruction not to reuse it is spent and has been removed: it contradicted
+the locked palette three lines above it.
 
 ## Voice rules (locked — unchanged by the re-point)
 
@@ -254,24 +268,46 @@ Positioning and page copy are authored by Jasmin with Cowork Claude and
 arrive as exact strings (see `reports/` copy pack). Code sessions place
 strings; they never author or improvise visitor-facing copy.
 
-## Current state (as at 2026-08-22)
+## Current state (as at 2026-08-26)
 
-Live site (main): unchanged old-brief site, 66 tool rows, six tool-type
-categories. Branch `overhaul/sector-axis`: header-based `fetchTools` with
-the seven axis fields (vitest-verified against fixtures), pushed to remote.
-Sheet: awaiting G1:M1 headers (safe to add any time; main's fetcher ignores
-them). Localhost API key: not yet created.
+Live site (main): unchanged old-brief site, six tool-type categories. Nothing
+from the overhaul has reached it.
 
-Placed on the branch 2026-08-22 (placement session): this file, the copy
-pack (homepage, meta/OG, About panel, Tools subheading), the `/tools`
-canonical fix, the capture swap, and `/policy-template` with its redirect.
+Sheet: `tools` is 67 rows with headers A-N. The seven axis columns G-M are
+populated and column N (`what_it_does`) was added and filled on 2026-08-26.
+**15 rows are complete and render**; the other 52 fail `isComplete()` and are
+invisible to the site, which is the radar working as designed. Of the 15, the
+DPIA split is 12 Amber, 2 Red, 1 Green. Verified against live data 2026-08-26.
 
-Remaining before relaunch, in order: ToolCard + filters session (DPIA chip,
-jobs chips with contains-matching, three sector toggles, last_checked
-display, plus the two approved C4 CTA strings from the copy pack addendum);
-October content week (axis final-lock, row triage, top-10 field fill and
-verdicts); capture live (template scrub, gated Substack post); merge and
-relaunch check. The full sequence with estimates is the audit, section 7.
+Branch `overhaul/sector-axis`: header-based `fetchTools` reading all fourteen
+columns; the DPIA chip, job chips with contains-matching, the three sector
+toggles and `last_checked` all built and rendering against real Sheet data.
+The localhost-scoped API key now exists in `.env.local`, so the dev server
+loads live data.
+
+Done 2026-08-26 (this session, seven commits): `what_it_does` wired into
+`parseToolRows`; Build Your Own Stack cut; ToolCard restructured into explore,
+buying and checks zones; the filter rail set to always wrap at `sm` and up
+(F2c); C4(b) restricted to Red; the two approved card strings placed; these
+docs corrected.
+
+Remaining before relaunch, in order:
+1. **Content.** Fill the axis fields and verdicts for the rows still short of
+   complete, to clear the ten-row merge floor with room to spare. A4 fact pass
+   with sources, A5 verdicts against the sector rule.
+2. **Outstanding rulings.** The homepage pills (`HomeGravity`, `MAX_PILLS`)
+   and their label, and the radar tab. Not started, and deliberately untouched
+   by the 2026-08-26 session.
+3. **Capture live.** Template scrub, gated Substack post.
+4. **Merge and relaunch check** in the 19-23 October admin week. See F2 in
+   `reports/2026-08-22-handover-to-relaunch.md` for the gate, including the
+   hard floor of ten complete rows and the B3 re-run checklist against real
+   data.
+
+Note on timing: the content work was pulled forward into August rather than
+waiting for the October week, so October is now the merge-and-relaunch window,
+not the do-the-work window. Any doc that still reads "waits for October"
+against content is stale.
 
 Pre-existing debt not in overhaul scope: gates-audit findings (contrast,
 heading skips, matter-js weight), GA consent mode, dependency bumps. Parked,
@@ -318,7 +354,7 @@ Schema: name, developer, date (DD MMM YYYY strict, load-bearing, drives
 the month parser), what_it_is, category, url. Columns A-F in that order.
 No ranges, no "Unknown".
 
-Planned changes (October, see audit): the Routine's extraction rule
+Planned changes, still outstanding (see audit): the Routine's extraction rule
 re-points to sector-relevant stories only (zero-story days are correct
 behaviour); the fortnightly Cowork task is rebuilt as the checks engine
 (facts with sources, last_checked stamps, judgement flagged never

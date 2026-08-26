@@ -7,11 +7,13 @@ live immediately without a deploy. The Google Drive connector can read the
 spreadsheet but may return only the first tab; for reliable per-tab reads use
 the Sheets values API (production key + theeditai.co.uk referer).
 
-Last verified from live data: 2026-07-03. Sector-axis columns added to schema 2026-08-22 (branch overhaul/sector-axis); Sheet columns G–M not yet populated.
+Last verified from live data: 2026-08-26. Sector-axis columns G–M are
+populated and read by the site on `overhaul/sector-axis`; column N
+(`what_it_does`) was added and populated 2026-08-26.
 
 ---
 
-## tools (66 rows as at 2026-08-22)
+## tools (67 rows as at 2026-08-26, 15 of them complete)
 
 **Column layout is read by header name** on `overhaul/sector-axis`:
 `parseToolRows()` matches normalised header strings, so column order no
@@ -21,38 +23,56 @@ On `main` the fetcher is still positional A-F until the merge, so do not
 reorder columns before then.
 
 Status values: `in_stack` or `on_radar`. Only `in_stack` renders a badge.
-Status column is legacy; it will be retired once the sector-axis fields are
-populated and the UI is updated (see overhaul audit, section 06).
+Status column is legacy and still awaiting retirement (see overhaul audit,
+section 06).
+
+**Only complete rows render.** `isComplete()` requires all seven axis fields,
+with `dpia_flag` one of the canonical three. 15 of the 67 rows passed as at
+2026-08-26; the other 52 are on the radar and invisible to the site. The
+homepage counter uses the same predicate, so the count and the grid cannot
+disagree.
 
 ### Original columns A–F (live, unchanged)
 
 | Col | Field    | Notes                                    |
 |-----|----------|------------------------------------------|
 | A   | name     |                                          |
-| B   | category | Legacy tool-type categories (Writing, Research, Design, Video, Automation, Building). Will be replaced by `jobs` in the UI once G–M are populated. |
+| B   | category | Legacy tool-type categories (Writing, Research, Design, Video, Automation, Building). Superseded in the UI by `jobs`: the card renders job chips, not this. Still parsed and still searchable, and it is stale in places (the A3 triage has HubSpot as `Automation`), so do not restore it to the card. Column N is what answers "what kind of thing is this" |
 | C   | status   | `in_stack` or `on_radar` (legacy, retiring) |
 | D   | cost     | Code maps this to `pricing`              |
-| E   | verdict  | Being rewritten against the sector axis in Oct 2026 |
+| E   | verdict  | Jasmin's judgement, never written by automation. Rewritten against the sector axis for the top rows; see reports/2026-08-26-a5-verdict-drafts.md |
 | F   | url      |                                          |
 
-### Sector-axis columns G–M (appended 2026-08-22, empty until Oct research pass)
+### Sector-axis columns G–M (appended 2026-08-22, populated)
 
-All values are strings. Empty cells are safe — `fetchTools()` returns empty
-string for unpopulated rows, and no UI currently reads these fields.
+All values are strings. Empty cells are still safe — `parseToolRows()` returns
+an empty string for an unpopulated cell and an empty array for `jobs` — but a
+row with any axis field blank fails `isComplete()` and does not render at all.
+
+Allowed values below are frozen by `reports/2026-08-23-axis-locked.md`, which
+outranks the overhaul audit on every value and definition. Do not widen them
+here. `dpia_flag`, `trustee_note` and `verdict` are Jasmin's judgement and are
+never written by automation or a code session.
 
 | Col | Field            | Allowed values / format                                    |
 |-----|------------------|------------------------------------------------------------|
-| G   | jobs             | Comma-separated comms jobs: `Appeals & fundraising`, `Case studies & storytelling`, `Social`, `Internal comms`, `Accessibility`, `Translation`. Multi-value, e.g. `"Social · Appeals & fundraising"` |
-| H   | data_location    | `UK` · `EU` · `EU option` · `US` · `Unclear`              |
-| I   | trains_on_input  | `No` · `No by default` · `Yes unless you opt out` · `Yes` · `Varies by tier` |
+| G   | jobs             | Comma-separated comms jobs: `Research`, `Appeals & fundraising`, `Case studies & storytelling`, `Social`, `Internal comms`, `Accessibility`, `Translation`. `Research` added 2026-08-25 and sorts first. Multi-value, e.g. `"Social · Appeals & fundraising"` |
+| H   | data_location    | `UK` · `EU` · `EU option` · `US` · `Your tenant` · `Other` · `Unclear`. `Your tenant` is the Copilot case; `Unclear` is a legitimate published value and is itself a warning |
+| I   | trains_on_input  | `No` · `No by default` · `Yes unless you opt out` · `Yes` · `Varies by tier` · `Unclear` (added 2026-08-25: the vendor publishes no position at all). Only `No` and `No by default` pass the training toggle |
 | J   | nonprofit_tier   | Programme description, e.g. `"Canva Pro free for registered charities"`, or `"None"` (confirmed absent, not unchecked) |
 | K   | dpia_flag        | `Green` · `Amber` · `Red` · `` (empty = unverified). Green: no personal data leaves you in typical comms use. Amber: DPIA territory if supporter/beneficiary data goes in. Red: assume DPIA before adoption. |
 | L   | trustee_note     | One sentence for a board meeting with no follow-up questions |
-| M   | last_checked     | Date facts were last verified, e.g. `Oct 2026`            |
+| M   | last_checked     | Date the fact fields were last verified. `DD MMM YYYY`, strict, e.g. `23 Aug 2026` |
+
+### Column N (added and populated 2026-08-26)
+
+| Col | Field        | Notes                                                    |
+|-----|--------------|----------------------------------------------------------|
+| N   | what_it_does | One line saying what kind of thing the tool is, in the register `my_stack` already uses. Read by `parseToolRows()` and rendered as the card's description. It answers "what is this", where `jobs` answers "which of my problems does it solve" |
 
 ---
 
-## my_stack (21 rows)
+## my_stack (19 rows as at 2026-08-26)
 
 Claude is the single featured entry (`featured=true`), covering the full
 ecosystem (chat, Code, Cowork, Design, Skills). Adobe Suite and Firefly
