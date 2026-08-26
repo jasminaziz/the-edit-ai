@@ -107,10 +107,23 @@ export const ToolCard = ({
         </h3>
       )}
 
-      {/* Jobs + Status badges. The jobs chips replace the legacy tool-type
-          category chip: the re-point judges a tool by the comms job it serves,
-          not by what kind of tool it is. Column B stays in the data. */}
-      <div className="flex flex-wrap gap-2 mt-2">
+      {/* ZONE 1, explore. Description before the chips, per the restructure:
+          the chips answer "which of my problems does this solve", the
+          description answers "what kind of thing is this", and comprehension
+          has to come first. Empty until the Sheet's what_it_does is filled. */}
+      {tool.what_it_does && (
+        <p
+          className="mt-2 font-body text-sm leading-relaxed line-clamp-2"
+          style={{ color: isSelected ? "#FAF8F4" : "#1A1510" }}
+        >
+          {tool.what_it_does}
+        </p>
+      )}
+
+      {/* Job chips. They replace the legacy tool-type category chip: the
+          re-point judges a tool by the comms job it serves, not by what kind
+          of tool it is. Column B stays in the data. */}
+      <div className="flex flex-wrap gap-2 mt-2.5">
         {tool.jobs.map((job) => (
           <span
             key={job}
@@ -138,56 +151,51 @@ export const ToolCard = ({
         )}
       </div>
 
-      {/* Description */}
-      <p
-        className="mt-3 font-body text-sm leading-relaxed line-clamp-2"
-        style={{ color: isSelected ? "#FAF8F4" : "#1A1510" }}
-      >
-        {tool.what_it_does}
-      </p>
-
-      {/* Pricing */}
+      {/* ZONE 2, buying. Nonprofit pricing sits with the price rather than
+          with the risk facts: it decides affordability, not exposure. The
+          #EEF0FB tint is dropped and the value carries the emphasis instead,
+          so the card holds two coloured regions rather than five. */}
       {tool.pricing && (
         <p
-          className="mt-2 font-body text-[13px]"
+          className="mt-3 font-body text-[13px]"
           style={{ color: isSelected ? "rgba(250,248,244,0.6)" : "#9A8F82" }}
         >
           {tool.pricing}
         </p>
       )}
+      {tool.nonprofit_tier && (
+        <p className="mt-1.5 font-body flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+          <span
+            className="text-[11px] leading-tight"
+            style={{ color: isSelected ? "rgba(250,248,244,0.6)" : "#9A8F82" }}
+          >
+            Nonprofit pricing
+          </span>
+          <span
+            className="text-[13px] font-semibold leading-snug"
+            style={{ color: isSelected ? "#FAF8F4" : "#1A1510" }}
+          >
+            {tool.nonprofit_tier}
+          </span>
+        </p>
+      )}
 
-      {/* Sector axis — the moat. Every label below is approved copy from the
-          B3 microcopy pack, placed verbatim. */}
+      {/* ZONE 3, the checks. The only zone that earns a heading: a name, a
+          description, chips and a price are self-evident, whereas this block
+          contains an acronym and is the part nobody else publishes. The rule
+          renders now; its approved label is placed with the copy pack. */}
+      <div className="mt-4 flex items-center gap-3">
+        <div
+          className="h-px flex-1"
+          style={{ backgroundColor: isSelected ? "rgba(250,248,244,0.3)" : "#E8E2D8" }}
+        />
+      </div>
+
       {tool.data_location && (
         <AxisLine label="Where your data sits" value={tool.data_location} isSelected={isSelected} />
       )}
       {tool.trains_on_input && (
         <AxisLine label="Trains on your content" value={tool.trains_on_input} isSelected={isSelected} />
-      )}
-
-      {/* Nonprofit pricing — highlighted, because it is the line that decides
-          whether a tool is affordable for this audience at all. */}
-      {tool.nonprofit_tier && (
-        <div
-          className="mt-2.5 rounded-lg"
-          style={{
-            backgroundColor: isSelected ? "rgba(250,248,244,0.15)" : "#EEF0FB",
-            padding: "8px 10px",
-          }}
-        >
-          <p
-            className="font-body text-[11px] leading-tight"
-            style={{ color: isSelected ? "rgba(250,248,244,0.75)" : "#2D35C9", margin: 0 }}
-          >
-            Nonprofit pricing
-          </p>
-          <p
-            className="font-body text-[13px] font-medium leading-snug"
-            style={{ color: isSelected ? "#FAF8F4" : "#2D35C9", margin: 0, marginTop: 1 }}
-          >
-            {tool.nonprofit_tier}
-          </p>
-        </div>
       )}
 
       {/* DPIA chip. Colours are held constant through the hover state: the
@@ -223,17 +231,29 @@ export const ToolCard = ({
         </div>
       )}
 
-      {/* Verdict button */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsExpanded((v) => !v);
-        }}
-        className="mt-auto pt-3 text-left font-body font-medium text-[13px] transition-colors"
-        style={{ color: isSelected ? "#C8F04A" : "#9B9FE0" }}
-      >
-        {isExpanded ? "Honest verdict ↑" : "Honest verdict ↓"}
-      </button>
+      {/* ZONE 4, act. The verdict toggle and the Checked stamp share one row:
+          both are meta about the judgement, and stacking them cost a line for
+          nothing. "Checked" is a prefix, per the microcopy pack. */}
+      <div className="mt-auto pt-4 flex items-center justify-between gap-3">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsExpanded((v) => !v);
+          }}
+          className="text-left font-body font-medium text-[13px] transition-colors"
+          style={{ color: isSelected ? "#C8F04A" : "#9B9FE0" }}
+        >
+          {isExpanded ? "Honest verdict ↑" : "Honest verdict ↓"}
+        </button>
+        {tool.last_checked && (
+          <span
+            className="font-body text-[11px] shrink-0"
+            style={{ color: isSelected ? "rgba(250,248,244,0.6)" : "#9A8F82" }}
+          >
+            Checked {tool.last_checked}
+          </span>
+        )}
+      </div>
 
       {/* Expanded verdict, with the trustee note inside it. The note is the
           sentence you could say at a board meeting, so it belongs with the
@@ -267,15 +287,6 @@ export const ToolCard = ({
         </div>
       )}
 
-      {/* "Checked" is a prefix, per the microcopy pack: Checked 23 Aug 2026. */}
-      {tool.last_checked && (
-        <p
-          className="mt-3 font-body text-[12px]"
-          style={{ color: isSelected ? "rgba(250,248,244,0.6)" : "#9A8F82" }}
-        >
-          Checked {tool.last_checked}
-        </p>
-      )}
 
       {/* Visit tool button — lime pill */}
       {tool.url && (
@@ -319,7 +330,6 @@ export const ToolCard = ({
           </a>
         </div>
       )}
-
     </div>
   );
 };
