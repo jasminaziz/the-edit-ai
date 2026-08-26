@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { X } from "lucide-react";
 import { normaliseDpiaFlag, type Tool } from "@/lib/sheets";
 
 /**
@@ -48,24 +47,16 @@ interface ToolCardProps {
   tool: Tool;
   isSelected: boolean;
   isDimmed: boolean;
-  isInStack: boolean;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
-  onToggleStack: () => void;
-  showCoachmark?: boolean;
-  onDismissCoachmark?: () => void;
 }
 
 export const ToolCard = ({
   tool,
   isSelected,
   isDimmed,
-  isInStack,
   onMouseEnter,
   onMouseLeave,
-  onToggleStack,
-  showCoachmark = false,
-  onDismissCoachmark,
 }: ToolCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   // normaliseDpiaFlag resolves casing, and returns "" for anything that is not
@@ -88,12 +79,10 @@ export const ToolCard = ({
               borderColor: "#2D35C9",
               color: "#FAF8F4",
               boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
-              ...(isInStack ? { borderLeft: "3px solid #2D35C9" } : {}),
             }
           : {
               backgroundColor: "#FFFFFF",
               borderColor: "#E8E2D8",
-              ...(isInStack ? { borderLeft: "3px solid #2D35C9" } : {}),
             }
       }
     >
@@ -331,88 +320,6 @@ export const ToolCard = ({
         </div>
       )}
 
-      {/* Add to stack button + optional coachmark */}
-      <div className="mt-4 relative">
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onToggleStack();
-            onDismissCoachmark?.();
-          }}
-          className="w-full font-body transition-colors"
-          style={{
-            height: 40,
-            fontSize: 14,
-            fontWeight: 500,
-            borderRadius: 8,
-            border: isInStack ? "1px solid #2D6A4F" : "1px solid #E8E2D8",
-            backgroundColor: isInStack ? "#2D6A4F" : "#FAF8F4",
-            color: isInStack ? "#FFFFFF" : "#2D35C9",
-            boxShadow: showCoachmark && !isInStack ? "0 0 0 2px #C8F04A" : "none",
-          }}
-        >
-          {isInStack ? "✓ Added" : "+ Add to my stack"}
-        </button>
-
-        {showCoachmark && !isInStack && (
-          <div
-            className="font-body"
-            style={{
-              position: "absolute",
-              bottom: "calc(100% + 10px)",
-              left: 0,
-              right: 0,
-              backgroundColor: "#1A1510",
-              color: "#FFFFFF",
-              fontSize: 12.5,
-              lineHeight: 1.4,
-              padding: "10px 28px 10px 12px",
-              borderRadius: 6,
-              boxShadow: "0 6px 18px rgba(0,0,0,0.18)",
-            }}
-          >
-            <span style={{ color: "#C8F04A", fontWeight: 600 }}>Tap to add</span>
-            <span> → builds your stack at the bottom</span>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onDismissCoachmark?.();
-              }}
-              aria-label="Dismiss"
-              style={{
-                position: "absolute",
-                top: 4,
-                right: 4,
-                width: 20,
-                height: 20,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "none",
-                border: "none",
-                color: "#9A8F82",
-                cursor: "pointer",
-                padding: 0,
-              }}
-            >
-              <X size={12} />
-            </button>
-            <div
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                bottom: -6,
-                left: 24,
-                width: 0,
-                height: 0,
-                borderLeft: "6px solid transparent",
-                borderRight: "6px solid transparent",
-                borderTop: "6px solid #1A1510",
-              }}
-            />
-          </div>
-        )}
-      </div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   fetchTools,
   isComplete,
@@ -16,15 +16,8 @@ import { CobaltZone } from "@/components/CobaltZone";
 import { RevealGroup, RevealItem } from "@/components/Reveal";
 import { SEO } from "@/components/SEO";
 import { ToolCard } from "@/components/ToolCard";
-import { StackBar } from "@/components/StackBar";
-import { StackTooltip } from "@/components/StackTooltip";
-import { slugifyToolName } from "@/utils/slugify";
 
-import { Search, X } from "lucide-react";
-
-const STACK_STORAGE_KEY = "the-edit-stack";
-const COACHMARK_KEY = "stack-coachmark-seen";
-const BANNER_KEY = "stack-banner-seen";
+import { Search } from "lucide-react";
 
 const Tools = () => {
   const [tools, setTools] = useState<Tool[]>([]);
@@ -39,90 +32,6 @@ const Tools = () => {
   const [onlyDpiaGreen, setOnlyDpiaGreen] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
-  const [searchParams] = useSearchParams();
-  const stackParam = searchParams.get("stack");
-  const hasStackParam = !!stackParam;
-
-  const [stack, setStack] = useState<string[]>(() => {
-    if (typeof window === "undefined") return [];
-    try {
-      const raw = window.localStorage.getItem(STACK_STORAGE_KEY);
-      const parsed = raw ? JSON.parse(raw) : [];
-      return Array.isArray(parsed) ? parsed.filter((v) => typeof v === "string") : [];
-    } catch {
-      return [];
-    }
-  });
-  const [tooltipVisible, setTooltipVisible] = useState(() => {
-    if (typeof window === "undefined") return false;
-    if (new URLSearchParams(window.location.search).has("stack")) return false;
-    try {
-      return window.localStorage.getItem("stack-tooltip-seen") !== "true";
-    } catch {
-      return false;
-    }
-  });
-  const [coachmarkVisible, setCoachmarkVisible] = useState(() => {
-    if (typeof window === "undefined") return false;
-    if (new URLSearchParams(window.location.search).has("stack")) return false;
-    try {
-      return window.localStorage.getItem(COACHMARK_KEY) !== "true";
-    } catch {
-      return false;
-    }
-  });
-  const [bannerVisible, setBannerVisible] = useState(() => {
-    if (typeof window === "undefined") return false;
-    if (new URLSearchParams(window.location.search).has("stack")) return false;
-    try {
-      return window.localStorage.getItem(BANNER_KEY) !== "true";
-    } catch {
-      return false;
-    }
-  });
-
-  const dismissTooltip = () => {
-    setTooltipVisible(false);
-    try {
-      window.localStorage.setItem("stack-tooltip-seen", "true");
-    } catch {
-      /* ignore */
-    }
-  };
-
-  const dismissCoachmark = () => {
-    setCoachmarkVisible(false);
-    try {
-      window.localStorage.setItem(COACHMARK_KEY, "true");
-    } catch {
-      /* ignore */
-    }
-  };
-
-  const dismissBanner = () => {
-    setBannerVisible(false);
-    try {
-      window.localStorage.setItem(BANNER_KEY, "true");
-    } catch {
-      /* ignore */
-    }
-  };
-
-  const toggleStack = (name: string) => {
-    setStack((prev) => {
-      const next = prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name];
-      if (prev.length === 0 && next.length > 0) {
-        dismissTooltip();
-        dismissCoachmark();
-      }
-      try {
-        window.localStorage.setItem(STACK_STORAGE_KEY, JSON.stringify(next));
-      } catch {
-        /* ignore */
-      }
-      return next;
-    });
-  };
 
   useEffect(() => {
     fetchTools().then((t) => {
@@ -132,7 +41,7 @@ const Tools = () => {
       if (t.length === 0 && import.meta.env.VITE_GOOGLE_SHEETS_ID) setError(true);
       // Incomplete rows do not appear anywhere in the directory. Filtering
       // here, at the source, rather than at each render site means nothing
-      // downstream — grid, search, shared stack — can reintroduce a hidden row.
+      // downstream — grid, search — can reintroduce a hidden row.
       setTools(t.filter(isComplete));
       setLoading(false);
     });
@@ -148,41 +57,6 @@ const Tools = () => {
     target.addEventListener("scroll", onScroll, { passive: true });
     return () => target.removeEventListener("scroll", onScroll);
   }, []);
-
-  // Merge ?stack= slugs into localStorage stack once tools data is loaded.
-  useEffect(() => {
-    if (tools.length === 0 || !stackParam) return;
-    const slugs = stackParam
-      .split(",")
-      .map((s) => s.trim().toLowerCase())
-      .filter(Boolean);
-    if (slugs.length === 0) return;
-
-    const matchedNames = tools
-      .filter((t) => slugs.includes(slugifyToolName(t.name).toLowerCase()))
-      .map((t) => t.name);
-    if (matchedNames.length === 0) return;
-
-    setStack((prev) => {
-      const merged = Array.from(new Set([...prev, ...matchedNames]));
-      if (merged.length === prev.length) return prev;
-      try {
-        window.localStorage.setItem(STACK_STORAGE_KEY, JSON.stringify(merged));
-      } catch {
-        /* ignore */
-      }
-      return merged;
-    });
-  }, [tools, stackParam]);
-
-  const matchedSharedTools = useMemo(() => {
-    if (!stackParam || tools.length === 0) return [] as Tool[];
-    const slugs = stackParam
-      .split(",")
-      .map((s) => s.trim().toLowerCase())
-      .filter(Boolean);
-    return tools.filter((t) => slugs.includes(slugifyToolName(t.name).toLowerCase()));
-  }, [stackParam, tools]);
 
   const filtered = tools.filter((t) => {
     const q = search.toLowerCase();
@@ -317,23 +191,17 @@ const Tools = () => {
     </section>
   );
 
-  const renderCard = (tool: Tool, index: number) => {
+  const renderCard = (tool: Tool) => {
     const isSelected = hoveredCard === tool.name;
     const isDimmed = !!hoveredCard && !isSelected;
-    const isInStack = stack.includes(tool.name);
-    const showCoachmark = index === 0 && coachmarkVisible && stack.length === 0;
     return (
       <RevealItem key={tool.name}>
         <ToolCard
           tool={tool}
           isSelected={isSelected}
           isDimmed={isDimmed}
-          isInStack={isInStack}
           onMouseEnter={() => setHoveredCard(tool.name)}
           onMouseLeave={() => setHoveredCard(null)}
-          onToggleStack={() => toggleStack(tool.name)}
-          showCoachmark={showCoachmark}
-          onDismissCoachmark={dismissCoachmark}
         />
       </RevealItem>
     );
@@ -344,7 +212,7 @@ const Tools = () => {
    * the grid is shorter, and only when no filter is active: someone who has
    * narrowed to "DPIA unlikely plus nonprofit pricing" is working, and a promo
    * card in the middle of a result set is noise. The offer is not lost in
-   * filtered views, because every Amber and Red card carries the C4(b) line.
+   * filtered views, because every Red card carries the C4(b) line.
    *
    * The CTA label keeps the trailing arrow the nav and footer already carry, so
    * a visitor sees one identical label in all four places.
@@ -392,49 +260,6 @@ const Tools = () => {
     return [...cards.slice(0, at), templateCard, ...cards.slice(at)];
   };
 
-  const mobileBanner = bannerVisible && !hasStackParam ? (
-    <div className="sm:hidden px-4 pt-3">
-      <div
-        className="max-w-[1280px] mx-auto relative font-body"
-        style={{
-          backgroundColor: "#7B7FD4",
-          color: "#FFFFFF",
-          padding: "12px 38px 12px 14px",
-          borderRadius: 8,
-          boxShadow: "0 2px 8px rgba(123,127,212,0.18)",
-        }}
-      >
-        <div style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.3 }}>
-          Build your stack <span style={{ color: "#C8F04A" }}>↓</span>
-        </div>
-        <div style={{ fontSize: 12.5, lineHeight: 1.4, marginTop: 2, color: "rgba(255,255,255,0.85)" }}>
-          Tap <strong style={{ fontWeight: 600 }}>+ Add to my stack</strong> on any tool. Share it in one link.
-        </div>
-        <button
-          onClick={dismissBanner}
-          aria-label="Dismiss"
-          style={{
-            position: "absolute",
-            top: 6,
-            right: 6,
-            width: 24,
-            height: 24,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: "none",
-            border: "none",
-            color: "rgba(255,255,255,0.85)",
-            cursor: "pointer",
-            padding: 0,
-          }}
-        >
-          <X size={14} />
-        </button>
-      </div>
-    </div>
-  ) : null;
-
   return (
     <>
       <SEO
@@ -447,104 +272,26 @@ const Tools = () => {
         subheading="Every tool judged on data, cost and whether you could defend it to a trustee."
       />
 
-      {hasStackParam ? (
-        <>
-          {/* SECTION 1 — Your Stack */}
-          <section className="bg-background pt-10 px-6 sm:px-12">
-            <div className="max-w-[1280px] mx-auto">
-              <h2
-                className="font-display"
-                style={{ fontSize: 28, fontWeight: 700, color: "#2D35C9", margin: 0 }}
-              >
-                Your Stack
-              </h2>
-              <p
-                className="font-body"
-                style={{ fontSize: 16, fontWeight: 400, color: "#9A8F82", marginTop: 8, marginBottom: 24 }}
-              >
-                Your saved stack. Add more tools or share it with someone.
-              </p>
+      {filterBar}
 
-              {loading ? (
-                <LoadingSpinner />
-              ) : matchedSharedTools.length === 0 ? (
-                <EmptyState />
-              ) : (
-                <RevealGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {matchedSharedTools.map(renderCard)}
-                </RevealGroup>
-              )}
-
-              <hr
-                style={{
-                  border: "none",
-                  borderTop: "1px solid #E8E2D8",
-                  marginTop: 32,
-                  marginBottom: 32,
-                }}
-              />
-
-              <h2
-                className="font-display"
-                style={{ fontSize: 22, fontWeight: 700, color: "#1A1510", margin: 0 }}
-              >
-                All Tools
-              </h2>
-            </div>
-          </section>
-
-          {filterBar}
-
-          {/* SECTION 2 — All Tools grid */}
-          <section className="bg-background py-10 px-6 sm:px-12 pb-[72px]">
-            <div className="max-w-[1280px] mx-auto">
-              {loading ? (
-                <LoadingSpinner />
-              ) : error ? (
-                <ErrorState />
-              ) : filtered.length === 0 ? (
-                filtersActive ? filterEmptyState : <EmptyState />
-              ) : (
-                <RevealGroup
-                  key={`${category}-${search}`}
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-                >
-                  {gridItems(filtered)}
-                </RevealGroup>
-              )}
-            </div>
-          </section>
-        </>
-      ) : (
-        <>
-          {filterBar}
-          {mobileBanner}
-
-          <section className="bg-background py-10 px-6 sm:px-12 pb-[72px]">
-            <div className="max-w-[1280px] mx-auto">
-              {loading ? (
-                <LoadingSpinner />
-              ) : error ? (
-                <ErrorState />
-              ) : filtered.length === 0 ? (
-                filtersActive ? filterEmptyState : <EmptyState />
-              ) : (
-                <RevealGroup
-                  key={`${category}-${search}`}
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-                >
-                  {gridItems(filtered)}
-                </RevealGroup>
-              )}
-            </div>
-          </section>
-        </>
-      )}
-
-      <div className="hidden md:block">
-        <StackTooltip visible={tooltipVisible && !hasStackParam} onDismiss={dismissTooltip} />
-      </div>
-      <StackBar stack={stack} onRemove={toggleStack} />
+      <section className="bg-background py-10 px-6 sm:px-12 pb-[72px]">
+        <div className="max-w-[1280px] mx-auto">
+          {loading ? (
+            <LoadingSpinner />
+          ) : error ? (
+            <ErrorState />
+          ) : filtered.length === 0 ? (
+            filtersActive ? filterEmptyState : <EmptyState />
+          ) : (
+            <RevealGroup
+              key={`${category}-${search}`}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {gridItems(filtered)}
+            </RevealGroup>
+          )}
+        </div>
+      </section>
     </>
   );
 };
