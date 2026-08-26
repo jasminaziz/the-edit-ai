@@ -2,7 +2,7 @@ export interface Tool {
   name: string;
   category: string;
   status: 'in_stack' | 'on_radar';
-  what_it_does: string;   // vestigial — no Sheet column, always ''
+  what_it_does: string;   // one-line description of the tool, Sheet col N
   pricing: string;
   verdict: string;
   url: string;
@@ -72,6 +72,7 @@ export function parseToolRows(rows: string[][]): Tool[] {
   const iPricing  = findIdx('pricing', 'cost'); // Sheet header is "cost"
   const iVerdict  = findIdx('verdict');
   const iUrl      = findIdx('url');
+  const iWhat     = findIdx('what_it_does', 'whatitdoes', 'description');
   // Sector-axis — absent until the Sheet columns are added; findIdx returns -1,
   // cell() returns '', which is the safe default.
   const iJobs         = findIdx('jobs');
@@ -94,7 +95,7 @@ export function parseToolRows(rows: string[][]): Tool[] {
         name:            stripEmoji(cell(r, iName)),
         category:        stripEmoji(cell(r, iCategory)),
         status:          (cell(r, iStatus) || 'on_radar') as Tool['status'],
-        what_it_does:    '',
+        what_it_does:    stripEmoji(cell(r, iWhat)),
         pricing:         stripEmoji(cell(r, iPricing)),
         verdict:         stripEmoji(cell(r, iVerdict)),
         url:             cell(r, iUrl),

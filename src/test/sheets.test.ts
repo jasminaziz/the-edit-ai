@@ -13,11 +13,12 @@ import {
 // Fixtures
 // ---------------------------------------------------------------------------
 
-/** All 13 columns: the original six plus the seven sector-axis fields. */
+/** All 14 columns: the original six, the seven sector-axis fields, and
+ *  what_it_does in the Sheet's column N position. */
 const FULL_HEADERS = [
   'name', 'category', 'status', 'cost', 'verdict', 'url',
   'jobs', 'data_location', 'trains_on_input', 'nonprofit_tier',
-  'dpia_flag', 'trustee_note', 'last_checked',
+  'dpia_flag', 'trustee_note', 'last_checked', 'what_it_does',
 ];
 
 /** Only the original six columns — simulates the Sheet before Oct columns are added. */
@@ -57,7 +58,7 @@ describe('parseToolRows', () => {
   // All 13 columns present
   // -------------------------------------------------------------------------
 
-  it('maps all 13 columns when present', () => {
+  it('maps all 14 columns when present', () => {
     const rows = [
       FULL_HEADERS,
       [
@@ -66,6 +67,7 @@ describe('parseToolRows', () => {
         'Social,Appeals & fundraising', 'US', 'No by default',
         'Canva Pro free for registered charities',
         'Green', 'Our design tool, free for us as a charity.', 'Oct 2026',
+        'Design platform covering social graphics, presentations, video and print.',
       ],
     ];
     const [tool] = parseToolRows(rows);
@@ -82,6 +84,26 @@ describe('parseToolRows', () => {
     expect(tool.dpia_flag).toBe('Green');
     expect(tool.trustee_note).toBe('Our design tool, free for us as a charity.');
     expect(tool.last_checked).toBe('Oct 2026');
+    expect(tool.what_it_does).toBe(
+      'Design platform covering social graphics, presentations, video and print.',
+    );
+  });
+
+  // what_it_does is read by header name like every other column, so the same
+  // aliases fetchMyStack accepts work here. The column is new (Sheet col N),
+  // so a Sheet without it must still parse rather than throw.
+  it('accepts "description" header as alias for what_it_does', () => {
+    const rows = [
+      [...LEGACY_HEADERS, 'description'],
+      [...BASE_ROW, 'Sales and marketing CRM with a usable free tier.'],
+    ];
+    const [tool] = parseToolRows(rows);
+    expect(tool.what_it_does).toBe('Sales and marketing CRM with a usable free tier.');
+  });
+
+  it('returns an empty what_it_does when the column is absent', () => {
+    const [tool] = parseToolRows([LEGACY_HEADERS, BASE_ROW]);
+    expect(tool.what_it_does).toBe('');
   });
 
   it('accepts "cost" header as alias for pricing', () => {
