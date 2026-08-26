@@ -110,7 +110,8 @@ export const ToolCard = ({
       {/* ZONE 1, explore. Description before the chips, per the restructure:
           the chips answer "which of my problems does this solve", the
           description answers "what kind of thing is this", and comprehension
-          has to come first. Empty until the Sheet's what_it_does is filled. */}
+          has to come first. Guarded, so a row without a description does not
+          leave a gap; as at 2026-08-26 all 15 rendering rows have one. */}
       {tool.what_it_does && (
         <p
           className="mt-2 font-body text-sm leading-relaxed line-clamp-2"
