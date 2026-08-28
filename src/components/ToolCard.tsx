@@ -204,16 +204,16 @@ export const ToolCard = ({
         />
       </div>
 
-      {tool.data_location && (
-        <AxisLine label="Where your data sits" value={tool.data_location} isSelected={isSelected} />
-      )}
-      {tool.trains_on_input && (
-        <AxisLine label="Trains on your content" value={tool.trains_on_input} isSelected={isSelected} />
-      )}
+      {/* DPIA chip, first in the zone. Reordered 28 Aug on the surface audit's
+          finding: the zone used to lead with the two driest facts and hold the
+          human sentence back to third, so the block read data-first when the
+          register Jasmin asked for is caution-first. The chip is the sentence
+          that says why care is needed; the two fact lines below it now read as
+          its evidence. Zero vertical cost, no copy changed.
 
-      {/* DPIA chip. Colours are held constant through the hover state: the
-          chip carries its own background, so its contrast holds on the cobalt
-          card, and the three pairings are locked. */}
+          Colours are held constant through the hover state: the chip carries
+          its own background, so its contrast holds on the cobalt card, and the
+          three pairings are locked. */}
       {dpia && (
         <div className="mt-3">
           <span
@@ -249,6 +249,13 @@ export const ToolCard = ({
             </Link>
           )}
         </div>
+      )}
+
+      {tool.data_location && (
+        <AxisLine label="Where your data sits" value={tool.data_location} isSelected={isSelected} />
+      )}
+      {tool.trains_on_input && (
+        <AxisLine label="Trains on your content" value={tool.trains_on_input} isSelected={isSelected} />
       )}
 
       {/* ZONE 4, act. The verdict toggle and the Checked stamp share one row:
