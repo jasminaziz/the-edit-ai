@@ -18,9 +18,11 @@ const CATEGORY_COLOURS: Record<string, { bg: string; text: string }> = {
 
 const Index = () => {
   const [tools, setTools] = useState<Tool[]>([]);
-  // Sourced from the my_stack tab, not from tools: the hero pills are
-  // decoration and my_stack is a personal claim, so they cannot contradict
-  // the "tools that passed the checks" counter further down the page.
+  // Sourced from the my_stack tab, not from tools: my_stack is a personal claim
+  // about what Jasmin actually runs, so neither the hero pills nor the
+  // "What I'm running" strip can contradict the "tools that passed the checks"
+  // counter further down the page. The strip was re-pointed here from
+  // tools.status === "in_stack" by Jasmin's ruling of 28 August 2026.
   const [myStack, setMyStack] = useState<MyStackItem[]>([]);
   const [news, setNews] = useState<WhatsNew[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,7 +37,7 @@ const Index = () => {
     });
   }, []);
 
-  const stackTools = tools.filter((t) => t.status === "in_stack").slice(0, 4);
+  const stackTools = myStack.slice(0, 4);
   // "Passed the checks" counts complete rows, using the same predicate the
   // directory grid renders on, so this number and the cards on /tools cannot
   // disagree. It previously counted a non-empty last_checked, which would have
