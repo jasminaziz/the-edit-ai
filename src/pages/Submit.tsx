@@ -32,7 +32,7 @@ const Submit = () => {
       />
       <CobaltZone
         heading="Submit a Tool"
-        subheading="Spotted something worth adding to the stack? Tell me about it."
+        subheading="Spotted something worth putting through the checks? Tell me about it."
         illustration={<FloatingArrow />}
       />
 

@@ -145,7 +145,7 @@ function MonthSection({
                   cursor: "pointer",
                 }}
               >
-                Show more — {hiddenCount} remaining
+                Show {hiddenCount} more
               </button>
             </div>
           )}

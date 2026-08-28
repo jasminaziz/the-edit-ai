@@ -329,11 +329,15 @@ const MyStack = () => {
   return (
     <>
       <SEO
-        title="My Stack | The Edit"
+        title="My AI Stack | The Edit"
         description="The AI tools Jasmin Aziz actually uses daily. Personal verdicts, real workflows."
         canonical="https://theeditai.co.uk/my-stack"
       />
-      <CobaltZone heading="My Stack" subheading="What I'm actually using and why." />
+      <CobaltZone
+        heading="My Stack"
+        subheading="What I'm actually using and why."
+        bodyText="The directory is what I'd recommend for your organisation. This is everything I run myself, including the tools that build this site."
+      />
 
       <section className="bg-background py-10 px-6 sm:px-12">
         <div className="max-w-[1280px] mx-auto">

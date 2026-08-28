@@ -20,8 +20,8 @@ const Index = () => {
   const [tools, setTools] = useState<Tool[]>([]);
   // Sourced from the my_stack tab, not from tools: my_stack is a personal claim
   // about what Jasmin actually runs, so neither the hero pills nor the
-  // "What I'm running" strip can contradict the "tools that passed the checks"
-  // counter further down the page. The strip was re-pointed here from
+  // "What I'm running" strip can contradict the "tools that have been through
+  // the checks" counter further down the page. The strip was re-pointed here from
   // tools.status === "in_stack" by Jasmin's ruling of 28 August 2026.
   const [myStack, setMyStack] = useState<MyStackItem[]>([]);
   const [news, setNews] = useState<WhatsNew[]>([]);
@@ -38,7 +38,7 @@ const Index = () => {
   }, []);
 
   const stackTools = myStack.slice(0, 4);
-  // "Passed the checks" counts complete rows, using the same predicate the
+  // "Through the checks" counts complete rows, using the same predicate the
   // directory grid renders on, so this number and the cards on /tools cannot
   // disagree. It previously counted a non-empty last_checked, which would have
   // counted a row that carried a date but was still missing its trustee note —
@@ -57,7 +57,7 @@ const Index = () => {
     <div className="relative">
       <SEO
         title="The Edit | AI Tools for Charity & Cultural Comms Teams"
-        description="An opinionated AI tools directory for charity, cultural and heritage comms teams. Data location, training policy and nonprofit pricing checked on every tool. No sponsored lists."
+        description="An opinionated AI tools directory for charity, cultural and heritage comms teams. What each tool is for, what it really costs, and the data and training checks already done. No sponsored lists."
         canonical="https://theeditai.co.uk/"
         googleVerification="2_93U4mtnkpPZgW6fZZJaOIQ7tEKv7__f8JSMuO0HC8"
         jsonLd={{
@@ -145,7 +145,7 @@ const Index = () => {
                 marginBottom: 10,
               }}
             >
-              An opinionated directory of AI tools for communications teams in charities, cultural organisations and heritage. Judged on where your data sits, whether the tool trains on what you type into it, and whether you could defend it to a trustee. No sponsored listings, no affiliate links.
+              An opinionated directory of AI tools for communications teams in charities, cultural organisations and heritage. What each tool is, what it's for, what it really costs, and what to mind when you use it. Every one has been through the checks before it appears here, so you're starting informed instead of from scratch. No sponsored listings, no affiliate links.
             </p>
             <p
               style={{
@@ -224,7 +224,7 @@ const Index = () => {
               to="/my-stack"
               className="inline-block font-body font-medium text-sm text-primary hover:underline"
             >
-              See full stack →
+              See everything I use →
             </Link>
           </div>
 
@@ -283,7 +283,7 @@ const Index = () => {
           {/* Tools Count */}
           <div className="space-y-4">
             <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-muted">
-              Passed the checks
+              Through the checks
             </h2>
             {loading ? (
               <div className="h-20 bg-border rounded animate-pulse" />
@@ -294,7 +294,7 @@ const Index = () => {
                   fontSize={isMobile ? 56 : 80}
                   className="text-primary"
                 />
-                <p className="font-body text-[15px] text-muted">tools that passed the checks</p>
+                <p className="font-body text-[15px] text-muted">tools that have been through the checks</p>
               </>
             )}
             <Link

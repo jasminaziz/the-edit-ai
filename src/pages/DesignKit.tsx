@@ -28,7 +28,7 @@ const PHASES: PhaseConfig[] = [
   { name: "Define Visual Direction", explainer: "Lock the building blocks. Colour, type, and icons decided here travel through everything you build." },
   { name: "Plan the Build", explainer: "Map the structure and reference the components. Everything before a single prompt is written." },
   { name: "Build the UI", explainer: "Translate the plan into screens and working interfaces." },
-  { name: "Present the Work", explainer: "Show the work properly. Device frames and scene mockups turn screenshots into convincing client deliverables." },
+  { name: "Present the Work", explainer: "Show the work properly. Device frames and scene mockups turn screenshots into something you can put in front of trustees and funders." },
   { name: "Check Before You Ship", explainer: "Sign off before building. Contrast, accessibility, and real photography confirmed before anything goes live." },
 ];
 
@@ -342,13 +342,14 @@ const DesignKitPage = () => {
     <>
       <SEO
         title="Design Kit | The Edit"
-        description="Curated visual resources for marketing and communications professionals working with AI."
+        description="A design inventory for charity, cultural and heritage teams making their own things with AI. Keep your brand and your taste intact, from first reference to final check."
         canonical="https://theeditai.co.uk/design-kit"
       />
       <CobaltZone
         heading=""
         twoLineHeading={{ line1: "Design Workflow", line2: "" }}
         subheading="From blank page to build-ready."
+        bodyText="The tools I use to keep taste in the process, in the order you'd actually use them. For teams making their own things with AI and wanting them to still look like your organisation."
       />
 
       <section className="bg-background px-0" style={{ paddingTop: 0, paddingBottom: 40 }}>

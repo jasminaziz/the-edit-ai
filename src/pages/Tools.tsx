@@ -269,12 +269,12 @@ const Tools = () => {
     <>
       <SEO
         title="AI Tools Directory for Charity & Heritage Comms | The Edit"
-        description="Curated AI tools for charity, cultural and heritage communications, with data location, training policy, nonprofit pricing and a DPIA flag on every verdict."
+        description="Curated AI tools for charity, cultural and heritage communications. What each one is for and what it costs, with the data, training and DPIA checks already done on every card."
         canonical="https://theeditai.co.uk/tools"
       />
       <CobaltZone
         heading="Tools"
-        subheading="Every tool judged on data, cost and whether you could defend it to a trustee."
+        subheading="Pick the tool for the job. The checks give you a head start; the final call is yours."
       />
 
       {filterBar}

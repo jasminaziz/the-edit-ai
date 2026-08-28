@@ -34,12 +34,12 @@ const Learning = () => {
     <>
       <SEO
         title="Learning | The Edit"
-        description="AI learning resources curated by Jasmin Aziz."
+        description="Start here if AI still feels like someone else's subject. Learning resources chosen for charity, cultural and heritage comms teams."
         canonical="https://theeditai.co.uk/learning"
       />
       <CobaltZone
         heading="Learning"
-        subheading="How I'm staying sharp."
+        subheading="How I'm staying sharp, and where to start if you're new to all this."
       />
 
       <section className="bg-background py-10 px-6 sm:px-12">

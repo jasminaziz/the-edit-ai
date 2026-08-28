@@ -44,7 +44,7 @@ export default function PolicyTemplate() {
               marginBottom: 24,
             }}
           >
-            Most AI policies are written for organisations with a legal team. This one is written for yours: a working AI-use policy for charity, cultural and heritage organisations, covering the questions that actually come up. Which tools staff can use and for what. What must never go into them. How to work out whether a DPIA is needed. What you tell trustees, funders and supporters. It's the starting point I use with consultancy clients, ready to adapt to your organisation.
+            Most AI policies are written for organisations with a legal team. This one is written for yours: a working AI-use policy for charity, cultural and heritage organisations, covering the questions that actually come up. Which tools staff can use and for what. What must never go into them. How to work out whether your organisation needs to do a DPIA. What you tell trustees, funders and supporters. It's the starting point I use with consultancy clients, ready to adapt to your organisation. It's the document you can put in front of your board.
           </p>
           <p
             className="font-body"
@@ -96,6 +96,37 @@ export default function PolicyTemplate() {
             }}
           >
             Delivered through my Substack. Unsubscribe any time; the template is yours either way.
+          </p>
+
+          {/* Ungated DPIA explainer, ruled 28 Aug: this page owns the term, so
+              the explanation sits on the page itself and never behind the
+              subscribe gate. Placed below the intro block rather than between
+              the intro and the CTA, so it does not interrupt the conversion
+              path. Approved strings, copy pack four item 10(b). */}
+          <h2
+            className="font-heading"
+            style={{
+              fontWeight: 700,
+              fontSize: 22,
+              color: "#2D35C9",
+              margin: 0,
+              marginTop: 48,
+              marginBottom: 12,
+            }}
+          >
+            What's a DPIA, and why does everyone keep saying it?
+          </h2>
+          <p
+            className="font-body"
+            style={{
+              fontWeight: 400,
+              fontSize: 17,
+              lineHeight: 1.7,
+              color: "#1A1510",
+              margin: 0,
+            }}
+          >
+            A Data Protection Impact Assessment is the structured look your organisation takes before using personal data in a way that could put people at risk. It's something you do, not something a tool has. It matters here because supporter and beneficiary data is exactly the kind that raises the stakes, and because your board will ask. The template walks you through when one's needed and what to write down.
           </p>
         </div>
       </section>
