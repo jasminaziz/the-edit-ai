@@ -183,6 +183,40 @@ Confirmed same session, correcting this document: the localhost Sheets key
 works. Live tool names rendered from the real Sheet on the homepage hero. B1 is
 done.
 
+### Update, 28 August 2026
+
+The branch is now fifteen commits ahead of `origin/overhaul/sector-axis` and
+`main` is still untouched. Three things in section 2 above are no longer true
+of the branch, and one of them was true of the live site as well.
+
+**The site runs no analytics and sets no cookies.** GA4 (G-QHYYEWC2C0) and the
+cookie banner were removed entirely on Jasmin's ruling: the snippet from
+`index.html`, the `CookieBanner` component file, and its import and render from
+`App.tsx`. Nothing else read the stored consent choice. Verified rather than
+asserted, on a clean load of `/` and `/tools`: `document.cookie` empty,
+`localStorage` and `sessionStorage` empty, `window.gtag` and `window.dataLayer`
+undefined, and no GA reference in the built `dist`. Search Console stays as the
+cookie-free measurement, and its verification meta is untouched. This closes
+the parked GA consent-mode debt by deletion rather than by building consent
+mode. **Anything in this document or in `.claude/CLAUDE.md` that still lists
+GA4 as the analytics layer is stale from this date.**
+
+**The legal pages describe what the site actually does.** The privacy policy
+had described collecting email into Supabase as the data processor, a write
+path removed from the repo on 22 August, and the cookie policy claimed
+essential Supabase cookies managing a subscription session and pointed at a
+consent banner recording a choice nothing read. Both are replaced with the
+signed drafts. Terms of service is untouched and gets one full pass at the
+same signature round.
+
+**The positioning pass has reached the code.** Copy pack four is placed in
+full, the ToolCard checks zone leads with the DPIA chip, and published failure
+rows can now be marked with a `not_recommended` status value that renders a
+badge on the grid.
+
+Unchanged and still blocking: the ten-row merge floor, C3, and the B3 re-run
+against real data.
+
 ---
 
 ## 3. Where everything lives
@@ -315,6 +349,11 @@ it. **J+S** means a session drafts and Jasmin decides.
 | B6 | **Decide the Submit form.** Decided by Jasmin 22 Aug (night): keep the page, swap the form for an email link to `hello@jasminaziz.co.uk`. No new infrastructure, nothing gets binned. Implementation spec in `reports/2026-08-22-copy-pack-addendum.md` (follow the FooterEmailCapture link-block pattern); any new visible copy comes back to Jasmin first. **Implemented and committed 22 Aug** as `e3e1add`. No new visitor-facing copy was needed: the CobaltZone heading and subheading already carry the invitation, so the email address itself is the only visible text in the block, and it reuses the old submit button's exact classes, colours and hover. The form's dead code (FormField, the state hooks, handleSubmit, handleChange) is left in place for B7. | J+S | Done, `e3e1add` |
 | B8 | **Cut Build Your Own Stack. Ruled by Jasmin 26 Aug.** Delete `Stack.tsx`, `StackBar.tsx`, `StackTooltip.tsx` and `slugify.ts`; strip the stack machinery and the duplicated `hasStackParam` render branch from `Tools.tsx`; remove the add control and coachmark from `ToolCard`; point `/stack` at `/tools` with `Navigate replace`. About 950 lines, three files, **no new copy needed**. Also closes F2b, the `StackBar.tsx:55` www bug, all three visitor-facing em dashes on the branch, one AA contrast failure and one design-system violation, and it resolves the card's competing CTAs. Cost: the approved B4(b) `/stack` meta is spent. | S | **DONE 26 Aug**, commit `792360a5`. Verified by the code session: no residual stack references anywhere in the repo, no test file references anything deleted, and `bun run build` succeeds. |
 | B7 | **Correction 26 Aug: `StatusBadge.tsx` and `STATUS_MAP` were deleted on 2026-07-03 in commit `3e55953` and have not been on disk since.** CLAUDE.md, this row and the 2026-07-04 security audit all carried them as live dead code for seven weeks. Removed from the sweep list below. **Note 26 Aug: the empty `what_it_does` paragraph in ToolCard is NOT dead code and must not be swept.** The slot is wanted; the `tools` tab is missing the column that fills it. See `reports/2026-08-26-toolcard-restructure.md`. Dead-code sweep: `src/pages/Subscribe.tsx` (now unrouted), roughly 44 unused shadcn components, `lovable-tagger`, `bun.lockb`, `package-lock.json`. Optional before relaunch. | S | Not started |
+| B9 | **Place copy pack four.** All approved strings from `reports/2026-08-28-copy-pack-4.md` across nine files: `/tools` subheading and meta, homepage intro, counter heading and caption, meta and strip link, About panel premise, `/learning` subheading and meta, `/my-stack` title and framing line, `/submit` subheading, `/ai-news` show-more, the three `/policy-template` strings including the ungated DPIA explainer, and the three `/design-kit` items. Verified present byte-for-byte after placing. **Closes the "passed the checks" violation** logged in CLAUDE.md, and removes the branch's last visitor-facing em dash. Item 6, the failure-badge string, shipped with the badge in B11. | S | **Done 28 Aug**, `f8843b8` |
+| B10 | **Reorder the ToolCard checks zone.** The DPIA chip and its Red-only template link lead; the two axis fact lines follow as evidence. The surface audit found the caution register Jasmin asked for already existed in the chip label and the gap was order, not wording. No copy changed, no vertical cost. Verified in-browser against a live Red row. | S | **Done 28 Aug**, `ac6ced1` |
+| B11 | **Failure-row badge.** Column C accepts `not_recommended` alongside `in_stack` and `on_radar`; ToolCard renders the approved badge in the job-chips row, white on solid `#A8261C`, uppercased by CSS on the IN MY STACK pattern. Completeness logic untouched, so a failure row still needs all seven axis fields to appear at all. The parse was a blind cast and is now normalised trimmed and lower-case against the three known values, since a hand-typed Sheet value decides whether a failure is visibly marked; three tests cover it. **Nothing was written to the Sheet: Jasmin sets the value on the three failure rows (Seedance, DeepSeek, Grok) and the badge renders nowhere until she does.** | S | **Done 28 Aug**, `e56b420`. **Awaiting Jasmin's Sheet edit to become visible.** |
+| B12 | **Remove GA4 and the cookie banner.** See the section 2 update for the verification. | S | **Done 28 Aug**, `d7221c8` |
+| B13 | **Place the signed legal pages.** Privacy and cookie policies replaced with `reports/2026-08-28-legal-pages-draft.md` verbatim, one commit per page, privacy `lastUpdated` to August 2026. Bold run-in lead-ins render as `h2` with the paragraph following, splitting only at the bold boundary, so no text changed. **Found while placing, not fixed: all three legal pages ship no meta at all** — no title, description or canonical — the same gap `/submit` had until 22 August. Fixing it needs authored description copy, so it is Jasmin's to approve. | S | **Done 28 Aug**, `2534adc` and `1aa0d81`. **Legal-page meta outstanding.** |
 
 ### C. The capture layer
 
@@ -449,6 +488,19 @@ is for and adds the governance weight; it does not replace the original purpose.
   `/submit` and the legal pages were all written or left under the old brief.
 
 This is a positioning and content pass, not a build. It runs before F2.
+
+**Outcome, 28 August 2026.** The pass ran and largely closed. Canon now
+includes, all in reports/ dated 2026-08-28: the **positioning statement**
+(signed off; outranks audit section 2's premise paragraph), the **surface
+audit** (one verdict per page), **copy pack four** (thirteen approved
+strings covering the premise rewrite, counter reclaim, DPIA explainer,
+failure badge, design-kit re-point and more), the **legal page finals**
+(GA4 and the cookie banner are removed at launch; no-cookies claim verified
+at F2), and two fact reports (batch-two rows and a 23-row pricing check;
+currency now recorded in the vendor's displayed currency). What remains of
+the pass: the batch-two judgement drafts, the pills label, the radar
+ruling, Jasmin's A5 editing pass and Sheet pastes, and the template/C3
+chain, tracked in SCRATCHPAD 28 Aug.
 
 ---
 

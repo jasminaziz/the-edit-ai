@@ -197,6 +197,91 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-28 (late): three rulings for the record
+**The October window is dissolved: launch whenever the F2 gates pass.**
+F3's timing constraint is Jasmin's-sign-off-plus-a-clear-day only; CLAUDE.md's
+"19-23 October" branch note is stale against this ruling. Phone-width
+verification was done in the code session. Legal pages signed off, placement
+running as a code task. Sheet edit pack at
+reports/2026-08-28-sheet-edit-pack.md consolidates every pending cell change.
+
+### 2026-08-28 (Cowork: positioning thread — statement signed, audit run, copy pack four)
+
+No code written from this thread; two code sessions briefed and run by Jasmin
+(strip to my_stack + sitemap; then the five-job session placing copy pack
+four, the card reorder, the failure badge, GA4/banner removal and the legal
+pages). Produced and in reports/, all dated 2026-08-28: **positioning
+statement (SIGNED OFF, the ruler for every surface call)**, surface audit
+(verdict per page), **copy pack four, thirteen items approved** (items 1-3
+revised same day for the empowerment framing and Jasmin's register), legal
+pages final drafts, A4 fact pass batch two (eight rows, agent-researched,
+sourced), pricing currency check (23 rows; Grok access claim wrong, Notion
+AI add-on discontinued, Gemini Advanced renamed).
+
+Rulings taken 28 Aug, all Jasmin's: premise rewritten comms-first; claim is
+been through the checks, never passed; board-reference line owns capture
+surfaces; DPIA explained ungated on /policy-template; one reader two
+moments; lightness testable pair; purposes ranked with the fellowship
+guard; failure rows get a `not_recommended` status value and the badge
+(white on #A8261C); checks zone reorders chip-first; /design-kit KEPT and
+re-pointed (not parked); currency recorded in vendor's displayed currency,
+never converted; **GA4 and the cookie banner removed at launch** (closes
+consent-mode debt by deletion; Search Console is the measurement); legacy
+Supabase subscribers table: export once then delete; legal identity is
+"run by Jasmin Aziz, the strategic communications consultancy at
+jasminaziz.co.uk", no trading-as.
+
+Open from this thread: judgement drafts (flags, trustee notes, verdicts)
+for the eight batch-two rows, owed by the positioning thread; pills label
+string and radar tab ruling still outstanding; GBP checks for six vendors
+need a UK browser; phone-width pass of /tools owed before F2.
+
+
+### 2026-08-28 (code session: copy pack four, card, GA4, legal pages)
+
+**Six commits, `f8843b8` through `1aa0d81`, one per job (two for the legal
+pages), gate clean before each, `main` untouched.** Five jobs from the
+positioning thread, all ruled in advance.
+
+1. `f8843b8` Place copy pack four
+2. `ac6ced1` Reorder the ToolCard checks zone: DPIA chip first
+3. `e56b420` Add the failure-row badge, driven by a not_recommended status
+4. `d7221c8` Remove GA4 and the cookie banner
+5. `2534adc` Rewrite the privacy policy to the signed draft
+6. `1aa0d81` Rewrite the cookie policy to the signed draft
+
+**Verified in the browser, not assumed.** The site now sets no cookies:
+`document.cookie` empty, `localStorage` and `sessionStorage` empty,
+`window.gtag` and `window.dataLayer` undefined on a clean load of `/` and
+`/tools`, and no GA reference in the built `dist`. That check is what earns
+the legal pages' claim, which is why they land one commit later. The checks
+zone reorder was confirmed against a live Red row: chip, then template link,
+then the two fact lines.
+
+**Next step.** Jasmin sets `not_recommended` on the three failure rows
+(Seedance, DeepSeek, Grok) in column C. The badge is built and renders nowhere
+until she does; nothing was written to the Sheet.
+
+**Open, flagged not fixed:**
+
+- **All three legal pages ship no meta** (no title, description or canonical),
+  so they fall back to the static `index.html` title. Same class as `/submit`
+  before 22 Aug. Needs authored description copy, so it is Jasmin's call.
+- **`.claude/CLAUDE.md` still says "Analytics: GA4 (G-QHYYEWC2C0)".** That line
+  became false at `d7221c8` and was left alone because CLAUDE.md was outside
+  this session's stated wrap scope. One line, wants correcting.
+- The ICO reference on the privacy page is plain text, not a link. Deliberate:
+  linking is a decision on copy Jasmin signs.
+- Returning visitors keep an orphaned `theEditCookieConsent` localStorage key
+  that nothing now reads. Not a cookie, clears with site data.
+
+**Git hazard worth banking.** This repo now has two sessions working the same
+tree, so the index is shared. A `git commit` with no pathspec commits whatever
+is staged, including the other session's files: one commit here swept in
+`reports/2026-08-28-batch2-signoff.md` and had to be redone. A stale
+`.git/index.lock` also appeared from the two sessions racing. **Use
+`git commit --only <paths>` in this repo until the parallel work stops.**
+
 ### 2026-08-28 (code session: the strip re-point and the sitemap)
 
 **Three commits, `20f722a`, `c01a413`, `2122b6e`, one job each, gate clean
