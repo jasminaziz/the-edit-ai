@@ -105,7 +105,7 @@ Jasmin's judgement and are NEVER written by any automation or code session.
   split deliberately. Every page must pass title, description and canonical;
   `/submit` shipped no meta at all until 2026-08-22. (`/stack` was the other
   offender; it was cut on 2026-08-26.)
-- Analytics: GA4 (G-QHYYEWC2C0)
+- Analytics: none. GA4 and the cookie banner were removed 2026-08-28 (commit d7221c8); the site sets no cookies, and Search Console is the measurement. If analytics ever returns, it returns with consent done properly.
 
 ### Branch discipline (until the October 2026 relaunch)
 
