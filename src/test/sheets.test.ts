@@ -257,6 +257,33 @@ describe('parseToolRows', () => {
     const [tool] = parseToolRows(rows);
     expect(tool.status).toBe('in_stack');
   });
+
+  it('preserves not_recommended status', () => {
+    const rows = [
+      LEGACY_HEADERS,
+      ['DeepSeek', 'Writing', 'not_recommended', 'Free', 'Judged and failed', 'https://deepseek.com'],
+    ];
+    const [tool] = parseToolRows(rows);
+    expect(tool.status).toBe('not_recommended');
+  });
+
+  it('accepts a mis-cased or padded status value', () => {
+    const rows = [
+      LEGACY_HEADERS,
+      ['Grok', 'Writing', '  Not_Recommended ', 'Free', 'Judged and failed', 'https://x.ai'],
+    ];
+    const [tool] = parseToolRows(rows);
+    expect(tool.status).toBe('not_recommended');
+  });
+
+  it('falls back to on_radar for an unrecognised status value', () => {
+    const rows = [
+      LEGACY_HEADERS,
+      ['Something', 'Writing', 'archived', 'Free', 'A verdict', 'https://example.com'],
+    ];
+    const [tool] = parseToolRows(rows);
+    expect(tool.status).toBe('on_radar');
+  });
 });
 
 // ---------------------------------------------------------------------------

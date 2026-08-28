@@ -150,6 +150,27 @@ export const ToolCard = ({
             IN MY STACK
           </span>
         )}
+        {/* The failure badge. The positioning statement presses the tools that
+            went through the checks and did not survive them as the scarcest
+            content the site owns, but nothing on the grid distinguished a
+            published failure from a Red row that is still recommended, so a
+            reader could not find them without opening every verdict.
+
+            Solid, not tinted, so it does not read as a fourth DPIA chip: the
+            chips carry a 1px border on a pale tint, this carries neither.
+            #FFFFFF on #A8261C is the locked Red ink at roughly 7:1, and it is
+            held constant through the hover state for the same reason the DPIA
+            chips are, since it carries its own background. Source string is
+            sentence case and CSS uppercases it, the IN MY STACK pattern.
+            Approved copy, copy pack four item 6: do not reword. */}
+        {tool.status === "not_recommended" && (
+          <span
+            className="inline-block px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full"
+            style={{ backgroundColor: "#A8261C", color: "#FFFFFF" }}
+          >
+            Judged, not recommended
+          </span>
+        )}
       </div>
 
       {/* ZONE 2, buying. Nonprofit pricing sits with the price rather than

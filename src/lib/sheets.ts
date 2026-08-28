@@ -1,7 +1,7 @@
 export interface Tool {
   name: string;
   category: string;
-  status: 'in_stack' | 'on_radar';
+  status: 'in_stack' | 'on_radar' | 'not_recommended';
   what_it_does: string;   // one-line description of the tool, Sheet col N
   pricing: string;
   verdict: string;
@@ -44,6 +44,26 @@ function normHeader(s: unknown): string {
     .trim()
     .replace(/[\s-]+/g, '_')
     .replace(/[^a-z0-9_]/g, '');
+}
+
+/**
+ * Column C. Three known values; anything else, blank included, falls back to
+ * on_radar, which is what the site already assumed for blanks.
+ *
+ * This replaced a blind cast. The cast meant any Sheet value at all was typed
+ * as a valid status, so a stray value was a silent lie to every consumer.
+ * That mattered little while status only drove the IN MY STACK badge; it
+ * matters now that not_recommended decides whether a published failure is
+ * visibly marked as one. Compared trimmed and lower-case for the same reason
+ * jobs are: this value is typed by hand into a spreadsheet, and a stray
+ * capital must not quietly un-mark a failure row.
+ */
+function normaliseStatus(raw: string): Tool['status'] {
+  switch (raw.trim().toLowerCase()) {
+    case 'in_stack':        return 'in_stack';
+    case 'not_recommended': return 'not_recommended';
+    default:                return 'on_radar';
+  }
 }
 
 /**
@@ -94,7 +114,7 @@ export function parseToolRows(rows: string[][]): Tool[] {
       return {
         name:            stripEmoji(cell(r, iName)),
         category:        stripEmoji(cell(r, iCategory)),
-        status:          (cell(r, iStatus) || 'on_radar') as Tool['status'],
+        status:          normaliseStatus(cell(r, iStatus)),
         what_it_does:    stripEmoji(cell(r, iWhat)),
         pricing:         stripEmoji(cell(r, iPricing)),
         verdict:         stripEmoji(cell(r, iVerdict)),
