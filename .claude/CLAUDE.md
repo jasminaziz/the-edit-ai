@@ -45,6 +45,14 @@ seven), columns G-L (they run G-M), and a fixed-position A-F fetcher
 (retired, the branch reads by header). Where the two conflict on
 implementation, this file wins.
 
+`reports/2026-08-28-positioning-statement.md`, signed off 28 August 2026, is
+canonical on what the site is for and who it speaks to, and outranks the
+audit's premise paragraph where they conflict. It settles the claim as **been
+through the checks**, never "passed", which is what lets the published failures
+stay honest, and it carries the six-question test every surface is read
+against. `reports/2026-08-28-surface-audit.md` holds one committed verdict per
+surface against that test.
+
 ## The evaluation axis (the moat)
 
 Seven fields per tool row beyond the basics. Field names are frozen (code
@@ -269,7 +277,13 @@ Positioning and page copy are authored by Jasmin with Cowork Claude and
 arrive as exact strings (see `reports/` copy pack). Code sessions place
 strings; they never author or improvise visitor-facing copy.
 
-## Current state (as at 2026-08-26)
+**Known live violation, awaiting copy pack four.** The homepage counter reads
+"Passed the checks" (heading) and "tools that passed the checks" (caption),
+against the ruled claim above. It is the most prominent claim on the site and
+it fails the positioning statement's own test question 6. Logged 2026-08-28,
+deliberately not fixed: it is copy, so it waits for approved strings.
+
+## Current state (as at 2026-08-28)
 
 Live site (main): unchanged old-brief site, six tool-type categories. Nothing
 from the overhaul has reached it.
@@ -291,6 +305,29 @@ Done 2026-08-26 (this session, seven commits): `what_it_does` wired into
 buying and checks zones; the filter rail set to always wrap at `sm` and up
 (F2c); C4(b) restricted to Red; the two approved card strings placed; these
 docs corrected.
+
+Done 2026-08-28 (three commits, both code jobs ruled and copy-free):
+
+- **The homepage "What I'm running" strip reads `my_stack`** (`20f722a`), on
+  Jasmin's ruling in the positioning statement. It had filtered `tools` on
+  `status === "in_stack"` while the hero pills directly above it read
+  `my_stack`, so the page made one claim from two sources. `fetchMyStack` was
+  already in state for the pills, so this was a source swap, not a new fetch.
+  Rows are taken in sheet order; whether the strip should honour the `featured`
+  boolean that `/my-stack` sorts on is an open ruling.
+- **`public/sitemap.xml` rewritten** (`c01a413`) to eleven bare-domain URLs,
+  live routes only. Every URL had been `www.`, pointing at a host the site has
+  308'd away from since the 22 August flip, so the one file `robots.txt` points
+  search engines at disagreed with every canonical the code emits. It also
+  listed two redirects and omitted six live routes. Each entry is now checked
+  against a `path=` in `App.tsx` in both directions; the only routes absent are
+  the three redirects and the catch-all. No `lastmod` or `changefreq`: a
+  hand-maintained date field on eleven routes goes stale and then lies.
+- **The pre-launch surface audit committed** (`2122b6e`). Two findings the
+  relaunch gate needs: the legal pages describe the Supabase capture path
+  removed on 22 August and claim session cookies that do not exist, while GA4
+  processing goes unmentioned; and the failures the positioning statement
+  presses as the site's scarcest asset are invisible on `/tools`.
 
 Remaining before relaunch, in order:
 1. **Content.** Fill the axis fields and verdicts for the rows still short of

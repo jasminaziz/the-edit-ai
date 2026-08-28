@@ -170,7 +170,10 @@ flashes on iOS elastic scroll bounce).
 
 ## Found 2026-08-26, not in that session's scope — Jasmin's call
 
-- **`public/sitemap.xml` is materially stale.** All seven URLs use `www.`,
+- ~~**`public/sitemap.xml` is materially stale.**~~ **CLOSED 2026-08-28,
+  commit `c01a413`.** Rewritten to eleven bare-domain URLs, live routes only,
+  each cross-checked against `App.tsx` in both directions. The original
+  finding follows, kept for the record. All seven URLs used `www.`,
   which 308s to the bare domain, so every entry points at a host the site
   redirects away from (the bare host became primary on 2026-08-22). It lists
   `/whats-new` and `/subscribe`, both now redirects, and omits `/ai-news`,
@@ -193,6 +196,42 @@ flashes on iOS elastic scroll bounce).
 ---
 
 ## Session notes
+
+### 2026-08-28 (code session: the strip re-point and the sitemap)
+
+**Three commits, `20f722a`, `c01a413`, `2122b6e`, one job each, gate clean
+before each, `main` untouched.** Both code jobs were ruled and copy-free; no
+visitor-facing string was authored or changed. `HomeGravity`, `MAX_PILLS` and
+the pills label were named out of scope and not touched.
+
+1. `20f722a` Point the homepage "What I'm running" strip at `my_stack`
+2. `c01a413` Rewrite `sitemap.xml`: bare domain, live routes only
+3. `2122b6e` Add the 28 August pre-launch surface audit
+
+Both code commits close items logged in this file: the strip closes the 25 Aug
+correction at the foot of these notes, the sitemap closes the 26 Aug finding
+above.
+
+**Next step.** Copy pack four, which the surface audit specifies but
+deliberately does not draft. It is the gate on most of the remaining surface
+work, since almost every "needs work" verdict resolves to an approved string.
+
+**Open, flagged and not acted on:**
+
+- The homepage counter reads "Passed the checks" (heading) and "tools that
+  passed the checks" (caption), against the ruled "been through the checks"
+  claim. Both are visitor-facing copy, so they wait for the copy pack. This is
+  the site's most prominent claim and it currently fails the positioning
+  statement's own test question 6.
+- Whether the strip should order featured-first rather than sheet order. One
+  line either way, needs a ruling.
+- Three reports from the parallel session are still untracked at Jasmin's
+  instruction, since she may still be editing them:
+  `2026-08-28-positioning-statement.md`, `-a4-fact-pass-batch2.md`,
+  `-pricing-currency-check.md`. Until the positioning statement is committed,
+  three commit messages on this branch cite a file that is not in the repo.
+  Worth closing before the October merge.
+
 
 ### 2026-08-26 (code session: the card restructure, the Stack cut, F2c)
 
@@ -1841,3 +1880,11 @@ the handover.** The homepage "What I'm running" strip did **not** read the
 `status === "in_stack"` for both the strip and the gravity pills, and
 `fetchMyStack` was called only by `MyStack.tsx`. Caught when the code session
 opened the file. The strip still reads `tools`; only the pills were moved.
+
+**Closed 2026-08-28, commit `20f722a`.** The strip now reads `my_stack`, on
+Jasmin's ruling in the 28 Aug positioning statement, so the claim that was
+false when it was made is now true. `fetchMyStack` was already called and
+already in state for the pills, so this was a source swap, not a new fetch.
+Rows are taken in sheet order, not featured-first: `my_stack` carries a
+`featured` boolean that `/my-stack` sorts on, but no ruling covers the strip,
+so that ordering stays open.

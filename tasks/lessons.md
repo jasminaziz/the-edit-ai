@@ -407,3 +407,36 @@ Session corrections and rules built up over time. Add entries; do not delete his
   have satisfied the letter of the ruling and reintroduced its symptom. When a
   ruling removes a state-dependent behaviour, grep for every other use of that
   state in the same block before committing.
+
+- **A forbidden-pattern grep can match legitimate content (2026-08-28).**
+  After rewriting `sitemap.xml` to bare-domain, `grep -c "www\." public/sitemap.xml`
+  returned 1. The hit was `www.sitemaps.org` in the `xmlns`, which must stay.
+  Reported as a clean pass only after re-grepping for `www\.theeditai`
+  specifically. Scope a negative check tightly enough that it cannot match
+  legitimate content, and when it does hit, identify the hit before recording
+  either a pass or a finding. Same family as the standing rule that an HTTP
+  200 is never verification.
+
+- **Verify a route inventory in both directions (2026-08-28).** The positioning
+  statement named eleven routes for the sitemap. Checking each `<loc>` against
+  a `path=` entry in `App.tsx` proves nothing invented; checking every `path=`
+  against the sitemap proves nothing omitted, and is what confirmed the only
+  unlisted routes were the three redirects and the `*` catch-all. One direction
+  alone would have passed a sitemap missing a live route.
+
+- **A comment naming one consumer of shared state goes stale when you add a
+  second (2026-08-28, second occurrence).** The comment above `myStack` in
+  `Index.tsx` explained the tab was read "because the hero pills are
+  decoration". Re-pointing the strip at the same state made that false in the
+  same commit. The 26 Aug session shipped `b4c5a7cb` "Fix a comment that was
+  stale the moment it was written" for the same class of error. When adding a
+  consumer to existing state, read the comment above its declaration before
+  committing: it usually names the old consumer as the only one.
+
+- **A commit message that cites a file is a dependency on that file existing
+  (2026-08-28).** Two code commits and one report cite
+  `reports/2026-08-28-positioning-statement.md` as the ruling authority, but
+  the file was still untracked and Jasmin ruled it not ready to commit. The
+  history is correct and the reference is currently dangling. Where a commit
+  message must cite an uncommitted document, say so, and carry closing the gap
+  as an open item rather than assuming a later session will notice.
