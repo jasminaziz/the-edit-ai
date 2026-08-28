@@ -370,6 +370,15 @@ deleted and the shared secret added.
 - Before editing, state what must not be touched
 - Structure before styling; hex codes and pixel values, never vague
   adjectives
+- **The gate before every commit is three commands, not two:**
+  `bunx tsc --noEmit`, `bun test`, and **`bun run build`**. Added 2026-08-26
+  after a code session ran the build for the first time and found that
+  `tsc --noEmit` does not exercise the same path: Vite resolves imports,
+  assets and plugin config at bundle time and can fail on things tsc passes.
+  Vercel runs the build, and **Vercel build failures are silent** — it keeps
+  serving the last good deploy — so a build nobody ran locally is a deploy
+  that dies quietly. The chunk-size warning is the known matter-js debt and
+  is not a failure.
 - Verify with vitest or the local dev server first, then on the production
   URL after a deploy lands (branch work: vitest and preview only)
 - Never assume the production Sheets key resolves locally — it is
