@@ -33,15 +33,12 @@ const DPIA_CHIP = {
 
 /** One labelled axis fact. Label strings are approved copy — do not reword. */
 const AxisLine = ({ label, value }: { label: string; value: string }) => (
-  <div className="mt-2.5">
-    <p className="font-body text-[11px] leading-tight m-0 tc-secondary">
-      {label}
-    </p>
-    <p
-      className="font-body text-[13px] leading-snug m-0 mt-px tc-primary"
-    >
-      {value}
-    </p>
+  // Label and value share a baseline rather than stacking, the pattern the
+  // nonprofit line already used. Saves a row per fact without dropping either
+  // half, which is how the card gets calmer without losing a field.
+  <div className="mt-2.5 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+    <p className="font-body text-[11px] leading-tight m-0 tc-secondary">{label}</p>
+    <p className="font-body text-[13px] font-semibold leading-snug m-0 tc-primary">{value}</p>
   </div>
 );
 
@@ -76,7 +73,7 @@ export const ToolCard = ({
       // their presence.
       data-selected={isSelected || undefined}
       data-dimmed={isDimmed || undefined}
-      className="tool-card rounded-xl border p-5 flex flex-col h-full transition-all duration-200"
+      className="tool-card rounded-xl border p-4 sm:p-5 flex flex-col h-full transition-all duration-200"
     >
       {/* Tool name as link */}
       {tool.url ? (
@@ -99,7 +96,7 @@ export const ToolCard = ({
           has to come first. Guarded, so a row without a description does not
           leave a gap; as at 2026-08-26 all rendering rows have one. */}
       {tool.what_it_does && (
-        <p className="mt-2 font-body text-sm leading-relaxed line-clamp-2 tc-primary">
+        <p className="mt-2 font-body text-[15px] leading-relaxed line-clamp-2 tc-primary">
           {tool.what_it_does}
         </p>
       )}
@@ -185,7 +182,7 @@ export const ToolCard = ({
         <div className="mt-3">
           <span
             data-flag={flag}
-            className="inline-block font-body text-[12px] font-medium leading-snug tc-dpia"
+            className="inline-block font-body text-[13px] font-medium leading-snug tc-dpia"
           >
             {dpia.label}
           </span>
@@ -203,7 +200,7 @@ export const ToolCard = ({
             <Link
               to="/policy-template"
               onClick={(e) => e.stopPropagation()}
-              className="block mt-2 font-body text-[12px] leading-snug no-underline hover:underline tc-policy-link"
+              className="block mt-2 font-body text-[13px] leading-snug no-underline hover:underline tc-policy-link"
             >
               Not sure what your policy should say? Start with the template.
             </Link>
@@ -225,7 +222,7 @@ export const ToolCard = ({
             e.stopPropagation();
             setIsExpanded((v) => !v);
           }}
-          className="text-left font-body font-medium text-[13px] transition-colors tc-verdict-toggle"
+          className="text-left font-body font-semibold text-[15px] min-h-[44px] flex items-center transition-colors tc-verdict-toggle"
         >
           {isExpanded ? "Honest verdict ↑" : "Honest verdict ↓"}
         </button>
@@ -241,7 +238,7 @@ export const ToolCard = ({
           judgement, not with the facts above. */}
       {isExpanded && (tool.verdict || tool.trustee_note) && (
         <div
-          className="mt-3 pt-4 pl-4 font-body text-sm leading-relaxed tc-verdict tc-primary"
+          className="mt-3 pt-4 pl-4 font-body text-[15px] leading-relaxed tc-verdict tc-primary"
         >
           {tool.verdict}
           {tool.trustee_note && (
@@ -251,7 +248,7 @@ export const ToolCard = ({
               >
                 Say this to a trustee
               </p>
-              <p className="font-body text-sm leading-relaxed m-0 mt-0.5">
+              <p className="font-body text-[15px] leading-relaxed m-0 mt-0.5">
                 {tool.trustee_note}
               </p>
             </div>
@@ -268,7 +265,7 @@ export const ToolCard = ({
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="font-body inline-block text-[13px] font-medium no-underline rounded-[20px] px-5 py-2.5 transition-colors duration-200 tc-visit"
+            className="font-body inline-flex items-center min-h-[44px] text-[13px] font-medium no-underline rounded-[20px] px-5 transition-colors duration-200 tc-visit"
           >
             Visit tool →
           </a>
