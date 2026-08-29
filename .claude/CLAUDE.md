@@ -107,10 +107,10 @@ Jasmin's judgement and are NEVER written by any automation or code session.
   offender; it was cut on 2026-08-26.)
 - Analytics: none. GA4 and the cookie banner were removed 2026-08-28 (commit d7221c8); the site sets no cookies, and Search Console is the measurement. If analytics ever returns, it returns with consent done properly.
 
-### Branch discipline (until the October 2026 relaunch)
+### Branch discipline (until F2 passes and Jasmin signs off)
 
 All overhaul work lives on `overhaul/sector-axis`. Nothing merges to main
-before the 19-23 October admin week: Vercel deploys main, and the live site
+until F2 passes and Jasmin signs off: Vercel deploys main, and the live site
 must not change until the relaunch is ready. Every session starts with
 `git checkout overhaul/sector-axis` and confirms with
 `git rev-parse --abbrev-ref HEAD`.
@@ -145,8 +145,9 @@ Spreadsheet ID: `1RIO-WY9H75gML_UgdQbHGgDl-R0MfaG3CRPUp3PtAUI`
 Tabs: `tools`, `my_stack`, `design_kit`, `learning`, `whats_new`. Tab names
 are case-sensitive. Content changes in Sheets go live immediately, with no
 deploy, and that cuts both ways: the axis columns were populated in August
-rather than October, and because `main`'s fetcher ignores them the live site
-is unaffected. What still waits for October is the merge, not the content.
+well ahead of merge, and because `main`'s fetcher ignores them the live site
+is unaffected. What still waits is the merge, gated by F2, not a calendar
+date.
 
 `tools` columns: A name, B category, C status (legacy, being retired),
 D cost, E verdict, F url, then G-M the seven axis fields in the order listed
@@ -211,6 +212,27 @@ three labels identical to each other and to the page they land on.
 
 ## Codebase conventions
 
+**ToolCard colour lives in `src/index.css` under `.tool-card`, not in the
+component.** Ruled 2026-08-29: the cobalt hover inversion looks exactly as it
+did, but it is driven by a `data-selected` attribute on the card root plus
+descendant rules, not by per-element ternaries. Those ternaries were why the
+component could not carry a single responsive class. `ToolCard.tsx` now holds
+zero inline `style={{}}` blocks and zero hex. **Do not put an inline hex back
+into that file**; change `index.css`. The DPIA chips are keyed off `data-flag`
+and no `[data-selected]` rule targets them, which is what keeps their locked
+colours holding on the inverted card.
+
+**The breakpoint contract.** `MOBILE_BREAKPOINT` in `src/hooks/use-mobile.tsx`
+governs *chrome* (nav, homepage counter, hero pills, drag hint) at **1024**;
+Tailwind's `sm:` governs *content layout* at **640**. No element should consult
+both. 1024 is Tailwind's `lg`, so JS and CSS agree wherever they meet. The
+desktop nav needs 1087px to lay out and every child is `whitespace-nowrap`, so
+the nav gutter and item padding tighten at `lg` and return at `xl`; 1280 and
+above renders as it always did. Before 2026-08-29 the hook was 768, which put
+"Work with me" entirely off-screen from 768 to about 1086px, silently, because
+`Layout.tsx:70`'s `overflow-hidden` clipped it rather than producing a
+scrollbar.
+
 `src/utils/slugify.ts` was deleted with the Stack cut on 2026-08-26. It
 existed only to build `?stack=` share URLs, and nothing slugifies a tool name
 any more. If URL encoding is ever needed again, add one module and keep it
@@ -238,6 +260,21 @@ Colours (hex only, never names):
   only) · `#2D35C9` cobalt (display type, nav active, CTAs, month headers)
 - `#C8F04A` electric lime (accent/punctuation only — never a category
   colour or badge) · `#1A1510` text · `#9A8F82` muted · `#E8E2D8` borders
+- `#6B625A` secondary text, token `--text-secondary`. **Muted `#9A8F82` never
+  carries text**, ruled 2026-08-29: it measures 2.99:1 on cream and 3.17:1 on
+  the card, so it fails AA at every size and sits below even the 3:1
+  large-text floor. Muted keeps rules, dividers and icons. `#6B625A` is
+  5.62:1 on cream and 5.97:1 on the card and replaces it wherever it carried
+  words.
+- **The token layer is now accurate, and was not before.** Seventeen HSL
+  triples in `index.css` did not round-trip to the hex they encode: `--accent`
+  rendered `#CEF047` against a locked `#C8F04A`, `--secondary` `#8084D0`
+  against `#7B7FD4`, `--foreground` `#181410` against `#1A1510`. That is why
+  components hardcoded hex and bypassed the tokens, and it meant the one
+  token-driven lime on the site, the "Work with me" CTA, rendered a different
+  lime from the other 44. Corrected 2026-08-29 to one decimal, each verified.
+  **Before adding or editing any token, compute what it renders and compare to
+  the locked hex. An integer triple almost never round-trips.**
 - `#2D6A4F` forest green (In My Stack badge only) · `#E8572A` burnt orange
   (legacy On My Radar badge, renders nowhere)
 - `#EEF0FB` cobalt tint, the established chip and badge background paired
@@ -277,22 +314,43 @@ Positioning and page copy are authored by Jasmin with Cowork Claude and
 arrive as exact strings (see `reports/` copy pack). Code sessions place
 strings; they never author or improvise visitor-facing copy.
 
-**Known live violation, awaiting copy pack four.** The homepage counter reads
-"Passed the checks" (heading) and "tools that passed the checks" (caption),
-against the ruled claim above. It is the most prominent claim on the site and
-it fails the positioning statement's own test question 6. Logged 2026-08-28,
-deliberately not fixed: it is copy, so it waits for approved strings.
+**Closed 2026-08-28 by copy pack four.** The homepage counter used to read
+"Passed the checks", against the ruled claim. It now reads "tools that have
+been through the checks" (`Index.tsx:304`). Verified 2026-08-29: the string
+"passed the checks" appears nowhere in `src/` or `index.html`.
 
-## Current state (as at 2026-08-28)
+**Audience phrasing, ruled 2026-08-29** (full reasoning in
+`reports/2026-08-29-audience-phrase-proposal.md`). The three-part phrase stays
+everywhere it appears in descriptions and body copy, and is never shortened to
+"charity" alone: cutting it loses the local-authority museum service and the
+university gallery as a matter of fact, and the cathedral or archive as a
+matter of identity. Two forms, and the split is grammar rather than drift: the
+**nominal** form "charities, cultural organisations and heritage" where the
+audience is the object of the sentence, the **adjectival** form "charity,
+cultural and heritage" where it modifies a noun (teams, organisations, comms).
+Note that `vite.config.ts` ships two visitor-facing strings in the PWA manifest
+and sits outside every copy inventory the project keeps: an audit that greps
+`src/` and `index.html` will miss them.
+
+## Current state (as at 2026-08-29)
 
 Live site (main): unchanged old-brief site, six tool-type categories. Nothing
 from the overhaul has reached it.
 
 Sheet: `tools` is 67 rows with headers A-N. The seven axis columns G-M are
 populated and column N (`what_it_does`) was added and filled on 2026-08-26.
-**15 rows are complete and render**; the other 52 fail `isComplete()` and are
-invisible to the site, which is the radar working as designed. Of the 15, the
-DPIA split is 12 Amber, 2 Red, 1 Green. Verified against live data 2026-08-26.
+**23 rows are complete and render**; the other 44 fail `isComplete()` and are
+invisible to the site, which is the radar working as designed. Verified against
+live Sheet data 2026-08-29, which clears the ten-row merge floor with room.
+
+**Watch this on the way to merge:** `isComplete()` gates on `trustee_note` and
+`dpia_flag`, two of the three fields reserved to Jasmin, but **not** on
+`verdict`. All 23 rows do carry a verdict, but the A5 second pass at
+`reports/2026-08-26-a5-verdict-drafts.md` covers only 15 of them. The eight
+without an A5 record are Blotato, Ideogram, Granola, Submagic, Seedance
+(ByteDance), Gemini, Gamma and Grok, the 28 August batch whose judgement drafts
+were logged as owed. Either they were written directly and it is closed, or
+eight rows go public with unsigned judgement.
 
 Branch `overhaul/sector-axis`: header-based `fetchTools` reading all fourteen
 columns; the DPIA chip, job chips with contains-matching, the three sector
@@ -337,15 +395,15 @@ Remaining before relaunch, in order:
    and their label, and the radar tab. Not started, and deliberately untouched
    by the 2026-08-26 session.
 3. **Capture live.** Template scrub, gated Substack post.
-4. **Merge and relaunch check** in the 19-23 October admin week. See F2 in
+4. **Merge and relaunch check**, gated by F2, not a calendar date. See F2 in
    `reports/2026-08-22-handover-to-relaunch.md` for the gate, including the
    hard floor of ten complete rows and the B3 re-run checklist against real
    data.
 
-Note on timing: the content work was pulled forward into August rather than
-waiting for the October week, so October is now the merge-and-relaunch window,
-not the do-the-work window. Any doc that still reads "waits for October"
-against content is stale.
+Note on timing: the October window is dissolved. Launch happens when F2
+passes, not on a calendar date. The content work moved into August, and
+the merge has no fixed date attached either. Any doc that still frames
+merge or content as waiting for October is stale.
 
 Pre-existing debt not in overhaul scope: gates-audit findings (contrast,
 heading skips, matter-js weight), GA consent mode, dependency bumps. Parked,
@@ -435,7 +493,7 @@ deleted and the shared secret added.
 ## What Claude must not do
 
 - Never merge `overhaul/sector-axis` (or any overhaul work) to main before
-  the October relaunch is signed off by Jasmin
+  F2 passes and Jasmin signs off
 - Never author or improvise visitor-facing copy — copy arrives as exact
   approved strings
 - Never write the judgement fields (dpia_flag, trustee_note, verdict) from
