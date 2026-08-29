@@ -15,7 +15,7 @@ export default function PolicyTemplate() {
         style={{ backgroundColor: "#2D35C9" }}
       >
         <h1
-          className="font-heading font-black leading-[0.78] w-full"
+          className="font-heading font-bold leading-[0.78] w-full"
           style={{
             fontSize: "clamp(48px, 12vw, 300px)",
             color: "#7B7FD4",
@@ -32,14 +32,14 @@ export default function PolicyTemplate() {
         style={{ backgroundColor: "#FAF8F4" }}
         className="px-4 sm:px-10 md:px-16 py-16 sm:py-24"
       >
-        <div className="max-w-[640px]">
+        <div className="max-w-[640px] mx-auto">
           <p
             className="font-body"
             style={{
               fontWeight: 500,
               fontSize: 20,
               lineHeight: 1.4,
-              color: "#4A4440",
+              color: "#1A1510",
               margin: 0,
               marginBottom: 24,
             }}
