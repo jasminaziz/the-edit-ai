@@ -197,6 +197,83 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-29 (code session: the seven unblocked design fixes)
+
+Implemented from `reports/2026-08-29-unblocked-fixes-brief.md`, which was
+written from `reports/2026-08-29-design-audit-findings.md` earlier the same
+day. **Nothing committed: files are written and the commit blocks are with
+Jasmin.** Gate run after all seven, clean: `bunx tsc --noEmit` 0 errors,
+`bun test` 64 pass, `bun run build` succeeds (chunk warning is the known
+matter-js debt). `main` untouched. ToolCard.tsx deliberately not opened: the
+card rebuild is blocked on three rulings.
+
+Verified on the local dev server against live Sheet data at 375, 640, 700,
+739, 768, 1023, 1024, 1280 and 1440. Fresh page load at each width, because
+the mobile hook reads its breakpoint at mount and a resized-but-not-reloaded
+page reports the old value.
+
+1. **Sticky filter bar** (`Tools.tsx:107` to `sticky top-0`). Gap between nav
+   and bar measured 64px before, **0px after**, at every width.
+2. **Policy template centring** (`PolicyTemplate.tsx:35`, added `mx-auto`).
+   At 1440 the column was 64px left / 736px right; it is now **400px / 400px**.
+3. **404 invisible text** (`NotFound.tsx` rebuilt on the palette). Message and
+   link now legible on cream. **Deviation, deliberate: `index.css` was NOT
+   changed.** See below.
+4. **Filter rail collapse** (`Tools.tsx`, wrap moved from `sm:` to `lg:` in
+   five class strings). Horizontal scroll at 640 was scrollWidth 692 against a
+   640 viewport; **gone at 640, 700 and 739**. Below lg the search box takes
+   its own full-width row and the rail keeps the scroller it already had at
+   375. At lg and up nothing changed, so F2c still holds.
+5. **Nav CTA off-screen** (`use-mobile.tsx` breakpoint 768 to 1024, plus
+   `lg:px-8 xl:px-12` on the nav container and `px-3 xl:px-4` on nav items).
+   Handover verified: **1023 hamburger, 1024 desktop nav, nothing off-screen
+   at either.** 1280 and 1440 unchanged.
+6. **Synthetic font weights.** Chillax loads 400-700 and Plus Jakarta Sans
+   400-600, so `font-black` (900) and body 700/800 were being faked. Display
+   h1s now render at a real 700, and `/ai-news` went from three elements at
+   weight 800 to **zero**.
+7. **Four off-palette hexes.** Learning border to `#E8E2D8`, PolicyTemplate
+   intro to `#1A1510`, WhatsNewCard toggle to the `#EEF0FB`/`#2D35C9` chip
+   pairing, DesignKit freemium and paid badges to the same pairing. All
+   confirmed in computed styles. The other five off-palette values were left
+   exactly as they are: they sit behind open rulings.
+
+**Found, and not in the report or the brief:**
+
+- **Raising the breakpoint to 1024 is not on its own sufficient.** Measured:
+  the desktop nav needs 1087px, so at 1024 "Work with me" still ended at
+  1039. The brief's fix 5 as written would have moved the defect from
+  768-1086 to 1024-1086 rather than closing it. The two padding changes close
+  it, and are scoped so 1280 and up renders exactly as before.
+- **`index.css` muted tokens were left alone on purpose.** `--muted` and
+  `--muted-foreground` are the same HSL triple, but `--muted-foreground` is
+  read as text by `Learning.tsx:123,134` and `ErrorState.tsx:6,16`, so
+  darkening it silently restyles those two components, and the muted colour
+  is one of the open contrast rulings. Rebuilding NotFound fixes the reported
+  defect on its own. The identical-token trap remains and belongs with that
+  ruling.
+- **`WhatsNewCard.tsx:261` is `font-heading`, not body**, so its weight 700 is
+  a real loaded Chillax weight and was correctly left alone. The design audit
+  findings list it as a body-face offender; that line is wrong.
+- **`MyStack.tsx:111` was a sixth body-font offender** neither the report nor
+  the brief listed, at weight 700. Its sibling button at `:253` was already
+  600, so the pair was inconsistent; both are now 600.
+- **Every design_kit row is currently `free`**, all 28 badges. The freemium
+  and paid colours changed in fix 7 therefore render nowhere today, so that
+  change carries no visual risk now. It also means the flag below is latent
+  rather than live.
+- **Flag, not decided here:** freemium and paid now render identically,
+  because the locked palette has no third badge colour (lime is barred from
+  badges, periwinkle is homepage-hero only, burnt orange is legacy). The
+  labels carry the distinction. `free` keeps forest green, which CLAUDE.md
+  scopes to the In My Stack badge, so its use as a cost badge belongs to the
+  same ruling.
+- **The seven fixes cannot be committed as seven path-staged commits.** Four
+  files carry changes for more than one job: `Tools.tsx` (1 and 4),
+  `PolicyTemplate.tsx` (2, 6 and 7), `Layout.tsx` (5 and 6) and
+  `WhatsNewCard.tsx` (6 and 7). Splitting them needs `git add -p`. Options
+  are in the handover.
+
 ### 2026-08-28 (late): three rulings for the record
 **The October window is dissolved: launch whenever the F2 gates pass.**
 F3's timing constraint is Jasmin's-sign-off-plus-a-clear-day only; CLAUDE.md's
@@ -518,13 +595,15 @@ Code**, all four of which A3 removes.
 
 **Rulings put to Jasmin, all outstanding.**
 
-1. **Radar: own tab, before merge.** Reasoning: 19.1KB of unpublished verdict
-   copy ships to every visitor; `tools` is doing two jobs with one mechanism so
-   every sentence about it needs a qualifier; an unbounded research list sharing
-   a tab with a capped published one is how the cap erodes. Costs no code, and
-   the A3 sheet already has the four-way sort. Side effect: moving the radar
-   rows out takes the four dev tools out of the strip by accident, which argues
-   for pointing the strip at `my_stack` deliberately in the same code job.
+1. **Radar: own tab, before merge. RULED 28 Aug: yes.** Reasoning: 19.1KB of
+   unpublished verdict copy ships to every visitor; `tools` is doing two jobs
+   with one mechanism so every sentence about it needs a qualifier; an
+   unbounded research list sharing a tab with a capped published one is how the
+   cap erodes. Costs no code, and the A3 sheet already has the four-way sort.
+   Side effect: moving the radar rows out takes the four dev tools out of the
+   strip by accident, which argued for pointing the strip at `my_stack`
+   deliberately — done independently 28 Aug, commit `20f722a`. Code job for the
+   radar tab itself is still outstanding.
 2. **The ceiling counts published rows.** It caps maintenance load, and a radar
    row costs a line in a Sheet. Counting Sheet rows would put it at 67 against
    45 today and force deleting research to publish a tool.
@@ -541,8 +620,10 @@ Code**, all four of which A3 removes.
    15, so sourcing from the tools page gives **fewer** pills. Raise the cap to
    30, add a mobile cap via the `useIsMobile` already in the component, and the
    gap between pills and counter becomes the argument rather than the problem.
-   Label draft, unapproved: `Everything I run. The directory below is a shorter
-   list.`
+   Label **APPROVED 28 Aug**: `Everything I run. The directory below is a
+   shorter list.` Source is already `my_stack` in code as of today (`20f722a`).
+   Still outstanding: raising `MAX_PILLS` from 18 to 30, the mobile cap, and
+   placing the approved label string — one code job.
 
 **Found in `src/`, no decision needed.**
 
@@ -869,8 +950,10 @@ appears until it has been through them, and because `Risk` would mislabel its
 own contents: `Where your data sits: US` is a fact, not a risk. The Amber
 counter-argument on C4(b) is recorded in the pack rather than lost.
 
-**The hero pills label stays parked**, because the pills ruling is outstanding
-and the source and cap change what the label has to do.
+**The hero pills label, RULED 28 Aug: approved as drafted** — `Everything I
+run. The directory below is a shorter list.` Source (`my_stack`) and the label
+are both settled; the cap raise (18 to 30 plus a mobile cap) is the remaining
+code job.
 
 **Next:** the code session now has everything it needs for the card restructure,
 the Stack cut and F2c. Still outstanding: the radar and pills rulings, Jasmin's
@@ -956,8 +1039,8 @@ response served twice.
    a personal claim by definition. `in_stack` in `tools` then means only
    "render the badge", which is what CLAUDE.md already says it does.
 
-**Still unruled: the radar** (own tab or stays in `tools` with blank axis
-fields) and confirmation that the ceiling of 45 counts published rows.
+**Radar: RULED 28 Aug, own tab, before merge** (see the ruling above). Still
+open: confirmation that the ceiling of 45 counts published rows.
 
 **C1 done, v2 at `reports/2026-08-25-ai-use-policy-template-v2.md`.** The 22 Aug
 draft is untouched as the audit trail. Four changes plus a closing block. New
@@ -1973,3 +2056,64 @@ already in state for the pills, so this was a source swap, not a new fetch.
 Rows are taken in sheet order, not featured-first: `my_stack` carries a
 `featured` boolean that `/my-stack` sorts on, but no ruling covers the strip,
 so that ordering stays open.
+
+### 2026-08-28 (Cowork session: batch-two sign-off, template pass, C3 copy, rulings, Sheet paste)
+
+**All 23 axis-track rows (fifteen A5 + eight batch-two) pasted to the Sheet by
+Jasmin tonight.** Verified directly by reading the live Sheet via the Drive
+connector rather than trusting the report: spot-checked Blotato, Granola,
+Grok and Seedance against the signed-off values. All four correct, including
+the two flags that moved from drafted Red to Amber (Granola on the Wispr Flow
+precedent, Grok on the ChatGPT precedent) and Grok's rewritten verdict, which
+was the one row where a stale draft could easily have been pasted by mistake.
+This closes the axis track's whole remaining blocker: "Jasmin's judgement
+work" from the 24 Aug handover is now done for these 23 rows. Four rows from
+the original twelve (see `overhaul-state.md`) are still undrafted.
+
+**Found on the live Sheet, not yet a problem, will be:** Blotato and Grok
+both still carry `on_radar` in status column C from before tonight. Harmless
+now, since `isComplete()` on the seven axis fields drives the grid, not
+status. But the radar ruling below means the next code session needs to
+either sweep every complete row off `on_radar`, or make the radar/tools split
+key off completeness rather than trust the stale status column.
+
+**Two rulings taken tonight:**
+- **Radar: own tab, before merge.** Reasoning on record since 25 Aug: 19.1KB
+  of unpublished verdict copy currently ships to every visitor; an uncapped
+  radar list sharing a tab with the capped published one is how the 45-row
+  ceiling erodes; costs no code, the A3 sheet already has the sort.
+- **Pills label: approved.** `Everything I run. The directory below is a
+  shorter list.` Source (`my_stack`) already in code as of today (`20f722a`).
+  Outstanding code job: raise `MAX_PILLS` from 18 to 30, add a mobile cap.
+
+**Template (`2026-08-25-ai-use-policy-template-v3.md`) closed out.** Trade
+union membership added to §5's Article 9 list. §12's false "this is the law,
+not regulator guidance" sentence deleted. §7's exclusion line lightened to
+"Speaking for a community that isn't yours to speak for." §11's composite-face
+and copyright lines approved unchanged, the copyright claim (CDPA s9(3), the
+March 2026 Copyright and AI report) re-verified live and holds. §14 found and
+fixed: it named OSCR's "notifiable events" process, retired 1 April 2024 and
+replaced with a "raise a concern" report — wrong since before the document
+was even drafted, not a future drift risk. Dependency register
+(`2026-08-25-template-dependency-register.md`) now carries a live, dated
+source URL for all eighteen legal claims in the template, not just names.
+
+**C3 copy approved, not published.** Post and welcome email in
+`2026-08-25-copy-pack-c3-substack.md` stand as drafted. Deliberately NOT
+placing the docx/PDF in `public/` or touching Substack tonight: those files
+predate tonight's template edits and would ship stale content under a
+live-looking URL. That's item 6 (date stamp, PDF rebuild, files to
+`public/`), a later session, and publishing/welcome-email configuration wait
+for the merge so no real subscriber can hit a broken download link in the
+gap. The `/policy-template` DPIA overclaim ("When a DPIA is needed") is the
+same issue the post draft already fixed — left alone tonight on Jasmin's
+call, flagged for whenever that placed string gets touched.
+
+**Supabase subscribers table:** export-then-delete ruling stands from 28 Aug
+(see `standing-decisions.md`), but execution didn't happen tonight. Jasmin
+believes it's already empty; unconfirmed — the connector couldn't reach the
+paused project (three attempts, connection timeout). Not urgent: the write
+path was removed from `src/` on 22 Aug, so nothing new can have landed
+regardless.
+
+**og-image.png:** still not started (handover B5). Parked again tonight.
