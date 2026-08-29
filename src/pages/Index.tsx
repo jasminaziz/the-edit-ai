@@ -145,7 +145,7 @@ const Index = () => {
                 marginBottom: 10,
               }}
             >
-              An opinionated directory of AI tools for communications teams in charities, cultural organisations and heritage. What each tool is, what it's for, what it really costs, and what to mind when you use it. Every one has been through the checks before it appears here, so you're starting informed instead of from scratch. No sponsored listings, no affiliate links.
+              An opinionated directory of AI tools for comms teams in this sector: charities, cultural organisations, heritage. What each tool is, what it's for, what it really costs, and what to mind when you use it. Every one has been through the checks before it appears here, so you're starting informed instead of from scratch. No sponsored listings, no affiliate links.
             </p>
             <p
               style={{
