@@ -81,28 +81,30 @@ export function CobaltZone({ heading, subheading, bodyText, illustration, rightB
               </span>
             </h1>
           ) : (
-            <>
-              <h1
-                className="font-heading font-bold leading-[0.95]"
-                style={{
-                  fontSize: "clamp(56px, 8vw, 96px)",
-                  color: "#FAF8F4",
-                  letterSpacing: "-0.02em",
-                }}
-              >
+            /* One h1 carrying two block spans, not two h1 elements. A page has
+               one first-level heading, and the second was rendering empty on
+               /design-kit, which passes line2 as "": an empty h1 is announced
+               as a heading with no content. The span is now skipped entirely
+               when line2 is blank. Renders identically. */
+            <h1
+              className="font-heading font-bold leading-[0.95]"
+              style={{
+                fontSize: "clamp(56px, 8vw, 96px)",
+                letterSpacing: "-0.02em",
+              }}
+            >
+              <span className="block" style={{ color: "#FAF8F4" }}>
                 {twoLineHeading.line1}
-              </h1>
-              <h1
-                className="font-heading font-bold leading-[0.95]"
-                style={{
-                  fontSize: "clamp(56px, 8vw, 96px)",
-                  color: twoLineHeading.line2Color || "#C8F04A",
-                  letterSpacing: "-0.02em",
-                }}
-              >
-                {twoLineHeading.line2}
-              </h1>
-            </>
+              </span>
+              {twoLineHeading.line2 && (
+                <span
+                  className="block"
+                  style={{ color: twoLineHeading.line2Color || "#C8F04A" }}
+                >
+                  {twoLineHeading.line2}
+                </span>
+              )}
+            </h1>
           )
         ) : (
           <h1

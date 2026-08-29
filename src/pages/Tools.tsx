@@ -154,6 +154,7 @@ const Tools = () => {
               <button
                 key={c}
                 onClick={() => setCategory(c)}
+                aria-pressed={category === c}
                 className={`shrink-0 px-3.5 py-1.5 font-body text-xs font-medium uppercase tracking-[0.04em] rounded-full border transition-colors duration-150 ${
                   category === c
                     ? "text-foreground border-transparent"

@@ -51,6 +51,7 @@ const Learning = () => {
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
+                  aria-pressed={activeCategory === cat}
                   className="px-4 py-1.5 rounded-full font-body text-sm font-medium transition-colors"
                   style={{
                     backgroundColor: activeCategory === cat ? "#2D35C9" : "transparent",

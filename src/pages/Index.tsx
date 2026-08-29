@@ -89,30 +89,37 @@ const Index = () => {
 
         {/* Typography layer */}
         <div className="relative z-10 pointer-events-none">
-          {/* THE — full-width, pushed to edges */}
-          <h1
-            className="font-heading font-bold leading-[0.82] w-full"
-            style={{
-              fontSize: "clamp(120px, 28vw, 420px)",
-              color: "#2D35C9",
-              letterSpacing: "-0.04em",
-              marginLeft: "-0.04em",
-            }}
-          >
-            The
-          </h1>
-          {/* EDIT — even bigger, commanding */}
-          <h1
-            className="font-heading font-bold leading-[0.78] w-full"
-            style={{
-              fontSize: "clamp(160px, 38vw, 560px)",
-              color: "#2D35C9",
-              letterSpacing: "-0.05em",
-              marginLeft: "-0.05em",
-              marginTop: "-0.02em",
-            }}
-          >
-            Edit.
+          {/* One h1, two block spans. This was two h1 elements, so the
+              homepage announced two first-level headings reading "The" and
+              "Edit." separately. As one heading it reads "The Edit." and the
+              display treatment is unchanged: every size, colour, leading and
+              optical inset below is the value it carried before. */}
+          <h1 className="font-heading font-bold w-full" style={{ margin: 0 }}>
+            {/* THE — full-width, pushed to edges */}
+            <span
+              className="block leading-[0.82] w-full"
+              style={{
+                fontSize: "clamp(120px, 28vw, 420px)",
+                color: "#2D35C9",
+                letterSpacing: "-0.04em",
+                marginLeft: "-0.04em",
+              }}
+            >
+              The
+            </span>
+            {/* EDIT — even bigger, commanding */}
+            <span
+              className="block leading-[0.78] w-full"
+              style={{
+                fontSize: "clamp(160px, 38vw, 560px)",
+                color: "#2D35C9",
+                letterSpacing: "-0.05em",
+                marginLeft: "-0.05em",
+                marginTop: "-0.02em",
+              }}
+            >
+              Edit.
+            </span>
           </h1>
         </div>
 
