@@ -108,7 +108,7 @@ const FeaturedCard = ({ tool }: { tool: MyStackItem }) => {
                 className="font-body"
                 style={{
                   fontSize: "12px",
-                  fontWeight: 700,
+                  fontWeight: 600,
                   color: "#C8F04A",
                   background: "transparent",
                   border: "none",

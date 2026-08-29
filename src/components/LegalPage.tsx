@@ -15,7 +15,7 @@ export function LegalPage({ title, lastUpdated, children }: LegalPageProps) {
         style={{ backgroundColor: "#2D35C9" }}
       >
         <h1
-          className="font-heading font-black leading-[0.85] w-full"
+          className="font-heading font-bold leading-[0.85] w-full"
           style={{
             fontSize: "clamp(48px, 12vw, 200px)",
             color: "#7B7FD4",

@@ -82,7 +82,7 @@ export function DragHint() {
         style={{
           color: "#C8F04A",
           fontFamily: "var(--font-body, 'Plus Jakarta Sans', sans-serif)",
-          fontWeight: 700,
+          fontWeight: 600,
           fontSize: isMobile ? 10 : 12,
           letterSpacing: 0,
           textTransform: "uppercase",

@@ -91,7 +91,7 @@ const Index = () => {
         <div className="relative z-10 pointer-events-none">
           {/* THE — full-width, pushed to edges */}
           <h1
-            className="font-heading font-black leading-[0.82] w-full"
+            className="font-heading font-bold leading-[0.82] w-full"
             style={{
               fontSize: "clamp(120px, 28vw, 420px)",
               color: "#2D35C9",
@@ -103,7 +103,7 @@ const Index = () => {
           </h1>
           {/* EDIT — even bigger, commanding */}
           <h1
-            className="font-heading font-black leading-[0.78] w-full"
+            className="font-heading font-bold leading-[0.78] w-full"
             style={{
               fontSize: "clamp(160px, 38vw, 560px)",
               color: "#2D35C9",
