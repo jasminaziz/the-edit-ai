@@ -72,7 +72,11 @@ export function Layout({ children }: { children: ReactNode }) {
         className="shrink-0 z-50"
         style={{ backgroundColor: navBg }}
       >
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-12">
+        {/* lg:px-8 xl:px-12, design audit fix 5: between 1024 and 1279 the
+            desktop nav needs every pixel it can get, so the gutter tightens
+            there and returns to 48px at xl. At 1280 and up this renders exactly
+            as it did before. */}
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-12 lg:px-8 xl:px-12">
           <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Mobile hamburger */}
             {isMobile ? (
@@ -87,7 +91,7 @@ export function Layout({ children }: { children: ReactNode }) {
                       style={{ backgroundColor: "transparent" }}
                     >
                       <span
-                        className="font-body font-bold text-[11px] uppercase tracking-wide"
+                        className="font-body font-semibold text-[11px] uppercase tracking-wide"
                         style={{
                           color: "#C8F04A",
                           textShadow: "0 1px 8px rgba(26, 21, 16, 0.35), 0 0 12px rgba(200, 240, 74, 0.25)",
@@ -185,7 +189,7 @@ export function Layout({ children }: { children: ReactNode }) {
                         ref={(el) => { navRefs.current[item.to] = el; }}
                         onMouseEnter={() => setHoveredItem(item.to)}
                         onMouseLeave={() => setHoveredItem(null)}
-                        className={`relative z-10 font-body text-sm font-medium px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-colors duration-150 ${
+                        className={`relative z-10 font-body text-sm font-medium px-3 xl:px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-colors duration-150 ${
                           isActive
                             ? pillText
                             : `${textColor} hover:bg-white/[0.15]`
