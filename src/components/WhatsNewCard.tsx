@@ -247,7 +247,7 @@ export function LeadCard({ item }: { item: WhatsNew }) {
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 400,
               fontSize: 12,
-              color: "#9A8F82",
+              color: "hsl(var(--text-secondary))",
               marginBottom: 12,
             }}
           >
@@ -371,7 +371,7 @@ export function GridCard({ item }: { item: WhatsNew }) {
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 400,
               fontSize: 11,
-              color: "#9A8F82",
+              color: "hsl(var(--text-secondary))",
               marginBottom: 8,
             }}
           >

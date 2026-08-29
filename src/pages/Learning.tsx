@@ -113,7 +113,7 @@ const Learning = () => {
                       <span
                         className="px-2.5 py-0.5 font-body text-xs font-medium rounded-full"
                         style={{
-                          color: r.cost.toLowerCase().includes("free") ? "#2D6A4F" : "#9A8F82",
+                          color: r.cost.toLowerCase().includes("free") ? "#2D6A4F" : "hsl(var(--text-secondary))",
                         }}
                       >
                         {r.cost}

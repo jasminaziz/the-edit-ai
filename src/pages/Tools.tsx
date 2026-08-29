@@ -95,7 +95,7 @@ const Tools = () => {
     <div className="flex flex-col items-center justify-center py-20 text-center">
       <p
         className="font-body text-[15px] leading-relaxed"
-        style={{ color: "#9A8F82", maxWidth: 520 }}
+        style={{ color: "hsl(var(--text-secondary))", maxWidth: 520 }}
       >
         Nothing matches that combination yet. The directory is deliberately small, and it grows as tools come through the checks.
       </p>
@@ -126,7 +126,7 @@ const Tools = () => {
             placeholder="Search tools..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className={`w-full pl-10 pr-3 bg-card border border-border rounded-lg font-body text-foreground placeholder:text-muted focus:border-primary focus:ring-[3px] focus:ring-primary/[0.12] outline-none transition-all ${
+            className={`w-full pl-10 pr-3 bg-card border border-border rounded-lg font-body text-foreground placeholder:text-text-secondary focus:border-primary focus:ring-[3px] focus:ring-primary/[0.12] outline-none transition-all ${
               scrolled ? "py-1.5 text-sm" : "py-2.5 text-[15px]"
             }`}
           />
@@ -308,7 +308,7 @@ const Tools = () => {
               Do not reverse that. */}
           <p
             className="font-body text-[13px] leading-relaxed mb-6"
-            style={{ color: "#9A8F82", maxWidth: 720 }}
+            style={{ color: "hsl(var(--text-secondary))", maxWidth: 720 }}
           >
             A DPIA is the assessment your organisation carries out before using personal data in a way that could put people at risk. The flag on each card says how likely typical comms use is to trigger one.
           </p>

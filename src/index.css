@@ -34,9 +34,14 @@
     --secondary: 237.3 50.9% 65.7%;
     --secondary-foreground: 0 0% 100%;
 
-    /* Muted #9A8F82 */
+    /* Muted #9A8F82. Rules, dividers and icons only: it never carries text.
+       2.99:1 on cream and 3.17:1 on the card, so it fails AA at every size. */
     --muted: 32.5 10.6% 55.7%;
-    --muted-foreground: 30 11% 55%;
+    /* Was the identical triple to --muted, which rendered text-muted-foreground
+       on bg-muted at 1.00:1 and made the 404 message invisible. Pointed at the
+       secondary text value so every existing consumer becomes legible without
+       touching a component. */
+    --muted-foreground: 28.2 8.6% 38.6%;
 
     /* Secondary text #6B625A. Ruled 29 Aug 2026: muted #9A8F82 never carries
        text. It measures 2.99:1 on cream and 3.17:1 on card white, so it fails

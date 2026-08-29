@@ -90,7 +90,7 @@ export default function PolicyTemplate() {
               fontWeight: 400,
               fontSize: 13,
               lineHeight: 1.6,
-              color: "#9A8F82",
+              color: "hsl(var(--text-secondary))",
               marginTop: 12,
               marginBottom: 0,
             }}

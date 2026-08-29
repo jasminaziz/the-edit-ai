@@ -93,7 +93,7 @@ function MonthSection({
               fontWeight: 600,
               fontSize: 12,
               letterSpacing: "0.08em",
-              color: "#9A8F82",
+              color: "hsl(var(--text-secondary))",
               textTransform: "uppercase",
             }}
           >

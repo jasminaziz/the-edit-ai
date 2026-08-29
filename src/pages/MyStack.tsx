@@ -209,7 +209,7 @@ const StackCard = ({ tool }: { tool: MyStackItem }) => {
             {tool.name}
           </h3>
           {tool.pricing && (
-            <span className="font-body ml-auto" style={{ fontSize: "12px", color: "#9A8F82" }}>
+            <span className="font-body ml-auto" style={{ fontSize: "12px", color: "hsl(var(--text-secondary))" }}>
               {tool.pricing}
             </span>
           )}
@@ -363,7 +363,7 @@ const MyStack = () => {
                   className="mb-10 font-body"
                   style={{
                     fontSize: "13px",
-                    color: "#9A8F82",
+                    color: "hsl(var(--text-secondary))",
                     border: "1px dashed #E8E2D8",
                     borderRadius: "12px",
                     padding: "16px 20px",

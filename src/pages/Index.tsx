@@ -152,7 +152,7 @@ const Index = () => {
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontWeight: 400,
                 fontSize: 14,
-                color: "#9A8F82",
+                color: "hsl(var(--text-secondary))",
                 margin: 0,
               }}
             >
@@ -195,7 +195,7 @@ const Index = () => {
         <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           {/* My Stack Preview */}
           <div className="space-y-4">
-            <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-muted">
+            <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-text-secondary">
               What I'm running
             </h2>
             {loading ? (
@@ -216,7 +216,7 @@ const Index = () => {
                   </span>
                 ))}
                 {stackTools.length === 0 && (
-                  <p className="text-muted text-sm font-body">No stack data yet.</p>
+                  <p className="text-text-secondary text-sm font-body">No stack data yet.</p>
                 )}
               </div>
             )}
@@ -230,7 +230,7 @@ const Index = () => {
 
           {/* AI News */}
           <div className="space-y-4">
-            <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-muted">
+            <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-text-secondary">
               AI News
             </h2>
             {loading ? (
@@ -263,12 +263,12 @@ const Index = () => {
                           </span>
                         )}
                       </div>
-                      <p className="font-body text-[11px] uppercase" style={{ color: "#9A8F82", letterSpacing: "0.06em" }}>{n.developer}</p>
+                      <p className="font-body text-[11px] uppercase" style={{ color: "hsl(var(--text-secondary))", letterSpacing: "0.06em" }}>{n.developer}</p>
                     </div>
                   );
                 })}
                 {latestNews.length === 0 && (
-                  <p className="text-muted text-sm font-body">No news yet.</p>
+                  <p className="text-text-secondary text-sm font-body">No news yet.</p>
                 )}
               </div>
             )}
@@ -282,7 +282,7 @@ const Index = () => {
 
           {/* Tools Count */}
           <div className="space-y-4">
-            <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-muted">
+            <h2 className="font-body font-semibold text-[11px] uppercase tracking-[0.05em] text-text-secondary">
               Through the checks
             </h2>
             {loading ? (
@@ -294,7 +294,7 @@ const Index = () => {
                   fontSize={isMobile ? 56 : 80}
                   className="text-primary"
                 />
-                <p className="font-body text-[15px] text-muted">tools that have been through the checks</p>
+                <p className="font-body text-[15px] text-text-secondary">tools that have been through the checks</p>
               </>
             )}
             <Link
