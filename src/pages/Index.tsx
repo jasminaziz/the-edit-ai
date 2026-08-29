@@ -56,7 +56,7 @@ const Index = () => {
   return (
     <div className="relative">
       <SEO
-        title="The Edit | AI Tools for Charity & Cultural Comms Teams"
+        title="The Edit | AI Tools for Charity, Cultural & Heritage Comms"
         description="An opinionated AI tools directory for charity, cultural and heritage comms teams. What each tool is for, what it really costs, and the data and training checks already done. No sponsored lists."
         canonical="https://theeditai.co.uk/"
         googleVerification="2_93U4mtnkpPZgW6fZZJaOIQ7tEKv7__f8JSMuO0HC8"
