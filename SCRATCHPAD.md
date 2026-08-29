@@ -197,6 +197,93 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-29 (code session: the ToolCard rebuild)
+
+Five commits, `8949879` through `748d5c9`, from
+`reports/2026-08-29-toolcard-rebuild-brief.md` with three corrections applied
+(below). Gate clean before each: `bunx tsc --noEmit` 0 errors, `bun test` 64
+pass, `bun run build` succeeds. `main` untouched. `sheets.ts` and
+`isComplete()` never opened. No string changed anywhere on the card.
+
+**The type scale it ended on: four steps.** 11px labels, badges and stamps;
+13px metadata, chips and the Visit pill; 15px reading text; 20px name.
+Measured on a fully populated card: 20px x1, 15px x2, 13px x7, 11px x8. The
+12px and 14px steps are gone. Before, 17 of 18 runs sat in an 11 to 14px band
+with nothing between 14px and 20px, which is why the card read busy: plenty of
+difference, almost no hierarchy. The verdict toggle went 13px medium to 15px
+semibold and is now the second-largest thing on the card.
+
+**Ruling 2 passes its own test.** `grep "isSelected ?" ToolCard.tsx` returns
+nothing. Inline `style={{}}` blocks went 20 to 0, the file 383 lines to 289,
+and zero inline hex remains. Colour lives in `index.css` under `.tool-card`,
+keyed off `data-selected`, and the hover looks exactly as it did.
+
+**All three DPIA chips hold on the inverted card**, checked rather than
+assumed, and twice. Live: Green `#E4F0E9`/`#2D6A4F`, Amber `#FAF0DB`/`#7A5200`,
+Red `#FBE9E6`/`#A8261C`, byte-identical in rest and selected states.
+Structurally: no `[data-selected]` rule targets `.tc-dpia` at all, so the
+inversion cannot reach them. Also confirmed visually on a cobalt card.
+
+**Widths verified**, all with no horizontal scroll: 375 (1 col, 327px card),
+414 (1 col, 366px), 640 (2 cols, 260px), 1024 (3 cols, 293px), 1280 (3 cols,
+379px), 1440 (3 cols, 411px). Tap targets 44px at every width.
+
+**Three corrections to the brief, all measured before acting:**
+
+1. **The "raise the dim floor from 45% to 70%" instruction was a no-op.** The
+   card was already at `opacity-70` and there is no 45% anywhere in it. The
+   arithmetic in the brief was right and the starting value was invented. Not
+   implemented, because there was nothing to implement.
+2. **Ruling 4 collided with ruling 1 and the brief did not say so.**
+   `#6B625A` on the cobalt card is 1.43:1. The selected-state secondary text
+   was `rgba(250,248,244,0.6)`, which composites to `#A8AAE3` at 3.86:1 and
+   already failed AA. Because ruling 1 keeps the hover, that failure would
+   have been permanent. Now 0.8, giving `#D1D1EB` at 5.69:1.
+3. **Ruling 3 makes the verdict promotion load-bearing**, so it was treated as
+   a headline change rather than an implied one: 13px `#9B9FE0` at 2.49:1
+   becomes 15px semibold cobalt at 8.52:1.
+
+**Found, and not in the findings report or the brief:**
+
+- **The existing HSL tokens do not round-trip to the locked palette.**
+  `--accent` renders `#CEF047` against a locked `#C8F04A`, `--foreground`
+  `#181410` against `#1A1510`, `--border` `#E8E1D9` against `#E8E2D8`, and
+  four more. Seven of nine drift. This is almost certainly *why* components
+  hardcode hex inline, and it means **the tokenisation job cannot simply swap
+  hex for tokens**: the token values have to be corrected first or every
+  surface shifts. The card's CSS therefore uses exact hex deliberately.
+  `--text-secondary` is exact and is used as a token.
+- **The verdict rule needed a selected-state value.** Moving it to cobalt for
+  the rest state would have made it 1.00:1 on the cobalt card, invisible. It
+  takes cream at 0.5, 3.12:1, clearing the 3:1 non-text threshold.
+- **Selected job chips were `#FFFFFF` on `#9B9FE0`, 2.49:1.** Not flagged
+  anywhere. Now the translucent-cream treatment IN MY STACK already used,
+  5.80:1.
+- **The card did not get shorter.** The findings report predicted 80 to 100px
+  off. Cards are 517px at 1280 against roughly 500px before: the 44px tap
+  targets cost more than the inline axis lines save. The hierarchy is fixed,
+  the height is not, and at the 45-row ceiling that wants its own decision.
+- **The pinch points are 640 and 1024, not 1280.** Cards are narrowest and
+  tallest at 640 (260px wide, 581px tall) and 1024 (293px, 583px). The open
+  two-versus-three-column ruling matters less at 1280 than the grid does at
+  those two widths.
+- **`p-4 sm:p-5` gives the narrowest card the larger padding**, because the
+  padding keys off viewport while the card width keys off column count. Minor,
+  and not worth a container query today, but it is backwards.
+- Not done, and flagged rather than skipped silently: the report also wanted
+  pricing and nonprofit tier on one `justify-between` row. At 260 to 293px
+  both strings wrap and it reads worse than the stack.
+
+**Verification honesty.** Two things are reasoned, not observed. Touch
+behaviour is verified through the real React pointer path in a browser, not on
+hardware, so the on-device check is still owed. And I could not capture one
+screenshot showing hover and dim together with every card revealed: the Reveal
+IntersectionObserver does not fire reliably when the pane is driven
+programmatically. That flakiness also produced several false readings during
+this session, off-screen cards reporting unstyled values and `getBoundingClientRect`
+distorted by the reveal `scale(0.95)`, which is worth knowing before anyone
+trusts a computed-style measurement on this grid again.
+
 ### 2026-08-29 (code session: the seven unblocked design fixes)
 
 Implemented from `reports/2026-08-29-unblocked-fixes-brief.md`, which was
