@@ -28,6 +28,14 @@
     --muted: 30 11% 55%;
     --muted-foreground: 30 11% 55%;
 
+    /* Secondary text #6B625A. Ruled 29 Aug 2026: muted #9A8F82 never carries
+       text. It measures 2.99:1 on cream and 3.17:1 on card white, so it fails
+       AA at every size and falls below even the 3:1 large-text floor on cream.
+       This token is what replaces it wherever it carried words: 5.62:1 on
+       cream, 5.97:1 on card white. Muted keeps rules, dividers and icons.
+       The decimals are load-bearing: 28 9% 39% renders #6C635A, not #6B625A. */
+    --text-secondary: 28.2 8.6% 38.6%;
+
     /* Electric lime #C8F04A */
     --accent: 72 85% 61%;
     --accent-foreground: 30 20% 8%;
