@@ -216,8 +216,8 @@ const Tools = () => {
           tool={tool}
           isSelected={isSelected}
           isDimmed={isDimmed}
-          onMouseEnter={() => setHoveredCard(tool.name)}
-          onMouseLeave={() => setHoveredCard(null)}
+          onActivate={() => setHoveredCard(tool.name)}
+          onDeactivate={() => setHoveredCard(null)}
         />
       </RevealItem>
     );

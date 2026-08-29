@@ -46,16 +46,17 @@ interface ToolCardProps {
   tool: Tool;
   isSelected: boolean;
   isDimmed: boolean;
-  onMouseEnter: () => void;
-  onMouseLeave: () => void;
+  /** Fired by pointer entry and by focus, so the state is not mouse-only. */
+  onActivate: () => void;
+  onDeactivate: () => void;
 }
 
 export const ToolCard = ({
   tool,
   isSelected,
   isDimmed,
-  onMouseEnter,
-  onMouseLeave,
+  onActivate,
+  onDeactivate,
 }: ToolCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   // normaliseDpiaFlag resolves casing, and returns "" for anything that is not
@@ -66,8 +67,20 @@ export const ToolCard = ({
 
   return (
     <div
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      // Pointer events, not mouse events, and focus as well.
+      //
+      // Hover does not exist on touch. A tap used to raise a compatibility
+      // mouseenter with no matching mouseleave, so the card stayed inverted and
+      // the other 22 stayed dimmed until something else was tapped: the grid
+      // looked broken after one touch. Pointer events are created and destroyed
+      // per touch, so the state now clears when the finger lifts.
+      //
+      // onFocus and onBlur bubble from the card's own links and buttons, which
+      // is what makes the state reachable by keyboard.
+      onPointerEnter={onActivate}
+      onPointerLeave={onDeactivate}
+      onFocus={onActivate}
+      onBlur={onDeactivate}
       // The state is an attribute, not a branch: `data-selected` and
       // `data-dimmed` are omitted entirely when false, and index.css keys off
       // their presence.
