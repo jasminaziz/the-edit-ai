@@ -3,40 +3,42 @@ import { Link } from "react-router-dom";
 import { normaliseDpiaFlag, type Tool } from "@/lib/sheets";
 
 /**
- * DPIA chip, one per flag value. Colours are locked and AA-verified against
- * both the white card and the cream page ground (axis spec, 23 Aug 2026).
- * Text and border share a hex; the tint is the background. Do not substitute.
+ * Colour lives in index.css under `.tool-card`, not here.
  *
- * The label carries the meaning, so the chip never relies on colour alone —
+ * Ruled 29 Aug 2026: the cobalt hover inversion stays exactly as it looked,
+ * but the card root carries `data-selected` and every child colour comes from
+ * a descendant rule. The twenty per-element selected/unselected colour
+ * ternaries this replaces were the reason the component could not carry a
+ * single responsive class, so removing them is the precondition for the
+ * hierarchy work.
+ *
+ * If a colour needs changing, change index.css. Adding an inline hex back into
+ * this file re-creates the problem.
+ */
+
+/**
+ * DPIA chip labels, one per flag value. Colours are locked and AA-verified
+ * against both the white card and the cream page ground (axis spec, 23 Aug
+ * 2026), and live in index.css keyed off `data-flag`.
+ *
+ * The label carries the meaning, so the chip never relies on colour alone:
  * "Green" only reads to someone who already knows the scheme. Labels are
  * approved copy from the B3 microcopy pack: do not reword them.
  */
 const DPIA_CHIP = {
-  Green: { label: "DPIA unlikely", ink: "#2D6A4F", tint: "#E4F0E9" },
-  Amber: { label: "DPIA likely once personal data goes in", ink: "#7A5200", tint: "#FAF0DB" },
-  Red: { label: "Assume a DPIA before adopting", ink: "#A8261C", tint: "#FBE9E6" },
+  Green: { label: "DPIA unlikely" },
+  Amber: { label: "DPIA likely once personal data goes in" },
+  Red: { label: "Assume a DPIA before adopting" },
 } as const;
 
 /** One labelled axis fact. Label strings are approved copy — do not reword. */
-const AxisLine = ({
-  label,
-  value,
-  isSelected,
-}: {
-  label: string;
-  value: string;
-  isSelected: boolean;
-}) => (
+const AxisLine = ({ label, value }: { label: string; value: string }) => (
   <div className="mt-2.5">
-    <p
-      className="font-body text-[11px] leading-tight"
-      style={{ color: isSelected ? "rgba(250,248,244,0.6)" : "#9A8F82", margin: 0 }}
-    >
+    <p className="font-body text-[11px] leading-tight m-0 tc-secondary">
       {label}
     </p>
     <p
-      className="font-body text-[13px] leading-snug"
-      style={{ color: isSelected ? "#FAF8F4" : "#1A1510", margin: 0, marginTop: 1 }}
+      className="font-body text-[13px] leading-snug m-0 mt-px tc-primary"
     >
       {value}
     </p>
@@ -69,22 +71,12 @@ export const ToolCard = ({
     <div
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className={`rounded-xl border p-5 flex flex-col h-full transition-all duration-200 ${
-        isDimmed ? "opacity-70 scale-[0.98]" : ""
-      }`}
-      style={
-        isSelected
-          ? {
-              backgroundColor: "#2D35C9",
-              borderColor: "#2D35C9",
-              color: "#FAF8F4",
-              boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
-            }
-          : {
-              backgroundColor: "#FFFFFF",
-              borderColor: "#E8E2D8",
-            }
-      }
+      // The state is an attribute, not a branch: `data-selected` and
+      // `data-dimmed` are omitted entirely when false, and index.css keys off
+      // their presence.
+      data-selected={isSelected || undefined}
+      data-dimmed={isDimmed || undefined}
+      className="tool-card rounded-xl border p-5 flex flex-col h-full transition-all duration-200"
     >
       {/* Tool name as link */}
       {tool.url ? (
@@ -92,31 +84,22 @@ export const ToolCard = ({
           href={tool.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-heading font-semibold text-xl no-underline"
-          style={{ color: isSelected ? "#FAF8F4" : "#1A1510" }}
+          className="font-heading font-semibold text-xl no-underline tc-primary"
           onClick={(e) => e.stopPropagation()}
         >
           {tool.name}
         </a>
       ) : (
-        <h3
-          className="font-heading font-semibold text-xl"
-          style={{ color: isSelected ? "#FAF8F4" : "#1A1510" }}
-        >
-          {tool.name}
-        </h3>
+        <h3 className="font-heading font-semibold text-xl tc-primary">{tool.name}</h3>
       )}
 
       {/* ZONE 1, explore. Description before the chips, per the restructure:
           the chips answer "which of my problems does this solve", the
           description answers "what kind of thing is this", and comprehension
           has to come first. Guarded, so a row without a description does not
-          leave a gap; as at 2026-08-26 all 15 rendering rows have one. */}
+          leave a gap; as at 2026-08-26 all rendering rows have one. */}
       {tool.what_it_does && (
-        <p
-          className="mt-2 font-body text-sm leading-relaxed line-clamp-2"
-          style={{ color: isSelected ? "#FAF8F4" : "#1A1510" }}
-        >
+        <p className="mt-2 font-body text-sm leading-relaxed line-clamp-2 tc-primary">
           {tool.what_it_does}
         </p>
       )}
@@ -128,25 +111,13 @@ export const ToolCard = ({
         {tool.jobs.map((job) => (
           <span
             key={job}
-            className="inline-block px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full"
-            style={
-              isSelected
-                ? { backgroundColor: "#9B9FE0", color: "#FFFFFF" }
-                : { backgroundColor: "#EEF0FB", color: "#2D35C9" }
-            }
+            className="inline-block px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full tc-chip-job"
           >
             {job}
           </span>
         ))}
         {tool.status === "in_stack" && (
-          <span
-            className="inline-block px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full"
-            style={
-              isSelected
-                ? { backgroundColor: "rgba(250,248,244,0.15)", color: "#FAF8F4" }
-                : { backgroundColor: "#2D6A4F", color: "#FFFFFF" }
-            }
-          >
+          <span className="inline-block px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full tc-chip-stack">
             IN MY STACK
           </span>
         )}
@@ -164,39 +135,21 @@ export const ToolCard = ({
             sentence case and CSS uppercases it, the IN MY STACK pattern.
             Approved copy, copy pack four item 6: do not reword. */}
         {tool.status === "not_recommended" && (
-          <span
-            className="inline-block px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full"
-            style={{ backgroundColor: "#A8261C", color: "#FFFFFF" }}
-          >
+          <span className="inline-block px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full tc-chip-fail">
             Judged, not recommended
           </span>
         )}
       </div>
 
       {/* ZONE 2, buying. Nonprofit pricing sits with the price rather than
-          with the risk facts: it decides affordability, not exposure. The
-          #EEF0FB tint is dropped and the value carries the emphasis instead,
-          so the card holds two coloured regions rather than five. */}
+          with the risk facts: it decides affordability, not exposure. */}
       {tool.pricing && (
-        <p
-          className="mt-3 font-body text-[13px]"
-          style={{ color: isSelected ? "rgba(250,248,244,0.6)" : "#9A8F82" }}
-        >
-          {tool.pricing}
-        </p>
+        <p className="mt-3 font-body text-[13px] tc-secondary">{tool.pricing}</p>
       )}
       {tool.nonprofit_tier && (
         <p className="mt-1.5 font-body flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-          <span
-            className="text-[11px] leading-tight"
-            style={{ color: isSelected ? "rgba(250,248,244,0.6)" : "#9A8F82" }}
-          >
-            Nonprofit pricing
-          </span>
-          <span
-            className="text-[13px] font-semibold leading-snug"
-            style={{ color: isSelected ? "#FAF8F4" : "#1A1510" }}
-          >
+          <span className="text-[11px] leading-tight tc-secondary">Nonprofit pricing</span>
+          <span className="text-[13px] font-semibold leading-snug tc-primary">
             {tool.nonprofit_tier}
           </span>
         </p>
@@ -213,16 +166,10 @@ export const ToolCard = ({
           that claim is evidenced. "Risk" would also mislabel its own contents,
           because "Where your data sits: US" is a fact, not a risk. */}
       <div className="mt-4 flex items-center gap-3">
-        <span
-          className="font-body text-[11px] font-semibold uppercase tracking-[0.05em] shrink-0"
-          style={{ color: isSelected ? "rgba(250,248,244,0.75)" : "#9A8F82" }}
-        >
+        <span className="font-body text-[11px] font-semibold uppercase tracking-[0.05em] shrink-0 tc-checks-label">
           The checks
         </span>
-        <div
-          className="h-px flex-1"
-          style={{ backgroundColor: isSelected ? "rgba(250,248,244,0.3)" : "#E8E2D8" }}
-        />
+        <div className="h-px flex-1 tc-rule" />
       </div>
 
       {/* DPIA chip, first in the zone. Reordered 28 Aug on the surface audit's
@@ -230,22 +177,15 @@ export const ToolCard = ({
           human sentence back to third, so the block read data-first when the
           register Jasmin asked for is caution-first. The chip is the sentence
           that says why care is needed; the two fact lines below it now read as
-          its evidence. Zero vertical cost, no copy changed.
+          its evidence.
 
-          Colours are held constant through the hover state: the chip carries
-          its own background, so its contrast holds on the cobalt card, and the
-          three pairings are locked. */}
+          Colours hold constant through the hover state: the chip carries its
+          own background, so its contrast holds on the cobalt card. */}
       {dpia && (
         <div className="mt-3">
           <span
-            className="inline-block font-body text-[12px] font-medium leading-snug"
-            style={{
-              backgroundColor: dpia.tint,
-              color: dpia.ink,
-              border: `1px solid ${dpia.ink}`,
-              borderRadius: 999,
-              padding: "3px 10px",
-            }}
+            data-flag={flag}
+            className="inline-block font-body text-[12px] font-medium leading-snug tc-dpia"
           >
             {dpia.label}
           </span>
@@ -254,17 +194,16 @@ export const ToolCard = ({
               26 Aug. It was scoped when Green was expected to be common, and
               amendment 4 made Green rare, so a line meant to appear sometimes
               was appearing on 14 of the 15 published cards and reading as
-              furniture. Red puts it on two, HubSpot and DeepSeek, which are
-              the rows where a reader needs a policy before going near the
-              tool. The counter was weighed and lost: Amber is arguably where
-              people need the policy most, but the template already has three
-              other placements and a prompt nobody reads captures nothing. */}
+              furniture. Red puts it on the rows where a reader needs a policy
+              before going near the tool. The counter was weighed and lost:
+              Amber is arguably where people need the policy most, but the
+              template already has three other placements and a prompt nobody
+              reads captures nothing. */}
           {flag === "Red" && (
             <Link
               to="/policy-template"
               onClick={(e) => e.stopPropagation()}
-              className="block mt-2 font-body text-[12px] leading-snug no-underline hover:underline"
-              style={{ color: isSelected ? "#C8F04A" : "#2D35C9" }}
+              className="block mt-2 font-body text-[12px] leading-snug no-underline hover:underline tc-policy-link"
             >
               Not sure what your policy should say? Start with the template.
             </Link>
@@ -272,11 +211,9 @@ export const ToolCard = ({
         </div>
       )}
 
-      {tool.data_location && (
-        <AxisLine label="Where your data sits" value={tool.data_location} isSelected={isSelected} />
-      )}
+      {tool.data_location && <AxisLine label="Where your data sits" value={tool.data_location} />}
       {tool.trains_on_input && (
-        <AxisLine label="Trains on your content" value={tool.trains_on_input} isSelected={isSelected} />
+        <AxisLine label="Trains on your content" value={tool.trains_on_input} />
       )}
 
       {/* ZONE 4, act. The verdict toggle and the Checked stamp share one row:
@@ -288,16 +225,12 @@ export const ToolCard = ({
             e.stopPropagation();
             setIsExpanded((v) => !v);
           }}
-          className="text-left font-body font-medium text-[13px] transition-colors"
-          style={{ color: isSelected ? "#C8F04A" : "#9B9FE0" }}
+          className="text-left font-body font-medium text-[13px] transition-colors tc-verdict-toggle"
         >
           {isExpanded ? "Honest verdict ↑" : "Honest verdict ↓"}
         </button>
         {tool.last_checked && (
-          <span
-            className="font-body text-[11px] shrink-0"
-            style={{ color: isSelected ? "rgba(250,248,244,0.6)" : "#9A8F82" }}
-          >
+          <span className="font-body text-[11px] shrink-0 tc-secondary">
             Checked {tool.last_checked}
           </span>
         )}
@@ -308,26 +241,17 @@ export const ToolCard = ({
           judgement, not with the facts above. */}
       {isExpanded && (tool.verdict || tool.trustee_note) && (
         <div
-          className="mt-3 pt-4 font-body text-sm leading-relaxed"
-          style={{
-            borderLeft: "4px solid #9B9FE0",
-            paddingLeft: 16,
-            color: isSelected ? "#FAF8F4" : "#1A1510",
-          }}
+          className="mt-3 pt-4 pl-4 font-body text-sm leading-relaxed tc-verdict tc-primary"
         >
           {tool.verdict}
           {tool.trustee_note && (
-            <div style={{ marginTop: tool.verdict ? 12 : 0 }}>
+            <div className={tool.verdict ? "mt-3" : "mt-0"}>
               <p
-                className="font-body text-[11px] leading-tight"
-                style={{ color: isSelected ? "rgba(250,248,244,0.6)" : "#9A8F82", margin: 0 }}
+                className="font-body text-[11px] leading-tight m-0 tc-secondary"
               >
                 Say this to a trustee
               </p>
-              <p
-                className="font-body text-sm leading-relaxed"
-                style={{ margin: 0, marginTop: 2 }}
-              >
+              <p className="font-body text-sm leading-relaxed m-0 mt-0.5">
                 {tool.trustee_note}
               </p>
             </div>
@@ -335,8 +259,8 @@ export const ToolCard = ({
         </div>
       )}
 
-
-      {/* Visit tool button — lime pill */}
+      {/* Visit tool button — lime pill. Hover is a CSS rule now, not two JS
+          handlers writing inline styles. */}
       {tool.url && (
         <div className="mt-3 flex justify-end">
           <a
@@ -344,35 +268,7 @@ export const ToolCard = ({
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="font-body inline-block"
-            style={{
-              fontSize: "13px",
-              fontWeight: 500,
-              color: isSelected ? "#2D35C9" : "#1A1510",
-              backgroundColor: isSelected ? "#FAF8F4" : "#C8F04A",
-              borderRadius: "20px",
-              padding: "10px 20px",
-              transition: "background-color 0.2s ease-out, color 0.2s ease-out",
-              textDecoration: "none",
-            }}
-            onMouseEnter={(e) => {
-              if (isSelected) {
-                e.currentTarget.style.backgroundColor = "#C8F04A";
-                e.currentTarget.style.color = "#1A1510";
-              } else {
-                e.currentTarget.style.backgroundColor = "#2D35C9";
-                e.currentTarget.style.color = "#FFFFFF";
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (isSelected) {
-                e.currentTarget.style.backgroundColor = "#FAF8F4";
-                e.currentTarget.style.color = "#2D35C9";
-              } else {
-                e.currentTarget.style.backgroundColor = "#C8F04A";
-                e.currentTarget.style.color = "#1A1510";
-              }
-            }}
+            className="font-body inline-block text-[13px] font-medium no-underline rounded-[20px] px-5 py-2.5 transition-colors duration-200 tc-visit"
           >
             Visit tool →
           </a>

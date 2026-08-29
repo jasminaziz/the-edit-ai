@@ -111,3 +111,87 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 }
+
+@layer components {
+  /**
+   * ToolCard colour.
+   *
+   * Ruled 29 Aug 2026: the cobalt hover inversion stays exactly as it looked,
+   * but it is driven from one data attribute on the card root plus the
+   * descendant rules below, not from twenty per-element ternaries inside the
+   * component. Those ternaries were the reason the card could not carry a
+   * single responsive class, so this is a precondition for the hierarchy work,
+   * not a tidy-up after it.
+   *
+   * Values are exact hex on purpose, not hsl(var(--token)). The existing token
+   * values do not round-trip to the locked palette: --accent renders #CEF047
+   * against a locked #C8F04A, --foreground #181410 against #1A1510, --border
+   * #E8E1D9 against #E8E2D8, and four more. Driving the card off them would
+   * silently restyle it. --text-secondary is exact and is used as a token.
+   * Correcting the rest belongs to the tokenisation job, and until it happens
+   * the token layer cannot be swapped in anywhere without checking the hex.
+   */
+  .tool-card {
+    background-color: #FFFFFF;
+    border-color: #E8E2D8;
+  }
+  .tool-card[data-dimmed] {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+  .tool-card[data-selected] {
+    background-color: #2D35C9;
+    border-color: #2D35C9;
+    color: #FAF8F4;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Primary text: the name, the description, fact values, the verdict body. */
+  .tool-card .tc-primary { color: #1A1510; }
+  .tool-card[data-selected] .tc-primary { color: #FAF8F4; }
+
+  /* Secondary text: field labels, pricing, the checked stamp. */
+  .tool-card .tc-secondary { color: #9A8F82; }
+  .tool-card[data-selected] .tc-secondary { color: rgba(250, 248, 244, 0.6); }
+
+  /* The checks zone label sits brighter than other labels on the inverted card. */
+  .tool-card .tc-checks-label { color: #9A8F82; }
+  .tool-card[data-selected] .tc-checks-label { color: rgba(250, 248, 244, 0.75); }
+
+  .tool-card .tc-rule { background-color: #E8E2D8; }
+  .tool-card[data-selected] .tc-rule { background-color: rgba(250, 248, 244, 0.3); }
+
+  .tool-card .tc-chip-job { background-color: #EEF0FB; color: #2D35C9; }
+  .tool-card[data-selected] .tc-chip-job { background-color: #9B9FE0; color: #FFFFFF; }
+
+  .tool-card .tc-chip-stack { background-color: #2D6A4F; color: #FFFFFF; }
+  .tool-card[data-selected] .tc-chip-stack {
+    background-color: rgba(250, 248, 244, 0.15);
+    color: #FAF8F4;
+  }
+
+  /* The failure badge carries its own ground, so it holds through the
+     inversion. Solid, not tinted, so it never reads as a fourth DPIA chip. */
+  .tool-card .tc-chip-fail { background-color: #A8261C; color: #FFFFFF; }
+
+  /* DPIA chips, the locked trio. Text and 1px border share a hex, the tint is
+     the ground. Each carries its own background, so all three hold their
+     locked contrast on the inverted cobalt card as well as the white one. */
+  .tool-card .tc-dpia { border: 1px solid; border-radius: 999px; padding: 3px 10px; }
+  .tool-card .tc-dpia[data-flag="Green"] { background-color: #E4F0E9; color: #2D6A4F; border-color: #2D6A4F; }
+  .tool-card .tc-dpia[data-flag="Amber"] { background-color: #FAF0DB; color: #7A5200; border-color: #7A5200; }
+  .tool-card .tc-dpia[data-flag="Red"]   { background-color: #FBE9E6; color: #A8261C; border-color: #A8261C; }
+
+  .tool-card .tc-policy-link { color: #2D35C9; }
+  .tool-card[data-selected] .tc-policy-link { color: #C8F04A; }
+
+  .tool-card .tc-verdict-toggle { color: #9B9FE0; }
+  .tool-card[data-selected] .tc-verdict-toggle { color: #C8F04A; }
+
+  .tool-card .tc-verdict { border-left: 4px solid #9B9FE0; }
+
+  .tool-card .tc-visit { background-color: #C8F04A; color: #1A1510; }
+  .tool-card .tc-visit:hover { background-color: #2D35C9; color: #FFFFFF; }
+  .tool-card[data-selected] .tc-visit { background-color: #FAF8F4; color: #2D35C9; }
+  .tool-card[data-selected] .tc-visit:hover { background-color: #C8F04A; color: #1A1510; }
+}
