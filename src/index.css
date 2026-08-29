@@ -150,19 +150,32 @@
   .tool-card .tc-primary { color: #1A1510; }
   .tool-card[data-selected] .tc-primary { color: #FAF8F4; }
 
-  /* Secondary text: field labels, pricing, the checked stamp. */
-  .tool-card .tc-secondary { color: #9A8F82; }
-  .tool-card[data-selected] .tc-secondary { color: rgba(250, 248, 244, 0.6); }
+  /* Secondary text: field labels, pricing, the checked stamp.
+     Ruled 29 Aug: muted #9A8F82 never carries text (3.17:1 on the white card).
+     --text-secondary is #6B625A at 5.97:1. On the inverted card the alpha goes
+     from 0.6 to 0.8: cream at 0.6 over cobalt composites to #A8AAE3 at 3.86:1,
+     which failed AA for as long as the hover ran, and 0.8 gives #D1D1EB at
+     5.69:1. The hover is staying, so that failure would have been permanent. */
+  .tool-card .tc-secondary { color: hsl(var(--text-secondary)); }
+  .tool-card[data-selected] .tc-secondary { color: rgba(250, 248, 244, 0.8); }
 
-  /* The checks zone label sits brighter than other labels on the inverted card. */
-  .tool-card .tc-checks-label { color: #9A8F82; }
+  /* The checks zone label. 0.75 over cobalt is #C7C7E9 at 5.18:1, so it passes
+     as it stands and keeps its slight lift above the other labels. */
+  .tool-card .tc-checks-label { color: hsl(var(--text-secondary)); }
   .tool-card[data-selected] .tc-checks-label { color: rgba(250, 248, 244, 0.75); }
 
   .tool-card .tc-rule { background-color: #E8E2D8; }
   .tool-card[data-selected] .tc-rule { background-color: rgba(250, 248, 244, 0.3); }
 
+  /* Job chips. The selected pairing was #FFFFFF on #9B9FE0 at 2.49:1, an
+     off-palette colour failing AA. It now uses the translucent-cream treatment
+     the IN MY STACK chip already uses when selected: #FAF8F4 on a 15% cream
+     wash over cobalt composites to #4C52CF at 5.80:1. */
   .tool-card .tc-chip-job { background-color: #EEF0FB; color: #2D35C9; }
-  .tool-card[data-selected] .tc-chip-job { background-color: #9B9FE0; color: #FFFFFF; }
+  .tool-card[data-selected] .tc-chip-job {
+    background-color: rgba(250, 248, 244, 0.15);
+    color: #FAF8F4;
+  }
 
   .tool-card .tc-chip-stack { background-color: #2D6A4F; color: #FFFFFF; }
   .tool-card[data-selected] .tc-chip-stack {
@@ -185,10 +198,17 @@
   .tool-card .tc-policy-link { color: #2D35C9; }
   .tool-card[data-selected] .tc-policy-link { color: #C8F04A; }
 
-  .tool-card .tc-verdict-toggle { color: #9B9FE0; }
+  /* The verdict toggle was #9B9FE0 at 2.49:1, the lowest-contrast text on the
+     card and the only route to the one thing no other directory publishes.
+     Cobalt is 8.52:1. Lime holds on the inverted card at 6.50:1. */
+  .tool-card .tc-verdict-toggle { color: #2D35C9; }
   .tool-card[data-selected] .tc-verdict-toggle { color: #C8F04A; }
 
-  .tool-card .tc-verdict { border-left: 4px solid #9B9FE0; }
+  /* The verdict rule needs a selected-state value of its own: cobalt on cobalt
+     is 1.00:1 and would simply vanish on the inverted card. Cream at 0.5
+     composites to #9496DE, 3.12:1, which clears the 3:1 non-text threshold. */
+  .tool-card .tc-verdict { border-left: 4px solid #2D35C9; }
+  .tool-card[data-selected] .tc-verdict { border-left-color: rgba(250, 248, 244, 0.5); }
 
   .tool-card .tc-visit { background-color: #C8F04A; color: #1A1510; }
   .tool-card .tc-visit:hover { background-color: #2D35C9; color: #FFFFFF; }
