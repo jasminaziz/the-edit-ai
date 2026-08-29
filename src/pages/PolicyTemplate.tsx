@@ -23,7 +23,7 @@ export default function PolicyTemplate() {
             marginLeft: "-0.05em",
           }}
         >
-          The AI-use policy template
+          The AI-use policy template for charities
         </h1>
       </section>
 
