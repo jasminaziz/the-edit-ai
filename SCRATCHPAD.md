@@ -197,6 +197,89 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-29 (code session: clearing the unblocked half of the outstanding list)
+
+Three commits, `221767f` through `56a4180`. Gate clean before each. Everything
+here was a defect or the consistent application of a ruling already taken, so
+none of it needed a new decision. What did need one is listed at the end and was
+left alone.
+
+**1. `221767f` The colour tokens now render the locked palette.** Seventeen HSL
+triples in `index.css` did not round-trip to the hex they claim to encode:
+`--accent` rendered `#CEF047` against a locked `#C8F04A`, `--secondary` and
+`--hero` `#8084D0` against `#7B7FD4`, `--foreground` `#181410` against
+`#1A1510`, `--border` `#E8E1D9` against `#E8E2D8`, and more. Integer HSL almost
+never round-trips, and nobody had checked.
+
+This had a live consequence, confirmed in the browser before and after: the
+"Work with me" CTA is the only lime driven from the token (`bg-accent`), while
+the other 44 limes are inline hex, so **the site's primary conversion link was a
+different lime from every other lime on the same page**. It now measures
+`#C8F04A` like the rest.
+
+Values now carry one decimal and each was verified to round-trip. **This was the
+blocker on the tokenisation job**: swapping an inline hex for its token would
+have silently shifted the colour, which is almost certainly why components
+bypassed the token layer in the first place. That swap is now safe.
+
+**2. `53394ee` Muted stops carrying text anywhere.** The 29 Aug ruling had only
+reached the ToolCard. `--muted-foreground` was the identical triple to `--muted`,
+which is what rendered the 404 message at 1.00:1. It now points at the secondary
+text value, which fixes `Learning.tsx:123, :134` and `ErrorState.tsx:6, :16`
+**without touching a component**. Six homepage labels and the search placeholder
+moved to the token class, and eleven inline `#9A8F82` text values became
+`hsl(var(--text-secondary))` rather than another hardcoded hex, so the
+tokenisation job does not have to revisit them. Muted keeps the search icon and
+the ToolCard divider, which is what the ruling scopes it to. Verified rendering
+`#6B625A` on `/learning` and `/`.
+
+**3. `56a4180` Heading structure and filter state.** The homepage rendered two
+`h1`s ("The" and "Edit."); `/design-kit` rendered two, the second **empty**,
+because `CobaltZone`'s two-line branch emits one per line and that page passes
+`line2: ""`. Both are now one `h1` with block spans, display treatment
+unchanged, confirmed by screenshot. The `/tools` and `/learning` filters carried
+active state in background colour alone; both now set `aria-pressed`, matching
+the three sector toggles four lines away. Verified: one `h1` and zero empty on
+both pages, 11 buttons exposing `aria-pressed`.
+
+**Still outstanding, and why each was left.**
+
+Needs Jasmin's ruling, not a code decision:
+- Two or three grid columns at 1280.
+- Homepage intro and About panel side by side at `lg` (the remaining dead space;
+  `/policy-template` was fixed on 29 Aug).
+- Mobile hero height, and the exact wordmark string for the mobile masthead.
+- The news category colour map: `#4A4A9A` and `#E8572A` are off-palette and
+  live, and CLAUDE.md says burnt orange renders nowhere. It renders in three
+  places.
+- The locked cobalt hover state: three different improvised values exist.
+- Periwinkle on cobalt at 2.37:1, which carries the homepage wordmark and every
+  legal and policy `h1`.
+- The three copy flags from `reports/2026-08-29-audience-phrase-proposal.md`:
+  the `/policy-template` title trade, the footer's "Free for" reading as an
+  eligibility gate, and the charity-specific vocabulary that un-names the
+  non-charity readers.
+- The untracked `reports/2026-08-29-*` files from parallel sessions.
+
+Needs approved copy:
+- `NotFound` ships no meta at all. Adding `SEO` needs a title and description.
+- Whether `/tools` and `/learning` should carry an `h2` above their grids.
+
+Deferred deliberately, not blocked:
+- The lime pill is hand-copied in five places with five hover handlers and has
+  already drifted once (`MyStack` uses weight 600 and a 999px radius). One
+  shared component would end it. Not a defect, so it waits.
+- `WhatsNewCard`: title and developer are the wrong way round, and the fixed
+  56/64px padding reserves and `paddingRight: 110` are desktop-sized and never
+  adapt. The layout half is actionable; it is entangled with the category
+  colour ruling above, so it moves as one job once that is settled.
+- The ToolCard's CSS can now move onto tokens. Left as hex because it is a
+  separate change with its own verification.
+
+Checks still owed, which no session can close from here: on-device touch, a real
+360px device, device rotation against the physics canvas, and a keyboard and
+screen-reader pass with real assistive tech.
+
 ### 2026-08-29 (code session: the ToolCard rebuild)
 
 Five commits, `8949879` through `748d5c9`, from
