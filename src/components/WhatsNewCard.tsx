@@ -52,7 +52,7 @@ function CategoryBadge({ category, onColourBlock = false }: { category: string; 
         className="inline-block uppercase"
         style={{
           fontFamily: "'Plus Jakarta Sans', sans-serif",
-          fontWeight: 800,
+          fontWeight: 600,
           fontSize: 11,
           letterSpacing: "0.1em",
           borderRadius: 4,
@@ -72,7 +72,7 @@ function CategoryBadge({ category, onColourBlock = false }: { category: string; 
       className="inline-block uppercase"
       style={{
         fontFamily: "'Plus Jakarta Sans', sans-serif",
-        fontWeight: 800,
+        fontWeight: 600,
         fontSize: 11,
         letterSpacing: "0.1em",
         borderRadius: 4,
@@ -98,8 +98,8 @@ function ExpandToggle({ expanded, onClick }: { expanded: boolean; onClick: (e: R
         fontFamily: "'Plus Jakarta Sans', sans-serif",
         fontWeight: 600,
         fontSize: 12,
-        color: "#1A1510",
-        backgroundColor: "#F5F0E8",
+        color: "#2D35C9",
+        backgroundColor: "#EEF0FB",
         border: "1px solid #E8E2D8",
         borderRadius: 999,
         padding: "6px 12px",
@@ -112,8 +112,8 @@ function ExpandToggle({ expanded, onClick }: { expanded: boolean; onClick: (e: R
         e.currentTarget.style.color = "#FFFFFF";
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = "#F5F0E8";
-        e.currentTarget.style.color = "#1A1510";
+        e.currentTarget.style.backgroundColor = "#EEF0FB";
+        e.currentTarget.style.color = "#2D35C9";
       }}
       aria-expanded={expanded}
       aria-label={expanded ? "Show less" : "Show more"}
@@ -166,7 +166,7 @@ function DeveloperLabel({ developer, size = "default" }: { developer: string; si
       className="uppercase"
       style={{
         fontFamily: "'Plus Jakarta Sans', sans-serif",
-        fontWeight: 800,
+        fontWeight: 600,
         fontSize: size === "small" ? 12 : 13,
         letterSpacing: "0.1em",
         color: "#1A1510",

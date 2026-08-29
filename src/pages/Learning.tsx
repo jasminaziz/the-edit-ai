@@ -55,7 +55,7 @@ const Learning = () => {
                   style={{
                     backgroundColor: activeCategory === cat ? "#2D35C9" : "transparent",
                     color: activeCategory === cat ? "#ffffff" : "#1A1510",
-                    border: `1px solid ${activeCategory === cat ? "#2D35C9" : "#D1D5DB"}`,
+                    border: `1px solid ${activeCategory === cat ? "#2D35C9" : "#E8E2D8"}`,
                   }}
                 >
                   {cat === "ALL" ? "All" : cat}

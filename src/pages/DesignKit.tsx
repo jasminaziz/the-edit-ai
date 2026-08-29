@@ -6,10 +6,26 @@ import { CobaltZone } from "@/components/CobaltZone";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { SEO } from "@/components/SEO";
 
+/**
+ * Cost badges. `freemium` and `paid` moved to the locked cobalt chip pairing on
+ * 29 Aug 2026 (design audit fix 7): they were an invented ochre (#9B7B3A) and
+ * Tailwind's grey-500 (#6B7280), neither in the design system, and the grey was
+ * a badge built out of a grey, which the locked rules call out directly.
+ *
+ * The palette has no third badge colour available (lime is barred from badges,
+ * periwinkle is homepage-hero only, burnt orange is legacy), so freemium and
+ * paid now render identically and the label carries the distinction. That is
+ * consistent with the never-colour-alone rule, but it does collapse a
+ * three-way colour code to two: flagged for Jasmin, not decided here.
+ *
+ * `free` keeps forest green, untouched. It is a locked value, though CLAUDE.md
+ * scopes forest green to the In My Stack badge, so its use here is a question
+ * for the same ruling rather than an off-palette defect.
+ */
 const COST_STYLES: Record<string, { bg: string; text: string }> = {
   free: { bg: "#2D6A4F", text: "#ffffff" },
-  freemium: { bg: "#9B7B3A", text: "#ffffff" },
-  paid: { bg: "#6B7280", text: "#ffffff" },
+  freemium: { bg: "#EEF0FB", text: "#2D35C9" },
+  paid: { bg: "#EEF0FB", text: "#2D35C9" },
 };
 
 function costStyle(cost: string) {
