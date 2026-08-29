@@ -440,3 +440,71 @@ Session corrections and rules built up over time. Add entries; do not delete his
   history is correct and the reference is currently dangling. Where a commit
   message must cite an uncommitted document, say so, and carry closing the gap
   as an open item rather than assuming a later session will notice.
+
+- **A styled element inside an unrevealed animation wrapper reports unstyled
+  computed values (2026-08-29).** `RevealItem` holds cards at `opacity: 0` with
+  `transform: scale(0.95)` until the IntersectionObserver fires. Measuring a
+  card in that state returned base colours for rules that were present, correct
+  and higher-specificity, and `getBoundingClientRect` returned 41px for an
+  element whose real height was 44px because the transform scaled it. I spent
+  eight tool calls chasing a cascade bug that did not exist, and came close to
+  writing it up. **Before trusting any computed style or box measurement on
+  this grid: check `el.parentElement.style.opacity` is not "0", use
+  `offsetHeight`/`offsetWidth` rather than `getBoundingClientRect` where a
+  transform may apply, and confirm with a screenshot.** This is the same class
+  of error the global rule about `window.innerWidth` already names, one layer
+  further in.
+
+- **Do not measure a component after poking its DOM by hand (2026-08-29).**
+  I set `data-selected` with `setAttribute` to test CSS, and React never removed
+  it, because React only clears attributes it set itself. Later counts of
+  "how many cards are selected" were then reading my own leftovers, which
+  produced a confident and completely false regression report. Reload before
+  measuring, and prefer driving the real event path over mutating the DOM.
+
+- **The physical cursor is part of the test fixture (2026-08-29).** After
+  `scrollIntoView`, a card moved under the real mouse pointer and React
+  genuinely selected it, so the "rest state" I measured was a hover state. When
+  measuring hover-sensitive components, measure an element you know the pointer
+  is not over, and check the state attribute rather than assuming.
+
+- **Integer HSL almost never round-trips to a given hex (2026-08-29).**
+  Seventeen tokens in `index.css` rendered a different colour from the locked
+  palette they encoded, which is why every component hardcoded hex and bypassed
+  the token layer. **Before swapping an inline hex for `hsl(var(--token))`,
+  compute what the token actually renders and compare.** Corrected values need
+  a decimal place, and the check belongs in any future tokenisation work.
+
+- **Assert the occurrence count before any find-and-replace (2026-08-29).**
+  The homepage intro sentence appears twice in `Index.tsx`: once as visible copy
+  and once inside the JSON-LD, which copy pack four keys to the About panel. A
+  file-wide replace would have silently rewritten structured data. Separately,
+  `color: "#9A8F82",` matched two sites where one also carried `letterSpacing`,
+  so the general pattern had to run after the specific one. Both were caught
+  only because the script asserted counts. **Assert, target by line where the
+  string is not unique, and order specific patterns before general ones.**
+
+- **A brief's inventory is a claim, not a count (2026-08-29).** The audience
+  review brief said 13 instances in two phrasings; there were 25 in six, three
+  of them in a dead file and two in `vite.config.ts`, which is outside every
+  copy inventory the project keeps. The design brief likewise instructed
+  "raise the dim floor from 45% to 70%" when the card was already at 70% and no
+  45% existed anywhere, an instruction that would have been implemented,
+  changed nothing, and been reported as done. **Re-derive the counts a brief
+  asserts before building on them, and check that an instruction's starting
+  state is real.**
+
+- **Argue the case you did not open with (2026-08-29).** I opened the audience
+  review believing the three-noun phrase was costing the site its search
+  differentiator, because six meta descriptions overrun the snippet limit. It
+  was wrong: the phrase sits at character 21 to 45 and survives truncation,
+  and the sacrificial tail is the right thing to lose. All three agents landed
+  the other way. Say so in the deliverable rather than quietly dropping the
+  argument, because the reasoning is what she is checking.
+
+- **Sequential edit-gate-commit beats staging when one file carries two jobs
+  (2026-08-29).** Seven fixes across four shared files could not be split into
+  seven path-staged commits, because `git add <path>` stages every change in
+  the file. Editing one job, gating it, committing it, and only then starting
+  the next keeps "one job per commit" intact without interactive staging. Use
+  this whenever a planned commit series touches any file twice.

@@ -197,6 +197,57 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-29 (launch gate assessed against F2, nothing changed)
+
+Read against F2 and F3 in `reports/2026-08-22-handover-to-relaunch.md` rather
+than from memory. **This is the state to start the next session from.**
+
+**Cleared.** Ten-row merge floor: 23 complete rows on the live Sheet. A4 hard
+gate: all 23 visible rows appear in an A4 fact-pass doc with sources. B3 closed
+26 Aug at ten of ten. F1 closed, F2b moot, F2c closed and preserved by the
+29 Aug breakpoint change.
+
+**Blocking, two things.**
+
+1. **C3, the Substack gate.** Named in the handover as the hard blocker on the
+   merge, and F3 is explicitly blocked on it. Two pieces, not one: the gated
+   post *and* the Substack welcome email, which is what actually delivers the
+   template. Both drafted 25 Aug, neither published. Until it exists the
+   footer, both nav links and `/policy-template` point at nothing.
+   Attached to it: `public/AI-Use-Policy-Template.pdf` is **untracked** and the
+   `.docx` is **modified and uncommitted**. If they are not committed they do
+   not deploy, and because `vercel.json` rewrites `/(.*)` to `index.html` a
+   missing file returns **200 with `text/html`, never a 404**. The link would
+   look like it works while serving HTML to someone who just gave their email.
+   The clean-browser test must check content type and byte size on
+   `theeditai.co.uk`, not that the link resolves. Both files came from a
+   parallel session, so they are Jasmin's to rule on.
+
+2. **Eight of the 23 visible rows carry judgement fields with no A5 record.**
+   Blotato, Ideogram, Granola, Submagic, Seedance (ByteDance), Gemini, Gamma,
+   Grok. Verified against the live Sheet: all 23 have a verdict, but the A5
+   second pass at `reports/2026-08-26-a5-verdict-drafts.md` covers only 15.
+   These eight are the 28 Aug batch whose judgement drafts were recorded as
+   owed. **`isComplete()` gates on `trustee_note` and `dpia_flag`, two of the
+   three fields reserved to Jasmin, but not on `verdict`.** Either she wrote
+   them and it is closed, or eight rows go public with unsigned judgement.
+   Blanking any of them back to hidden costs nothing: 22 rows still clears a
+   floor of 10.
+
+**F2 itself is "Not started"**, which is the sign-off pass rather than a task.
+
+**Recommended order:** rule on the eight rows first, because the honest answer
+may be "already done"; commit the two template files once the PDF is final; do
+C3 and test it on production; then F2 sign-off and merge on a day she can watch
+the deploy, since Vercel fails silently.
+
+Not blocking and can follow the relaunch: the news category colour ruling
+(settled 29 Aug in favour of collapsing to the one locked chip pairing,
+deprioritised by Jasmin), the WhatsNewCard layout, the lime-pill component, the
+homepage dead-space composition, the ToolCard CSS moving onto tokens, and the
+four device checks nobody can close from a desk.
+
+
 ### 2026-08-29 (code session: clearing the unblocked half of the outstanding list)
 
 Three commits, `221767f` through `56a4180`. Gate clean before each. Everything
