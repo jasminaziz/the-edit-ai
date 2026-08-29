@@ -104,20 +104,20 @@ const Tools = () => {
 
   const filterBar = (
     <section
-      className={`sticky top-14 sm:top-16 z-40 bg-background border-b transition-[padding,box-shadow,border-color] duration-200 px-4 sm:px-12 ${
+      className={`sticky top-0 z-40 bg-background border-b transition-[padding,box-shadow,border-color] duration-200 px-4 sm:px-12 ${
         scrolled
           ? "py-2.5 sm:py-3 border-border shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
           : "py-3 sm:py-5 border-border/60"
       }`}
     >
       <div
-        className={`max-w-[1280px] mx-auto flex flex-col gap-2.5 sm:gap-0 sm:flex-row sm:items-center ${
-          scrolled ? "sm:gap-3" : "sm:gap-4"
+        className={`max-w-[1280px] mx-auto flex flex-col gap-2.5 lg:gap-0 lg:flex-row lg:items-center ${
+          scrolled ? "lg:gap-3" : "lg:gap-4"
         }`}
       >
         <div
           className={`relative w-full ${
-            scrolled ? "sm:w-[260px] sm:shrink-0" : "sm:max-w-[400px]"
+            scrolled ? "lg:w-[260px] lg:shrink-0" : "lg:max-w-[400px]"
           }`}
         >
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
@@ -132,14 +132,24 @@ const Tools = () => {
           />
         </div>
 
-        <div className="relative w-full sm:flex-1 min-w-0">
-          {/* F2c, ruled 26 Aug: the rail wraps at sm and up in both scroll
-              states. The compact state used to become a horizontal scroller,
-              which clipped 172px at 1280 and lost Translation entirely behind
-              the gradient fade. The six comms jobs are the taxonomy the whole
-              re-point is expressed in, so hiding one is not a fair trade for
-              38px of vertical. */}
-          <div className="flex gap-2 flex-nowrap overflow-x-auto no-scrollbar scroll-smooth sm:flex-wrap sm:overflow-visible">
+        <div className="relative w-full lg:flex-1 min-w-0">
+          {/* F2c, ruled 26 Aug: the rail wraps in both scroll states rather
+              than becoming a horizontal scroller, which clipped 172px at 1280
+              and lost Translation entirely behind the gradient fade. The comms
+              jobs are the taxonomy the whole re-point is expressed in, so
+              hiding one is not a fair trade for 38px of vertical.
+
+              The wrap threshold moved from sm to lg on 29 Aug (design audit
+              fix 4). F2c was right about wrapping and wrong about where: at sm
+              the rail shares a row with the 400px search box, which left it a
+              128px track while the widest chip is 228px. Between 640 and 739px
+              the chip escaped the viewport and dragged the page into
+              horizontal scroll (scrollWidth 692 against a 640 viewport), and
+              up to roughly 1000px the rail was a one-chip-per-line column.
+              Below lg the rail now gets its own full-width row and keeps the
+              scroller it already had at 375px. At lg and up nothing changes:
+              the rail wraps and no job is hidden, which is what F2c ruled. */}
+          <div className="flex gap-2 flex-nowrap overflow-x-auto no-scrollbar scroll-smooth lg:flex-wrap lg:overflow-visible">
             {CATEGORIES.map((c) => (
               <button
                 key={c}
@@ -156,13 +166,14 @@ const Tools = () => {
             ))}
           </div>
           {/* The fade signals horizontal overflow, so it follows the rail: it
-              is mobile-only now, because at sm and up the rail wraps in both
-              states and there is nothing left to scroll. Left conditional it
-              would wash a 40px strip over the right edge of the wrapped chips,
-              which is the clipping F2c was raised to stop. */}
+              is hidden from lg up, because there the rail wraps in both states
+              and there is nothing left to scroll. Left showing at lg it would
+              wash a 40px strip over the right edge of the wrapped chips, which
+              is the clipping F2c was raised to stop. It tracks the rail's
+              breakpoint exactly, so if one moves the other moves with it. */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute top-0 right-0 h-full w-10 bg-gradient-to-l from-background to-transparent sm:hidden"
+            className="pointer-events-none absolute top-0 right-0 h-full w-10 bg-gradient-to-l from-background to-transparent lg:hidden"
           />
         </div>
       </div>
