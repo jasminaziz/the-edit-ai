@@ -198,17 +198,30 @@ vercel.json has a SPA catch-all.
 
 ## Conversion
 
-The funnel: directory attracts the charity/cultural/heritage comms buyer →
-the AI-use policy template, gated as a subscriber-only Substack post,
-captures the email → the Substack builds trust → "Work with me" converts to
-the consultancy. The `/policy-template` page presents the template and
-links the Substack subscribe flow. No email infrastructure is built or
-maintained in this repo.
+**The template is not gated. Ruled 2026-08-30**, overturning the previous
+subscriber-only ruling; the full reasoning is in `SCRATCHPAD.md` and should be
+read before anyone reopens it.
 
-Live in code as at 2026-08-22: the footer block and both nav links (desktop
-and mobile) point at `/policy-template`, all three labelled "Get the
-template". The page's CTA links out to `SUBSTACK_SUBSCRIBE_URL`. Keep the
-three labels identical to each other and to the page they land on.
+The funnel: the directory attracts the charity, cultural and heritage comms
+buyer → the AI-use policy template downloads directly and proves the expertise
+→ "Work with me" converts to the consultancy. The Substack is an invitation in
+the nav and footer, not a toll on the template. **There is no email capture
+anywhere on the site**, and no email infrastructure is built or maintained in
+this repo.
+
+Why the gate went, in short: it was never built (C3 delivered nothing), it
+leaked by design because the files sit at public URLs that the welcome email
+was going to link, it contradicted a positioning built on giving the sector the
+answer straight, and it filtered for the incautious reader when the careful one
+is the buyer. Optimised for trust and reach over subscriber count.
+
+Live in code as at 2026-08-30: the footer block and both nav links point at
+`/policy-template`, all three labelled "Get the template →", and the page's own
+CTA carries the same label and downloads `/AI-Use-Policy-Template.docx`
+directly. **Keep all four labels identical.** The `.docx` is the linked
+artefact because the page promises something ready to adapt; the `.pdf` sits at
+`/AI-Use-Policy-Template.pdf`, unlinked, until its font substitution is fixed
+by a Word export. `robots.txt` no longer blocks either file.
 
 ## Codebase conventions
 
