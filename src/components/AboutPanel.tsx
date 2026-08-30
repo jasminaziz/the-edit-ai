@@ -47,7 +47,7 @@ export const AboutPanel = () => {
               margin: 0,
             }}
           >
-            There's a lot to keep up with. This helps.
+            There's a lot to keep up with in AI. This helps.
           </h2>
         </div>
 
