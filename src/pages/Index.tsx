@@ -7,7 +7,6 @@ import { Counter } from "@/components/ui/animated-counter";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SEO } from "@/components/SEO";
 import { AboutPanel } from "@/components/AboutPanel";
-import { WORK_WITH_ME_HREF } from "@/lib/links";
 const CATEGORY_COLOURS: Record<string, { bg: string; text: string }> = {
   "New Release": { bg: "#2D35C9", text: "#FFFFFF" },
   "Model Update": { bg: "#7B7FD4", text: "#FFFFFF" },
@@ -125,75 +124,12 @@ const Index = () => {
 
       </section>
 
-      {/* Intro / positioning */}
-      <section className="bg-background pt-6 pb-2 sm:pt-12 sm:pb-3 px-6 sm:px-12">
-        <div className="max-w-[1280px] mx-auto">
-          <div style={{ maxWidth: 640 }}>
-            <p
-              style={{
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: 600,
-                fontSize: 20,
-                color: "#1A1510",
-                margin: 0,
-                marginBottom: 10,
-              }}
-            >
-              There's a lot to keep up with. This helps.
-            </p>
-            <p
-              style={{
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: 400,
-                fontSize: 17,
-                lineHeight: 1.5,
-                color: "#1A1510",
-                margin: 0,
-                marginBottom: 10,
-              }}
-            >
-              An opinionated directory of AI tools for comms teams in this sector: charities, cultural organisations, heritage. What each tool is, what it's for, what it really costs, and what to mind when you use it. Every one has been through the checks before it appears here, so you're starting informed instead of from scratch. No sponsored listings, no affiliate links.
-            </p>
-            <p
-              style={{
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: 400,
-                fontSize: 14,
-                color: "hsl(var(--text-secondary))",
-                margin: 0,
-              }}
-            >
-              <a
-                href={WORK_WITH_ME_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group"
-                style={{
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  fontWeight: 400,
-                  fontSize: 14,
-                  color: "#1A1510",
-                  margin: 0,
-                  textDecoration: "none",
-                  cursor: "pointer",
-                  transition: "text-decoration-color 0.2s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.textDecoration = "underline";
-                  e.currentTarget.style.textUnderlineOffset = "3px";
-                  e.currentTarget.style.textDecorationColor = "#C8F04A";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.textDecoration = "none";
-                }}
-              >
-                Curated by Jasmin Aziz | Strategic Communications Consultant{" "}
-                <span style={{ color: "#C8F04A" }}>→</span>
-              </a>
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* The intro section that sat here was a compressed duplicate of the
+          About panel below it: same definition, same checks claim, same
+          "No sponsored listings, no affiliate links", same byline. Its two
+          unique pieces, the hook and the Curated by line, moved into
+          AboutPanel on 30 Aug 2026 and the rest was removed as duplication.
+          No wording changed. See AboutPanel.tsx. */}
 
       <AboutPanel />
 
