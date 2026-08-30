@@ -197,6 +197,86 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-30 RULING: the AI-use policy template is no longer gated
+
+**Decided in session on Jasmin's explicit delegation, with authority to
+overturn the standing CLAUDE.md ruling. Do not reopen without a reason that
+is not already listed here.**
+
+**The decision.** The template downloads directly from `/policy-template`. No
+subscription, no capture, no email step. The Substack invitation survives
+everywhere else on the site (nav twice, footer) as an invitation rather than a
+toll. Optimised for **trust and reach over subscriber count.**
+
+**What was verified first, not assumed.** Both files exist in `public/` and
+serve correctly from the dev server with matching byte counts, `application/pdf`
+and the Word MIME type. `robots.txt` disallowed both filenames while leaving
+`/policy-template` indexable. `PolicyTemplate.tsx` linked only
+`SUBSTACK_SUBSCRIBE_URL` and offered no download. **Nothing else in the codebase
+referenced either file.** And a non-existent path returns **200 `text/html`**,
+so the gate's own delivery link could never have failed loudly.
+
+**The reasoning, in the order it decided the question.**
+
+1. **The gate does not exist.** C3 was never built: the CTA pointed at a
+   subscribe page and no welcome email delivered anything. This was not a
+   working gate with a known leak, it was an unbuilt gate blocking launch.
+   Keeping it meant keeping launch blocked on Substack work; dropping it
+   unblocks launch now, which is the stated priority.
+2. **The gate leaks by design and that was already accepted.** The files sit at
+   public URLs so the welcome email can link them, and `robots.txt` is a
+   request, not access control. One forward of the email defeats it. The gate
+   was therefore never protecting the asset, only adding friction to the honest
+   route.
+3. **It contradicts the positioning.** The site's claim is that it gives the
+   sector the hard answer straight and publishes the failures too. The template
+   is the most concrete proof of that claim, and charging an email toll for the
+   proof works against the trust play that the whole re-point rests on.
+4. **It excludes the exact reader the consultancy sells to.** A charity or
+   local-authority comms lead often cannot hand a work email to a newsletter
+   without asking someone. The careful reader is the buyer, and the gate
+   filtered for the incautious one.
+5. **The acquisition case is weak.** Most subscribers arrive through the
+   Substack app and network, not this gate, so it was doing little of the work
+   it was designed for while costing the asset its reach.
+
+**Options rejected, and why.** *Full gate as now:* requires building C3 and
+keeps launch blocked, for a gate that leaks. *PDF open, Word gated:* the worst
+of both, because it still needs the Substack delivery built, so it does not
+unblock launch, and it gates the adaptable artefact while giving away the
+read-only one. *Fully open with no invitation:* throws away reach for no gain,
+since the subscribe CTA costs nothing to keep alongside.
+
+**What changed.** `PolicyTemplate.tsx`: the CTA now points at
+`/AI-Use-Policy-Template.docx` with `download`, keeping the approved
+"Get the template →" label, so all four instances of that label stay identical
+and the journey finally matches the promise. `robots.txt`: both `Disallow`
+lines removed, since blocking a file the site now links as its primary call to
+action would be self-contradictory.
+
+**The .docx, not the .pdf**, because the intro promises something "ready to
+adapt to your organisation". The PDF stays at its URL and is unlinked only
+because a second button needs a label that does not exist yet.
+
+**TWO STRINGS OWED FROM JASMIN. The page is incomplete until they arrive.**
+Two approved lines were removed rather than rewritten, because they described a
+subscription step that no longer exists and would otherwise have stated
+something untrue beside a direct download:
+  1. replacing "It's free. Subscribe and you'll get the link straight away." a
+     line under the CTA saying the template is free and downloads directly;
+  2. replacing "Delivered through my Substack. Unsubscribe any time; the
+     template is yours either way." a line inviting the Substack as an option
+     rather than a toll.
+Both are marked in a comment at the removal site in `PolicyTemplate.tsx`.
+
+**Consequences for the launch gate.** C3 as originally scoped is no longer a
+blocker on the merge: the template is delivered by the site itself. The
+Substack post and welcome email become post-launch work rather than a gate.
+`CLAUDE.md`'s Conversion section still describes the gated flow and is now
+stale; correcting it is a follow-up, flagged rather than done here to keep one
+job per commit.
+
+
 ### 2026-08-29 (launch gate assessed against F2, nothing changed)
 
 Read against F2 and F3 in `reports/2026-08-22-handover-to-relaunch.md` rather
