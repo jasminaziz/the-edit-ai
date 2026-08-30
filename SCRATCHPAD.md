@@ -197,6 +197,67 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-30 RULING: periwinkle moves to #9B9EDE, and the nav is cobalt everywhere
+
+Jasmin: "I love the periwinkle and cobalt combo but we can shift the hex to
+meet better accessibility." Implemented on the design agent's recommendation,
+every ratio it gave re-verified here before anything was changed.
+
+**The trap, and why one hex could not solve it.** The hero needs periwinkle
+*lighter*, because cobalt display type sits on it. The nav needed it *darker*,
+because cream and lime text sat on it. Darkening is a dead end: a periwinkle
+dark enough for cream at 4.5:1 sits almost on cobalt and erases the wordmark.
+So the hero keeps the periwinkle and **the nav gives it up**, becoming cobalt on
+every route, which is what every page except home already used.
+
+**Measured, before to after:**
+
+| Pairing | Before | After | Needs |
+|---|---|---|---|
+| hero wordmark, cobalt on periwinkle | 2.37 | **3.38** | 3 (display) |
+| legal and policy h1 on cobalt | 2.37 | **3.38** | 3 (display) |
+| homepage nav text, cream on cobalt | 3.40 | **8.03** | 4.5 |
+| homepage Menu label, lime on cobalt | 2.75 | **6.50** | 4.5 |
+| DesignKit Open bar, ink on periwinkle | 3.60 | **7.20** | 4.5 |
+| DragHint label, ink on periwinkle | 2.75 | **7.20** | 4.5 |
+
+The last two were **live failures nobody had listed**, found while sizing the
+change. DesignKit's link bar was white on periwinkle at 3.60:1 before any of
+this, and lightening the hero would have taken the drag hint from 2.75:1 to
+1.92:1, so it had to move in the same commit or the fix would have made it
+worse.
+
+**Why #9B9EDE specifically.** Hue unchanged to the decimal (237.3), saturation
+50.9 to 50.4, only lightness moves, 65.7 to 73.9. It reads as a softer lilac,
+not a different colour. The token `237.3 50.4% 73.9%` round-trips exactly.
+3.38:1 clears the display floor with 13% margin; lighter values were available
+(76% gives 3.69, 80% gives 4.32) and were rejected to keep the colour's
+character, which is the thing Jasmin said she liked.
+
+**Two consequences worth knowing.** White never goes on periwinkle again: it is
+2.52:1, so `--secondary-foreground` is now ink. And the "Work with me" pill lost
+its white-on-home special case, because its only rationale was the periwinkle
+nav ground.
+
+**Not touched:** the hero pills in `HomeGravity.tsx` still carry `#4A4A9A` and
+`#E8572A`. On the lighter ground their boundaries shift (indigo just clears 3:1,
+forest drops to 2.54, burnt orange to 1.43), but they are decorative and
+draggable rather than text, so this is not a WCAG failure. It belongs to the
+pending pill ruling.
+
+### 2026-08-30 RULING: the news category colour map is retired
+
+All five categories now use the locked chip pairing, cobalt on `#EEF0FB` at
+7.50:1, and the card colour block is cobalt. Two of the five values were off
+palette (`#4A4A9A` undocumented, `#E8572A` recorded in CLAUDE.md as rendering
+nowhere while it rendered here) and two failed AA at badge size at 3.60:1. The
+map existed twice, in `WhatsNewCard.tsx` and `Index.tsx`, so both problems
+shipped from two files. The badge carries its own ground and a border, so it
+holds on the white body and the cobalt block alike, which removed the need for
+the inverted variant. Verified live: one distinct badge style across `/ai-news`
+and the homepage strip.
+
+
 ### 2026-08-30 LAUNCHED. The overhaul is live on theeditai.co.uk
 
 `origin/main` fast-forwarded from `47a0d1e` to `2b2d377`, 115 commits, 89 files,

@@ -269,8 +269,23 @@ paragraph claimed they were still on disk until 2026-08-26.
 ## Design system (locked)
 
 Colours (hex only, never names):
-- `#FAF8F4` page bg · `#FFFFFF` card · `#7B7FD4` periwinkle (homepage hero
-  only) · `#2D35C9` cobalt (display type, nav active, CTAs, month headers)
+- `#FAF8F4` page bg · `#FFFFFF` card · `#9B9EDE` periwinkle · `#2D35C9` cobalt
+  (display type, nav, CTAs, month headers)
+- **Periwinkle moved from `#7B7FD4` to `#9B9EDE` on 2026-08-30**, on Jasmin's
+  ruling that the periwinkle and cobalt combination stays but the hex may move
+  to fix accessibility. Cobalt on it went 2.37:1 to **3.38:1**, clearing the 3:1
+  display-type floor it had been failing on the homepage wordmark and on every
+  legal and policy `h1`. Hue is unchanged to the decimal (237.3) and saturation
+  barely moves; only lightness, 65.7 to 73.9.
+- **Periwinkle never carries white text**: white measures 2.52:1 on it. Its
+  foreground is ink `#1A1510` at 7.20:1, which is what `--secondary-foreground`
+  is now set to.
+- **The nav is cobalt on every route, including home.** It used to be
+  periwinkle on the homepage, which put cream nav text at 3.40:1 and the lime
+  "Menu" label at 2.75:1. A periwinkle dark enough to rescue them would have
+  landed almost on cobalt and erased the wordmark, so the nav gave up the
+  colour and the hero kept it. The "Work with me" pill lost its white-on-home
+  special case with it and is lime everywhere.
 - `#C8F04A` electric lime (accent/punctuation only — never a category
   colour or badge) · `#1A1510` text · `#9A8F82` muted · `#E8E2D8` borders
 - `#6B625A` secondary text, token `--text-secondary`. **Muted `#9A8F82` never
