@@ -47,7 +47,13 @@ export const AboutPanel = () => {
               margin: 0,
             }}
           >
-            There's a lot to keep up with in AI. This helps.
+            {/* Two block spans, not a natural wrap: "This helps." is the turn
+                in the line and has to start its own, rather than being broken
+                across one wherever the column happens to run out. The first
+                sentence still wraps freely above it. The space between the
+                spans keeps the accessible name reading as one sentence pair. */}
+            <span className="block">There's a lot to keep up with in AI.</span>{" "}
+            <span className="block">This helps.</span>
           </h2>
         </div>
 
