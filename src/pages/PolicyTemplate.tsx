@@ -77,10 +77,12 @@ export default function PolicyTemplate() {
 
           {/* Direct download. The gate is dropped: see the 30 Aug ruling in
               SCRATCHPAD. The .docx is the artefact the intro promises ("ready
-              to adapt to your organisation"); the PDF sits at
-              /AI-Use-Policy-Template.pdf and stays unlinked only because
-              labelling a second button needs a string that does not exist yet.
-              Same origin, so `download` is honoured. */}
+              to adapt to your organisation"), and it is the only one the site
+              serves: the PDF was removed from public/ before launch on Jasmin's
+              call, because it rendered in substituted faces and shipping an
+              off-brand download was worse than shipping one format. The source
+              PDF is kept at reports/AI-Use-Policy-Template.pdf. Same origin, so
+              `download` is honoured. */}
           <a
             href="/AI-Use-Policy-Template.docx"
             download
