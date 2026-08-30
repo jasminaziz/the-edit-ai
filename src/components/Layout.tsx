@@ -61,7 +61,12 @@ export function Layout({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("resize", updatePill);
   }, [updatePill]);
 
-  const navBg = isHome ? "#7B7FD4" : "#2D35C9";
+  // Cobalt on every route, including home. The homepage nav used to be
+  // periwinkle, which put cream nav text at 3.40:1 and the lime Menu label at
+  // 2.75:1. Darkening periwinkle enough to rescue them would have taken it
+  // almost onto cobalt and erased the hero wordmark, so the nav gives up the
+  // periwinkle and the hero keeps it. Cream on cobalt is 8.03:1, lime 6.50:1.
+  const navBg = "#2D35C9";
   const textColor = "text-primary-foreground";
   const pillBg = "bg-white";
   const pillText = "text-primary";
@@ -228,7 +233,7 @@ export function Layout({ children }: { children: ReactNode }) {
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
                     className={`font-body text-sm font-semibold px-5 py-2 rounded-full whitespace-nowrap transition-opacity hover:opacity-90 ${
-                      isHome ? "bg-white text-primary" : "bg-accent text-accent-foreground"
+                      "bg-accent text-accent-foreground"
                     }`}
                   >
                     Work with me

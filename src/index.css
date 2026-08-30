@@ -30,9 +30,13 @@
     --primary: 236.9 63.4% 48.2%;
     --primary-foreground: 40.0 37.5% 96.9%;
 
-    /* Periwinkle #7B7FD4 */
-    --secondary: 237.3 50.9% 65.7%;
-    --secondary-foreground: 0 0% 100%;
+    /* Periwinkle #9B9EDE. Lightened from #7B7FD4 on 30 Aug 2026 so cobalt
+       display type clears 3:1 on it (2.37 before, 3.38 after). Same hue to
+       the decimal, saturation all but unchanged; only lightness moves,
+       65.7 to 73.9. White fails on it at 2.52:1, so the foreground token is
+       ink rather than white and periwinkle never carries white text. */
+    --secondary: 237.3 50.4% 73.9%;
+    --secondary-foreground: 30.0 23.8% 8.2%;
 
     /* Muted #9A8F82. Rules, dividers and icons only: it never carries text.
        2.99:1 on cream and 3.17:1 on the card, so it fails AA at every size. */
@@ -65,8 +69,8 @@
 
     --radius: 12px;
 
-    /* Hero periwinkle */
-    --hero: 237.3 50.9% 65.7%;
+    /* Hero periwinkle, same value as --secondary */
+    --hero: 237.3 50.4% 73.9%;
     /* Footer #1A1510 */
     --footer: 30.0 23.8% 8.2%;
     --footer-foreground: 40.0 37.5% 96.9%;

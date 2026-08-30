@@ -17,7 +17,7 @@ export default function PolicyTemplate() {
           className="font-heading font-bold leading-[0.78] w-full"
           style={{
             fontSize: "clamp(48px, 12vw, 300px)",
-            color: "#7B7FD4",
+            color: "#9B9EDE",
             letterSpacing: "-0.05em",
             marginLeft: "-0.05em",
           }}

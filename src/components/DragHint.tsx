@@ -80,13 +80,13 @@ export function DragHint() {
     >
       <span
         style={{
-          color: "#C8F04A",
+          color: "#1A1510",
           fontFamily: "var(--font-body, 'Plus Jakarta Sans', sans-serif)",
           fontWeight: 600,
           fontSize: isMobile ? 10 : 12,
           letterSpacing: 0,
           textTransform: "uppercase",
-          textShadow: "0 1px 8px rgba(26, 21, 16, 0.35), 0 0 12px rgba(200, 240, 74, 0.25)",
+          // Glow dropped with the lime: it was tuned to lime on the darker hero.
         }}
       >
         Drag me
@@ -97,10 +97,10 @@ export function DragHint() {
           width: arrowSize,
           height: arrowSize,
           // Down chevron (right + bottom borders, rotate 45deg).
-          borderRight: "2px solid #C8F04A",
-          borderBottom: "2px solid #C8F04A",
+          borderRight: "2px solid #1A1510",
+          borderBottom: "2px solid #1A1510",
           transform: "rotate(45deg)",
-          filter: "drop-shadow(0 0 6px rgba(200, 240, 74, 0.5))",
+          // Drop shadow dropped with the lime, same reason as the label.
           marginRight: 0,
         }}
       />

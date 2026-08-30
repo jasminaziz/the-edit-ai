@@ -18,7 +18,7 @@ export function LegalPage({ title, lastUpdated, children }: LegalPageProps) {
           className="font-heading font-bold leading-[0.85] w-full"
           style={{
             fontSize: "clamp(48px, 12vw, 200px)",
-            color: "#7B7FD4",
+            color: "#9B9EDE",
             letterSpacing: "-0.04em",
             marginLeft: "-0.03em",
           }}

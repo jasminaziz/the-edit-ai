@@ -13,7 +13,8 @@ import { SEO } from "@/components/SEO";
  * a badge built out of a grey, which the locked rules call out directly.
  *
  * The palette has no third badge colour available (lime is barred from badges,
- * periwinkle is homepage-hero only, burnt orange is legacy), so freemium and
+ * periwinkle is a surface rather than a badge colour, burnt orange is legacy),
+ * so freemium and
  * paid now render identically and the label carries the distinction. That is
  * consistent with the never-colour-alone rule, but it does collapse a
  * three-way colour code to two: flagged for Jasmin, not decided here.
@@ -329,7 +330,7 @@ function DesignCard({ item }: { item: DesignKitItem }) {
           target="_blank"
           rel="noopener noreferrer"
           className="block px-5 py-3 font-body text-[13px] font-medium no-underline"
-          style={{ backgroundColor: "#7B7FD4", color: "#ffffff" }}
+          style={{ backgroundColor: "#9B9EDE", color: "#1A1510" }}
         >
           Open →
         </a>
