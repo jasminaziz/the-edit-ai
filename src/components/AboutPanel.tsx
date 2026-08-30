@@ -27,32 +27,28 @@ export const AboutPanel = () => {
       style={{ backgroundColor: "#FAF8F4" }}
     >
       <div className="max-w-[1280px] mx-auto lg:grid lg:grid-cols-12 lg:gap-x-16 lg:items-start">
-        {/* Label and proposition */}
+        {/* The proposition, set as display type.
+            "What this is" was here as a 28px cobalt label above a 20px hook.
+            Ruled 30 Aug: the label was doing nothing the block did not already
+            say, so it is gone and the hook takes its place at display scale.
+            It is the h2, which is a better outline entry than a filing label:
+            a screen reader now hears the proposition rather than "What this
+            is". Chillax and cobalt because this is display type, which is what
+            the locked palette scopes cobalt to. */}
         <div className="lg:col-span-5">
           <h2
             className="font-heading"
             style={{
               fontWeight: 700,
-              fontSize: 28,
+              fontSize: "clamp(30px, 3.4vw, 46px)",
+              lineHeight: 1.05,
+              letterSpacing: "-0.02em",
               color: "#2D35C9",
-              margin: 0,
-              marginBottom: 12,
-            }}
-          >
-            What this is
-          </h2>
-          <p
-            className="font-body"
-            style={{
-              fontWeight: 600,
-              fontSize: 20,
-              lineHeight: 1.4,
-              color: "#1A1510",
               margin: 0,
             }}
           >
             There's a lot to keep up with. This helps.
-          </p>
+          </h2>
         </div>
 
         {/* The explanation, and the byline that used to sit under the intro */}
