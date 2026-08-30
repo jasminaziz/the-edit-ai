@@ -1,11 +1,12 @@
 User-agent: *
 Allow: /
 
-# The policy template is delivered through the Substack gate. The file sits at
-# a public URL so the welcome email can link it directly, which means search
-# engines would otherwise index it and people would land on the download
-# without ever passing the capture. Blocking the file, not the page: the
-# /policy-template page should absolutely be indexed.
-Disallow: /AI-Use-Policy-Template.docx
-Disallow: /AI-Use-Policy-Template.pdf
+# The two Disallow lines that used to sit here blocked
+# /AI-Use-Policy-Template.docx and .pdf. They existed to stop search engines
+# indexing the files so nobody could reach the download without passing the
+# Substack capture. The gate was dropped on 30 Aug 2026 (reasoning in
+# SCRATCHPAD), so the rule they enforced no longer exists, and blocking a file
+# the site now links from an indexable page as its primary call to action would
+# be self-contradictory.
+
 Sitemap: https://theeditai.co.uk/sitemap.xml
