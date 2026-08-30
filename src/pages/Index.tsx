@@ -7,13 +7,14 @@ import { Counter } from "@/components/ui/animated-counter";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SEO } from "@/components/SEO";
 import { AboutPanel } from "@/components/AboutPanel";
-const CATEGORY_COLOURS: Record<string, { bg: string; text: string }> = {
-  "New Release": { bg: "#2D35C9", text: "#FFFFFF" },
-  "Model Update": { bg: "#7B7FD4", text: "#FFFFFF" },
-  "Tool Launch": { bg: "#2D6A4F", text: "#FFFFFF" },
-  "Integration": { bg: "#4A4A9A", text: "#FFFFFF" },
-  "AI in the News": { bg: "#E8572A", text: "#FFFFFF" },
-};
+/**
+ * The homepage news strip carried a second copy of the five-hue category map,
+ * so the same two off-palette values and the same two AA failures shipped from
+ * two files. Retired 30 Aug 2026 with the one in WhatsNewCard: every category
+ * now uses the locked chip pairing, cobalt on the #EEF0FB tint at 7.50:1.
+ * The label carries the meaning.
+ */
+const CATEGORY_CHIP = { bg: "#EEF0FB", text: "#2D35C9", border: "#2D35C9" };
 
 const Index = () => {
   const [tools, setTools] = useState<Tool[]>([]);
@@ -185,7 +186,7 @@ const Index = () => {
             ) : (
               <div className="space-y-3">
                 {latestNews.map((n) => {
-                  const cat = CATEGORY_COLOURS[n.category];
+                  const cat = n.category ? CATEGORY_CHIP : null;
                   return (
                     <div key={n.name} className="bg-card rounded-lg border border-border p-3.5">
                       <div className="flex items-start justify-between gap-2 mb-1">
@@ -200,6 +201,7 @@ const Index = () => {
                               padding: "3px 8px",
                               backgroundColor: cat.bg,
                               color: cat.text,
+                              border: `1px solid ${cat.border}`,
                             }}
                           >
                             {n.category}

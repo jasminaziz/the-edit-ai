@@ -29,44 +29,35 @@ function formatDate(raw: string): string {
   return `${day} ${month} ${year}`;
 }
 
-const CATEGORY_COLOURS: Record<string, string> = {
-  "New Release": "#2D35C9",
-  "Model Update": "#7B7FD4",
-  "Tool Launch": "#2D6A4F",
-  "Integration": "#4A4A9A",
-  "AI in the News": "#E8572A",
-};
+/**
+ * Ruled 30 Aug 2026: the five-hue category map is retired.
+ *
+ * It assigned a colour per category, two of which were off palette entirely
+ * (#4A4A9A had never been documented, and CLAUDE.md said burnt orange #E8572A
+ * "renders nowhere" while it rendered here), and two of which failed AA at
+ * badge size: white on periwinkle and white on burnt orange both measured
+ * 3.60:1 against a 4.5:1 requirement.
+ *
+ * Categories now share the locked chip pairing, cobalt on the #EEF0FB tint at
+ * 7.50:1, the same treatment the ToolCard job chips use. The label carries the
+ * meaning, which is what the never-colour-alone rule requires anyway, and the
+ * grid stops reading as confetti sorted by a taxonomy no comms reader browses
+ * by. The colour block on each card becomes cobalt, so the card keeps its
+ * visual anchor in one brand colour rather than five.
+ *
+ * The hero pills in HomeGravity.tsx still use #4A4A9A and #E8572A. That is a
+ * separate use and a separate ruling, deliberately not touched here.
+ */
+const CARD_BLOCK = "#2D35C9";
 
-function getCategoryColour(category: string): string {
-  return CATEGORY_COLOURS[category] || "#7B7FD4";
-}
-
-/** Bolder, framed category badge for clearer visual hierarchy. */
-function CategoryBadge({ category, onColourBlock = false }: { category: string; onColourBlock?: boolean }) {
+/**
+ * One chip for every category. It carries its own ground and a 1px border, so
+ * it holds its contrast on the white card body and on the cobalt block alike,
+ * which is the same reason the DPIA chips hold through the ToolCard inversion.
+ * That removes the need for the old inverted variant.
+ */
+function CategoryBadge({ category }: { category: string }) {
   if (!category) return null;
-  const bg = getCategoryColour(category);
-  // When sitting on top of the colour block, invert to white pill with coloured text for contrast
-  if (onColourBlock) {
-    return (
-      <span
-        className="inline-block uppercase"
-        style={{
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-          fontWeight: 600,
-          fontSize: 11,
-          letterSpacing: "0.1em",
-          borderRadius: 4,
-          padding: "5px 10px",
-          backgroundColor: "#FFFFFF",
-          color: bg,
-          border: `1.5px solid ${bg}`,
-          boxShadow: "0 1px 2px rgba(0,0,0,0.06)",
-        }}
-      >
-        {category}
-      </span>
-    );
-  }
   return (
     <span
       className="inline-block uppercase"
@@ -77,9 +68,9 @@ function CategoryBadge({ category, onColourBlock = false }: { category: string; 
         letterSpacing: "0.1em",
         borderRadius: 4,
         padding: "5px 10px",
-        backgroundColor: bg,
-        color: "#FFFFFF",
-        border: `1.5px solid ${bg}`,
+        backgroundColor: "#EEF0FB",
+        color: "#2D35C9",
+        border: "1px solid #2D35C9",
       }}
     >
       {category}
@@ -182,7 +173,6 @@ function DeveloperLabel({ developer, size = "default" }: { developer: string; si
 
 export function LeadCard({ item }: { item: WhatsNew }) {
   const [expanded, setExpanded] = useState(false);
-  const colour = getCategoryColour(item.category);
   const displayDate = formatDate(item.date);
 
   return (
@@ -212,7 +202,7 @@ export function LeadCard({ item }: { item: WhatsNew }) {
         className="shrink-0 hidden sm:block"
         style={{
           width: "22%",
-          backgroundColor: colour,
+          backgroundColor: CARD_BLOCK,
           borderRadius: "8px 0 0 8px",
           minHeight: 180,
         }}
@@ -220,7 +210,7 @@ export function LeadCard({ item }: { item: WhatsNew }) {
       {/* Mobile colour bar — much smaller (was 120px) */}
       <div
         className="sm:hidden shrink-0"
-        style={{ height: 56, backgroundColor: colour, borderRadius: "8px 8px 0 0" }}
+        style={{ height: 56, backgroundColor: CARD_BLOCK, borderRadius: "8px 8px 0 0" }}
       />
 
       {/* Content zone — extra bottom padding so toggle never overlaps text */}
@@ -314,7 +304,6 @@ export function LeadCard({ item }: { item: WhatsNew }) {
 
 export function GridCard({ item }: { item: WhatsNew }) {
   const [expanded, setExpanded] = useState(false);
-  const colour = getCategoryColour(item.category);
   const displayDate = formatDate(item.date);
 
   return (
@@ -342,13 +331,13 @@ export function GridCard({ item }: { item: WhatsNew }) {
         className="relative shrink-0"
         style={{
           height: 64,
-          backgroundColor: colour,
+          backgroundColor: CARD_BLOCK,
           borderRadius: "8px 8px 0 0",
         }}
       >
         {/* Category badge bottom-left, inverted for contrast */}
         <div className="absolute" style={{ bottom: 8, left: 10 }}>
-          <CategoryBadge category={item.category} onColourBlock />
+          <CategoryBadge category={item.category} />
         </div>
       </div>
 
