@@ -53,6 +53,29 @@ export const AboutPanel = () => {
 
         {/* The explanation, and the byline that used to sit under the intro */}
         <div className="lg:col-span-6 lg:col-start-7 mt-4 lg:mt-0">
+          {/* Trimmed and split three ways, 30 Aug 2026, on a copy audit run at
+              Jasmin's request. 130 words to 114, in 60 / 33 / 21.
+
+              Cut: "I built it because" (motivation stated before value, and the
+              paragraph was opening and closing on the maker); "actually" (a
+              defensive intensifier the list disproves on its own); "into it"
+              (the reader had it at "type"); "nobody paying to be recommended"
+              (a third beat restating the two locked clauses before it); and
+              "a strategic communications consultant" from the body.
+
+              **That last cut has a dependency.** The credential now lives only
+              in the "Curated by Jasmin Aziz | Strategic Communications
+              Consultant" byline directly below. If that byline ever moves or
+              goes, the title has to come back into this paragraph.
+
+              Kept, and deliberately: the four questions. The cards demonstrate
+              them 23 times as instances, but this is the only surface that
+              states them as a rule before a visitor has seen a single card, and
+              "the questions this sector has to ask" without the list is a
+              gesture rather than a claim. Also kept verbatim: the locked
+              audience phrase in nominal form, "been through those checks before
+              it appears" and never "passed", the published failures, the final
+              call staying with the reader, and the locked no-sponsored pair. */}
           <p
             className="font-body"
             style={{
@@ -63,7 +86,33 @@ export const AboutPanel = () => {
               margin: 0,
             }}
           >
-            The Edit is my opinionated directory of AI tools for comms teams in charities, cultural organisations and heritage. I built it because the lists out there answer none of the questions this sector actually has to ask: where your data sits, whether the tool trains on what you type into it, whether there's a charity price, whether you could explain it to your board in one sentence. So I check. Every tool here has been through those checks before it appears, the ones that failed are published too, and the final call stays yours. No sponsored listings, no affiliate links, nobody paying to be recommended. I'm Jasmin, a strategic communications consultant who works with exactly these teams. This is the resource I wanted to hand people, so I made it.
+            The Edit is my opinionated directory of AI tools for comms teams in charities, cultural organisations and heritage. The lists out there answer none of the questions this sector has to ask: where your data sits, whether the tool trains on what you type, whether there's a charity price, whether you could explain it to your board in one sentence.
+          </p>
+          <p
+            className="font-body"
+            style={{
+              fontWeight: 400,
+              fontSize: 17,
+              lineHeight: 1.6,
+              color: "#1A1510",
+              margin: 0,
+              marginTop: 16,
+            }}
+          >
+            So I check. Every tool here has been through those checks before it appears, the ones that failed are published too, and the final call stays yours. No sponsored listings, no affiliate links.
+          </p>
+          <p
+            className="font-body"
+            style={{
+              fontWeight: 400,
+              fontSize: 17,
+              lineHeight: 1.6,
+              color: "#1A1510",
+              margin: 0,
+              marginTop: 16,
+            }}
+          >
+            I'm Jasmin. I work with exactly these teams. This is the resource I wanted to hand them, so I made it.
           </p>
           <p
             className="font-body"
