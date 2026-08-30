@@ -207,7 +207,7 @@ gate: all 23 visible rows appear in an A4 fact-pass doc with sources. B3 closed
 26 Aug at ten of ten. F1 closed, F2b moot, F2c closed and preserved by the
 29 Aug breakpoint change.
 
-**Blocking, two things.**
+**Blocking: one thing, C3.** (A second was recorded here and was wrong; see below.)
 
 1. **C3, the Substack gate.** Named in the handover as the hard blocker on the
    merge, and F3 is explicitly blocked on it. Two pieces, not one: the gated
@@ -223,21 +223,29 @@ gate: all 23 visible rows appear in an A4 fact-pass doc with sources. B3 closed
    `theeditai.co.uk`, not that the link resolves. Both files came from a
    parallel session, so they are Jasmin's to rule on.
 
-2. **Eight of the 23 visible rows carry judgement fields with no A5 record.**
-   Blotato, Ideogram, Granola, Submagic, Seedance (ByteDance), Gemini, Gamma,
-   Grok. Verified against the live Sheet: all 23 have a verdict, but the A5
-   second pass at `reports/2026-08-26-a5-verdict-drafts.md` covers only 15.
-   These eight are the 28 Aug batch whose judgement drafts were recorded as
-   owed. **`isComplete()` gates on `trustee_note` and `dpia_flag`, two of the
-   three fields reserved to Jasmin, but not on `verdict`.** Either she wrote
-   them and it is closed, or eight rows go public with unsigned judgement.
-   Blanking any of them back to hidden costs nothing: 22 rows still clears a
-   floor of 10.
+2. ~~**Eight of the 23 visible rows carry judgement fields with no A5
+   record.**~~ **WRONG, corrected 2026-08-30. Not a blocker.** All eight are
+   covered by `reports/2026-08-28-batch2-judgement-drafts.md`, committed at
+   `2b89b76`, which drafts flag, trustee note and verdict for each against the
+   locked axis and the verdict sector rule. The content reached the Sheet and
+   the jobs that file flagged as assumed match the Sheet, so they were
+   confirmed too. **Judgement coverage across all 23 rendering rows is
+   complete.**
+
+   The error is worth keeping: the search was for report *filenames* matching
+   "a5" or "verdict", and the batch-two file is named "judgement-drafts", so it
+   was missed. An absence of evidence was then reported as a live blocker, in
+   stronger terms than the check supported, and written into `.claude/CLAUDE.md`
+   before being caught. Search report contents for a distinctive phrase, not
+   filenames.
+
+   One real observation survives it: `isComplete()` gates on `trustee_note` and
+   `dpia_flag` but not on `verdict`, so a row could render with an empty
+   verdict. None currently does.
 
 **F2 itself is "Not started"**, which is the sign-off pass rather than a task.
 
-**Recommended order:** rule on the eight rows first, because the honest answer
-may be "already done"; commit the two template files once the PDF is final; do
+**Recommended order:** commit the two template files once the PDF is final; do
 C3 and test it on production; then F2 sign-off and merge on a day she can watch
 the deploy, since Vercel fails silently.
 

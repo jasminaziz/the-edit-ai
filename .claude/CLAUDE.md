@@ -343,14 +343,23 @@ populated and column N (`what_it_does`) was added and filled on 2026-08-26.
 invisible to the site, which is the radar working as designed. Verified against
 live Sheet data 2026-08-29, which clears the ten-row merge floor with room.
 
-**Watch this on the way to merge:** `isComplete()` gates on `trustee_note` and
-`dpia_flag`, two of the three fields reserved to Jasmin, but **not** on
-`verdict`. All 23 rows do carry a verdict, but the A5 second pass at
-`reports/2026-08-26-a5-verdict-drafts.md` covers only 15 of them. The eight
-without an A5 record are Blotato, Ideogram, Granola, Submagic, Seedance
-(ByteDance), Gemini, Gamma and Grok, the 28 August batch whose judgement drafts
-were logged as owed. Either they were written directly and it is closed, or
-eight rows go public with unsigned judgement.
+**Judgement coverage: complete, checked 2026-08-30.** All 23 rendering rows
+have their judgement fields on file. Fifteen are in
+`reports/2026-08-26-a5-verdict-drafts.md`; the other eight (Blotato, Ideogram,
+Granola, Submagic, Seedance, Gemini, Gamma, Grok) are in
+`reports/2026-08-28-batch2-judgement-drafts.md`, and the jobs that file flagged
+as assumed match the Sheet, so they were confirmed too.
+
+**Note for anyone auditing this again:** the judgement work lives in two files
+with different naming, `a5-verdict-drafts` and `batch2-judgement-drafts`. A
+filename search for "a5" or "verdict" finds only the first and produces a false
+gap of exactly eight rows. That happened on 29 August and was written into this
+file as a live blocker before being corrected. Search the report *contents* for
+a distinctive phrase from the row, not the filenames.
+
+One real observation stands, unrelated to the above: `isComplete()` gates on
+`trustee_note` and `dpia_flag` but **not** on `verdict`, so a row could in
+principle render with an empty verdict. None currently does.
 
 Branch `overhaul/sector-axis`: header-based `fetchTools` reading all fourteen
 columns; the DPIA chip, job chips with contains-matching, the three sector

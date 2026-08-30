@@ -508,3 +508,22 @@ Session corrections and rules built up over time. Add entries; do not delete his
   the file. Editing one job, gating it, committing it, and only then starting
   the next keeps "one job per commit" intact without interactive staging. Use
   this whenever a planned commit series touches any file twice.
+
+- **An absence of evidence is not a finding, and a filename search is not a
+  content search (2026-08-30).** I reported that eight of the 23 rendering rows
+  carried judgement fields with no A5 record, and wrote it into
+  `.claude/CLAUDE.md` and SCRATCHPAD as a live launch blocker. It was wrong.
+  The drafts existed all along in
+  `reports/2026-08-28-batch2-judgement-drafts.md`, committed, covering all
+  eight. My search had grepped report *filenames* for "a5" and "verdict"; that
+  file is named "judgement-drafts" and did not match. Two rules follow.
+  **Search the contents of the reports directory for a distinctive phrase from
+  the artefact you are looking for, never the filenames**, because this project
+  names related documents inconsistently by design (`a5-verdict-drafts`,
+  `batch2-judgement-drafts`, `sheet-edit-pack` all carry judgement content).
+  And **when the check only shows that you did not find something, say exactly
+  that**: "I found no record of X" is a different claim from "X did not
+  happen", and only the first was earned. The giveaway was in front of me a
+  step earlier: the eight verdicts read unmistakably like Jasmin's voice, first
+  person where earned and naming the catch, which should have prompted a second
+  look before the claim was written anywhere permanent.
