@@ -1,4 +1,3 @@
-import { SUBSTACK_SUBSCRIBE_URL } from "@/lib/links";
 import { SEO } from "@/components/SEO";
 
 export default function PolicyTemplate() {
@@ -46,6 +45,22 @@ export default function PolicyTemplate() {
           >
             Most AI policies are written for organisations with a legal team. This one is written for yours: a working AI-use policy for charity, cultural and heritage organisations, covering the questions that actually come up. Which tools staff can use and for what. What must never go into them. How to work out whether your organisation needs to do a DPIA. What you tell trustees, funders and supporters. It's the starting point I use with consultancy clients, ready to adapt to your organisation. It's the document you can put in front of your board.
           </p>
+          {/* THESE TWO LINES WERE WRITTEN BY A CODE SESSION, 30 Aug 2026, on
+              Jasmin's explicit instruction to implement the copy changes as
+              well. That is an exception to the standing rule that visitor
+              facing copy arrives as approved strings, and it is flagged here
+              so the exception is visible rather than silent. Read them.
+
+              They replace "It's free. Subscribe and you'll get the link
+              straight away." and "Delivered through my Substack. Unsubscribe
+              any time; the template is yours either way.", both of which
+              described a subscription step that no longer exists.
+
+              Written against the locked voice rules: UK English, contractions,
+              no em dashes, direct, name the thing plainly. "No email, no
+              sign-up" deliberately echoes the homepage's "No sponsored
+              listings, no affiliate links", which is the site's established
+              construction for saying what it does not do to you. */}
           <p
             className="font-body"
             style={{
@@ -57,13 +72,18 @@ export default function PolicyTemplate() {
               marginBottom: 32,
             }}
           >
-            It's free. Subscribe and you'll get the link straight away.
+            It's free, and it downloads straight away. No email, no sign-up.
           </p>
 
+          {/* Direct download. The gate is dropped: see the 30 Aug ruling in
+              SCRATCHPAD. The .docx is the artefact the intro promises ("ready
+              to adapt to your organisation"); the PDF sits at
+              /AI-Use-Policy-Template.pdf and stays unlinked only because
+              labelling a second button needs a string that does not exist yet.
+              Same origin, so `download` is honoured. */}
           <a
-            href={SUBSTACK_SUBSCRIBE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/AI-Use-Policy-Template.docx"
+            download
             style={{
               display: "block",
               maxWidth: 320,
@@ -95,7 +115,7 @@ export default function PolicyTemplate() {
               marginBottom: 0,
             }}
           >
-            Delivered through my Substack. Unsubscribe any time; the template is yours either way.
+            It's a Word document, so you can make it yours. If you want more of this thinking, I write it up on the Substack.
           </p>
 
           {/* Ungated DPIA explainer, ruled 28 Aug: this page owns the term, so
