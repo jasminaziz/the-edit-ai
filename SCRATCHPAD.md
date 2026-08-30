@@ -197,6 +197,58 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-30 LAUNCHED. The overhaul is live on theeditai.co.uk
+
+`origin/main` fast-forwarded from `47a0d1e` to `2b2d377`, 115 commits, 89 files,
++12197 / -2585. Pushed 15:35:31, live in about 40 seconds. No history rewritten
+and no merge commit: main was a direct ancestor.
+
+**Done as a remote fast-forward, `git push origin overhaul/sector-axis:main`,
+rather than a local checkout and merge.** Three reports from a parallel session
+had uncommitted edits that differ between the branches, so switching locally
+would have put that work at risk. Local `main` is therefore still at `47a0d1e`
+and needs a `git pull` before anyone works on it directly. The branch is pushed
+and identical to main.
+
+**Pre-flight run before pushing.** `.env.local` gitignored and no `.env` tracked;
+no API key literal in any tracked file; `dist/` gitignored with zero tracked
+files; sitemap and `App.tsx` routes match exactly in both directions; every
+canonical non-www; the Substack resolves 200.
+
+**Verified on production, not assumed.**
+
+- `/tools` renders **23 tool cards**, no error state, no empty state. This was
+  the biggest launch risk: the production Sheets key is referrer-locked to
+  `theeditai.co.uk/*` and a drift in that list would have rendered the
+  directory empty. It resolved.
+- Homepage: one `h1`, one definition paragraph, the heading reads "There's a
+  lot to keep up with in AI. This helps.", the counter and the physics hero
+  both render.
+- `/policy-template`: `h1` "The AI-use policy template for charities", the CTA
+  is a direct `download` of the `.docx`, the new copy is live and both old gate
+  lines are gone.
+- The `.docx` serves at `application/vnd.openxmlformats-officedocument.wordprocessingml.document`,
+  21711 bytes, byte-identical to the repo. The PDF is gone and now returns the
+  SPA html, which is the intended result of removing it.
+- `robots.txt` updated, `sitemap.xml` 200, and `www` still 308s to the bare
+  domain.
+
+**Known and accepted at launch.** The template ships as Word only; the PDF was
+pulled because it rendered in substituted faces, and a corrected Word export can
+be dropped back into `public/` whenever it exists. The Substack post and welcome
+email were never built and are now post-launch work rather than a gate, since
+the site delivers the template itself.
+
+**Still open, none of it blocking.** The news category colour ruling is settled
+in favour of collapsing to one chip and not yet implemented. The WhatsNewCard
+layout, the lime-pill component, the ToolCard CSS moving onto tokens, and the
+`/tools` and `/learning` heading question all remain. Four checks still cannot
+be closed from a desk: on-device touch, a real 360px device, device rotation
+against the physics canvas, and a keyboard and screen-reader pass. And twelve
+parallel-session reports are still untracked, plus the three modified ones that
+forced the remote-fast-forward route.
+
+
 ### 2026-08-30 RULING: the AI-use policy template is no longer gated
 
 **Decided in session on Jasmin's explicit delegation, with authority to
