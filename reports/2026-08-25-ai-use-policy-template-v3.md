@@ -44,7 +44,8 @@ this organisation can answer three questions with confidence:
 - Who is accountable when something goes wrong?
 
 This policy applies to everyone who works for or on behalf of [ORGANISATION],
-including staff, trustees, volunteers, freelancers and contractors.
+including staff, trustees or board members, volunteers, freelancers and
+contractors.
 
 ---
 
@@ -115,8 +116,9 @@ in is in. Anything it puts out is your responsibility.
 names, contact details, financial information, and anything about specific
 supporters, beneficiaries, service users, children, or colleagues. Some of it
 is special category data under Article 9 UK GDPR, which includes anything
-revealing health, religious belief, ethnicity, political opinion or sexual
-orientation, and that carries a higher bar than ordinary personal data. UK GDPR
+revealing health, religious belief, ethnicity, political opinion, trade union
+membership or sexual orientation, and that carries a higher bar than ordinary
+personal data. UK GDPR
 applies whether or not you remember it does. If you are unsure whether
 something counts as personal data, assume it does and ask [NAME / ROLE].
 
@@ -221,10 +223,10 @@ argued about is worth a lot.
   redundancy communications.
 - Writing in the voice of a beneficiary, service user or community member.
   Their testimony is theirs, and a plausible version of it is a fabrication.
-- Writing about or on behalf of a community none of us belongs to. The tool
-  will produce something that sounds right, and sounding right is the problem.
-- Board papers where trustees are relying on the writer's own judgement of
-  risk.
+- Speaking for a community that isn't yours to speak for. The tool will
+  produce something that sounds right, and sounding right is the problem.
+- Board or committee papers where the people relying on them need the
+  writer's own judgement of risk.
 - Anything a named individual would reasonably expect a person wrote.
 
 A supporter receiving a personalised letter that an AI generated and nobody
@@ -368,8 +370,7 @@ UK GDPR for processing likely to result in a high risk to people's rights. AI
 processing of personal data will often meet that bar, because the ICO treats
 innovative technology as a trigger when it combines with any second risk
 factor, and this sector usually supplies one: special category data, vulnerable
-people, or processing those people cannot see. This is the law, not regulator
-guidance.
+people, or processing those people cannot see.
 
 To be precise about what the requirement is: organisations carry out DPIAs.
 Tools do not have them and cannot provide them. The question is never whether
@@ -399,7 +400,7 @@ Openness is cheaper than being found out.
 **Staff.** This policy is reissued to everyone whenever it is updated. People
 are accountable for using a tool they knew was not approved.
 
-**Trustees.** [NAME / ROLE] reports on AI use [ANNUALLY / TWICE A YEAR],
+**[Trustees / your board].** [NAME / ROLE] reports on AI use [ANNUALLY / TWICE A YEAR],
 covering: what is in the register, what changed, anything that went wrong, and
 anything the board needs to decide.
 
@@ -430,10 +431,14 @@ automated action nobody intended:
    without undue delay. The bar for telling people is higher than the bar for
    telling the regulator, and it is the harder conversation.
 3. Where the incident is serious, [NAME / ROLE] reports it to
-   [THE CHARITY COMMISSION / OSCR / CCNI] as a serious incident or notifiable
-   event, alongside anything owed to the ICO. The three UK charity regulators
-   run separate systems, so a charity registered in more than one nation
-   reports to each.
+   [THE CHARITY COMMISSION / OSCR / CCNI], alongside anything owed to the ICO.
+   The Charity Commission and CCNI call this serious incident reporting. OSCR
+   replaced its old notifiable events process in April 2024 with a raise a
+   concern report, used once trustees cannot resolve the issue themselves. The
+   three regulators run separate systems, so a charity registered in more than
+   one nation reports to each. If [ORGANISATION] is not a registered charity,
+   this step does not apply: use your own escalation route instead, and record
+   it the same way.
 4. [NAME / ROLE] records what happened and what changed as a result.
 
 Reporting early is treated as good practice, not as an admission.
