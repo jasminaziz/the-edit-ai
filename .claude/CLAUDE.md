@@ -303,8 +303,18 @@ Colours (hex only, never names):
   lime from the other 44. Corrected 2026-08-29 to one decimal, each verified.
   **Before adding or editing any token, compute what it renders and compare to
   the locked hex. An integer triple almost never round-trips.**
-- `#2D6A4F` forest green (In My Stack badge only) · `#E8572A` burnt orange
-  (legacy On My Radar badge, renders nowhere)
+- `#2D6A4F` forest green: the In My Stack badge, the Green DPIA chip, the
+  DesignKit `free` cost badge and one of the three hero pill colours. The old
+  "In My Stack badge only" scope had not been true for some time.
+- **`#E8572A` burnt orange is retired, 2026-08-30.** It was the legacy On My
+  Radar badge, and this file claimed it rendered nowhere while it was in fact
+  colouring news category badges and hero pills. Both uses are gone: as a badge
+  it carried white at 3.60:1, and against the lightened periwinkle hero it sat
+  at 1.42:1, close enough to the ground that it separated on hue alone. If it
+  ever returns it needs a darker variant and a ruling.
+- **Hero pills** (`HomeGravity.tsx`) rotate cobalt, forest and ink `#1A1510`,
+  with lime as a roughly 1-in-8 accent. Indigo `#4A4A9A` was removed in the
+  same pass: no contrast defect, simply a colour the site never owned.
 - `#EEF0FB` cobalt tint, the established chip and badge background paired
   with `#2D35C9` text (index.css, ToolCard job chips, Learning). Documented
   2026-08-23: it was already in four places and missing from this list. The
