@@ -720,6 +720,37 @@ Session corrections and rules built up over time. Add entries; do not delete his
   the *blocking* path on every non-homepage route, not that those visitors never
   download it.
 
+- **On a PWA, a browser reading can be a fortnight old; curl is the
+  authoritative one (2026-08-31).** Verifying that a bundle split had deployed,
+  the browser reported asset hashes matching nothing I had built and **no
+  HomeGravity chunk in `performance.getEntriesByType('resource')`** — which
+  reads exactly like "the lazy-load did not ship". A curl of the same URL
+  seconds earlier and seconds later returned different, consistent hashes. The
+  browser was being served a **precached build by the registered service
+  worker**; `vite-plugin-pwa` precaches the whole manifest, so a returning
+  visitor's browser can run code from any earlier deploy until the worker
+  updates. `curl` has no service worker and bypasses it entirely.
+  The tell was that the browser's resource list contained *only* one chunk while
+  the live `index.html` named two. **Compare the browser's asset hashes against
+  a curl of `index.html` before concluding anything about what deployed**, and
+  treat a browser-observed "missing chunk" on this site as a cache reading until
+  a curl agrees.
+
+- **The shared working tree can push your work for you (2026-08-31).** This file
+  already records the hazard in one direction: a parallel session moved the
+  branch under me and `git push origin main` became a silent no-op. It runs the
+  other way too. I made 13 commits this session and ran `git push` exactly zero
+  times, and eight of them were on `origin/main` — and live, Vercel having
+  deployed them — by the time I looked. The parallel session pushed local `main`
+  and carried my commits with it.
+  The consequence is worth stating plainly: **in a shared tree, committing is
+  not a private act.** Anything committed to a branch someone else pushes can go
+  public without you initiating it, so the decision that matters is the commit,
+  not the push. Check `git rev-parse origin/<branch>` against `HEAD` at the
+  *end* of a session as well as before each commit, and if the work is not meant
+  to ship yet, do not commit it to a shared branch on the assumption that
+  withholding the push is enough.
+
 - **Check provenance before proposing to change visitor-facing copy
   (2026-08-31).** Two strings I was about to treat as fixable inconsistencies
   turned out to be signed-off pack copy: "Say this to a trustee" from the B3
