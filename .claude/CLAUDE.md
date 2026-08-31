@@ -319,13 +319,29 @@ was going to link, it contradicted a positioning built on giving the sector the
 answer straight, and it filtered for the incautious reader when the careful one
 is the buyer. Optimised for trust and reach over subscriber count.
 
-Live in code as at 2026-08-30: the footer block and both nav links point at
-`/policy-template`, all three labelled "Get the template →", and the page's own
-CTA carries the same label and downloads `/AI-Use-Policy-Template.docx`
-directly. **Keep all four labels identical.** The `.docx` is the linked
-artefact because the page promises something ready to adapt; the `.pdf` sits at
-`/AI-Use-Policy-Template.pdf`, unlinked, until its font substitution is fixed
-by a Word export. `robots.txt` no longer blocks either file.
+Live in code, re-counted 2026-08-31: **five** links carry "Get the template →",
+not four. `Layout.tsx:145` (mobile nav), `Layout.tsx:226` (desktop nav),
+`FooterEmailCapture.tsx:61`, `Tools.tsx:265` and `PolicyTemplate.tsx:106`, which
+is the one that downloads `/AI-Use-Policy-Template.docx` directly. **Keep all
+five labels identical.** The `Tools.tsx` one was missing from this list; the
+labels themselves were already consistent, so the rule held and only the
+inventory was short. `ToolCard.tsx:213` is a sixth link to the same route,
+gated to Red, and carries a deliberately different sentence.
+
+**There is no PDF at `/AI-Use-Policy-Template.pdf`.** An earlier version of this
+block said it "sits at" that URL, unlinked. It does not: the file was removed
+from `public/` before launch and the URL returns the SPA shell. The source PDF
+is at `reports/AI-Use-Policy-Template.pdf` (142,558 bytes) and is not served.
+`PolicyTemplate.tsx:84` had this right all along. Nothing in the tree links the
+`.pdf`; the only two mentions are that comment and one in `robots.txt`, which no
+longer blocks either file.
+
+**Never verify a file on this site by status code.** `vercel.json` is a SPA
+catch-all, so a missing file returns **200 `text/html` at 3,071 bytes** — the
+size of `dist/index.html`. That byte count is the reliable fingerprint for "this
+does not exist". Check content-type and length, or grep the body for a string
+only the real thing contains. Verified 2026-08-31: the `.docx` returns 21,711
+bytes with the correct wordprocessingml MIME type.
 
 ## Codebase conventions
 
