@@ -11,20 +11,37 @@ DPIA, and whether you could explain it to your board in one sentence (the
 shipped wording, `AboutPanel.tsx:108`). No sponsored listings, no affiliate
 links, and no tool appears until it has been through the checks.
 
-**Board or trustee is an open decision, 31 Aug 2026.** The site says both:
-three `board` (`AboutPanel.tsx:108`, `PolicyTemplate.tsx:46` and `:151`) and
-five `trustee` (`ToolCard.tsx:262`, `FooterEmailCapture.tsx:35`,
-`DesignKit.tsx:48`, `PolicyTemplate.tsx:46`, `Submit.tsx:30`), with
-`PolicyTemplate.tsx:46` using both in one paragraph. An earlier version of this
-line claimed `trustee_note` is a schema name that never renders as a label.
-**That was wrong and was asserted without checking**: `ToolCard.tsx:262` renders
-`Say this to a trustee` on every expanded card, and it is approved copy from the
-B3 microcopy pack, as is the footer string. The decision matters because only
-charities have trustees, so the word un-names the local authority museum service
-and the university gallery that the audience phrase exists to include: finding 5
-of `reports/2026-08-29-audience-phrase-proposal.md`, which called it the deepest
-finding in that review. Jasmin has agreed board should win; the replacement
-strings are hers to approve because both originals are pack copy.
+**Board, not trustee, where the governing body is meant. Ruled 31 Aug 2026,
+and the swaps are shipped.** Only charities have trustees; the local authority
+museum service, the university gallery, the NHS trust and the cathedral all have
+boards, so `trustee` un-named exactly the readers the three-part audience phrase
+exists to include. That is finding 5 of
+`reports/2026-08-29-audience-phrase-proposal.md`, which called it the deepest
+finding in that review.
+
+Changed (`46b7389`): `FooterEmailCapture.tsx:35` to "questions your **board**
+will ask", and `ToolCard.tsx:262`'s card label to "Say this to your **board**".
+Neither is a new construction: `PolicyTemplate.tsx:151` already said "your board
+will ask" and `AboutPanel.tsx:108` "explain it to your board". **Both originals
+were approved pack copy** (the B3 microcopy pack and the 22 Aug copy pack
+draft), so this supersedes them rather than correcting an error.
+
+**Deliberately left, do not "finish the job":** `PolicyTemplate.tsx:46` keeps
+"trustees, funders and supporters", a list of stakeholder groups you report to
+rather than the governing body; `Submit.tsx:30` keeps "the trustee test"; and
+the field stays `trustee_note`, a Sheet column the code reads by name, so
+renaming it is a schema change.
+
+**`DesignKit.tsx:48` was fixed the other way** (`bc121a8`), and the two rulings
+must not be harmonised. It said "put in front of trustees and funders" and now
+says "put in front of a room". The point there is not that `board` is the better
+governance word, it is that **the design kit is about design and no governance
+vocabulary belongs on it**, so `board` would have been just as wrong.
+
+An earlier version of this block claimed `trustee_note` is a schema name that
+never renders as a label. That was wrong and was asserted without checking:
+`ToolCard.tsx:262` renders one. Quote visitor-facing copy from `src/`, never
+from this file.
 
 **The Edit is a comms resource first, with a compliance edge.** Jasmin's
 ruling, 2026-08-26, taken after an A5 verdict rewrite drifted into a set of
@@ -340,6 +357,20 @@ into the byline's style block; it would beat the hover rule, which is precisely
 what the old `onMouseEnter`/`onMouseLeave` pair existed to work around. Hover
 and `:focus-visible` share one rule, because the mouse-only version left the
 single outbound link on the homepage with no visible state under the keyboard.
+
+**`FooterEmailCapture` renders from `Layout.tsx:258`, so it is on every route.**
+Anything it names is multiplied across the whole site, and on a page that also
+names the audience in body copy the reader meets it twice: `/tools` and
+`/policy-template` both did. It carried the three-part audience phrase until
+2026-08-31 for exactly that reason, and the phrase was cut from it (`3c812b1`),
+leaving "Free. The document that answers the questions your board will ask."
+
+The working principle that came out of it: **meta strings cannot crowd each
+other, because nobody reads two.** A search result shows one, an answer engine
+reads one, so the full phrase is free there and earns its length. On-page copy
+is read in sequence, so that is where crowding is real and where the phrase has
+to justify itself. It now appears in visible copy in three places only:
+`AboutPanel.tsx:108`, `Tools.tsx:250` and `PolicyTemplate.tsx:46`.
 
 **The breakpoint contract.** `MOBILE_BREAKPOINT` in `src/hooks/use-mobile.tsx`
 governs *chrome* (nav, homepage counter, hero pills, drag hint) at **1024**;
