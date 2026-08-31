@@ -147,24 +147,21 @@ export const AboutPanel = () => {
               href={WORK_WITH_ME_HREF}
               target="_blank"
               rel="noopener noreferrer"
-              className="group"
+              // The lime underline lives in index.css under `.about-byline`,
+              // where hover and focus-visible are one rule. It was a pair of
+              // mouse handlers here, which meant the keyboard never saw it.
+              // `textDecoration` cannot come back into this style block: an
+              // inline declaration outranks the stylesheet and would win over
+              // the hover rule, which is what the handlers were working around.
+              className="about-byline"
               style={{
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontWeight: 400,
                 fontSize: 14,
                 color: "#1A1510",
                 margin: 0,
-                textDecoration: "none",
                 cursor: "pointer",
                 transition: "text-decoration-color 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.textDecoration = "underline";
-                e.currentTarget.style.textUnderlineOffset = "3px";
-                e.currentTarget.style.textDecorationColor = "#C8F04A";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.textDecoration = "none";
               }}
             >
               Curated by Jasmin Aziz | Strategic Communications Consultant{" "}

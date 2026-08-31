@@ -235,4 +235,26 @@
   .tool-card .tc-visit:hover { background-color: #2D35C9; color: #FFFFFF; }
   .tool-card[data-selected] .tc-visit { background-color: #FAF8F4; color: #2D35C9; }
   .tool-card[data-selected] .tc-visit:hover { background-color: #C8F04A; color: #1A1510; }
+
+  /**
+   * The homepage byline link.
+   *
+   * The lime underline used to be applied by onMouseEnter and removed by
+   * onMouseLeave, so it existed for the mouse and not for the keyboard: a
+   * reader tabbing through the homepage got no underline on the only outbound
+   * link on the page. Hover and focus-visible share one rule here, which is
+   * the whole point of moving it out of the component.
+   *
+   * The lime is decoration, not the focus indicator. It sits at roughly 1.4:1
+   * on cream and will not be visible to every reader, so it is layered on top
+   * of the browser's own focus ring, which nothing in this project overrides,
+   * and on ink link text that carries the meaning on its own.
+   */
+  .about-byline { text-decoration: none; }
+  .about-byline:hover,
+  .about-byline:focus-visible {
+    text-decoration: underline;
+    text-decoration-color: #C8F04A;
+    text-underline-offset: 3px;
+  }
 }
