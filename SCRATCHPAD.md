@@ -42,11 +42,28 @@ Cowork folder: None
      server-side defaults for source/status (M4) — DB migration, run deliberately
    - Dependency bumps via **bun** (M5) — react-router-dom first; do NOT run
      `npm audit fix` (stale package-lock)
-   - Dead-code sweep: ~44 unused shadcn/ui components + orphaned radix deps,
-     two unused toast systems in App.tsx, lovable-tagger, boilerplate README,
-     .lovable/plan.md, src/vercel.json, stale supabase/config.toml, bun.lockb +
-     package-lock.json; lazy-load matter-js/HomeGravity (988K single chunk,
-     feeds queue item 5)
+   - ~~Dead-code sweep~~ **DONE 2026-08-31, six commits.** 44 unused
+     shadcn/ui components (the estimate was exact), the duplicate
+     ui/use-toast.ts, Subscribe.tsx, NavLink.tsx, the two Supabase
+     integration files, bun.lockb and package-lock.json. JS unchanged
+     (already tree-shaken); **CSS 69.84 kB to 35.26 kB**, which was the
+     real saving. matter-js/HomeGravity lazy-loaded in the same session:
+     main chunk **792.06 kB to 571.53 kB**, gzip 260.76 to 182.55.
+     The two unused toast systems went too, in a sixth commit: nothing in
+     src/ calls toast(), useToast or imports sonner, so both were mounted
+     and could never fire. That took the main chunk to **520.66 kB** and CSS
+     to **30.83 kB**, the largest single saving of the sweep. This entry was
+     right about them and my first correction to it was wrong; the method
+     gap is that reachability from main.tsx marks anything App.tsx renders
+     as live, and reachable is not used.
+     Two genuine corrections to this entry's own list: the single chunk was
+     **792 kB, not 988K** (it had shrunk since this was written), and
+     **lovable-tagger is not dead** — vite.config.ts:4 imports it.
+     Still open, deliberately: orphaned radix deps and @supabase/supabase-js
+     (a lockfile re-resolve is its own job), supabase/config.toml and
+     migrations/ (the only local record for a project that still hosts the
+     ops-dashboard tables), boilerplate README, .lovable/plan.md,
+     src/vercel.json.
 8. **Gates audit follow-ups (2026-08-05)** — full detail in
    `reports/site-gates-2026-08-05.md`. All four gates failed, all pre-existing
    site debt unrelated to that session's PWA scaffold. In rough order:
@@ -196,6 +213,75 @@ flashes on iOS elastic scroll bounce).
 ---
 
 ## Session notes
+
+### 2026-08-31 (code session: mobile/SEO audit, then the dead-code sweep)
+
+Ran the four-job brief in `reports/2026-08-31-mobile-and-hygiene-session-prompt.md`.
+Full findings in `reports/2026-08-31-mobile-seo-hygiene-findings.md`. Eight
+commits, all on `main`, one job each.
+
+**The finding that needs a ruling, and it was not in the brief: every `<SEO>`
+page carries duplicate meta tags.** `index.html` declares `description`,
+`og:title`, `og:description`, `twitter:title` and `twitter:description`
+statically; `SEO.tsx` emits the same five per page. react-helmet-async
+*appends* — it never replaces static tags it did not create — so both survive
+and **the static homepage copy sits first in document order**. Measured on
+production: `/tools` carries a 177-char homepage description ahead of its own
+175-char one; `/` carries 177 ahead of 193. `canonical` and `og:url` escape
+this only because `index.html` declares neither, and `og:image`/`og:type` are
+correctly single. So the half of the split CLAUDE.md describes works; the other
+half does not. The doc calls the static block a *fallback* for scrapers that do
+not run JS. It is not a fallback, it is a co-resident.
+The fix is a decision: strip the five from `index.html` and lose the no-JS
+fallback, or have `SEO.tsx` own and overwrite them. **Not touched.**
+
+**Second, also not in the brief: `/privacy-policy`, `/terms-of-service`,
+`/cookie-policy` and the 404 ship no meta at all.** All three legal pages
+render through `LegalPage.tsx`, which has no `Helmet`; `NotFound.tsx` imports
+only react and react-router-dom. No title, no description, **no canonical**.
+All three legal routes are in `sitemap.xml`. Titles and descriptions are copy
+and are yours; the missing canonical is not copy.
+
+**Third: 8 of the 23 rendering rows have an empty `what_it_does`** — Blotato,
+Ideogram, Granola, Submagic, Seedance, Gemini, Gamma, Grok. Exactly the
+batch-two eight. They got their judgement fields and never got column N.
+`ToolCard.tsx:111` guards with `&&` so nothing renders broken, but the card
+loses the line it leads with and `Tools.tsx:68` searches that field. Yours.
+
+**Mobile, at 360x780, settled and identical at 0s, 3s and 6s:** 15 of the 19
+pill spans overlap the `<h1>`, 7 sit above y=56 behind the nav, one has
+`top: -42`. All come to rest in the top 402px of a 608px hero, so the bottom
+206px holds none. The wordmark is barely legible. That is the evidence for the
+open `MAX_PILLS` mobile-cap ruling. Separately the hero leaves **332px, 55%,
+empty below the type** — the `min-h-[78vh]` ruling. Neither touched.
+
+Verified fine, measured not assumed: no horizontal page scroll at 360px; the
+About header clamp behaves (30px, 3 lines, floor binds below 804.3px by
+arithmetic); the breakpoint contract holds, all five `useIsMobile` consumers
+are chrome; the 768-1086px "Work with me" fix still holds.
+
+**Could not close** — say so rather than approximate: real on-device touch on
+the ToolCard (the browser pane goes hidden between calls here, so screenshots
+capture but clicks time out; touch emulation was active and ready), a real
+360px device, and rotation against the physics canvas.
+
+**Two near-misses worth keeping.** A card looked stuck cobalt at 800px;
+`data-selected` was null on all 23 and exactly one matched `:hover` — the
+physical pointer, the fixture trap already in lessons.md. And my first
+production meta read returned the whole artefact signature, zeros and
+`innerWidth: 0`. Cause now established rather than correlated: **helmet commits
+inside `requestAnimationFrame`, and a hidden pane fires none** — an `await` on
+a rAF loop never resolved at all. Force a paint, then read. Added to
+lessons.md.
+
+Also confirmed from the brief: the `.pdf` and `llms.txt` both return 200
+`text/html` at 3,071 bytes, the SPA shell size, which is the fingerprint for a
+missing file here. The `.docx` is healthy at 21,711 bytes. Meta description
+overruns are 193 / 175 / 168 as reported, **plus a fourth**: `index.html`'s
+static 177, which given the duplication above is the one read first on seven
+routes. On both homepage strings the sentence truncation loses is "No sponsored
+lists". The three-part audience phrase sits at roughly character 21-45 and
+survives in every case, so it is not what costs the space.
 
 ### 2026-08-31 (later: vocabulary rulings, and a silent push failure)
 
@@ -2650,7 +2736,12 @@ paused project (three attempts, connection timeout). Not urgent: the write
 path was removed from `src/` on 22 Aug, so nothing new can have landed
 regardless.
 
-**og-image.png:** still not started (handover B5). Parked again tonight.
+**og-image.png:** ~~still not started~~ **wrong, and it was wrong when
+written.** Corrected 2026-08-31. `public/og-image.png` exists and `index.html`
+wires it at both `og:image` and `twitter:image`. What is true is that it is
+**474,794 bytes (463.7 KiB)**, measured on disk and on production, which is
+heavy for a scraper fetch though inside every platform's 5 MB cap. A re-export
+is worth doing; it was never "not started".
 
 ---
 
