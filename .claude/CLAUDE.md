@@ -586,6 +586,22 @@ buying and checks zones; the filter rail set to always wrap at `sm` and up
 (F2c); C4(b) restricted to Red; the two approved card strings placed; these
 docs corrected.
 
+**The rail wraps at `lg`, not `sm`. F2c's `sm` was superseded three days
+later** by `ffcc6e9` on 2026-08-29, and this file went on quoting the 26 August
+state. `Tools.tsx:152` reads `lg:flex-wrap lg:overflow-visible`, and the
+gradient fade at `:177` is `lg:hidden` to match. The move was deliberate and
+correct: wrapping from `sm` left the rail a 128px track beside a 400px search
+box while the widest chip is 228px, so between 640 and 739px a chip escaped the
+viewport and dragged the page into horizontal scroll. Below `lg` the search
+takes its own row and the rail keeps the scroller. **At `lg` and up nothing
+changed, so the F2c ruling still holds** — only the breakpoint that delivers it
+moved. Do not "restore" `sm`: it reintroduces the horizontal scroll.
+
+Consequence worth knowing before anyone reads the rail as broken on a phone: at
+360px it overflows by 756px with two chips fully visible, and at 800px by 380px.
+That is the design below `lg`, and the 40px fade is present and correct as the
+affordance.
+
 Done 2026-08-28 (three commits, both code jobs ruled and copy-free):
 
 - **The homepage "What I'm running" strip reads `my_stack`** (`20f722a`), on
