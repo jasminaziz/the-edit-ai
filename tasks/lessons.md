@@ -751,6 +751,47 @@ Session corrections and rules built up over time. Add entries; do not delete his
   to ship yet, do not commit it to a shared branch on the assumption that
   withholding the push is enough.
 
+- **A precaching service worker silently pins visitors to an old build, and
+  `registerType: 'autoUpdate'` does not prevent it (2026-08-31).** Jasmin
+  reported that most links still showed a cached version of the site. Three
+  things had to line up, and each looked fine on its own.
+  `vite-plugin-pwa`'s generated worker registers
+  `NavigationRoute(createHandlerBoundToURL("index.html"))`, so **every
+  navigation is answered from the precache, never the network** — and the shell
+  is what carries the hashed asset names, so the visitor is pinned to a whole
+  build, not just one file. `autoUpdate` was set, and the plugin's docs are
+  explicit that it only reloads when you register via `virtual:pwa-register`,
+  whose `onNeedReload` defaults to `location.reload()`; the injected
+  `registerSW.js` is a bare `navigator.serviceWorker.register('/sw.js')` with no
+  callback. And because the site is an SPA, **internal link clicks do no
+  document fetch at all**, so a visitor browsing by links never picks up a new
+  build however long they stay.
+  Net effect: every deploy reached returning visitors one visit late, for 26
+  days, invisibly. Nothing in the build output, the deploy log or a `curl` shows
+  this — `curl` has no service worker, so it always reports the site as correct.
+  **When someone says the site looks stale and the CDN headers are right, check
+  for a service worker before doubting them.** `curl` and the browser disagreeing
+  is the tell, and the browser is the one telling the truth about what visitors
+  see.
+  Two details worth keeping. `selfDestroying: true` is the only exit that frees
+  already-stuck visitors on their *next* load rather than their second, because
+  the generated worker calls `client.navigate(client.url)` on activation — and
+  when testing it, the tool error "the page navigated or was closed
+  mid-evaluation" **is the success signal**, not a failure. And that flag must
+  stay in the config until every returning browser has run it once; removing it
+  as dead configuration reinstates the bug.
+
+- **A service worker will not register from localhost in this browser pane
+  (2026-08-31).** Verifying the self-destroying worker, every
+  `navigator.serviceWorker.register('/sw.js')` against `http://localhost:8080`
+  failed with "an unknown error occurred when fetching the script", while `curl`
+  returned the same file at 200 with the right content type. The identical
+  registration succeeded immediately against `https://theeditai.co.uk`. So
+  service-worker behaviour **cannot be exercised on the local preview here** and
+  has to be checked on production. This is the constrained-environment rule
+  again: the local failure was not a result, and reporting the worker as broken
+  on the strength of it would have been wrong in both directions — it works.
+
 - **Check provenance before proposing to change visitor-facing copy
   (2026-08-31).** Two strings I was about to treat as fixable inconsistencies
   turned out to be signed-off pack copy: "Say this to a trustee" from the B3
