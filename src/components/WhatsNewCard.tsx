@@ -45,8 +45,8 @@ function formatDate(raw: string): string {
  * by. The colour block on each card becomes cobalt, so the card keeps its
  * visual anchor in one brand colour rather than five.
  *
- * The hero pills in HomeGravity.tsx still use #4A4A9A and #E8572A. That is a
- * separate use and a separate ruling, deliberately not touched here.
+ * The hero pills in HomeGravity.tsx carried the same two colours and were
+ * ruled separately later the same day: both are gone from there too.
  */
 const CARD_BLOCK = "#2D35C9";
 

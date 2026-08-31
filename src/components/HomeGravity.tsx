@@ -2,15 +2,38 @@ import { Gravity, MatterBody } from "@/components/ui/gravity";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { DragHint } from "@/components/DragHint";
 
-// Brand palette. Lime is rare-only (used as accent), so we exclude it from the
-// main rotation and only assign it to ~1 in 8 pills.
+/**
+ * Hero pill palette. Lime is rare-only, assigned to roughly 1 in 8 pills.
+ *
+ * Ruled 30 Aug 2026, the last of the off-palette cleanup. Two colours left the
+ * rotation and one locked colour joined it.
+ *
+ * Burnt orange #E8572A went for two independent reasons. Its label was white
+ * at 3.60:1, a real AA text failure rather than a decorative one, and against
+ * the lightened hero #9B9EDE it measures 1.43:1, so it was close to
+ * luminance-matched with the ground and separated from it by hue alone.
+ *
+ * Indigo #4A4A9A went because it was off palette and undocumented. It was not
+ * a defect: 7.67:1 label, 3.05:1 boundary. It simply was not a colour this
+ * site owns.
+ *
+ * Ink joined because it is the strongest option available and it is locked:
+ * white on it is 18.12:1 and it sits at 7.20:1 against the hero. Ink is already
+ * used as a ground in the footer, so this is not a new role for it.
+ *
+ * Forest stays. Its boundary against the lighter hero is 2.54:1, which is soft,
+ * but the pills are decorative draggable objects rather than text or controls,
+ * its own label passes at 6.39:1, and green against lilac separates on hue with
+ * room to spare. Same reasoning for the lime accent at 1.92:1.
+ *
+ * Every label pairing here now clears 4.5:1.
+ */
 const CORE_COLOURS = [
-  { bg: "#2D35C9", fg: "#FFFFFF" }, // Cobalt
-  { bg: "#2D6A4F", fg: "#FFFFFF" }, // Forest
-  { bg: "#4A4A9A", fg: "#FFFFFF" }, // Indigo
-  { bg: "#E8572A", fg: "#FFFFFF" }, // Orange
+  { bg: "#2D35C9", fg: "#FFFFFF" }, // Cobalt, label 8.52:1, boundary 3.38:1
+  { bg: "#2D6A4F", fg: "#FFFFFF" }, // Forest, label 6.39:1
+  { bg: "#1A1510", fg: "#FFFFFF" }, // Ink,    label 18.12:1, boundary 7.20:1
 ];
-const ACCENT_COLOUR = { bg: "#C8F04A", fg: "#1A1510" }; // Lime
+const ACCENT_COLOUR = { bg: "#C8F04A", fg: "#1A1510" }; // Lime, label 13.83:1
 
 // FNV-1a-ish hash so the same pill name always maps to the same numbers.
 // This keeps colour/position assignments stable across renders but looks
