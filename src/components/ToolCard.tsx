@@ -259,7 +259,7 @@ export const ToolCard = ({
               <p
                 className="font-body text-[11px] leading-tight m-0 tc-secondary"
               >
-                Say this to a trustee
+                Say this to your board
               </p>
               <p className="font-body text-[15px] leading-relaxed m-0 mt-0.5">
                 {tool.trustee_note}

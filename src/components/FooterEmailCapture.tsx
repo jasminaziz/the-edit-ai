@@ -32,7 +32,7 @@ export function FooterEmailCapture() {
             marginBottom: 0,
           }}
         >
-          Free. The document that answers the questions your trustees will ask.
+          Free. The document that answers the questions your board will ask.
         </p>
         <Link
           to="/policy-template"
