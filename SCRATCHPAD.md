@@ -214,6 +214,54 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-31 RULING: the service worker is removed
+
+Jasmin reported that most links still showed a cached version of the site.
+Diagnosed, ruled and shipped the same evening.
+
+**Cause.** `vite-plugin-pwa`'s generated worker registered
+`NavigationRoute(createHandlerBoundToURL("index.html"))`, so every navigation
+was answered from the precache and never from the network. That shell carries
+the hashed asset names, so a returning visitor was pinned to a whole build.
+`registerType: "autoUpdate"` was already set and did not help: the plugin only
+performs the reload when you register through `virtual:pwa-register`, and this
+project uses the injected `registerSW.js`, a bare
+`navigator.serviceWorker.register('/sw.js')` with no callback. skipWaiting and
+clientsClaim handed control to the new worker while the tab kept running the
+old bundle, and because the site is an SPA, internal link clicks do no document
+fetch and never picked up a new build. **Every deploy from 5 to 31 August
+reached returning visitors a visit late, invisibly.**
+
+Not the CDN: Vercel serves `index.html` and the assets with
+`max-age=0, must-revalidate`, which is correct.
+
+**Ruling: remove it,** over the two alternatives (keep the PWA with NetworkFirst
+navigations, or just wire the auto-reload). Three grounds. Offline was never a
+requirement and never a decision — the config comment said "scaffold only, no
+runtime caching strategy", so the precache was a side effect. A cached app shell
+contradicts a site whose premise is that a Sheet edit is public in seconds.
+And `selfDestroying: true` is the only option that frees already-stuck visitors
+on their **next** page load rather than their second, because the generated
+worker calls `client.navigate(client.url)` on activation.
+
+**Kept:** manifest, icons, theme colour, standalone display, apple meta. The
+site stays installable; only offline caching is gone. Sheet data was never
+affected either way, being fetched at runtime — it was the code that lagged.
+
+**Do not remove `selfDestroying: true` to re-enable the PWA.** It must stay
+until every returning browser has run it once. It looks like dead config and is
+not.
+
+**Verified on production**, because the browser pane cannot register a service
+worker from localhost (it fails with "unknown error occurred when fetching the
+script" while curl returns the file at 200 — an environment limit, not a
+result). Planted a stale `workbox-precache-v2` cache plus a second cache on the
+live origin and registered the worker: the page was force-navigated
+mid-evaluation, which is `client.navigate` working, and afterwards
+`caches.keys()` was empty, the planted entry unreadable and
+`getRegistrations()` 0. `/tools` then rendered 23 cards and 23 DPIA chips with
+no worker and no caches at all.
+
 ### 2026-08-31 (code session: mobile/SEO audit, then the dead-code sweep)
 
 Ran the four-job brief in `reports/2026-08-31-mobile-and-hygiene-session-prompt.md`.
