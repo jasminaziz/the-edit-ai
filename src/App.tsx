@@ -1,7 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "@/components/Layout";
 import Index from "./pages/Index";
@@ -21,9 +19,13 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
+    {/* TooltipProvider has no <Tooltip> under it anywhere in src/, so it is
+        currently inert. Kept deliberately, unlike the two toasters removed
+        alongside it on 31 Aug 2026: radix throws if a Tooltip mounts without a
+        provider, so this one line is what makes adding a tooltip later just
+        work. The toasters had the opposite property — mounted with nothing
+        calling toast(), they rendered nothing and could not. */}
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
       <BrowserRouter>
         <Layout>
           <Routes>
