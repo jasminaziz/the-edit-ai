@@ -179,9 +179,34 @@ archive diff possible at all.
 - Repository: GitHub (jasminaziz/the-edit-ai)
 - Hosting: Vercel — auto-deploys from GitHub main (2-3 min)
 - Framework: Vite + React + TypeScript
-- Package manager: **bun** — `bun.lock` is canonical; `package-lock.json`
-  is stale. Never `npm install` or `npm audit fix`. Audits and updates go
-  through bun.
+- Package manager: **bun** — `bun.lock` is canonical. `package-lock.json` and
+  `bun.lockb` were deleted on 2026-08-31, so the stale-lockfile hazard is gone
+  rather than merely documented. Never `npm install` or `npm audit fix`;
+  audits and updates go through bun.
+- **Service worker: DISABLED, and it must stay that way.** Ruled 2026-08-31
+  after Jasmin reported that most links still showed a cached version of the
+  site. `vite.config.ts` sets `selfDestroying: true`, which ships a 608-byte
+  worker that unregisters itself, deletes every cache and calls
+  `client.navigate(client.url)`. **Do not remove that flag to "re-enable the
+  PWA".** It has to remain until every returning visitor's browser has run it
+  once, and taking it out reinstates the bug.
+  The bug: the generated worker registered
+  `NavigationRoute(createHandlerBoundToURL("index.html"))`, so every navigation
+  was answered from the precache and never from the network, and that shell
+  carries the hashed asset names. `registerType: "autoUpdate"` was set and did
+  not help — the plugin only performs the reload when you register through
+  `virtual:pwa-register`, and this project uses the injected script, a bare
+  `navigator.serviceWorker.register('/sw.js')` with no callback. So the new
+  worker took control while the tab kept running the old bundle, and since this
+  is an SPA, internal link clicks do no document fetch and never picked up a new
+  build. Every deploy from 5 to 31 August reached returning visitors a visit
+  late.
+  **The manifest, icons, theme colour and standalone display are untouched**, so
+  the site is still installable; only offline caching is gone, and it was never
+  a requirement. Sheet data was never affected, being fetched at runtime — it
+  was the code that lagged. Verified on production: planting a stale workbox
+  cache and registering the worker left `caches.keys()` empty, the planted entry
+  unreadable and `getRegistrations()` at 0.
 - Styling: Tailwind
 - Data layer: Google Sheets (all content lives here)
 - Subscriber capture: **none in this repo.** The Supabase `subscribers`
