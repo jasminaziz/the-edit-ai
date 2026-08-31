@@ -792,6 +792,30 @@ Session corrections and rules built up over time. Add entries; do not delete his
   again: the local failure was not a result, and reporting the worker as broken
   on the strength of it would have been wrong in both directions — it works.
 
+- **react-helmet-async cannot see static tags, so a "fallback" block silently
+  becomes a duplicate (2026-08-31).** `index.html` and `SEO.tsx` both declared
+  `description`, `og:title`, `og:description`, `twitter:title` and
+  `twitter:description`. The project doc described the static block as the
+  fallback for scrapers that do not run JS, and it read as a clean split. It is
+  not: helmet's DOM routine collects only
+  `headElement.querySelectorAll(type + '[data-rh]')` and removes only what it
+  finds, so a hand-written tag with no `data-rh` is invisible to it and survives
+  forever. Result: two of each tag on seven routes, **with the static homepage
+  copy first in document order**, for anything that takes the first match.
+  The fix is to add `data-rh="true"` to the static tags, which makes helmet
+  adopt and replace them — keeping the fallback for non-JS crawlers instead of
+  deleting it. **A static tag and a helmet tag of the same type do not compete;
+  they coexist.** Whenever both a static head block and a helmet component
+  declare the same tag, assume duplication until counted:
+  `document.querySelectorAll('meta[name=description]').length` settles it in one
+  line. Only mark the tags the component actually emits — `og:image` and
+  `og:type` here are sitewide-only and must stay unmarked, or helmet will strip
+  them.
+  Consequence worth knowing before it looks like a regression: once marked, a
+  client-side navigation to a route that renders no `<SEO>` removes the tags
+  entirely, because helmet unmounts and cleans up what it owns. A direct load of
+  that URL is unaffected, which is what crawlers do.
+
 - **Check provenance before proposing to change visitor-facing copy
   (2026-08-31).** Two strings I was about to treat as fixable inconsistencies
   turned out to be signed-off pack copy: "Say this to a trustee" from the B3

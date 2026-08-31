@@ -214,6 +214,65 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-31 RULING: duplicate meta tags fixed by marking, not deleting
+
+`index.html` declared `description`, `og:title`, `og:description`,
+`twitter:title` and `twitter:description`; `SEO.tsx` emits the same five per
+page. **react-helmet-async only ever removes tags carrying `data-rh`** — its
+update routine does `querySelectorAll(type + '[data-rh]')`, read out of
+`node_modules` rather than assumed — so a static tag without the attribute is
+invisible to helmet and survived alongside the injected one. Every page using
+`<SEO>` carried two of each, **with the static homepage copy first in document
+order**, so anything taking the first match read the homepage description on
+seven routes.
+
+**Fix: marked the five statics `data-rh="true"`** so helmet adopts and replaces
+them. Deleting them would have fixed the duplication by removing the no-JS
+fallback CLAUDE.md keeps deliberately. `og:image`, `og:type` and `twitter:card`
+are **not** marked, because `SEO.tsx` never emits them and they are genuinely
+sitewide. There is a comment in `index.html` saying so, because the attribute
+looks like noise and removing it reintroduces the bug.
+
+Verified on production: `/tools` carries exactly one of each of the five, with
+the page's own 175-character description, plus one `og:image`, one `og:type`
+and one canonical. `curl` still shows the static block for a non-JS crawler.
+
+**One honest behaviour change.** Navigating client-side to a page with no
+`<SEO>` (the three legal routes and the 404) now strips the adopted tags rather
+than leaving the homepage's copy. A direct load of those URLs is unchanged,
+which is what crawlers do, so the practical effect is nil — but it strengthens
+the case for giving those four pages their own meta.
+
+### NEXT STEP (2026-08-31, end of session)
+
+Everything unblocked is done, live and verified. What remains needs a ruling or
+copy from Jasmin, in rough value order:
+
+1. **Meta for `/privacy-policy`, `/terms-of-service`, `/cookie-policy` and the
+   404.** They ship no title, description or canonical, and all three legal
+   routes are in `sitemap.xml`. Titles and descriptions are copy; the canonical
+   is not and could go in on its own.
+2. **Four over-length meta descriptions**: 193 (`/`), 177 (`index.html`
+   static), 175 (`/tools`), 168 (`/design-kit`), against a ~155 snippet limit.
+   `/submit` at 159 is borderline. On both homepage strings the sentence
+   truncation loses is "No sponsored lists".
+3. **Mobile rulings, now with evidence.** `MAX_PILLS` mobile cap: at 360x780 on
+   live, 14 of 19 pills overlap the wordmark and 7 sit behind the nav. Hero
+   `min-h-[78vh]`: 608px tall with 332px empty below the type. Plus the mobile
+   wordmark string, which needs approved copy.
+4. **`what_it_does` for the batch-two eight** (Blotato, Ideogram, Granola,
+   Submagic, Seedance, Gemini, Gamma, Grok) — complete rows rendering without
+   the line the card leads with. And **row 40's trustee note still names
+   NotebookLM**.
+5. **GEO judgement calls**: whether to add `llms.txt`, whether `/tools` gets
+   `ItemList` structured data, and whether the homepage JSON-LD's `author.url`
+   should point at jasminaziz.co.uk rather than back at The Edit.
+6. **Not closable from a desk**: the ToolCard tap on a real finger, a real
+   360px device, rotation against the physics canvas.
+7. **SCRATCHPAD archive split.** This file is past 2,800 lines. No cut line
+   proposed: which history stays in front of you is your call, and nothing
+   should be deleted.
+
 ### 2026-08-31 RULING: the service worker is removed
 
 Jasmin reported that most links still showed a cached version of the site.
