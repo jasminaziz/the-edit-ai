@@ -224,6 +224,31 @@ archive diff possible at all.
   split deliberately. Every page must pass title, description and canonical;
   `/submit` shipped no meta at all until 2026-08-22. (`/stack` was the other
   offender; it was cut on 2026-08-26.)
+  **`data-rh="true"` on the five static tags in `index.html` is
+  load-bearing. Do not remove it.** react-helmet-async only ever removes tags
+  carrying that attribute — its DOM routine does
+  `querySelectorAll(type + '[data-rh]')` — so without it a static tag does not
+  act as a fallback, it **coexists** with the injected one. That was live from
+  launch until 2026-08-31: every page using `<SEO>` carried two descriptions,
+  two `og:title`s, two `og:description`s and two twitter equivalents, with the
+  static homepage copy **first in document order**, so anything taking the
+  first match read the homepage description on seven routes. Marking them lets
+  helmet adopt and replace them, which keeps the no-JS fallback instead of
+  deleting it. `og:image`, `og:type` and `twitter:card` stay **unmarked**
+  because `SEO.tsx` never emits them; marking those would make helmet strip
+  them. Any tag added to `index.html` that `SEO.tsx` also emits needs
+  `data-rh` too.
+  Consequence, so it is not read later as a regression: a client-side
+  navigation to a route rendering no `<SEO>` now removes the adopted tags,
+  because helmet unmounts and cleans up what it owns. A direct load of that URL
+  is unaffected, which is what crawlers do.
+- **`/privacy-policy`, `/terms-of-service`, `/cookie-policy` and the 404 ship
+  no meta at all.** The three legal pages render through `LegalPage.tsx`, which
+  has no `Helmet`; `NotFound.tsx` imports only react and react-router-dom. No
+  title, no description, **no canonical**, and all three legal routes are in
+  `sitemap.xml`. Found 2026-08-31 and still open: titles and descriptions are
+  copy and are Jasmin's, but the canonical is not copy and could be fixed on
+  its own.
 - Analytics: none. GA4 and the cookie banner were removed 2026-08-28 (commit d7221c8); the site sets no cookies, and Search Console is the measurement. If analytics ever returns, it returns with consent done properly.
 
 ### Branch discipline (the F2 gate is spent, 2026-08-30)
