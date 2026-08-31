@@ -4,10 +4,12 @@ Written 31 August 2026 against `main` at `34458f9`, as an investigation pass
 with nothing changed.
 
 **Status after Jasmin said "do all" (same session).** Everything in the
-unblocked list at the foot of this document was then actioned, in eight
-commits, one job each: the dead-code sweep (six commits), the matter-js
+unblocked list at the foot of this document was then actioned, in **13
+commits**, one job each: the dead-code sweep (six commits), the matter-js
 lazy-load, and the doc corrections across `.claude/CLAUDE.md`, `SCRATCHPAD.md`
-and `tasks/lessons.md`. **Nothing in the "needs a ruling" list was touched**,
+and `tasks/lessons.md`. (An earlier draft of this paragraph said eight, which
+was wrong when written and is the exact error `lessons.md` records as
+"check a headline count against its own detail".) **Nothing in the "needs a ruling" list was touched**,
 and no visitor-facing copy, judgement field or Sheet cell was written.
 
 Two things changed as the work went in, and the body below is left as first
@@ -339,10 +341,9 @@ judgement fields or the Sheet.
 
 ## Final state after the work (31 August 2026)
 
-Eight commits on `main`, `34458f9` to `8cdd9db` plus this file's own update.
-The three-command gate was re-run before every one of them and is clean at the
-end: `bunx tsc --noEmit` exit 0, `bun test` 83 pass / 0 fail across 4 files,
-`bun run build` succeeds.
+**13 commits** on `main`, `34458f9..bd153b5`. The three-command gate was
+re-run before every one of them and is clean at the end: `bunx tsc --noEmit`
+exit 0, `bun test` 83 pass / 0 fail across 4 files, `bun run build` succeeds.
 
 | | before | after | change |
 |---|---|---|---|
@@ -369,5 +370,27 @@ failures caused by my own restarts of the preview server; `sw.js` and
 number 9, which the `ffcc6e9` history answered. Nothing visitor-facing was
 written, no judgement field was touched, and no Sheet cell was changed.
 
-**Not pushed.** Every commit is local. `main` is the live site and a push is
-public in about three minutes, so that call is yours.
+**Push state: eight of the 13 are already live, and I did not push them.**
+`origin/main` and `origin/overhaul/sector-axis` both sit at `41e2f4d`, my
+eighth commit. Nothing in this session ran `git push`; the parallel session
+sharing this working tree pushed local `main`, which carried my commits with
+it. This is the same shared-tree hazard `lessons.md` already records, in the
+opposite direction: there it silently pushed nothing, here it silently pushed
+someone else's work.
+
+So the dead-code sweep and the matter-js lazy-load are **public now**.
+Verified on production after the fact, by curl rather than in a browser: the
+live main chunk is 571,594 bytes against 792,060 before, it names
+`HomeGravity-DOP-x88d.js`, that chunk serves 200 as
+`application/javascript` at 221,144 bytes, and the live CSS is 35,257 bytes
+with zero references to the deleted components. The deploy is coherent.
+
+Worth knowing for anyone verifying this in a browser: a first reading showed
+different asset hashes and no `HomeGravity` chunk at all, because the **PWA
+service worker was serving a precached pre-session build**. `curl` bypasses
+the service worker; the browser does not. On this site a browser reading can
+be a fortnight old.
+
+**Five commits remain local**: the toast removal, the two doc corrections, the
+lessons entries and this report. `main` is the live site, so pushing them is
+Jasmin's call.
