@@ -107,13 +107,22 @@ Jasmin's judgement and are NEVER written by any automation or code session.
   offender; it was cut on 2026-08-26.)
 - Analytics: none. GA4 and the cookie banner were removed 2026-08-28 (commit d7221c8); the site sets no cookies, and Search Console is the measurement. If analytics ever returns, it returns with consent done properly.
 
-### Branch discipline (until F2 passes and Jasmin signs off)
+### Branch discipline (the F2 gate is spent, 2026-08-30)
 
-All overhaul work lives on `overhaul/sector-axis`. Nothing merges to main
-until F2 passes and Jasmin signs off: Vercel deploys main, and the live site
-must not change until the relaunch is ready. Every session starts with
-`git checkout overhaul/sector-axis` and confirms with
-`git rev-parse --abbrev-ref HEAD`.
+**The overhaul launched on 2026-08-30 and the gate closed behind it.** F2
+passed, Jasmin signed off, and `overhaul/sector-axis` was fast-forwarded onto
+`main`. The two are now the same commit and both are pushed to on every change:
+`git push origin overhaul/sector-axis` then
+`git push origin overhaul/sector-axis:main`.
+
+The merge went as a remote fast-forward rather than a local checkout because a
+parallel session's uncommitted files block switching to `main`. For the same
+reason, update local `main` with `git fetch origin main:main`, which moves the
+ref without touching the working tree.
+
+Sessions still work on `overhaul/sector-axis`. That is now habit and a shared
+convention, not a safety gate: **main is live, so anything pushed to it is
+public within three minutes.**
 
 ### Environment variables
 
@@ -144,10 +153,11 @@ Spreadsheet ID: `1RIO-WY9H75gML_UgdQbHGgDl-R0MfaG3CRPUp3PtAUI`
 
 Tabs: `tools`, `my_stack`, `design_kit`, `learning`, `whats_new`. Tab names
 are case-sensitive. Content changes in Sheets go live immediately, with no
-deploy, and that cuts both ways: the axis columns were populated in August
-well ahead of merge, and because `main`'s fetcher ignores them the live site
-is unaffected. What still waits is the merge, gated by F2, not a calendar
-date.
+deploy, and since the 2026-08-30 launch that cuts harder than it used to:
+`main` now runs the header-based fetcher, so **a Sheet edit to any of the
+fourteen columns is live to the public immediately, with no deploy and no
+review.** Until the merge the axis columns could be populated freely because
+main's positional fetcher ignored them. That safety net is gone.
 
 `tools` columns: A name, B category, C status (legacy, being retired),
 D cost, E verdict, F url, then G-M the seven axis fields in the order listed
@@ -234,6 +244,25 @@ zero inline `style={{}}` blocks and zero hex. **Do not put an inline hex back
 into that file**; change `index.css`. The DPIA chips are keyed off `data-flag`
 and no `[data-selected]` rule targets them, which is what keeps their locked
 colours holding on the inverted card.
+
+**The homepage About columns are a 12-column grid where both halves span 6.**
+The left column was `col-span-5` against a right column at `col-start-7`, which
+skips column 6 entirely, so the gap was an empty 48px column plus its two 64px
+gutters: 176px, not the single gutter it looks like. Widening the left column to
+`col-span-6` closes it without moving the right column, so the paragraph's line
+breaks do not shift. **Do not push the header clamp past 56px**: the fourth line
+starts at roughly 59px in a 608px column, and the 30px floor is what keeps the
+phone out of it below an 804px viewport.
+
+**Interaction states go in `index.css`, not in mouse handlers.**
+`.about-byline` is the second component to move, after ToolCard's
+`data-selected`, and the mechanism is the same both times: **an inline `style`
+declaration outranks the stylesheet**, so an inline property is what forces a
+component into JS handlers in the first place. Do not put `textDecoration` back
+into the byline's style block; it would beat the hover rule, which is precisely
+what the old `onMouseEnter`/`onMouseLeave` pair existed to work around. Hover
+and `:focus-visible` share one rule, because the mouse-only version left the
+single outbound link on the homepage with no visible state under the keyboard.
 
 **The breakpoint contract.** `MOBILE_BREAKPOINT` in `src/hooks/use-mobile.tsx`
 governs *chrome* (nav, homepage counter, hero pills, drag hint) at **1024**;
@@ -380,10 +409,14 @@ Note that `vite.config.ts` ships two visitor-facing strings in the PWA manifest
 and sits outside every copy inventory the project keeps: an audit that greps
 `src/` and `index.html` will miss them.
 
-## Current state (as at 2026-08-29)
+## Current state (as at 2026-08-31)
 
-Live site (main): unchanged old-brief site, six tool-type categories. Nothing
-from the overhaul has reached it.
+**Live site (main): the overhaul.** It launched 2026-08-30. The sector axis,
+the rebuilt ToolCard, the three toggles, the DPIA chip and the ungated policy
+template are all what a visitor now sees at theeditai.co.uk. The paragraph that
+stood here until 31 August said the live site was the unchanged old-brief site
+and that nothing from the overhaul had reached it; that was true until the
+merge and is now the opposite of the truth.
 
 Sheet: `tools` is 67 rows with headers A-N. The seven axis columns G-M are
 populated and column N (`what_it_does`) was added and filled on 2026-08-26.
@@ -444,23 +477,22 @@ Done 2026-08-28 (three commits, both code jobs ruled and copy-free):
   processing goes unmentioned; and the failures the positioning statement
   presses as the site's scarcest asset are invisible on `/tools`.
 
-Remaining before relaunch, in order:
+Remaining after launch, none of it blocking:
 1. **Content.** Fill the axis fields and verdicts for the rows still short of
-   complete, to clear the ten-row merge floor with room to spare. A4 fact pass
-   with sources, A5 verdicts against the sector rule.
-2. **Outstanding rulings.** The homepage pills (`HomeGravity`, `MAX_PILLS`)
-   and their label, and the radar tab. Not started, and deliberately untouched
-   by the 2026-08-26 session.
-3. **Capture live.** Template scrub, gated Substack post.
-4. **Merge and relaunch check**, gated by F2, not a calendar date. See F2 in
-   `reports/2026-08-22-handover-to-relaunch.md` for the gate, including the
-   hard floor of ten complete rows and the B3 re-run checklist against real
-   data.
+   complete. 23 of 67 render; the rest are the radar working as designed. A4
+   fact pass with sources, A5 verdicts against the sector rule.
+2. **Outstanding rulings.** The homepage pills (`HomeGravity`, `MAX_PILLS` and
+   a mobile cap) and their label, and the radar tab.
+3. **The Substack post and welcome email.** Post-launch, and **no longer a
+   gate**: the template gate was dropped on 2026-08-30, so nothing about the
+   download depends on the post existing.
+4. **The corrected PDF export from Word**, then re-link it. The template ships
+   Word-only until then.
+5. **The dead-code sweep**, including `src/pages/Subscribe.tsx`.
 
-Note on timing: the October window is dissolved. Launch happens when F2
-passes, not on a calendar date. The content work moved into August, and
-the merge has no fixed date attached either. Any doc that still frames
-merge or content as waiting for October is stale.
+Note on timing: both the October window and the F2 gate are gone. The site
+launched 2026-08-30. Any doc still framing merge, content or capture as
+waiting for October or for F2 is stale.
 
 Pre-existing debt not in overhaul scope: gates-audit findings (contrast,
 heading skips, matter-js weight), GA consent mode, dependency bumps. Parked,
@@ -549,8 +581,10 @@ deleted and the shared secret added.
 
 ## What Claude must not do
 
-- Never merge `overhaul/sector-axis` (or any overhaul work) to main before
-  F2 passes and Jasmin signs off
+- Never push to main without running the three-command gate first. The
+  never-merge-before-F2 rule that stood here is spent: it merged on
+  2026-08-30. What replaces it is that **main is live**, so an unbuilt or
+  unverified push is visible to the public in about three minutes
 - Never author or improvise visitor-facing copy — copy arrives as exact
   approved strings
 - Never write the judgement fields (dpia_flag, trustee_note, verdict) from

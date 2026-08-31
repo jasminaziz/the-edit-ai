@@ -197,6 +197,66 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-31 (code session: palette cleanup finished, homepage columns, byline focus)
+
+Five commits, all on `overhaul/sector-axis` and fast-forwarded to `main`, all
+live on production. Local `main` was 124 commits behind at `47a0d1e` and is now
+at `00c20e0`. It was updated with `git fetch origin main:main`, not a checkout:
+switching to `main` is still blocked by the parallel session's uncommitted
+report edits, and a ref update never touches the working tree.
+
+**Hero pills closed** (`319a43c`, `a48b2a8`). The 30 Aug periwinkle entry below
+records the pills as "not touched", still carrying `#4A4A9A` and burnt orange
+`#E8572A`. Both are now gone. The pills rotate cobalt, forest and ink, with lime
+as a roughly 1-in-8 accent. Burnt orange failed twice over: as a badge it
+carried white at 3.60:1, and against the lightened `#9B9EDE` hero it sat at
+1.42:1, close enough to the ground that it separated on hue alone. Indigo
+`#4A4A9A` had no contrast defect and was simply a colour the site never owned.
+`a48b2a8` corrected the palette *record*, which claimed burnt orange rendered
+nowhere while it was in fact colouring news category badges and hero pills, and
+scoped forest green to the In My Stack badge when it also carries the Green DPIA
+chip, the DesignKit `free` badge and one of the pills.
+
+**The cobalt hover is settled on ink `#1A1510`** (`0213f66`). Three improvised
+hovers had grown up instead: `#1A22A8` on `/learning` and `/submit`, ink on
+`/policy-template` and in the news card toggle, and a lime swap on the ToolCard.
+Ink won because it was already the majority and is locked, so nothing new
+entered the palette; white on it is 18.12:1 against 11.42:1 for `#1A22A8`.
+**This left zero off-palette hex in any rendering path**, verified per hex:
+every remaining non-palette value in `src/` sits inside a comment or in the
+unreachable `Subscribe.tsx`. If a grep turns one up in a rendering path from
+here, it is new and it is a regression.
+
+**Homepage columns and header** (`3e599b8`). The 176px gap between the two
+AboutPanel columns was arithmetic, not taste: at the 1280 cap the column unit is
+48px, and `col-span-5` plus `col-start-7` skips column 6 entirely, so the gap was
+48 + 64 + 64. Widening the left column to `col-span-6` collapses it to a single
+64px gutter **without moving the right column at all**, so the paragraph's line
+breaks do not change by a character. The wider column is what paid for the
+clamp, 46px to 56px. Measured at 1440 / 1280 / 1024 / 375: three lines
+throughout with "This helps." on its own, no horizontal scroll. The 30px floor
+binds below an 804px viewport, so the phone is untouched, which is the usual way
+oversized display type breaks. **Do not push past 56px**: the fourth line starts
+at roughly 59px in a 608px column, so there is about 5% of margin.
+
+**Byline keyboard focus** (`00c20e0`). The lime underline was applied by
+`onMouseEnter` and removed by `onMouseLeave`, so it existed for the mouse and
+not for the keyboard: the only outbound link on the homepage gave no indication
+when a reader tabbed to it. Hover and `:focus-visible` are now one rule in
+`index.css` under `.about-byline`. The inline `textDecoration` had to go with
+the handlers, because an inline declaration outranks the stylesheet and would
+have beaten the hover rule, which is exactly what the handlers were working
+around. The lime stays decoration rather than the focus indicator: it is roughly
+1.4:1 on cream, so it sits on top of the browser's own focus ring, which nothing
+outside shadcn's `ui/` components overrides, and on ink link text that carries
+the meaning by itself.
+
+**Unchanged tonight, still hers:** the thirteen parallel-session reports in
+`reports/` (three modified, ten untracked) are still uncommitted and want ruling
+on one at a time. The radar tab, `MAX_PILLS` and its mobile cap, the corrected
+PDF export from Word, the Substack post and welcome email, and the dead-code
+sweep all stand.
+
 ### 2026-08-30 RULING: periwinkle moves to #9B9EDE, and the nav is cobalt everywhere
 
 Jasmin: "I love the periwinkle and cobalt combo but we can shift the hex to

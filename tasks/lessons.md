@@ -527,3 +527,27 @@ Session corrections and rules built up over time. Add entries; do not delete his
   step earlier: the eight verdicts read unmistakably like Jasmin's voice, first
   person where earned and naming the catch, which should have prompted a second
   look before the claim was written anywhere permanent.
+
+- **A hidden browser pane freezes CSS transitions, so a mid-transition computed
+  value is an artefact (2026-08-31).** Verifying the byline focus underline, I
+  read `text-decoration-color` three times and got ink, the *start* value, when
+  the rule sets lime. It looked like the declaration was not applying. It was:
+  `document.hidden` was `true` and `requestAnimationFrame` fired **0 times in
+  700ms**, so the 200ms transition never advanced. The instant a frame ticked
+  the value resolved to `rgb(200, 240, 74)`, exactly `#C8F04A`. **Before
+  believing any computed value on a transitioned property, check
+  `document.hidden` and count frames**; timers still fire in a hidden pane, so
+  an `await setTimeout` proves nothing about whether the animation ran. This
+  belongs with the existing traps (opacity-0 reveal wrappers, `scale()` and
+  `getBoundingClientRect`, hand-mutated attributes, the physical cursor): the
+  pane is part of the fixture, not a neutral window onto the page.
+
+- **A query returning nothing is not proof the thing is absent (2026-08-31).**
+  My walk over `document.styleSheets` for rules matching `.about-byline`
+  returned an empty array, which read as "the CSS never applied". Dumping the
+  raw text of every `<style>` tag found the rule present and correct, verbatim.
+  The walk was faulty, not the code. This is the same failure as the eight-rows
+  claim one day earlier, in a different medium: **when a search comes back
+  empty, verify the search before reporting the absence**, especially when a
+  second signal already contradicts it — the underline and its 3px offset were
+  visibly applying at the time, which no default style would explain.
