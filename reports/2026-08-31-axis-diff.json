@@ -1,0 +1,92 @@
+{
+  "run": "2026-08-31",
+  "note": "Fact writes only. Three last_checked stamps where a check happened and found nothing moved, one product rename Google made on 16 July 2026 carried across both tabs that name it, and four dead or stale URLs replaced with verified live ones. No verdict, DPIA flag, trustee note, jobs or description is touched. Undo with: node scripts/sheet-write.mjs reports/2026-08-31-axis-diff.json --rollback --commit",
+  "edits": [
+    {
+      "range": "tools!M27",
+      "name": "Canva",
+      "field": "last_checked",
+      "old": "24 Aug 2026",
+      "value": "31 Aug 2026",
+      "why": "Canva's privacy policy republished 25 Aug, one day after the stored check. Diffed the superseded version (archived, itself dated 15 Apr 2026) against the live one: the data-location clause and the training clause are word for word identical. H=US and I=Varies by tier both stand. The stamp records a check that found nothing.",
+      "source": "https://www.canva.com/policies/privacy-policy/ diffed against https://www.canva.com/policies/privacy-policy-2026-08-25/"
+    },
+    {
+      "range": "tools!A40",
+      "name": "Gemini Notebook",
+      "oldName": "NotebookLM",
+      "field": "name",
+      "old": "NotebookLM",
+      "value": "Gemini Notebook",
+      "why": "Google renamed the product on 16 July 2026. Its own privacy hub calls it 'Gemini Notebook (formerly known as NotebookLM)'. Vendor fact, not a view.",
+      "source": "https://knowledge.workspace.google.com/admin/generative-ai/generative-ai-in-google-workspace-privacy-hub and https://workspaceupdates.googleblog.com/2026/07/notebooklm-now-gemini-notebook.html"
+    },
+    {
+      "range": "tools!F40",
+      "name": "Gemini Notebook",
+      "oldName": "NotebookLM",
+      "field": "url",
+      "old": "https://notebooklm.google.com",
+      "value": "https://notebook.google.com",
+      "why": "The old host redirects to the new one, and the help centre moved from support.google.com/notebooklm to support.google.com/gemininotebook. Followed 31 Aug 2026.",
+      "source": "https://notebooklm.google.com followed in a browser, lands on notebook.google.com"
+    },
+    {
+      "range": "tools!M40",
+      "name": "Gemini Notebook",
+      "oldName": "NotebookLM",
+      "field": "last_checked",
+      "old": "24 Aug 2026",
+      "value": "31 Aug 2026",
+      "why": "All four fact fields reverified and unchanged. H=Unclear is now positively evidenced rather than merely unfound: Google states data region settings do not apply to Gemini Notebook and still does not say where the data sits.",
+      "source": "https://support.google.com/gemininotebook/answer/17004255 and https://support.google.com/nonprofits/answer/16345471"
+    },
+    {
+      "range": "tools!M61",
+      "name": "Google Workspace AI",
+      "field": "last_checked",
+      "old": "25 Aug 2026",
+      "value": "31 Aug 2026",
+      "why": "The only Green row, checked every run. H=Your tenant and I=No reconfirmed verbatim. J and D reconfirmed more precisely than before: Google publishes Business Standard at 75%+ off, $3.50 per user per month on a one-year commitment, on two separate pages.",
+      "source": "https://knowledge.workspace.google.com/admin/generative-ai/generative-ai-in-google-workspace-privacy-hub, https://www.google.com/nonprofits/offerings/workspace/, https://support.google.com/nonprofits/answer/3367223"
+    },
+    {
+      "range": "learning!I2",
+      "name": "Anthropic Academy — AI Fluency Track",
+      "field": "url",
+      "old": "https://www.anthropic.com/academy",
+      "value": "https://academy.claude.com/courses/ai-fluency-framework-foundations",
+      "why": "The stored URL is a hard 404. The Academy moved to academy.claude.com and is now Claude Academy. Replacement verified live: h1 'AI Fluency: Framework & Foundations'.",
+      "source": "https://academy.claude.com/courses/ai-fluency-framework-foundations, HTTP 200, followed 31 Aug 2026"
+    },
+    {
+      "range": "learning!I3",
+      "name": "Anthropic Academy — Nonprofit Track",
+      "field": "url",
+      "old": "https://www.anthropic.com/academy",
+      "value": "https://academy.claude.com/courses/ai-fluency-for-nonprofits",
+      "why": "Same 404. The nonprofit course still exists at the new home, 9 lessons and a quiz. Replacement verified live: h1 'AI Fluency for nonprofits'.",
+      "source": "https://academy.claude.com/courses/ai-fluency-for-nonprofits, HTTP 200, followed 31 Aug 2026"
+    },
+    {
+      "range": "my_stack!E12",
+      "name": "Gemini Notebook",
+      "field": "url",
+      "old": "https://notebooklm.google.com",
+      "value": "https://notebook.google.com",
+      "why": "Same rename, same redirect. Keeps the stack row's link pointing at the live host.",
+      "source": "https://notebooklm.google.com followed in a browser, lands on notebook.google.com",
+      "oldName": "NotebookLM"
+    },
+    {
+      "range": "my_stack!A12",
+      "name": "Gemini Notebook",
+      "oldName": "NotebookLM",
+      "field": "name",
+      "old": "NotebookLM",
+      "value": "Gemini Notebook",
+      "why": "Same rename as tools row 40. Carried here so the directory and the stack page do not show two names for one product.",
+      "source": "https://knowledge.workspace.google.com/admin/generative-ai/generative-ai-in-google-workspace-privacy-hub"
+    }
+  ]
+}

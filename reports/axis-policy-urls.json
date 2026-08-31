@@ -1,0 +1,245 @@
+{
+  "_comment": "Row -> policy/trust page map for the fortnightly axis audit, Pass 1b. Baseline dates are the source page's own published last-updated date. Row numbers are tools-tab sheet rows (header is row 1). Maintained by the audit; extend it when a row joins the published set.",
+  "_baseline_run": "2026-08-30",
+  "rows": {
+    "3": {
+      "name": "HubSpot",
+      "policy": [
+        "https://legal.hubspot.com/hubspot-regional-data-hosting-policy",
+        "https://knowledge.hubspot.com/account-management/hubspot-ai-mode-training"
+      ],
+      "baseline": [
+        "2026-04-14",
+        "2026-07-10"
+      ]
+    },
+    "5": {
+      "name": "Blotato",
+      "policy": [
+        "https://www.blotato.com/privacy-policy",
+        "https://www.blotato.com/terms-of-service"
+      ],
+      "baseline": [
+        null,
+        "2026-05-18"
+      ]
+    },
+    "27": {
+      "name": "Canva",
+      "policy": [
+        "https://www.canva.com/policies/privacy-policy/",
+        "https://www.canva.com/trust/privacy/"
+      ],
+      "baseline": [
+        "2026-08-25",
+        null
+      ],
+      "note": "Diff against https://www.canva.com/policies/policy-archives/ rather than trusting the date alone."
+    },
+    "28": {
+      "name": "Adobe Creative Cloud",
+      "policy": [
+        "https://helpx.adobe.com/account/individual/terms-policies-and-regulations/content-analysis-faq.html",
+        "https://www.adobe.com/trust/creative-cloud-hosting-locations.html"
+      ],
+      "baseline": [
+        "2026-06-04",
+        "2026-07-19"
+      ]
+    },
+    "29": {
+      "name": "Adobe Express",
+      "policy": [
+        "https://helpx.adobe.com/firefly/web/get-started/learn-the-basics/adobe-firefly-faq.html"
+      ],
+      "baseline": [
+        "2025-09-02"
+      ]
+    },
+    "33": {
+      "name": "Ideogram",
+      "policy": [
+        "https://ideogram.ai/legal/privacy"
+      ],
+      "baseline": [
+        "2025-01-15"
+      ]
+    },
+    "39": {
+      "name": "Perplexity",
+      "policy": [
+        "https://www.perplexity.ai/hub/legal/privacy-notice",
+        "https://www.perplexity.ai/help-center/en/articles/11564572-data-collection-at-perplexity"
+      ],
+      "baseline": [
+        "2026-07-08",
+        "2026-07-16"
+      ]
+    },
+    "40": {
+      "name": "NotebookLM",
+      "policy": [
+        "https://support.google.com/gemininotebook/answer/17004255"
+      ],
+      "baseline": [
+        null
+      ],
+      "note": "Renamed: support.google.com/notebooklm/* now 301s to support.google.com/gemininotebook/*."
+    },
+    "41": {
+      "name": "Granola",
+      "policy": [
+        "https://docs.granola.ai/help-center/policies/privacy-policy"
+      ],
+      "baseline": [
+        "2026-07-24"
+      ]
+    },
+    "45": {
+      "name": "ElevenLabs",
+      "policy": [
+        "https://elevenlabs.io/privacy"
+      ],
+      "baseline": [
+        "2026-05-20"
+      ]
+    },
+    "46": {
+      "name": "Descript",
+      "policy": [
+        "https://descript.com/privacy",
+        "https://help.descript.com/account-and-app-settings/data-privacy"
+      ],
+      "baseline": [
+        "2025-04-14",
+        null
+      ]
+    },
+    "47": {
+      "name": "Submagic",
+      "policy": [
+        "https://submagic.co/privacy"
+      ],
+      "baseline": [
+        null
+      ]
+    },
+    "49": {
+      "name": "Seedance (ByteDance)",
+      "policy": [
+        "https://dreamina.capcut.com/clause/dreamina-privacy-policy",
+        "https://www.capcut.com/trust/privacy"
+      ],
+      "baseline": [
+        "2026-04-30",
+        null
+      ]
+    },
+    "57": {
+      "name": "Claude",
+      "policy": [
+        "https://www.anthropic.com/legal/privacy",
+        "https://privacy.claude.com/en/articles/7996890-where-are-your-servers-located-do-you-host-your-models-on-eu-servers"
+      ],
+      "baseline": [
+        "2026-07-08",
+        "2026-06-15"
+      ]
+    },
+    "58": {
+      "name": "ChatGPT",
+      "policy": [
+        "https://openai.com/policies/privacy-policy",
+        "https://openai.com/policies/row-privacy-policy/"
+      ],
+      "baseline": [
+        "2026-05-18",
+        "2026-02-06"
+      ]
+    },
+    "59": {
+      "name": "Gemini",
+      "policy": [
+        "https://support.google.com/gemini/answer/13594961"
+      ],
+      "baseline": [
+        "2026-08-10"
+      ]
+    },
+    "60": {
+      "name": "Microsoft Copilot",
+      "policy": [
+        "https://learn.microsoft.com/en-us/microsoft-365/copilot/enterprise-data-protection"
+      ],
+      "baseline": [
+        "2026-08-18"
+      ]
+    },
+    "61": {
+      "name": "Google Workspace AI",
+      "policy": [
+        "https://knowledge.workspace.google.com/admin/generative-ai/workspace-with-gemini/gemini-for-google-workspace-faq-business",
+        "https://knowledge.workspace.google.com/admin/generative-ai/generative-ai-in-google-workspace-privacy-hub"
+      ],
+      "baseline": [
+        "2026-08-26",
+        "2026-08-14"
+      ],
+      "note": "Business FAQ path now redirects to /admin/generative-ai/workspace-with-gemini. Use the body date, not the UTC footer."
+    },
+    "62": {
+      "name": "Gamma",
+      "policy": [
+        "https://gamma.app/privacy",
+        "https://help.gamma.app/en/articles/12281928-does-gamma-use-my-content-to-train-its-ai-features"
+      ],
+      "baseline": [
+        "2025-04-10",
+        null
+      ]
+    },
+    "63": {
+      "name": "Wispr Flow",
+      "policy": [
+        "https://wisprflow.ai/privacy-policy",
+        "https://docs.wisprflow.ai/articles/4709791908-understanding-privacy-mode-and-cloud-sync"
+      ],
+      "baseline": [
+        "2026-08-19",
+        null
+      ]
+    },
+    "64": {
+      "name": "Grok",
+      "policy": [
+        "https://x.ai/legal/privacy-policy"
+      ],
+      "baseline": [
+        "2026-08-24"
+      ]
+    },
+    "65": {
+      "name": "Notion AI",
+      "policy": [
+        "https://www.notion.com/help/data-residency",
+        "https://trust.notion.com"
+      ],
+      "baseline": [
+        null,
+        null
+      ]
+    },
+    "66": {
+      "name": "DeepSeek",
+      "policy": [
+        "https://cdn.deepseek.com/policies/en-US/deepseek-privacy-policy.html"
+      ],
+      "baseline": [
+        "2026-02-10"
+      ]
+    }
+  },
+  "_trap": "Google knowledge.workspace.google.com pages carry TWO dates: an editorial 'Last updated: 14 August 2026' in the body and a site-furniture footer 'Last updated 2026-08-26 UTC'. Only the editorial one means the policy moved. Reading the footer produced a false drift flag on row 61 on the 31 Aug run. Prefer the body date where both exist.",
+  "_cloudflare": "canva.com marketing paths (/en_gb/pricing, /en_gb/nonprofits) return 403 to a real headless browser, but /policies/* serves fine, and /policies/policy-archives/ gives previous versions, which is how a Canva policy change is diffed rather than guessed.",
+  "_unreachable_from_this_machine": "helpx.adobe.com and www.adobe.com: HTTP/2 protocol error in Chromium and three 90s curl timeouts with 0 bytes received, 31 Aug 2026. Rows 28 and 29 cannot be date-checked from here."
+}
