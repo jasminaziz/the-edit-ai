@@ -28,19 +28,32 @@ export const AboutPanel = () => {
     >
       <div className="max-w-[1280px] mx-auto lg:grid lg:grid-cols-12 lg:gap-x-16 lg:items-start">
         {/* The proposition, set as display type.
+
             "What this is" was here as a 28px cobalt label above a 20px hook.
             Ruled 30 Aug: the label was doing nothing the block did not already
             say, so it is gone and the hook takes its place at display scale.
             It is the h2, which is a better outline entry than a filing label:
-            a screen reader now hears the proposition rather than "What this
-            is". Chillax and cobalt because this is display type, which is what
-            the locked palette scopes cobalt to. */}
-        <div className="lg:col-span-5">
+            a screen reader hears the proposition rather than "What this is".
+            Chillax and cobalt because this is display type, which is what the
+            locked palette scopes cobalt to.
+
+            Widened from col-span-5 to col-span-6 the same day. The grid was
+            skipping column 6 entirely, because the left column spanned 5 while
+            the right started at 7, so the two sat 176px apart: the empty column
+            plus its two 64px gutters. Both are now 608px at the 1280 cap with a
+            single gutter between them, and the right column's width and line
+            breaks do not move by a character.
+
+            The wider column is what pays for the larger clamp. 56px at 1440
+            against 46px before, still three lines, and the 30px floor binds
+            below an 804px viewport so the phone is untouched. Do not push past
+            56: the fourth line starts at roughly 59px in a 608px column. */}
+        <div className="lg:col-span-6">
           <h2
             className="font-heading"
             style={{
               fontWeight: 700,
-              fontSize: "clamp(30px, 3.4vw, 46px)",
+              fontSize: "clamp(30px, calc(4.6vw - 7px), 56px)",
               lineHeight: 1.05,
               letterSpacing: "-0.02em",
               color: "#2D35C9",
