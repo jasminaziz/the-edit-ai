@@ -45,7 +45,7 @@ const PHASES: PhaseConfig[] = [
   { name: "Define Visual Direction", explainer: "Lock the building blocks. Colour, type, and icons decided here travel through everything you build." },
   { name: "Plan the Build", explainer: "Map the structure and reference the components. Everything before a single prompt is written." },
   { name: "Build the UI", explainer: "Translate the plan into screens and working interfaces." },
-  { name: "Present the Work", explainer: "Show the work properly. Device frames and scene mockups turn screenshots into something you can put in front of trustees and funders." },
+  { name: "Present the Work", explainer: "Show the work properly. Device frames and scene mockups turn screenshots into something you can put in front of a room." },
   { name: "Check Before You Ship", explainer: "Sign off before building. Contrast, accessibility, and real photography confirmed before anything goes live." },
 ];
 
