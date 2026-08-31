@@ -2599,3 +2599,66 @@ path was removed from `src/` on 22 Aug, so nothing new can have landed
 regardless.
 
 **og-image.png:** still not started (handover B5). Parked again tonight.
+
+---
+
+## Session 2026-08-31 (second) — the fortnightly axis audit, and the write path
+
+**Where we got to.** The audit ran end to end and, for the first time, wrote.
+The 30 August run could only report because no write path existed. There is one
+now, and it is committed but not pushed.
+
+**Nine cells written and live** (a Sheet edit is public in seconds, no deploy):
+`tools!M27`, `tools!A40`, `tools!F40`, `tools!M40`, `tools!M61`, `learning!I2`,
+`learning!I3`, `my_stack!A12`, `my_stack!E12`. Verified in the Sheet by re-read
+and then on production: `/tools` renders 23 cards naming Gemini Notebook, no
+`notebooklm.google.com` link survives anywhere, and `/learning` carries both new
+`academy.claude.com` URLs with no dead `anthropic.com/academy` link.
+
+**No vendor position moved.** No `data_location`, `trains_on_input`,
+`nonprofit_tier` or `cost` changed on any of the 23 published rows. Canva's
+policy republished the day after its stored check, and the archived pre-update
+version diffs word for word identical on the data-location and training clauses.
+
+**Undo the whole run with:**
+`node scripts/sheet-write.mjs reports/2026-08-31-axis-diff.json --rollback --commit`
+
+**Two commits, NOT pushed:** `84b1896` (write path) and `aacbf85` (audit).
+Note before pushing: a parallel session committed `878bafd` to this branch
+mid-run, touching `.claude/CLAUDE.md` and `tasks/lessons.md`, so a push carries
+three commits and that one is unreviewed by this session. This clone also has no
+remote-tracking refs for the branch or main, so the real gap to origin is unknown
+until someone fetches.
+
+### Next step
+
+1. **Push, once `878bafd` is ruled on.** `git fetch` first to see the true gap.
+   Pushing to main puts all three live in about three minutes.
+2. **The six judgement items**, in `reports/2026-08-31-axis-audit.md` section 1.
+   Biggest is the **Gemini Notebook trustee note** (`tools!L40`), which still
+   names NotebookLM though its substance holds and was reconfirmed verbatim.
+   Then Windsurf (row 16, URL serves Devin Desktop), Smartmockups (tools 35 and
+   design_kit 42, folded into Canva), GradeMyPrompt (learning 15) and Nano Banana
+   (tools 32) whose products are gone, and the two `learning` row names, which
+   are stale and carry em dashes.
+3. **Rule the `Unclear` conflict.** The audit spec's legal set for column I omits
+   it; the axis lock and `.claude/schema.md` include it, and rows 5 and 47 use it
+   today. `scripts/sheet-write.mjs` refuses it until ruled.
+4. **Adobe rows 28 and 29 cannot be reached from this machine at all** — four
+   attempts across three methods, `ERR_HTTP2_PROTOCOL_ERROR` and curl timeouts
+   with zero bytes. Both sit inside the "Doesn't train on your content" filter,
+   so this is the site's strongest claim with two rows behind it the pipeline
+   can no longer verify. Needs a different route before the 14 September run.
+
+### Standing state for the next audit
+
+- `reports/axis-policy-urls.json` is the row-to-policy map Pass 1b needs, 23
+  rows, 36 URLs, with baseline dates and two recorded traps (Google's double
+  date, and Canva's `/policies/*`-serves-while-`/en_gb/*`-blocks split).
+- Credential: **no key file, and there should not be one.** The org enforces
+  `iam.disableServiceAccountKeyCreation`. Run writes as:
+  `SHEETS_SA_IMPERSONATE=the-edit-audit@the-edit-490220.iam.gserviceaccount.com`
+- The whats_new Apps Script is **not** a usable write path for `tools`, and
+  should not be made into one. Separately worth noting on the security queue: its
+  `doGet` returns the entire `tools` tab, unpublished rows and draft verdicts
+  included, to anyone with the URL and no authentication at all.

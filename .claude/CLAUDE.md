@@ -76,10 +76,72 @@ colours and the three toggle rules.
 - `trustee_note` — one sentence, sayable at a board meeting
 - `last_checked` — date stamped when the fact fields were last verified
 
-Judgement split (hard rule): pricing, nonprofit tier, data location and
-training policy are machine-verifiable facts and may be maintained by
-automation with sources. The DPIA flag, trustee note and verdict are
-Jasmin's judgement and are NEVER written by any automation or code session.
+Judgement split (hard rule): **the line is whether an external source
+determines the correct value, or whether someone has to choose it.** Name, url,
+pricing, nonprofit tier, data location and training policy are
+machine-verifiable facts and may be maintained by automation with sources. The
+DPIA flag, trustee note, verdict, jobs, status and what_it_does are Jasmin's and
+are NEVER written by any automation or code session.
+
+Widened on Jasmin's ruling 2026-08-31, from a list that had name and url as
+"never writable, by any route". A vendor renaming its product is a fact, and
+facts should not queue behind a sign-off. What did not move: a URL that now
+points at a *different product* is not a link fix, it is a question about what
+the row is, and that stays hers (Windsurf, Smartmockups).
+
+## The Sheet write path
+
+`scripts/sheet-write.mjs` is the **only** path that writes to the Sheet, with 19
+tests in `scripts/sheet-write.test.mjs`. Run them with `node --test
+scripts/sheet-write.test.mjs`; `bun test` also picks them up, so the project gate
+now reports 83 across 4 files, 64 of them the app's and 19 these guards. They sit
+outside the vitest `src/**` glob deliberately: this is a script, not the app.
+
+The guard is **per tab, never a global set of column letters**. Column I is
+`url` on `learning` and `trains_on_input` on `tools`, so a global set would
+accept "No by default" as a URL. Writable: `tools` A, D, F, H, I, J, M;
+`my_stack` A and E; `design_kit` A and E; `learning` I. Refused permanently:
+everything else, including `learning` column A, because those names are
+composite labels Jasmin wrote rather than vendor strings.
+
+Four guards, each because the failure it prevents is silent:
+
+- **Every write must cite a source URL** or it is refused. A cell with no
+  citable source is an assertion, not a fact. This is the control that makes the
+  wider column list safe, not a short list.
+- **Column A is re-read immediately before sending**, and any single name
+  mismatch aborts the whole batch. `batchUpdate` addresses cells by position, so
+  a row inserted since the diff was written would send every value one row out.
+- **Every cell is re-read after writing** and printed as a receipt.
+- **A `last_checked` stamp is dropped** for any row whose other writes did not
+  land. That date is the site's claim a check happened; it is earned.
+
+`--rollback` replays a run backwards, matching on the post-write name so a
+rename can be undone too.
+
+**There is no service account key and there must not be one.** The org enforces
+`iam.disableServiceAccountKeyCreation`, which is correct and was deliberately not
+switched off. Writes run as:
+
+```
+SHEETS_SA_IMPERSONATE=the-edit-audit@the-edit-490220.iam.gserviceaccount.com
+```
+
+via gcloud impersonation, so nothing lands on disk or in the repo. That service
+account holds Editor on the Sheet. A key file and ADC remain as coded fallbacks.
+
+**A Sheet edit is more live than a git push.** The site fetches Sheets at
+runtime, so a written cell is public in seconds with no deploy, no build and no
+review. A push takes two or three minutes through Vercel and is watchable. That
+asymmetry is the reason the guards are where they are.
+
+`reports/axis-policy-urls.json` is the row-to-policy map the fortnightly audit's
+policy-date pass needs: 23 rows, 36 URLs, baseline dates, plus two recorded traps
+worth not rediscovering. Google's `knowledge.workspace` pages carry an editorial
+date in the body and a site-furniture UTC footer, and reading the footer produces
+a false drift flag; and `canva.com/policies/*` serves fine to a real browser
+while `canva.com/en_gb/*` is Cloudflare-blocked, which is what made a policy
+archive diff possible at all.
 
 ## Tech stack
 
@@ -444,6 +506,14 @@ One real observation stands, unrelated to the above: `isComplete()` gates on
 `trustee_note` and `dpia_flag` but **not** on `verdict`, so a row could in
 principle render with an empty verdict. None currently does.
 
+**Row 40 is now Gemini Notebook, and the rename is only half done.** Google
+renamed NotebookLM on 16 July 2026; the audit of 31 August wrote the new name and
+URL to `tools` row 40 and `my_stack` row 12, so the directory and the stack page
+agree. **`tools!L40`, the trustee note, still names NotebookLM.** Its substance
+is intact and was reconfirmed word for word that day, including the claim that
+Google does not publish where the documents are processed. Only the name is
+stale, and it is Jasmin's to rewrite. Do not record the rename as finished.
+
 Branch `overhaul/sector-axis`: header-based `fetchTools` reading all fourteen
 columns; the DPIA chip, job chips with contains-matching, the three sector
 toggles and `last_checked` all built and rendering against real Sheet data.
@@ -508,7 +578,13 @@ is unreachable but still on disk for the dead-code sweep, alongside
 Also parked, SCRATCHPAD queue item 1: the Routine prompt still instructs
 curl dispatch and still contains PAT 16554137 (revoke it, GitHub never sees
 it, so it is exposure with no function); the Apps Script still has no dedupe
-and no shared secret; the duplicate 3 and 6 Jul whats_new batches need
+and no shared secret, **and that understates it: its `doGet` returns the entire
+`tools` tab, unpublished rows and draft verdicts included, to anyone with the
+URL and no authentication at all** (verified 2026-08-31 with a plain curl and no
+credential). The endpoint is a read of everything, not just a write of news rows.
+The URL sits in this private repo so exposure is limited, but it is the reason
+tools writes were NOT routed through this script: making it write arbitrary cells
+would widen an already-open endpoint into the live directory; the duplicate 3 and 6 Jul whats_new batches need
 deleting by hand.
 
 ## whats_new automation

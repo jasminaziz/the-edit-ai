@@ -570,3 +570,70 @@ Session corrections and rules built up over time. Add entries; do not delete his
   wider word. Housing associations, universities, NHS trusts and foundations
   all have boards; only charities have trustees. Under that repo's CREDENTIAL
   vs GATE rule, "trustee" narrows where "board" does not.
+
+- **An animated counter's `innerText` contains every digit it could show
+  (2026-08-31).** Verifying the nine Sheet writes on production, I regexed the
+  homepage for the published count and read **9** against a known 23. The
+  counter is an odometer: its text node carries both reels, `0 1 2 3 4 5 6 7 8
+  9` twice, and the displayed value is produced by a CSS transform. My pattern
+  grabbed the last digit before the label. The authoritative check was one
+  element away, `document.querySelectorAll('.tool-card').length`, which returned
+  23 exactly. **Count the rendered things, never parse a number out of prose**,
+  and treat any digit adjacent to an animation as a reel until proven otherwise.
+  This is the same family as the hidden-pane transition trap logged above: the
+  rendering mechanism is part of the fixture.
+
+- **When a poll returns zero for the new value, check whether it also returns
+  zero for the old one (2026-08-31).** Six seconds after `domcontentloaded` I
+  found neither replacement `academy.claude.com` link on `/learning` and read it
+  as a failed write. The tell was in the same output and I nearly missed it: the
+  **old** `anthropic.com/academy` links also counted zero, and something had to
+  be there. The Sheets fetch had not resolved. **If the thing you replaced is
+  also missing, you polled too early, not wrongly.** A `waitUntil` that fires
+  before a runtime data fetch proves nothing about content on this site, because
+  every page gets its rows from Sheets after load.
+
+- **Two empty fetches produce a convincing false diff (2026-08-31).** Diffing
+  Canva's archived privacy policy against the live one, my comparison printed
+  `DATA LOCATION: CHANGED` for all three clauses. Both archive URLs had returned
+  nothing, so every clause compared `null` against real text. Had I reported it,
+  it would have been a fabricated vendor change on a published row. One of the
+  two URLs was a Cloudflare 403 and the other was fine. **A comparison must
+  assert both sides are non-empty before it is allowed to say "changed"**, and a
+  diff where *every* field changed is a fetch failure until proven otherwise.
+
+- **A 403 or 429 from a fetcher is a bot-block, not a defect (2026-08-31).**
+  Roughly two dozen of 156 URLs returned non-2xx to a plain fetch. Re-followed in
+  a real browser, almost all were healthy: Cloudflare interstitials on Canva,
+  Midjourney, Pexels and Make Academy, and Gemini and Krea failed only on a
+  fetch-library header limit. Four were genuinely dead and those were the
+  findings. **Never record a status code as a broken link without a second,
+  different signal** — and note the split this run found, that
+  `canva.com/policies/*` serves fine while `canva.com/en_gb/*` is hard-blocked,
+  so "Canva blocks us" would itself have been too coarse a conclusion.
+
+- **A page can carry two last-updated dates, and only one of them means
+  anything (2026-08-31).** The policy-date pass flagged the Green row as
+  drifting because Google's `knowledge.workspace.google.com` pages print a
+  site-furniture footer, "Last updated 2026-08-26 UTC", alongside an editorial
+  "Last updated: August 14, 2026" in the body. Only the body date means the
+  policy moved, and 14 August predated the stored check. **Prefer the body date
+  where both exist**; a footer that regenerates with the site is a build stamp.
+  Recorded in `reports/axis-policy-urls.json` under `_trap` so the next run does
+  not repeat it.
+
+- **Read access does not imply write access, and the failure arrives late
+  (2026-08-31).** The service account read the Sheet happily, which I took as
+  "shared and ready"; it was inheriting link-level view access and had never been
+  granted Editor. The 403 landed on the `batchUpdate`, after the pre-send name
+  check had already passed. No harm, because the write is a single call and
+  nothing part-landed, but **the access test must exercise the verb you intend
+  to use**, not a weaker one.
+
+- **Report the composition of a test count, not just the number (2026-08-31).**
+  I wrote "`bun test` 77 passing" into the audit report as evidence the gate was
+  clean, implying an app baseline. Sixty-four were the app's and thirteen were
+  guard tests I had written minutes earlier, which `bun test` discovers outside
+  the vitest glob. A number that includes my own new tests is not independent
+  evidence that I broke nothing. **When quoting a suite as a gate, say what is in
+  it** if the count changed because of this session's work.
