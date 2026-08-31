@@ -43,7 +43,7 @@ const Submit = () => {
             className="flex items-center justify-center w-full h-14 font-heading font-semibold text-lg rounded-lg text-primary-foreground transition-all duration-150 hover:-translate-y-0.5"
             style={{ backgroundColor: "#2D35C9", textDecoration: "none" }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.backgroundColor = "#1A22A8";
+              (e.currentTarget as HTMLElement).style.backgroundColor = "#1A1510";
               (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 16px rgba(45,53,201,0.3)";
             }}
             onMouseLeave={(e) => {

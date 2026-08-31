@@ -145,7 +145,7 @@ const Learning = () => {
                       className="inline-block self-start px-5 py-2.5 font-heading font-semibold text-[15px] rounded-lg text-primary-foreground transition-all duration-150 hover:-translate-y-0.5"
                       style={{ backgroundColor: "#2D35C9" }}
                       onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.backgroundColor = "#1A22A8";
+                        (e.currentTarget as HTMLElement).style.backgroundColor = "#1A1510";
                       }}
                       onMouseLeave={(e) => {
                         (e.currentTarget as HTMLElement).style.backgroundColor = "#2D35C9";

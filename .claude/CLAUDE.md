@@ -315,6 +315,16 @@ Colours (hex only, never names):
 - **Hero pills** (`HomeGravity.tsx`) rotate cobalt, forest and ink `#1A1510`,
   with lime as a roughly 1-in-8 accent. Indigo `#4A4A9A` was removed in the
   same pass: no contrast defect, simply a colour the site never owned.
+- **The cobalt hover is ink `#1A1510`. Ruled 2026-08-30.** A cobalt surface
+  darkens to ink on hover, white text on it at 18.12:1. Three improvised
+  hovers had grown up instead: `#1A22A8` on `/learning` and `/submit`, ink on
+  `/policy-template` and in the news card toggle, and a lime swap on the
+  ToolCard. Ink won because it was already the majority and it is locked, so
+  nothing new entered the palette. `#1A22A8` is gone.
+- **As at 2026-08-30 there is no off-palette hex left in live code.** Every
+  remaining non-palette value in `src/` sits inside an explanatory comment or
+  in `Subscribe.tsx`, which is unreachable dead code awaiting the sweep. If a
+  grep turns one up in a rendering path, it is new and it is a regression.
 - `#EEF0FB` cobalt tint, the established chip and badge background paired
   with `#2D35C9` text (index.css, ToolCard job chips, Learning). Documented
   2026-08-23: it was already in four places and missing from this list. The
