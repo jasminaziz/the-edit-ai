@@ -19,11 +19,12 @@ draft correction to SCRATCHPAD wrong and the original entry right. And the
 between 640 and 739px, so ruling 9 below is answered and the doc was simply
 behind.
 
-Gate baseline, run before anything else and not re-run since (nothing changed):
-`bunx tsc --noEmit` exit 0; `bun test` 83 pass / 0 fail across 4 files;
-`bun run build` succeeds, 792.06 kB JS (260.76 kB gzip), one chunk, the known
-matter-js size warning. **I wrote none of those 83 tests**, so the count is an
-independent baseline rather than my own work counted back at you.
+Gate baseline, taken before any of the work below: `bunx tsc --noEmit` exit 0;
+`bun test` 83 pass / 0 fail across 4 files; `bun run build` succeeds, 792.06 kB
+JS (260.76 kB gzip), one chunk, the known matter-js size warning. **I wrote none
+of those 83 tests**, so the count is an independent baseline rather than my own
+work counted back at you. The gate was re-run before every one of the eight
+commits and the final state is recorded at the end of this file.
 
 Every claim below is either a file:line, a measured number, or a production
 reading with a second confirming signal. Where I could not close something I
@@ -333,3 +334,40 @@ The doc corrections in Job 4 (six stale statements), as separate commits, one
 job each. The dead-code sweep. Lazy-loading matter-js. Adding the
 `requestAnimationFrame` mechanism to `lessons.md`. None of these touch copy,
 judgement fields or the Sheet.
+
+---
+
+## Final state after the work (31 August 2026)
+
+Eight commits on `main`, `34458f9` to `8cdd9db` plus this file's own update.
+The three-command gate was re-run before every one of them and is clean at the
+end: `bunx tsc --noEmit` exit 0, `bun test` 83 pass / 0 fail across 4 files,
+`bun run build` succeeds.
+
+| | before | after | change |
+|---|---|---|---|
+| main JS chunk | 792.06 kB | **520.66 kB** | −34% |
+| main JS, gzip | 260.76 kB | **167.94 kB** | −36% |
+| CSS | 69.84 kB | **30.83 kB** | −56% |
+| CSS, gzip | 12.92 kB | **7.13 kB** | −45% |
+| PWA precache | 845.10 KiB | **757.72 KiB** | −10% |
+| `src/components/ui/` | 51 files | **4 files** | −47 |
+
+`HomeGravity` is now a separate 220.93 kB chunk fetched only on `/`, confirmed
+in both directions against the built `dist/`.
+
+None of this was taken on a passing typecheck alone. Verified on the built
+output: `/`, `/tools`, `/my-stack`, `/policy-template` and `/privacy-policy`
+all render, `/tools` shows 23 cards and 23 DPIA chips, the homepage draws its
+18 pills and its "tools that have been through the checks" counter, and the
+policy CTA still points at `/AI-Use-Policy-Template.docx` with its `download`
+attribute intact. The only console errors were service-worker registration
+failures caused by my own restarts of the preview server; `sw.js` and
+`registerSW.js` both serve 200 from `dist/`.
+
+**Still not done, and still needing you:** all ten ruling items above except
+number 9, which the `ffcc6e9` history answered. Nothing visitor-facing was
+written, no judgement field was touched, and no Sheet cell was changed.
+
+**Not pushed.** Every commit is local. `main` is the live site and a push is
+public in about three minutes, so that call is yours.
