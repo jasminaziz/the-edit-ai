@@ -637,3 +637,39 @@ Session corrections and rules built up over time. Add entries; do not delete his
   the vitest glob. A number that includes my own new tests is not independent
   evidence that I broke nothing. **When quoting a suite as a gate, say what is in
   it** if the count changed because of this session's work.
+
+- **`git push origin main` pushes the ref named main, not what is checked out
+  (2026-08-31).** After I switched the working tree to `main`, the parallel
+  session switched it back to `overhaul/sector-axis`. Seven of my commits
+  landed there, and every `git push origin main` afterwards pushed local
+  `main` to itself: a successful no-op. My `&& echo pushed` then printed
+  "pushed", which proved the command exited 0 and nothing else. Three rules.
+  **`echo` after `&&` is not verification of anything but exit status** — the
+  push line already prints `old..new` when a ref moves, and silence under `-q`
+  means nothing moved. **Confirm a push with `git rev-parse origin/<branch>`
+  and compare it to `HEAD`.** And **re-check the branch before every commit in
+  a shared working tree**, because another session can move it under you: this
+  is the same shared-worktree hazard as the stale `index.lock` earlier the same
+  day, and it cost more because it failed silently.
+
+- **A search for the term you expect can only return instances that already
+  have it (2026-08-31).** Auditing the audience phrase, I grepped for
+  `heritage` and reported that every instance carried the full three-part
+  phrase. The PWA manifest name read "for Charity Comms", so it could not
+  appear in the results: the string had already dropped the word I was
+  searching for. **To find droppage, search the stem the instances share
+  (`charit`) and read what follows**, never the term you are hoping to see.
+  CLAUDE.md had even warned that `vite.config.ts` sits outside every copy
+  inventory; I included the file and still missed the string, because the
+  search term was wrong rather than the file list.
+
+- **Check provenance before proposing to change visitor-facing copy
+  (2026-08-31).** Two strings I was about to treat as fixable inconsistencies
+  turned out to be signed-off pack copy: "Say this to a trustee" from the B3
+  microcopy pack, "the questions your trustees will ask" from the 22 August
+  copy pack draft, and the design kit's "trustees and funders" from copy pack
+  four, three days old. **Grep `reports/` for the exact string first.** It
+  changes the ask from "shall I fix this" to "this supersedes an approved
+  string, here are the candidates", which is the honest framing and the one
+  she can rule on. Where a pack recorded no reasoning, say so, so she knows
+  she is superseding a string rather than overturning an argument.

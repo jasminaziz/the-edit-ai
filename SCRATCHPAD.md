@@ -197,6 +197,58 @@ flashes on iOS elastic scroll bounce).
 
 ## Session notes
 
+### 2026-08-31 (later: vocabulary rulings, and a silent push failure)
+
+**Read this first if you are picking up mid-stream: seven commits were sitting
+unpushed at the end of this session.** The parallel session switched the shared
+working tree back to `overhaul/sector-axis` after I checked out `main`, so my
+commits landed on the branch, and every `git push origin main` afterwards pushed
+local `main` to itself and succeeded. `main` sat at `b9acaf2` while `HEAD` was
+at `bc121a8`. Nothing was lost, but nothing was live either. Check
+`git rev-parse origin/main` against `HEAD` before believing a push.
+
+**Rulings taken, all Jasmin's.**
+
+- **Board, not trustee, where the governing body is meant.** Only charities have
+  trustees; the museum service, the university gallery and the cathedral have
+  boards, so the word un-named the readers the audience phrase exists to
+  include. `FooterEmailCapture.tsx:35` and `ToolCard.tsx:262` swapped. Both were
+  approved pack copy, so this supersedes rather than corrects.
+  `PolicyTemplate.tsx:46` keeps "trustees, funders and supporters", a
+  stakeholder list rather than the governing body, and the field stays
+  `trustee_note`.
+- **Governance vocabulary off the design kit**, and this one lands the other
+  way: "board" would have been just as wrong there, because the page is about
+  design. `DesignKit.tsx:48` now ends "put in front of a room". Two rulings,
+  two directions, deliberately not harmonised. Do not "tidy" them together.
+- **The audience phrase is out of the sitewide footer.** `FooterEmailCapture`
+  renders from `Layout.tsx:258`, so the nine-word phrase sat on every route and
+  appeared twice on one page on `/tools` and `/policy-template`. It also settled
+  finding 4 of the 29 August review, that "Free for..." read as an eligibility
+  gate implying others pay.
+- **The PWA manifest name stays "The Edit: AI Tools for Charity Comms."** I
+  changed it, framing it as a rule violation; Jasmin rejected the change and it
+  was reverted (`34b7159`, then `fd1fb38`). Her position is that the compressed
+  form is right on a constrained surface and the list of three crowds. The rule
+  is hers to move.
+
+**Working principle that came out of it:** meta strings cannot crowd each other,
+because nobody reads two. On-page copy read in sequence is where crowding is
+real. The phrase earns its length in titles, descriptions and structured data,
+and has to justify itself in body copy.
+
+**Corrected in `.claude/CLAUDE.md`, twice.** It said the axis tests whether a
+tool can be explained "to a trustee"; the shipped copy says **board**. Then my
+own fix claimed `trustee_note` never renders as a label, which is false:
+`ToolCard.tsx:262` renders one. Both were asserted without checking, the second
+inside the commit fixing the first.
+
+**Consultancy-site work ran in a parallel thread** and is not code in this repo.
+This side supplied verification against `src/`, and the useful finding was that
+the audience phrase compresses in exactly one place, `Tools.tsx:283`, a title
+tag at 58 characters against 68 for the full version. It is a SERP length trade,
+not a naming convention, so nothing on jasminaziz.co.uk should inherit it.
+
 ### 2026-08-31 (code session: palette cleanup finished, homepage columns, byline focus)
 
 Five commits, all on `overhaul/sector-axis` and fast-forwarded to `main`, all
