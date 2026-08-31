@@ -7,11 +7,24 @@ communications teams in charities, cultural organisations and heritage.
 Every tool is judged on the questions this sector has to answer before
 adopting anything: where the data sits, whether the tool trains on input,
 whether a nonprofit tier exists, whether typical use is likely to trigger a
-DPIA, and whether you could explain it to your board in one sentence
-(the shipped wording, `AboutPanel.tsx:108`; the *field* is still
-`trustee_note`, which is a schema name and never renders as a label). No
-sponsored listings, no affiliate links, and no tool appears until it has
-been through the checks.
+DPIA, and whether you could explain it to your board in one sentence (the
+shipped wording, `AboutPanel.tsx:108`). No sponsored listings, no affiliate
+links, and no tool appears until it has been through the checks.
+
+**Board or trustee is an open decision, 31 Aug 2026.** The site says both:
+three `board` (`AboutPanel.tsx:108`, `PolicyTemplate.tsx:46` and `:151`) and
+five `trustee` (`ToolCard.tsx:262`, `FooterEmailCapture.tsx:35`,
+`DesignKit.tsx:48`, `PolicyTemplate.tsx:46`, `Submit.tsx:30`), with
+`PolicyTemplate.tsx:46` using both in one paragraph. An earlier version of this
+line claimed `trustee_note` is a schema name that never renders as a label.
+**That was wrong and was asserted without checking**: `ToolCard.tsx:262` renders
+`Say this to a trustee` on every expanded card, and it is approved copy from the
+B3 microcopy pack, as is the footer string. The decision matters because only
+charities have trustees, so the word un-names the local authority museum service
+and the university gallery that the audience phrase exists to include: finding 5
+of `reports/2026-08-29-audience-phrase-proposal.md`, which called it the deepest
+finding in that review. Jasmin has agreed board should win; the replacement
+strings are hers to approve because both originals are pack copy.
 
 **The Edit is a comms resource first, with a compliance edge.** Jasmin's
 ruling, 2026-08-26, taken after an A5 verdict rewrite drifted into a set of
