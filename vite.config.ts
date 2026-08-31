@@ -21,14 +21,7 @@ export default defineConfig(({ mode }) => ({
       // Reuse the existing brand icon set as-is — never regenerate or reinterpret.
       includeAssets: ["favicon.ico", "favicon.svg", "favicon-16.png", "favicon-32.png", "favicon-64.png"],
       manifest: {
-        // The audience phrase is locked and the manifest is not exempt. This
-        // read "for Charity Comms" until 31 Aug 2026, the one form the rule
-        // forbids. It is visitor-facing, shown when the site is installed to a
-        // home screen, and it sits outside every copy inventory the project
-        // greps, which is how it survived the 29 Aug audience pass: a search
-        // for "heritage" cannot return a string that dropped the word.
-        // short_name carries the constrained case, so name can run full length.
-        name: "The Edit: AI Tools for Charity, Cultural & Heritage Comms",
+        name: "The Edit: AI Tools for Charity Comms",
         short_name: "The Edit",
         description:
           "An opinionated AI tools directory for charity, cultural and heritage comms teams. Data location, training policy and nonprofit pricing checked on every tool. No sponsored lists.",
