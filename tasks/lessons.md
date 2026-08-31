@@ -663,6 +663,63 @@ Session corrections and rules built up over time. Add entries; do not delete his
   inventory; I included the file and still missed the string, because the
   search term was wrong rather than the file list.
 
+- **The hidden-pane artefact has a cause, and it is `requestAnimationFrame`
+  (2026-08-31).** This file already records three separate encounters with the
+  same signature: zero `[data-rh]` nodes, no canonical, no JSON-LD, the static
+  homepage title, and `window.innerWidth: 0` alongside. Each time it was logged
+  as an instrument artefact and each time the mechanism was left open. It is
+  this: **react-helmet-async commits its DOM changes inside
+  `requestAnimationFrame`, and a hidden browser pane fires zero frames.** The
+  head is therefore genuinely un-injected at the moment you read it. The page is
+  not broken and helmet is not misconfigured; the commit has not run yet and,
+  while the pane stays hidden, never will.
+  The proof is cleaner than the symptom. An `await` on a rAF loop in that state
+  does not return a low frame count, it **never resolves at all** — mine hit the
+  45s tool timeout. Timers still fire, so `setTimeout` polling returns
+  confidently wrong answers, which is exactly how this keeps passing for a real
+  finding.
+  **The fix is one call: take a screenshot, which forces a paint, then read.**
+  The same page that had returned zeros then gave `innerWidth: 1280`, the
+  correct per-page title, the correct canonical and 7 `[data-rh]` nodes.
+  Two things follow. Before writing up any missing-meta finding, **check the
+  source for `HelmetProvider` first** — it is at `main.tsx:7` and has been all
+  along, which settles the question in one grep and costs nothing. And note that
+  body DOM reads stay *accurate* in this state (`.tool-card` counted 23
+  correctly while the head read as empty), so "some of my reads are obviously
+  right" is not evidence that the rest are.
+
+- **Reachability is not usage, and a delete list built from one will lie to you
+  (2026-08-31).** I generated the dead-code sweep by walking imports
+  transitively from `main.tsx`, which is the right tool for finding orphaned
+  modules and found 49 of them. But anything `App.tsx` *renders* is reachable by
+  construction, so four toast modules survived the sweep as "live", and I wrote
+  `hooks/use-toast.ts` into CLAUDE.md as "the live toast hook". Nothing in `src/`
+  calls `toast()`, `useToast`, or imports sonner. Both toasters were mounted and
+  could never fire.
+  Worse, I had SCRATCHPAD's own entry naming "two unused toast systems in
+  App.tsx" in front of me and started *correcting it* on the strength of my
+  reachability output. The check that caught it was one grep, run only because
+  the rule here is to verify a claim before committing the sentence around it.
+  **Reachability answers "is this module imported". It does not answer "does
+  this code ever run". For anything mounted rather than called, grep for the
+  call site.** Removing them was the largest single saving of the sweep, 51 kB
+  off the main chunk, because sonner is a whole library.
+
+- **A bundle split needs verifying in both directions (2026-08-31).** Lazy-loading
+  HomeGravity is the kind of change that looks right in the build output and can
+  still be wrong on the page. One direction is not enough: confirming the pills
+  still render on `/` says nothing about whether the chunk stopped shipping
+  elsewhere, and confirming the chunk is absent from `/tools` says nothing about
+  whether the feature survived. Check both — `performance.getEntriesByType('resource')`
+  filtered to `assets/*.js` names the chunks a route actually fetched — and check
+  them against the **built `dist/`**, not the dev server, which does not split or
+  purge the way the build does.
+  Related, and the reason the headline number needed hedging: the PWA plugin adds
+  the new chunk to its **precache manifest**, so the service worker still fetches
+  it in the background. The honest claim is that the split takes matter-js out of
+  the *blocking* path on every non-homepage route, not that those visitors never
+  download it.
+
 - **Check provenance before proposing to change visitor-facing copy
   (2026-08-31).** Two strings I was about to treat as fixable inconsistencies
   turned out to be signed-off pack copy: "Say this to a trustee" from the B3
