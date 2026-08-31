@@ -7,7 +7,9 @@ communications teams in charities, cultural organisations and heritage.
 Every tool is judged on the questions this sector has to answer before
 adopting anything: where the data sits, whether the tool trains on input,
 whether a nonprofit tier exists, whether typical use is likely to trigger a
-DPIA, and whether it can be explained to a trustee in one sentence. No
+DPIA, and whether you could explain it to your board in one sentence
+(the shipped wording, `AboutPanel.tsx:108`; the *field* is still
+`trustee_note`, which is a schema name and never renders as a label). No
 sponsored listings, no affiliate links, and no tool appears until it has
 been through the checks.
 

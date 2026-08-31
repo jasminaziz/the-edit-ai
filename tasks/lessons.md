@@ -551,3 +551,22 @@ Session corrections and rules built up over time. Add entries; do not delete his
   empty, verify the search before reporting the absence**, especially when a
   second signal already contradicts it — the underline and its 3px offset were
   visibly applying at the time, which no default style would explain.
+
+- **An internal doc's paraphrase of shipped copy is not the copy (2026-08-31).**
+  Writing a prompt for the consultancy site, I said the axis tests whether a
+  tool "can be explained to a trustee in one sentence". The live wording is
+  **board**, in three places (`AboutPanel.tsx:108`, `PolicyTemplate.tsx:46` and
+  `:151`). I had taken it from `.claude/CLAUDE.md`, which paraphrased it wrong,
+  and a parallel thread caught it against the deployed site. Two rules follow.
+  **Quote visitor-facing copy from `src/`, never from a project doc**, however
+  canonical that doc is on rules and architecture: it is authoritative on
+  decisions and derivative on strings. And **when a schema field and the copy
+  disagree, the field name is not the copy** — `trustee_note` is a column, it
+  has never rendered as a label, and "trustee" reaching a visitor-facing
+  sentence came purely from the field name leaking into prose. The CLAUDE.md
+  line has been corrected and now cites the file it quotes.
+
+  Worth keeping for the consultancy site specifically: "board" is also the
+  wider word. Housing associations, universities, NHS trusts and foundations
+  all have boards; only charities have trustees. Under that repo's CREDENTIAL
+  vs GATE rule, "trustee" narrows where "board" does not.
