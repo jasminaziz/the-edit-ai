@@ -1,8 +1,26 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { fetchTools, fetchWhatsNew, fetchMyStack, isComplete, type Tool, type WhatsNew, type MyStackItem } from "@/lib/sheets";
 import { parseDate } from "@/components/WhatsNewCard";
-import { HomeGravity } from "@/components/HomeGravity";
+/**
+ * HomeGravity is the only route into matter-js, via components/ui/gravity.tsx,
+ * and the hero on this page is the only thing that renders it. Imported
+ * eagerly it went into the single app chunk, so matter.min.js (83,476 bytes,
+ * roughly a tenth of the bundle) was downloaded by every visitor to /tools,
+ * /learning, the legal pages and everywhere else that never draws a pill.
+ *
+ * Lazy, it becomes its own chunk fetched only here. The fallback is null on
+ * purpose: the pills are decoration over the wordmark, so a spinner or a
+ * placeholder would be more disruptive than their absence. Nothing below
+ * shifts when they arrive, because the layer is absolutely positioned.
+ *
+ * The render is already gated on !loading, which waits for three Sheets
+ * fetches, so the chunk request overlaps with data loading rather than
+ * queueing behind it.
+ */
+const HomeGravity = lazy(() =>
+  import("@/components/HomeGravity").then((m) => ({ default: m.HomeGravity })),
+);
 import { Counter } from "@/components/ui/animated-counter";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SEO } from "@/components/SEO";
@@ -84,7 +102,11 @@ const Index = () => {
       >
         {/* Pills layer — sits IN FRONT of the headlines so they can be dragged across the type, on every device */}
         <div className="absolute inset-0 z-20">
-          {!loading && <HomeGravity names={myStack.map((i) => i.name)} />}
+          {!loading && (
+            <Suspense fallback={null}>
+              <HomeGravity names={myStack.map((i) => i.name)} />
+            </Suspense>
+          )}
         </div>
 
         {/* Typography layer */}
