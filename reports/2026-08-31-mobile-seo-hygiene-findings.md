@@ -4,12 +4,17 @@ Written 31 August 2026 against `main` at `34458f9`, as an investigation pass
 with nothing changed.
 
 **Status after Jasmin said "do all" (same session).** Everything in the
-unblocked list at the foot of this document was then actioned, in **13
-commits**, one job each: the dead-code sweep (six commits), the matter-js
-lazy-load, and the doc corrections across `.claude/CLAUDE.md`, `SCRATCHPAD.md`
-and `tasks/lessons.md`. (An earlier draft of this paragraph said eight, which
-was wrong when written and is the exact error `lessons.md` records as
-"check a headline count against its own detail".) **Nothing in the "needs a ruling" list was touched**,
+unblocked list at the foot of this document was then actioned, one job per
+commit: the dead-code sweep (six commits), the matter-js lazy-load, and the
+doc corrections across `.claude/CLAUDE.md`, `SCRATCHPAD.md` and
+`tasks/lessons.md`. The session's commits are `34458f9..HEAD`; `git log
+--oneline 34458f9..` gives the current list.
+
+Two earlier drafts of this line carried a fixed tally, first eight and then
+13, and both were stale within minutes because writing the number is itself a
+commit. A count that has to be maintained by hand goes stale and then lies,
+which is the reasoning already applied to `lastmod` in `sitemap.xml`. The
+range is stable; the tally is not. **Nothing in the "needs a ruling" list was touched**,
 and no visitor-facing copy, judgement field or Sheet cell was written.
 
 Two things changed as the work went in, and the body below is left as first
@@ -341,9 +346,9 @@ judgement fields or the Sheet.
 
 ## Final state after the work (31 August 2026)
 
-**13 commits** on `main`, `34458f9..bd153b5`. The three-command gate was
-re-run before every one of them and is clean at the end: `bunx tsc --noEmit`
-exit 0, `bun test` 83 pass / 0 fail across 4 files, `bun run build` succeeds.
+All on `main`, from `34458f9`. The three-command gate was re-run before every
+commit and is clean at the end: `bunx tsc --noEmit` exit 0, `bun test` 83 pass
+/ 0 fail across 4 files, `bun run build` succeeds.
 
 | | before | after | change |
 |---|---|---|---|
@@ -391,6 +396,6 @@ service worker was serving a precached pre-session build**. `curl` bypasses
 the service worker; the browser does not. On this site a browser reading can
 be a fortnight old.
 
-**Five commits remain local**: the toast removal, the two doc corrections, the
-lessons entries and this report. `main` is the live site, so pushing them is
+**The rest remain local**: the toast removal, the doc corrections, the lessons
+entries and this report. `main` is the live site, so pushing them is
 Jasmin's call.
