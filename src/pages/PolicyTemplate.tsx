@@ -1,4 +1,5 @@
 import { SEO } from "@/components/SEO";
+import { CobaltZone } from "@/components/CobaltZone";
 
 export default function PolicyTemplate() {
   return (
@@ -8,23 +9,25 @@ export default function PolicyTemplate() {
         description="A free, adaptable AI-use policy template for charity, cultural and heritage organisations. What to say about data, tools, DPIAs and disclosure."
         canonical="https://theeditai.co.uk/policy-template"
       />
-      {/* Hero: mirrors Subscribe */}
-      <section
-        className="relative min-h-[40vh] sm:min-h-[70vh] flex flex-col justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
-        style={{ backgroundColor: "#2D35C9" }}
-      >
-        <h1
-          className="font-heading font-bold leading-[0.78] w-full"
-          style={{
-            fontSize: "clamp(48px, 12vw, 300px)",
-            color: "#9B9EDE",
-            letterSpacing: "-0.05em",
-            marginLeft: "-0.05em",
-          }}
-        >
-          The AI-use policy template for charities
-        </h1>
-      </section>
+      {/* Was a bespoke hero mirroring the deleted Subscribe page: a full
+          sentence as the h1 at clamp(48px, 12vw, 300px), wrapping to three
+          lines, with no subheading. It was the one page not using CobaltZone,
+          so it broke the short-h1-plus-subheading shape that /tools,
+          /learning, /my-stack and /submit all share. Moved onto CobaltZone
+          1 Sep 2026 with approved copy.
+
+          It also lifts this page's heading contrast. #9B9EDE on #2D35C9
+          measures 3.38:1, which clears the 3:1 display-type floor but nothing
+          more; CobaltZone's cream #FAF8F4 on the same ground is 8.03:1.
+
+          It does NOT retire periwinkle-on-cobalt from the app. LegalPage.tsx:41
+          still sets that pair for the h1 on all three legal pages, and the
+          design audit's open homepage-wordmark ruling is separate again.
+          Neither is touched here. */}
+      <CobaltZone
+        heading="Policy Template"
+        subheading="A free, adaptable AI-use policy template for charity, cultural and heritage organisations."
+      />
 
       {/* Template section: cream */}
       <section
