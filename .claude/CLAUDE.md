@@ -863,15 +863,30 @@ snapshot against the live site. The homepage colour, pill and wordmark rulings
 are recorded in the design section above; the rest are here so they are not
 rediscovered as accidents.
 
-- **The mobile hero is composed against measured physics, not guesses.** The
-  wordmark centres (`justify-center sm:justify-end`) with `pb-24 sm:pb-16`, and
-  the "The" clamp floors at **110px** against Edit."s 160 so the two words read
-  as deliberately different sizes rather than six per cent apart. Those are one
-  decision: centring alone closed the gap from 138px to 30, which is narrower
-  than the DragHint that lives in it, and the hint landed on the type. Flex
-  centres within the content box, so the extra 56px of padding lifts the centre
-  by 28. Settled gap 58px, hint clear by 10 above and 17 below. Desktop is
-  untouched at 1280.
+- **The mobile hero is `min-h-[500px]` flat, and the wordmark sits at the top.**
+  Shortening the hero is the only thing that moves the settled pills, because
+  they fall to its floor. It was 78vh. The "The" clamp floors at **110px**
+  against Edit."s 160, so the two words read as deliberately different sizes
+  rather than six per cent apart.
+
+  **Flat, not a vh fraction, and this is the part worth keeping.** Below about
+  393px wide both type clamps sit on their floor, so the wordmark is a fixed
+  212px however tall the phone is, while a vh hero is not. At 60vh the same code
+  produced a 24px gap on a 780px phone and 64px on a 932px one. 500 is derived:
+  56 top inset + 212 wordmark + 44 gap + 188 pile.
+
+  Measured settled, gap in brackets: 320x568 (-3, pills just touch the type),
+  360x780 (29), 375x812 (38), 390x844 (63). It was 138. The remaining spread is
+  the pile rather than the viewport, since a wider phone spreads the same 16
+  pills flatter, 236px tall at 320 down to 170 at 390. **The mobile pill count
+  is the lever if that ever needs tightening, not the hero height.**
+
+  **Centring the wordmark was tried and rejected** on 1 Sep. It closed the gap
+  below by opening an identical one above. Do not reach for it again.
+
+  The DragHint lays out **inline on mobile** and stacked on desktop, at a flat
+  210px from the hero floor. Stacked it is 31px tall and the gap it lives in is
+  29 to 38, so it did not fit. Desktop is untouched at 1280.
 
   **Never measure this hero in a hidden pane.** matter-js runs on
   `requestAnimationFrame`, which does not fire when the pane is hidden, so every
