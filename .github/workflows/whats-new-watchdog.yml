@@ -17,7 +17,13 @@ name: whats_new watchdog
 
 on:
   schedule:
-    - cron: '0 12 * * *' # 12:00 UTC daily, well after the ~08:03 UTC dispatch
+    - cron: '0 12 * * 2-6' # Tue-Sat only. The Rundown publishes Mon-Fri and the
+                           # Routine processes the previous day's email, so appends
+                           # land Tue-Sat. Sun and Mon have nothing to check and were
+                           # the source of every false alarm to 30 Aug 2026 (9 of 10
+                           # alerts fell on a Sunday or Monday). The 26-hour window
+                           # stays as is: widening it would blind the watchdog to a
+                           # genuine two-day outage midweek.
   workflow_dispatch: {} # allows a manual test run
 
 permissions:
