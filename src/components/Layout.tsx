@@ -73,12 +73,27 @@ export function Layout({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("resize", updatePill);
   }, [updatePill]);
 
-  // Cobalt on every route, including home. The homepage nav used to be
-  // periwinkle, which put cream nav text at 3.40:1 and the lime Menu label at
-  // 2.75:1. Darkening periwinkle enough to rescue them would have taken it
-  // almost onto cobalt and erased the hero wordmark, so the nav gives up the
-  // periwinkle and the hero keeps it. Cream on cobalt is 8.03:1, lime 6.50:1.
-  const navBg = "#2D35C9";
+  // Periwinkle on the homepage, cobalt everywhere else. Restored 1 Sep 2026
+  // on Jasmin's ruling, reverting the 30 Aug removal.
+  //
+  // #7B7FD4, not the current #9B9EDE, and the hero at Index.tsx moves with it,
+  // because the whole point is that the header stops reading as a band across
+  // the top of the hero. A nav one step off the hero is the defect, not the
+  // fix, so the two hexes have to be identical.
+  //
+  // THIS KNOWINGLY REINSTATES THREE AA FAILURES ON THE HOMEPAGE, and they are
+  // the reason the colour was removed in the first place. Cream nav links are
+  // 3.40:1 against 4.5, the lime "Menu" label 2.75:1, and the cobalt wordmark
+  // on the hero 2.37:1 against the 3:1 display floor. Every ramp between here
+  // and a compliant periwinkle was computed before this shipped: cream and
+  // lime only both clear 4.5:1 at #4E53C6, which is so close to cobalt that
+  // the blend disappears and the wordmark falls to 1.37:1. There is no value
+  // that satisfies both, so this is a decision rather than an oversight.
+  //
+  // Scoped to the homepage deliberately. The --secondary token stays #9B9EDE,
+  // which is what keeps the legal and policy page h1s passing at 3.38:1. Do
+  // not "finish the job" by reverting the token.
+  const navBg = isHome ? "#7B7FD4" : "#2D35C9";
   const textColor = "text-primary-foreground";
   const pillBg = "bg-white";
   const pillText = "text-primary";
@@ -244,8 +259,13 @@ export function Layout({ children }: { children: ReactNode }) {
                     {...(isExternalHref(WORK_WITH_ME_HREF)
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
+                    // White on the homepage, as it was pre-merge. Lime on
+                    // periwinkle is a 1.92:1 boundary, so the pill would have
+                    // dissolved into the nav it sits on; white gives 3.60:1 and
+                    // cobalt text on it 8.52:1. Lime everywhere else, where the
+                    // nav is cobalt and lime reads at 6.50:1.
                     className={`font-body text-sm font-semibold px-5 py-2 rounded-full whitespace-nowrap transition-opacity hover:opacity-90 ${
-                      "bg-accent text-accent-foreground"
+                      isHome ? "bg-white text-primary" : "bg-accent text-accent-foreground"
                     }`}
                   >
                     Work with me
