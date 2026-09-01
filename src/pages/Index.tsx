@@ -284,7 +284,14 @@ const Index = () => {
                   fontSize={isMobile ? 56 : 80}
                   className="text-primary"
                 />
-                <p className="font-body text-[15px] text-text-secondary">tools that have been through the checks</p>
+                {/* "checked", not "passed". The eyebrow above already says THROUGH THE
+                    CHECKS, so the old caption repeated the word; this drops the
+                    repetition without moving from a process claim to an outcome
+                    one. Ruled 1 Sep 2026, and the 28 Aug positioning still holds:
+                    of the 23 rows this counts, 19 are Amber and 3 are Red, so a
+                    caption saying they "passed" would assert the opposite of what
+                    the cards say. Counted live, not taken from a report. */}
+                <p className="font-body text-[15px] text-text-secondary">tools checked so far</p>
               </>
             )}
             <Link
