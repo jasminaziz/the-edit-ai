@@ -370,9 +370,39 @@ referrer list covers **both** `theeditai.co.uk/*` and
 either host is ever removed from that list, data fetches 403 and the
 directory renders empty.
 
-Routes: `/`, `/tools`, `/my-stack`, `/design-kit`, `/learning`, `/ai-news`,
-`/policy-template`, `/submit`, `/privacy-policy`, `/terms-of-service`,
-`/cookie-policy`.
+Routes: `/`, `/tools`, `/radar`, `/my-stack`, `/design-kit`, `/learning`,
+`/ai-news`, `/policy-template`, `/submit`, `/privacy-policy`,
+`/terms-of-service`, `/cookie-policy`.
+
+**`/radar` is deliberately NOT in the main nav.** Added 1 Sep 2026 on Jasmin's
+28 August ruling that the radar gets its own tab, then kept out of the nav on
+her ruling of 1 September that it should link off `/tools` instead. It is a
+secondary view of the same directory, not a seventh destination, and a seventh
+nav item measured scrollWidth 1046 against clientWidth 1024 and silently
+clipped "Work with me" — the same failure this file records for 768-1086px. The
+signpost on `/tools` is therefore the only route in, which makes it
+load-bearing rather than decorative. It renders above the grid from `sm` up and
+below the grid beneath it, never both, because on a phone it took the first
+screen away from a reader still working out what `/tools` is.
+
+**Radar rows are selected by `!isComplete()`, never by `status === "on_radar"`.**
+Blotato and Grok are finished, published rows still carrying `on_radar` from
+before they were completed, so a status filter would list two tools that already
+live on `/tools`. `isComplete()` is the predicate the grid and the homepage
+counter already share, so a row appears on exactly one of the two pages. As at
+1 Sep: 23 render on `/tools`, 44 on `/radar`.
+
+`ToolCard` is **not** reused there. Its "THE CHECKS" heading renders
+unconditionally, above fields that are empty by definition on a radar row, so it
+would print a checks header over nothing on the one page whose point is "not
+checked yet". `RadarCard` mirrors the pre-axis tools card instead — name,
+category chip, price, a "What it is" toggle and a plain Visit link — and shares
+the real look and feel through the same `.tool-card` and `tc-*` classes. Its
+Visit link uses `tc-policy-link`, not the directory's lime `tc-visit` pill, so a
+lead does not read as a recommendation, and it carries **no IN MY STACK badge**:
+seven of the 44 rows carry `status === "in_stack"`, and that badge on a page
+saying "treat them as leads, not recommendations" was the sharpest contradiction
+on it.
 
 Three redirects, all `Navigate ... replace`: `/whats-new` to `/ai-news`,
 `/subscribe` to `/policy-template`, and `/stack` to `/tools`. None of the
@@ -479,6 +509,49 @@ is read in sequence, so that is where crowding is real and where the phrase has
 to justify itself. It now appears in visible copy in three places only:
 `AboutPanel.tsx:108`, `Tools.tsx:250` and `PolicyTemplate.tsx:46`.
 
+**`CobaltZone` carries a `helpBubble` disclosure, and its subheading is an
+`h2`.** Both added 1 Sep 2026.
+
+`helpBubble` takes `{ question, answer }` and renders a cream pill beside the
+heading that opens a white panel with a tail. It exists because Jasmin reported
+the DPIA explanation was "lost on the page" as a paragraph above the grid; that
+paragraph moved into it and the string now appears once in the tree. Only
+`Tools.tsx` passes it, and the prop is named generically rather than
+`dpiaBubble` because the component serves seven routes.
+
+Three things about it that are not obvious and cost real time:
+
+- **It is a disclosure, not a tooltip.** ARIA tooltip semantics are for
+  transient supplementary content and must not hold interactive or substantial
+  content. `src/components/ui/tooltip.tsx` survives in the tree and is the
+  wrong primitive here. Do not reach for it.
+- **The section drops `overflow-hidden` when a bubble is present**, because it
+  would clip the open panel. Safe only because the routes relying on that
+  overflow pass an illustration or the rotating `rightBadge`, and none passes a
+  bubble.
+- **The bubble sits in a flex column, not an overlay.** It was absolutely
+  positioned at `right-0` like `rightBadge`, which reserves no space, so the
+  full-width subheading ran underneath it. Padding would be a magic number that
+  breaks when the question string lengthens. Related: its old wrapper carried
+  `-translate-y-1/2`, and **a transform creates a stacking context**, so the
+  panel's `z-50` was scoped inside the wrapper's `z-20` and lost to the sticky
+  filter bar at `z-40` — which painted over the answer and looked exactly like
+  clipping.
+
+The subheading renders as `<h2>`, not `<p>`, and tool card names render as
+`<h3>` wrapping the link rather than a bare anchor. Together these close the
+documented heading-skip debt for the directory: `/tools` and `/radar` now run
+h1, h2, h3 with no level skip, where before every page went h1 straight to h3
+and 22 of 23 card names were not headings at all. Tailwind's preflight strips a
+heading's own size, weight and margin, so both render identically to what they
+replaced. Worth knowing if revisited: these subheadings are taglines rather than
+section titles, so the `h2` is a structural fix rather than a semantic ideal.
+
+`subheading` is typed `ReactNode`, not `string`, so a call site can place a line
+break inside an approved string. `/tools` uses a `<br className="hidden
+md:inline" />` after the semicolon; the rendered `textContent` is unchanged, so
+it still reads as one sentence to a screen reader.
+
 **The breakpoint contract.** `MOBILE_BREAKPOINT` in `src/hooks/use-mobile.tsx`
 governs *chrome* (nav, homepage counter, hero pills, drag hint) at **1024**;
 Tailwind's `sm:` governs *content layout* at **640**. No element should consult
@@ -513,9 +586,13 @@ reachability from `main.tsx`, not by hand:
   re-reading `Layout.tsx`: it does import `NavLink` at `:126` and `:191`, but
   **from `react-router-dom`**, not from the deleted module
 - 44 of the 51 `src/components/ui/` components, plus the duplicate
-  `ui/use-toast.ts`. Seven remain: `animated-counter`, `gravity`, `sheet`,
-  `sonner`, `toast`, `toaster`, `tooltip`. **The live toast hook is
-  `src/hooks/use-toast.ts`**, which `toaster.tsx:1` imports
+  `ui/use-toast.ts`. **Four remain: `animated-counter`, `gravity`, `sheet`,
+  `tooltip`.** Corrected 1 Sep 2026. This line previously named seven, adding
+  `sonner`, `toast` and `toaster`, and said the live toast hook was
+  `src/hooks/use-toast.ts`. None of those four files exists: the toasters went
+  in this same sweep and `App.tsx:22-27` records why, so the paragraph was
+  describing the state before its own commit. `src/hooks/` holds
+  `use-mobile.tsx` and nothing else
 - `bun.lockb` and `package-lock.json`. Deleting the stale npm lockfile is what
   actually removes the "never run `npm install` here" hazard, rather than
   restating the rule. `bun install --frozen-lockfile` still resolves clean
@@ -588,9 +665,19 @@ Colours (hex only, never names):
   it carried white at 3.60:1, and against the lightened periwinkle hero it sat
   at 1.42:1, close enough to the ground that it separated on hue alone. If it
   ever returns it needs a darker variant and a ruling.
-- **Hero pills** (`HomeGravity.tsx`) rotate cobalt, forest and ink `#1A1510`,
-  with lime as a roughly 1-in-8 accent. Indigo `#4A4A9A` was removed in the
-  same pass: no contrast defect, simply a colour the site never owned.
+- **Hero pills** (`HomeGravity.tsx`) rotate cobalt, forest, ink `#1A1510` and
+  red `#A8261C`, with lime as a roughly 1-in-8 accent. Indigo `#4A4A9A` was
+  removed in the 30 Aug pass: no contrast defect, simply a colour the site never
+  owned. **Red joined on 1 Sep 2026**, on Jasmin's ruling, restoring some of the
+  warmth burnt orange carried. It is a locked hex rather than a new one, so this
+  is the Red DPIA ink and the "Judged, not recommended" badge doing a third job;
+  that reuse has precedent, since forest already serves as a badge, a chip and a
+  pill. It was chosen over reviving burnt orange because the two converge: the
+  hero is light enough that any warm colour clearing the 2.54:1 boundary floor
+  has to be dark, and `#E8572A`'s own hue only clears it near 36% lightness,
+  which lands on `#A63512` and reads almost identically. Boundary 2.82:1, white
+  label 7.10:1. Note the rotation is indexed `h % CORE_COLOURS.length`, so
+  adding a colour reshuffles every pill, not just the new ones.
 - **The cobalt hover is ink `#1A1510`. Ruled 2026-08-30.** A cobalt surface
   darkens to ink on hover, white text on it at 18.12:1. Three improvised
   hovers had grown up instead: `#1A22A8` on `/learning` and `/submit`, ink on
@@ -630,7 +717,17 @@ The re-point changes who the site speaks to, not how it sounds.
 - No em dashes anywhere, including meta tags and OG titles
 - No inline quote marks in verdicts
 - UK English, contractions throughout
-- "Your stack" not "my stack" in all visitor-facing copy
+- "Your stack" not "my stack" in all visitor-facing copy. **This rule is
+  contradicted by live code and the conflict is unresolved.** Surfaced by the
+  design agent on 1 Sep 2026: `/my-stack`'s own h1 is "My Stack", its nav label
+  is "My Stack", its subheading is "What I'm actually using and why", and the
+  badge on both card types reads "IN MY STACK". `/radar`'s h1 is "On My Radar"
+  and follows the same first-person pattern. Either the rule is stale and was
+  superseded without being written back, or those are drift; deciding which is
+  Jasmin's and cannot be settled from source. Until it is, do not "fix" either
+  page against this line. If the persona is revisited, "On My Radar" and "My
+  Stack" should be decided together, because they are the same choice made
+  twice
 - Verdicts: direct, frank, name the catch, do not bury limitations
 - Sector precision is credibility: a DPIA is something an organisation
   does, not something a tool "needs" — the flag means typical comms use is
