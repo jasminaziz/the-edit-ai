@@ -133,20 +133,28 @@ export const ToolCard = ({
       data-dimmed={isDimmed || undefined}
       className="tool-card rounded-xl border p-4 sm:p-5 flex flex-col h-full transition-all duration-200"
     >
-      {/* Tool name as link */}
-      {tool.url ? (
-        <a
-          href={tool.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-heading font-semibold text-xl no-underline tc-primary"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {tool.name}
-        </a>
-      ) : (
-        <h3 className="font-heading font-semibold text-xl tc-primary">{tool.name}</h3>
-      )}
+      {/* Always an h3, with the link inside it rather than instead of it.
+          Ruled 1 Sep 2026: 22 of the 23 rendering rows carry a url, so the name
+          was an anchor and not a heading on all but one card, and a screen
+          reader user could not navigate the directory by heading at all. The h3
+          sits under CobaltZone's subheading, now an h2, so the page runs h1, h2,
+          h3 without a skip. Renders identically: Tailwind's preflight strips the
+          heading's own size, weight and margin. */}
+      <h3 className="font-heading font-semibold text-xl tc-primary">
+        {tool.url ? (
+          <a
+            href={tool.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="no-underline tc-primary"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {tool.name}
+          </a>
+        ) : (
+          tool.name
+        )}
+      </h3>
 
       {/* ZONE 1, explore. Description before the chips, per the restructure:
           the chips answer "which of my problems does this solve", the

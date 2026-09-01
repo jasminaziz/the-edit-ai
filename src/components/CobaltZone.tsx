@@ -252,13 +252,24 @@ export function CobaltZone({ heading, subheading, bodyText, illustration, rightB
               {heading}
             </h1>
           )}
+          {/* An h2, not a p. Ruled 1 Sep 2026. Every page using this component
+              ran its h1 straight to an h3 in the content below, skipping a
+              level, which is the documented heading-skip debt. Tailwind's
+              preflight strips a heading's default size, weight and margin, so
+              the explicit className and style below mean this renders exactly
+              as the p did.
+
+              Worth knowing if this is revisited: these subheadings are taglines
+              rather than section titles, so an h2 is a structural fix rather
+              than a semantic ideal. The alternative is a visually hidden h2
+              carrying the section's real name, which is a copy question. */}
           {subheading && (
-            <p
+            <h2
               className="font-heading font-semibold mt-3"
               style={{ fontSize: "clamp(20px, 3vw, 32px)", color: "#C8F04A" }}
             >
               {subheading}
-            </p>
+            </h2>
           )}
           {bodyText && (
             <p className="font-body text-[16px] mt-4 max-w-3xl" style={{ color: "rgba(250,248,244,0.6)" }}>

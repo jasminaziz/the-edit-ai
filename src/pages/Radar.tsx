@@ -73,19 +73,22 @@ const RadarCard = ({
       data-dimmed={isDimmed || undefined}
       className="tool-card rounded-xl border p-4 sm:p-5 flex flex-col h-full transition-all duration-200"
     >
-      {tool.url ? (
-        <a
-          href={tool.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-heading font-semibold text-xl no-underline tc-primary"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {tool.name}
-        </a>
-      ) : (
-        <h3 className="font-heading font-semibold text-xl tc-primary">{tool.name}</h3>
-      )}
+      {/* Always an h3, matching the directory card. See ToolCard for why. */}
+      <h3 className="font-heading font-semibold text-xl tc-primary">
+        {tool.url ? (
+          <a
+            href={tool.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="no-underline tc-primary"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {tool.name}
+          </a>
+        ) : (
+          tool.name
+        )}
+      </h3>
 
       {/* Category chip. tc-chip-job is the locked cobalt-on-#EEF0FB pairing,
           which is exactly what the old category chip used, so this is the
