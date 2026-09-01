@@ -148,6 +148,16 @@ const RadarCard = ({
 
       <div className="mt-auto" />
 
+      {/* A plain link, deliberately NOT the directory's lime tc-visit pill.
+          Design audit finding 1, 1 Sep 2026: the radar card was pixel-identical
+          to a vetted card right down to the CTA, so nothing on the card itself
+          distinguished a lead from a recommendation, and the absence of the
+          checks zone is a negative signal only legible by comparison.
+
+          tc-policy-link is the existing lower-commitment treatment already used
+          for the policy-template line on the directory card: cobalt on white at
+          8.52:1, lime on the inverted card at 6.50:1. Reusing it keeps the
+          hover inversion working and introduces no new colour. */}
       {tool.url && (
         <div className="mt-3 flex justify-end">
           <a
@@ -155,7 +165,7 @@ const RadarCard = ({
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="font-body inline-flex items-center min-h-[44px] text-[13px] font-medium no-underline rounded-[20px] px-5 transition-colors duration-200 tc-visit"
+            className="font-body inline-flex items-center min-h-[44px] text-[14px] font-medium no-underline hover:underline transition-colors duration-200 tc-policy-link"
           >
             Visit tool →
           </a>
