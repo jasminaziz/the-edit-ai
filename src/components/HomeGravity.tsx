@@ -5,54 +5,46 @@ import { DragHint } from "@/components/DragHint";
 /**
  * Hero pill palette. Lime is rare-only, assigned to roughly 1 in 8 pills.
  *
- * Ruled 30 Aug 2026, the last of the off-palette cleanup. Two colours left the
- * rotation and one locked colour joined it.
+ * REWRITTEN 1 Sep 2026, when the hero went back to #7B7FD4. Everything the
+ * previous version of this block reasoned about was measured against the
+ * lightened #9B9EDE, so it would have been a comment arguing with its own file.
  *
- * Burnt orange #E8572A went for two independent reasons. Its label was white
- * at 3.60:1, a real AA text failure rather than a decorative one, and against
- * the lightened hero #9B9EDE it measures 1.43:1, so it was close to
- * luminance-matched with the ground and separated from it by hue alone.
+ * The hero is now DARKER than the palette work of 30 August assumed, and that
+ * inverts the arithmetic. Fills that separated on #9B9EDE lose most of it:
+ * cobalt 3.38 to 2.37, forest 2.54 to 1.77, red 2.82 to 1.97, and the orange
+ * below 2.06 to 1.44. Light colours go the other way, so the lime accent
+ * improves from 1.92 to 2.75.
  *
- * Indigo #4A4A9A went because it was off palette and undocumented. It was not
- * a defect: 7.67:1 label, 3.05:1 boundary. It simply was not a colour this
- * site owns.
+ * So separation no longer comes from the fill. Every pill carries a 2px ink
+ * rim (see pillStyle), which fixes it at ink-on-hero, 5.03:1, whatever colour
+ * sits inside. That is a harder edge than any pill had on the lighter hero,
+ * and it is what makes the rest of this list a free choice.
  *
- * Ink joined because it is the strongest option available and it is locked:
- * white on it is 18.12:1 and it sits at 7.20:1 against the hero. Ink is already
- * used as a ground in the footer, so this is not a new role for it.
+ * Orange #C2410C replaced Red #A8261C on Jasmin's ruling. She asked for a
+ * brighter, warmer orange than the Red, which had been standing in for the
+ * retired burnt orange #E8572A since 1 Sep. It is a NEW HEX, outside the
+ * locked palette, and it is here on her explicit approval rather than by
+ * precedent. Its white label is 5.18:1. Its own fill boundary is 1.44:1, which
+ * would have been disqualifying before the rim and is now not what carries the
+ * separation.
  *
- * Forest stays. Its boundary against the lighter hero is 2.54:1, which is soft,
- * but the pills are decorative draggable objects rather than text or controls,
- * its own label passes at 6.39:1, and green against lilac separates on hue with
- * room to spare. Same reasoning for the lime accent at 1.92:1.
+ * Burnt orange #E8572A was reconsidered and still not revived: its white label
+ * is 3.60:1, a real text failure the rim does nothing about, where #C2410C's
+ * clears 4.5 comfortably.
  *
- * Red #A8261C joined on 1 Sep 2026, on Jasmin's ruling, restoring some of the
- * warmth burnt orange used to carry. It is a locked hex rather than a new one:
- * it is the Red DPIA ink and the "Judged, not recommended" badge. That reuse is
- * deliberate and has precedent, since forest green already serves as the In My
- * Stack badge, the Green DPIA chip, a DesignKit cost badge and a pill.
+ * Cobalt, forest and ink stay. Ink is the strongest of them at 5.03:1 even
+ * without the rim, and it is already a ground in the footer.
  *
- * It was chosen over reviving burnt orange because the two converge. The hero
- * is light enough that any warm colour clearing the 2.54:1 boundary floor has
- * to be dark, and #E8572A's own hue only clears it at about 36% lightness,
- * which lands on #A63512 and reads almost identically to this. Given the
- * choice between a near-identical new hex and a locked one, the locked one
- * wins.
+ * Note colourFor() indexes with `h % CORE_COLOURS.length`, so swapping a
+ * colour reshuffles every pill rather than just the one. That is expected.
  *
- * Boundary against the hero 2.82:1, above Forest's accepted 2.54:1. White label
- * 7.10:1. Both measured, not assumed.
- *
- * Note this changes every pill's colour, not just the new one: colourFor()
- * indexes with `h % CORE_COLOURS.length`, so going from three to four
- * reshuffles the whole rotation. That is expected.
- *
- * Every label pairing here now clears 4.5:1.
+ * Every label pairing here clears 4.5:1.
  */
 const CORE_COLOURS = [
   { bg: "#2D35C9", fg: "#FFFFFF" }, // Cobalt, label 8.52:1, boundary 3.38:1
   { bg: "#2D6A4F", fg: "#FFFFFF" }, // Forest, label 6.39:1, boundary 2.54:1
   { bg: "#1A1510", fg: "#FFFFFF" }, // Ink,    label 18.12:1, boundary 7.20:1
-  { bg: "#A8261C", fg: "#FFFFFF" }, // Red,    label 7.10:1, boundary 2.82:1
+  { bg: "#C2410C", fg: "#FFFFFF" }, // Orange, label 5.18:1, rim 5.03:1
 ];
 const ACCENT_COLOUR = { bg: "#C8F04A", fg: "#1A1510" }; // Lime, label 13.83:1
 
@@ -84,6 +76,15 @@ function pillStyle(label: string, isMobile: boolean): React.CSSProperties {
     fontSize: isMobile ? 13 : 15,
     padding: isMobile ? "8px 14px" : "10px 18px",
     borderRadius: 9999,
+    // 2px ink rim, added 1 Sep 2026 with the hero's return to #7B7FD4.
+    //
+    // It is what lets the darker hero, the brighter orange and "the pills
+    // still separate" all be true at once, which they cannot be on fill alone.
+    // Against #7B7FD4 the fills fall to: orange 1.44:1, forest 1.77, red 1.97,
+    // cobalt 2.37. The rim takes separation off the fill entirely and fixes it
+    // at ink-on-hero, 5.03:1, whatever colour sits inside. Every pill gains a
+    // harder edge than any of them had on the lighter hero.
+    border: "2px solid #1A1510",
     whiteSpace: "nowrap",
     userSelect: "none",
     lineHeight: 1,
@@ -99,19 +100,22 @@ function pillStyle(label: string, isMobile: boolean): React.CSSProperties {
  * settle in the bottom 160px of a 900px hero at 1440x900 with the wordmark
  * completely clear.
  *
- * Mobile 12, because the hero is short, not because the count is high. The
- * pills fall to the floor and stack, so the pile height is what matters and the
- * space available is heroHeight (78vh) minus the wordmark, which ends at 276px
- * on every phone width (the clamp floors at 120px below 428px wide).
+ * Mobile is capped because the hero is short, not because the count is high.
+ * The pills fall to the floor and stack, so the pile height is what matters and
+ * the space available is heroHeight (78vh) minus the wordmark.
  *
- *   390x844  hero 658, room 382  19 pills fit with room to spare
- *   360x780  hero 608, room 332  19 pills fit, 0 overlapping
- *   320x568  hero 443, room 167  19 pills overflow, 8 overlap the wordmark
+ * THE TABLE BELOW IS NOW A FLOOR, NOT A MEASUREMENT. It was taken when the
+ * "The" clamp floored at 120px and the wordmark ended at 276px on every phone
+ * width. That floor is 150px as of 1 Sep 2026, so the wordmark is roughly 25px
+ * taller and every "room" figure here is about 25px generous. Re-measure with
+ * the clock running before trusting it, rather than adjusting it on paper.
  *
- * So only short phones are affected, and 12 is the count whose pile fits the
- * worst case: at 320x568 it drops overlaps from 8 to 1 and leaves "The Edit."
- * fully readable. Capping is legitimate here because the pills are decoration
- * rather than a claim, per the 25 Aug ruling below.
+ *   390x844  hero 658, room ~357
+ *   360x780  hero 608, room ~307
+ *   320x568  hero 443, room ~142   the binding case
+ *
+ * So only short phones are affected. Capping is legitimate here because the
+ * pills are decoration rather than a claim, per the 25 Aug ruling below.
  *
  * MEASURE THIS WITH THE CLOCK RUNNING. matter-js advances on
  * requestAnimationFrame, so in a hidden tab or a headless pane no frames run,
@@ -122,7 +126,13 @@ function pillStyle(label: string, isMobile: boolean): React.CSSProperties {
  * ones. Pump rAF manually before believing any measurement here.
  */
 const MAX_PILLS_DESKTOP = 30;
-const MAX_PILLS_MOBILE = 12;
+// Raised 12 to 16 on 1 Sep 2026, on Jasmin's ruling, to put back the crowding
+// the merge took out: it was 18 on every device before the overhaul. 16 rather
+// than 18 halves the worst case, where the table above shows a 320x568 phone
+// has only 167px of room beneath the wordmark. Some pills will pile onto the
+// type on the smallest phones again, and that overlap is the playful read
+// rather than a defect.
+const MAX_PILLS_MOBILE = 16;
 
 /**
  * The falling pills are decoration, not a claim. Jasmin's ruling, 2026-08-25.
