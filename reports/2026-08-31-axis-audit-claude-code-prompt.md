@@ -97,7 +97,13 @@ column list, is what makes the wider boundary safe.
 === PASS 1: CHEAP SIGNALS. No LLM reasoning. Script it. ===
 
 1a. URL status. Fetch every URL in tools, my_stack, design_kit and learning
-    (~159). Record status code, final URL after redirects, and hop count.
+    (~156: 67 + 19 + 44 + 26 as at 1 Sep 2026; recount, do not trust this).
+    whats_new is deliberately excluded and this is a decision, not an
+    oversight. Ruled 1 September 2026. Its 260 rows would nearly triple this
+    pass every run, and they are a dated news archive: a link that dies six
+    months after the story ran is normal decay, not a defect in a claim the
+    site is making today. Do not add it back without a ruling.
+    Record status code, final URL after redirects, and hop count.
     Report a row ONLY if: non-2xx, or the final host differs from the stored
     host. A www or .so-to-.com redirect on the same brand is not a finding.
     Do not judge whether a redirect is "a different product" here; just report
