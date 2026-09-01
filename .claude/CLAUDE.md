@@ -139,11 +139,17 @@ The monthly discovery pass (design_kit and learning suggestions, capped, never
 writes) lives in the Cowork task alone. **It was deleted from the audit prompt
 on 2026-09-01 so the two cannot drift.** Do not re-add it here.
 
-`scripts/sheet-write.mjs` is the **only** path that writes to the Sheet, with 19
-tests in `scripts/sheet-write.test.mjs`. Run them with `node --test
-scripts/sheet-write.test.mjs`; `bun test` also picks them up, so the project gate
-now reports 83 across 4 files, 64 of them the app's and 19 these guards. They sit
-outside the vitest `src/**` glob deliberately: this is a script, not the app.
+`scripts/sheet-write.mjs` is the **only** path that writes to the Sheet, with 24
+tests in `scripts/sheet-write.test.mjs` as at 2026-09-01. Run them with `node
+--test scripts/sheet-write.test.mjs`; `bun test` also picks them up, so the
+project gate reports **88 across 4 files, 64 of them the app's and 24 these
+guards**. They sit outside the vitest `src/**` glob deliberately: this is a
+script, not the app.
+
+The guard count moves as guards are added — it went 19 to 24 on 2026-09-01 when
+`c536d5a` added the cost-string checks — so **read the split from a run rather
+than trusting the number here**, and when quoting the suite as evidence a gate
+is clean, say which side of the split changed.
 
 The guard is **per tab, never a global set of column letters**. Column I is
 `url` on `learning` and `trains_on_input` on `tools`, so a global set would
