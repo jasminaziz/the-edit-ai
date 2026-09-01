@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "@/components/Layout";
 import Index from "./pages/Index";
 import Tools from "./pages/Tools";
+import Radar from "./pages/Radar";
 import WhatsNew from "./pages/WhatsNew";
 import MyStack from "./pages/MyStack";
 import Learning from "./pages/Learning";
@@ -31,6 +32,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/tools" element={<Tools />} />
+            <Route path="/radar" element={<Radar />} />
             <Route path="/stack" element={<Navigate to="/tools" replace />} />
             <Route path="/ai-news" element={<WhatsNew />} />
             <Route path="/whats-new" element={<Navigate to="/ai-news" replace />} />
