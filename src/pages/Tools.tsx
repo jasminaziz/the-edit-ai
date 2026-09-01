@@ -314,12 +314,50 @@ const Tools = () => {
     </RevealItem>
   );
 
-  /** The grid's children: tool cards, with the template card spliced in. */
+  /**
+   * The phone's mid-grid copy of the radar signpost. Ruled 1 Sep 2026.
+   *
+   * The signpost is the only route to /radar, since the page is deliberately
+   * out of the nav, and on a phone the grid is one column, so the copy below
+   * the grid sits after roughly two dozen stacked cards. Almost nobody reaches
+   * it. This puts a second one where a reader still has momentum.
+   *
+   * sm:hidden, so it never renders alongside the desktop signpost above the
+   * grid: display:none takes it out of the accessibility tree too, so the label
+   * is not announced twice on any viewport.
+   *
+   * Same approved sentence and label as the other two, not a third string.
+   */
+  const radarGridCard = (
+    // sm:hidden goes on the RevealItem, which is the grid child, NOT on the
+    // div inside it. On the inner div the cell still existed: display:none hid
+    // the signpost but the grid slot stayed and stretched to the row height, so
+    // desktop carried a 471px hole between two cards. Measured, not assumed.
+    <RevealItem key="__radar-card" className="sm:hidden">
+      <div className="rounded-xl border p-5 h-full" style={{ borderColor: "#E8E2D8", backgroundColor: "#FFFFFF" }}>
+        {radarSignpost}
+      </div>
+    </RevealItem>
+  );
+
+  /**
+   * The grid's children: tool cards, with the template card spliced in, and on
+   * a phone the radar signpost as well.
+   *
+   * The two indices are kept apart on purpose. The template sits at 6; putting
+   * the radar there too would give a reader two CTAs back to back and neither
+   * would land. 12 is roughly halfway down the 23 published rows and leaves six
+   * cards of directory between them.
+   *
+   * Splice the later index first, or inserting at 6 shifts 12 by one.
+   */
   const gridItems = (list: Tool[]) => {
     const cards = list.map(renderCard);
     if (filtersActive) return cards;
-    const at = Math.min(6, cards.length);
-    return [...cards.slice(0, at), templateCard, ...cards.slice(at)];
+    const out = [...cards];
+    if (out.length > 12) out.splice(12, 0, radarGridCard);
+    out.splice(Math.min(6, cards.length), 0, templateCard);
+    return out;
   };
 
   return (
