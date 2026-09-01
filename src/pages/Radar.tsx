@@ -222,12 +222,25 @@ const Radar = () => {
   return (
     <>
       <SEO
-        // NOT approved copy. The 1 Sep pack supplied the h1, subheading, body
-        // and toggle label but no meta, so the title follows the site's
-        // established "<Page> | The Edit" pattern and the description reuses
-        // the approved subheading verbatim. Placeholders for Jasmin.
+        /* Written 1 Sep 2026 on Jasmin's instruction, replacing the placeholders
+           this block shipped with. Assembled from strings already approved for
+           this page rather than authored fresh: "I've spotted" and "haven't put
+           through the checks yet" are the subheading, "treat them as leads, not
+           recommendations" is the disclaimer above the grid at :290, and the
+           audience phrase is the locked adjectival form.
+
+           The title is deliberately unchanged. It pairs with "My AI Stack | The
+           Edit", which is the right register for this page's sibling, and
+           keyword-loading a route deliberately kept out of the nav would buy
+           nothing. The audience phrase goes in the description ONLY: a search
+           result shows title and description together, so putting it in both is
+           exactly the crowding the meta rule exists to avoid.
+
+           Indexed, not noindex. /radar is in sitemap.xml and the page is
+           honestly framed, so hiding a route linked from /tools would be a
+           mixed signal. noindex on this site is for /404 alone. */
         title="On My Radar | The Edit"
-        description="Tools I've spotted but haven't put through the checks yet."
+        description="AI tools I've spotted for charity, cultural and heritage comms teams but haven't put through the checks yet. Treat them as leads, not recommendations."
         canonical="https://theeditai.co.uk/radar"
       />
       <CobaltZone
