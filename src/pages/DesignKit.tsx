@@ -363,8 +363,7 @@ const DesignKitPage = () => {
         canonical="https://theeditai.co.uk/design-kit"
       />
       <CobaltZone
-        heading=""
-        twoLineHeading={{ line1: "Design Workflow", line2: "" }}
+        heading="Design Workflow"
         subheading="From blank page to build-ready."
         bodyText="The tools I use to keep taste in the process, in the order you'd actually use them. For teams making their own things with AI and wanting them to still look like your organisation."
       />
