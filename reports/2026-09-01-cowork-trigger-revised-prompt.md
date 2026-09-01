@@ -47,12 +47,20 @@ its reasoning, the caps, the audience test, the retirement rules, the
 deference to the audit on link health, and the output rules. Those are working
 and the wording is yours.
 
-**Not fixed, because it needs a ruling.** The prompt tells discovery to
-propose swaps rather than additions on the grounds that design_kit is at the
-ceiling. The 45-row ceiling in `.claude/CLAUDE.md` is set on the **directory**,
-not on design_kit, and the audit prompt's open decision 3 asks whether it
-covers the other tabs at all. design_kit is 44. So this instruction enforces
-as settled a question you have not answered. It is left conservative for now.
+**Ruled by deletion, 1 September 2026.** The prompt used to tell discovery to
+propose swaps rather than additions because design_kit was at the ceiling.
+Jasmin removed that line. The 45-row ceiling in `.claude/CLAUDE.md` is set on
+the **directory**, not on design_kit, and the audit prompt's open decision 3
+asks whether it reaches the other tabs at all; removing the line answers that
+for design_kit without needing decision 3 settled. Discovery may now propose
+additions to either tab on merit, and the caps of 5 and 5 are what bound it.
+
+**One thing to check against the live prompt.** The sentence before it still
+reads "and which existing row it displaces". That clause existed to serve the
+swap rule, so with the ceiling gone it now asks for a displacement that no
+longer has to happen. It has been left exactly as it was here, because this
+file mirrors Cowork and only the change Jasmin named was made. If the live
+prompt no longer carries it either, edit this file to match.
 
 ---
 
@@ -116,8 +124,7 @@ Hard caps, do not exceed:
 - Report only. Never write. Never draft a row's copy or verdict.
 
 For each addition: name, url, which tab, one line on why it earns a place, and
-which existing row it displaces. design_kit is at 44 rows and treated as full,
-so propose swaps, not additions.
+which existing row it displaces.
 For each retirement: name, row, and the specific reason. Superseded by
 something better, no longer free, or no longer relevant to charity comms
 teams. Never retire a row over a dead or broken link. Link health belongs to

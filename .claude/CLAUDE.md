@@ -288,9 +288,14 @@ author it.
 document had it right and there was no majority to trust. The Cowork task still
 tells discovery the tab is full on the strength of that number, and the 45-row
 ceiling it invokes is set on the **directory** in this file, not on
-`design_kit`. Whether it reaches the other tabs is the audit prompt's own open
-decision 3. **That is an unruled question being enforced as settled, and it was
-left conservative on purpose rather than quietly corrected.**
+`design_kit`.
+
+**Ruled by deletion the same day.** Jasmin removed the swaps-not-additions line
+from the Cowork prompt, so the ceiling is no longer enforced on `design_kit`
+and discovery may propose additions to either tab on merit, bounded by the caps
+of 5 and 5. The ceiling still stands where this file sets it, on the directory.
+Decision 3 in the audit prompt is therefore narrower than it was: it now only
+asks about `learning`, and nothing currently enforces a ceiling there either.
 
 ## Tech stack
 
