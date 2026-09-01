@@ -218,7 +218,17 @@ const Tools = () => {
           isSelected={isSelected}
           isDimmed={isDimmed}
           onActivate={() => setHoveredCard(tool.name)}
-          onDeactivate={() => setHoveredCard(null)}
+          // Clears only if this card is still the selected one.
+          //
+          // An unconditional setHoveredCard(null) loses a race. Moving between
+          // two cards fires the new card's activate before the old card's blur,
+          // and the old card's blur would then wipe the selection that had just
+          // been set, leaving nothing selected. Guarding on identity makes a
+          // stale deactivate a no-op. It matters more since touch selection
+          // holds, because a held card keeps focus inside it.
+          onDeactivate={() =>
+            setHoveredCard((cur) => (cur === tool.name ? null : cur))
+          }
         />
       </RevealItem>
     );
