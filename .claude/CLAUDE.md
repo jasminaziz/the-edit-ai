@@ -245,6 +245,42 @@ a false drift flag; and `canva.com/policies/*` serves fine to a real browser
 while `canva.com/en_gb/*` is Cloudflare-blocked, which is what made a policy
 archive diff possible at all.
 
+**Every surface has a link checker. Only `/tools` has a fact checker.** Mapped
+1 September 2026, after `/radar` shipped and made the question unavoidable.
+Pass 1a sweeps every URL in `tools`, `my_stack`, `design_kit` and `learning`,
+about 156 of them. Pass 1b and Pass 2, the passes that check whether a *claim*
+is still true, are both scoped by the word **published**, which the audit prompt
+defines by reimplementing `isComplete()` — and that is a `tools` predicate.
+
+So fact-checking reaches 23 rows on one tab. `my_stack`, `design_kit`,
+`learning` and all 44 radar rows publish prices, descriptions and verdicts that
+nothing re-verifies. `whats_new` is excluded from the sweep as well, ruled
+deliberately and now written into the prompt.
+
+`/radar` is the sharp end and the reason this got looked at. `RadarCard` leads
+with `verdict` on all 44 rows because `what_it_does` is empty on every one, and
+**verdict is a judgement field no automation may write**, so the audit's only
+lever on it is Pass 3, which fires when a fact moves underneath a verdict. No
+facts are checked on those rows, so that trigger is structurally unreachable.
+
+**Ruled 1 September: shrink the claim, do not extend the audit.** Checking 67
+rows instead of 23 breaks the design point that makes a quiet fortnight nearly
+free, and a cheap run is what makes it get run at all. The radar carries a
+staleness signal as a **per-card chip**, not a line above the grid, because a
+card is seen alone in a screenshot where a page-level disclaimer is not there to
+qualify it. That also closes the open "radar status chip" item with one string.
+**Still blocked on that approved string**; code sessions place copy and never
+author it.
+
+**Read row counts live, never carry them.** `design_kit` is **44**. It was 45 in
+`.claude/schema.md` and 46 in both the audit prompt and the Cowork task, so no
+document had it right and there was no majority to trust. The Cowork task still
+tells discovery the tab is full on the strength of that number, and the 45-row
+ceiling it invokes is set on the **directory** in this file, not on
+`design_kit`. Whether it reaches the other tabs is the audit prompt's own open
+decision 3. **That is an unruled question being enforced as settled, and it was
+left conservative on purpose rather than quietly corrected.**
+
 ## Tech stack
 
 - Build environment: Claude Code — local edits in `~/Developer/the-edit-ai`
