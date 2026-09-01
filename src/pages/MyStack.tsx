@@ -50,7 +50,18 @@ const FeaturedCard = ({ tool }: { tool: MyStackItem }) => {
       <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 sm:items-stretch">
         {/* Text column */}
         <div className="flex-1 min-w-0 flex flex-col">
-          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          {/* pr on mobile only, because the 48px Claude mark below is
+              position:absolute and so reserves no space: the pricing span ran
+              the full 271px content width and its last 37px sat underneath the
+              logo. Same failure as the CobaltZone help bubble.
+
+              52px is derived from the two constants in this file, not guessed:
+              the card pads 28px, the mark sits 20px from the card's right edge
+              and is 48px wide, so it intrudes (20 + 48) - 28 = 40px into the
+              content box, plus a 12px gap. The paragraph below needs nothing:
+              it starts 3px above the mark's lower edge, inside its own
+              half-leading, so no glyph is touched. */}
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 pr-[52px] sm:pr-0">
             <h2
               className="font-heading"
               style={{
