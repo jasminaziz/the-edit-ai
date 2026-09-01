@@ -303,7 +303,20 @@ const Tools = () => {
           page passes no bodyText. Adding bodyText here drags it downward. */}
       <CobaltZone
         heading="Tools"
-        subheading="Pick the tool for the job. The checks give you a head start; the final call is yours."
+        subheading={
+          <>
+            {/* Break after the semicolon on desktop so the second clause stays
+                whole. Unbroken it wrapped at "the final / call is yours.",
+                splitting a phrase across lines. The br is display:none below
+                md, where the line is short enough to wrap naturally and a
+                forced break would strand two words. The space before it is
+                kept so the sentence still reads as one string to a screen
+                reader and to textContent. */}
+            Pick the tool for the job. The checks give you a head start;{" "}
+            <br className="hidden md:inline" />
+            the final call is yours.
+          </>
+        }
         helpBubble={{
           question: "What is a DPIA?",
           answer:

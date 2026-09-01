@@ -2,7 +2,13 @@ import { ReactNode, useEffect, useId, useRef, useState } from "react";
 
 interface CobaltZoneProps {
   heading: string;
-  subheading?: string;
+  /**
+   * Widened from string to ReactNode 1 Sep 2026 so a page can control where the
+   * line breaks. /tools was breaking mid-phrase at "the final / call is yours."
+   * Copy still arrives as approved strings; this only lets a call site place a
+   * break inside one.
+   */
+  subheading?: ReactNode;
   bodyText?: string;
   illustration?: ReactNode;
   rightBadge?: string | { text: string; url: string };
