@@ -96,11 +96,15 @@ const RadarCard = ({
             {tool.category}
           </span>
         )}
-        {tool.status === "in_stack" && (
-          <span className="inline-block px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full tc-chip-stack">
-            IN MY STACK
-          </span>
-        )}
+        {/* No IN MY STACK badge here, deliberately. Ruled 1 Sep 2026.
+            Seven of the 44 radar rows carry status in_stack (Lovable, Vercel,
+            GitHub, Claude Code, Supabase, Google AI Studio, Notion), so this
+            rendered the site's strongest endorsement badge on the one page
+            whose own copy says "treat them as leads, not recommendations".
+            The badge stays on /tools, where the row has been through the
+            checks. It matters most for a card seen out of page context, in a
+            screenshot or a share, where the disclaimer above the grid is not
+            there to qualify it. Sheet data is untouched. */}
       </div>
 
       {/* Guarded: empty on all 44 rows as at 1 Sep, but it is a real column and
