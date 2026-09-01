@@ -326,14 +326,19 @@ const Index = () => {
                   fontSize={isMobile ? 56 : 80}
                   className="text-primary"
                 />
-                {/* "checked", not "passed". The eyebrow above already says THROUGH THE
-                    CHECKS, so the old caption repeated the word; this drops the
-                    repetition without moving from a process claim to an outcome
-                    one. Ruled 1 Sep 2026, and the 28 Aug positioning still holds:
-                    of the 23 rows this counts, 19 are Amber and 3 are Red, so a
-                    caption saying they "passed" would assert the opposite of what
-                    the cards say. Counted live, not taken from a report. */}
-                <p className="font-body text-[15px] text-text-secondary">tools checked so far</p>
+                {/* NO CAPTION UNDER THE NUMBER. Removed 1 Sep 2026 on Jasmin's
+                    ruling, and it is a deletion rather than a gap waiting to be
+                    filled: the "Through the checks" eyebrow above the number
+                    already names what is being counted, so any line here was
+                    restating it a third time on one small column.
+
+                    It read "tools that have been through the checks", then
+                    "tools checked so far" for an afternoon. If a caption is
+                    ever wanted again, the 28 Aug positioning still binds: the
+                    claim is "been through the checks" and never "passed",
+                    because of the 23 rows this counts, 19 are Amber and 3 are
+                    Red. Counted live off the rendered grid, not from a report,
+                    which had it at two. */}
               </>
             )}
             <Link
