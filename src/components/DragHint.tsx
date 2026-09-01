@@ -63,8 +63,18 @@ export function DragHint() {
           ? {
               left: "50%",
               transform: "translateX(-50%)",
-              bottom: "clamp(150px, 34vh, 190px)",
-              flexDirection: "column",
+              // 210px from the hero floor, flat, so the hint tracks the pile
+              // rather than the viewport: the pile rests on that floor and is
+              // 188 to 204px tall depending on how narrow the phone is. It was
+              // clamp(150px, 34vh, 190px), tuned against a 78vh hero.
+              bottom: "210px",
+              // ROW on mobile, not column. Stacked, this is 31px tall and the
+              // space it has to live in is the gap between the wordmark and the
+              // settled pills, which measures 29px on a 360px phone and 44px on
+              // a 375px one. It did not fit: it sat 2px inside the bottom of
+              // "Edit." at one width and 8px into the pile at the other.
+              // Inline it is 14px and clears both at every width tested.
+              flexDirection: "row",
               alignItems: "center",
               gap: 6,
             }
