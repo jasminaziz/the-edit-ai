@@ -968,15 +968,24 @@ Positioning and page copy are authored by Jasmin with Cowork Claude and
 arrive as exact strings (see `reports/` copy pack). Code sessions place
 strings; they never author or improvise visitor-facing copy.
 
-**Closed 2026-08-28 by copy pack four.** The homepage counter used to read
-"Passed the checks", against the ruled claim. It now reads "tools that have
-checked so far" (`Index.tsx:287`), changed from "tools that have been through
-the checks" on 1 Sep 2026 because the eyebrow above it already reads THROUGH
-THE CHECKS and the caption repeated the word. **"Passed" was ruled against
-again** in the same change: of the 23 rows the counter counts, 19 are Amber and
-3 are Red (HubSpot, Seedance, DeepSeek), counted live off the rendered grid.
-Verified 2026-08-29: the string
-"passed the checks" appears nowhere in `src/` or `index.html`.
+**Closed 2026-08-28 by copy pack four, then removed entirely 1 Sep 2026.** The
+homepage counter used to read "Passed the checks", against the ruled claim. It
+then read "tools that have been through the checks", and "tools checked so far"
+for one afternoon. **There is now no caption at all.** That column is the
+"Through the checks" eyebrow, the number, and the Browse tools link, on Jasmin's
+ruling that the eyebrow already names what is being counted and a line beneath
+it said the same thing a third time in one narrow column.
+
+An earlier version of this paragraph quoted the caption as "tools that have
+checked so far", which is a mangled string that never shipped. It was left by
+the edit that recorded the change. Quote visitor-facing copy from `src/`.
+
+**"Passed" was ruled against twice**, on 28 Aug and again on 1 Sep, and the
+constraint still binds if a caption is ever wanted again: of the 23 rows the
+counter counts, 19 are Amber and 3 are Red (HubSpot, Seedance, DeepSeek).
+Counted live off the rendered grid rather than taken from a report, which had it
+at two. Verified 2026-08-29 and again 1 Sep: the string "passed the checks"
+appears nowhere in `src/` or `index.html`.
 
 **Audience phrasing, ruled 2026-08-29** (full reasoning in
 `reports/2026-08-29-audience-phrase-proposal.md`). The three-part phrase stays
