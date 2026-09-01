@@ -78,15 +78,20 @@ export function DragHint() {
               // above it. That is the accepted end of the trade: it is an
               // aria-hidden decorative hint pointing at the pills it touches.
               bottom: "200px",
-              // ROW on mobile, not column. Stacked, this is 31px tall and the
-              // space it has to live in is the gap between the wordmark and the
-              // settled pills, which measures 29px on a 360px phone and 44px on
-              // a 375px one. It did not fit: it sat 2px inside the bottom of
-              // "Edit." at one width and 8px into the pile at the other.
-              // Inline it is 14px and clears both at every width tested.
-              flexDirection: "row",
+              // Column on both breakpoints: the arrow sits centred under the
+              // label, which is Jasmin's ruling and the original design.
+              //
+              // It briefly went inline because stacked at the old metrics it was
+              // 31px tall and did not fit the gap between the wordmark and the
+              // settled pills, which measures 29px on a 360px phone. It fits
+              // stacked now because the label carries lineHeight 1 and the gap
+              // is 4px rather than 6, which is enough. DO NOT restore the
+              // default line-height here without re-measuring the clearances:
+              // an unset line-height on a 10px label is worth about 5px on its
+              // own, and 5px is the whole margin at 360.
+              flexDirection: "column",
               alignItems: "center",
-              gap: 6,
+              gap: 4,
             }
           : {
               // Vacant space to the right of the period after "Edit."
@@ -118,6 +123,9 @@ export function DragHint() {
           fontFamily: "var(--font-body, 'Plus Jakarta Sans', sans-serif)",
           fontWeight: 600,
           fontSize: isMobile ? 10 : 12,
+          // Explicit, because the hint stacks inside a gap measured in single
+          // figures on a narrow phone. See the flexDirection note above.
+          lineHeight: 1,
           letterSpacing: 0,
           textTransform: "uppercase",
           // Lime again, 1 Sep 2026, on Jasmin's ruling, and the glow comes back
