@@ -4,7 +4,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 /**
  * Minimal "DRAG ME" affordance for the homepage pill physics.
  *
- * Style: tiny uppercase lime label + bouncing chevron arrow.
+ * Style: tiny uppercase lime label + bouncing lime chevron arrow.
  *
  * Position:
  *  - Mobile: centered above where pills settle.
@@ -94,13 +94,19 @@ export function DragHint() {
     >
       <span
         style={{
-          color: "#1A1510",
+          color: "#C8F04A",
           fontFamily: "var(--font-body, 'Plus Jakarta Sans', sans-serif)",
           fontWeight: 600,
           fontSize: isMobile ? 10 : 12,
           letterSpacing: 0,
           textTransform: "uppercase",
-          // Glow dropped with the lime: it was tuned to lime on the darker hero.
+          // Lime again, 1 Sep 2026, on Jasmin's ruling, and the glow comes back
+          // with it. Both were dropped on 30 Aug when the hero lightened to
+          // #9B9EDE; the hero is #7B7FD4 again, which is the ground the pair
+          // were tuned for. Lime measures 2.75:1 on it, so the glow is doing
+          // real work rather than decoration: this is an aria-hidden 10px
+          // decorative hint, not content, and it is Jasmin's call.
+          textShadow: "0 1px 8px rgba(26, 21, 16, 0.35), 0 0 12px rgba(200, 240, 74, 0.25)",
         }}
       >
         Drag me
@@ -111,10 +117,10 @@ export function DragHint() {
           width: arrowSize,
           height: arrowSize,
           // Down chevron (right + bottom borders, rotate 45deg).
-          borderRight: "2px solid #1A1510",
-          borderBottom: "2px solid #1A1510",
+          borderRight: "2px solid #C8F04A",
+          borderBottom: "2px solid #C8F04A",
           transform: "rotate(45deg)",
-          // Drop shadow dropped with the lime, same reason as the label.
+          filter: "drop-shadow(0 1px 6px rgba(26, 21, 16, 0.35))",
           marginRight: 0,
         }}
       />
