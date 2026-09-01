@@ -347,7 +347,7 @@ const MyStack = () => {
       <CobaltZone
         heading="My Stack"
         subheading="What I'm actually using and why."
-        bodyText="The directory is what I'd recommend for your organisation. This is everything I run myself, including the tools that build this site."
+        bodyText="These are the tools I run every day, including the ones that build this site. The tools directory is the recommended list."
       />
 
       <section className="bg-background py-10 px-6 sm:px-12">
