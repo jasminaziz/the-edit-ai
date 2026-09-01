@@ -70,7 +70,38 @@ function pillStyle(label: string, isMobile: boolean): React.CSSProperties {
   };
 }
 
-const MAX_PILLS = 18;
+/**
+ * Pill caps, split by breakpoint 1 Sep 2026. One constant could not serve both.
+ *
+ * Desktop 30, up from 18. my_stack holds 19 rows, so 18 truncated exactly one
+ * real pill; 30 is headroom for the stack to grow, not a target to fill. All 19
+ * settle in the bottom 160px of a 900px hero at 1440x900 with the wordmark
+ * completely clear.
+ *
+ * Mobile 12, because the hero is short, not because the count is high. The
+ * pills fall to the floor and stack, so the pile height is what matters and the
+ * space available is heroHeight (78vh) minus the wordmark, which ends at 276px
+ * on every phone width (the clamp floors at 120px below 428px wide).
+ *
+ *   390x844  hero 658, room 382  19 pills fit with room to spare
+ *   360x780  hero 608, room 332  19 pills fit, 0 overlapping
+ *   320x568  hero 443, room 167  19 pills overflow, 8 overlap the wordmark
+ *
+ * So only short phones are affected, and 12 is the count whose pile fits the
+ * worst case: at 320x568 it drops overlaps from 8 to 1 and leaves "The Edit."
+ * fully readable. Capping is legitimate here because the pills are decoration
+ * rather than a claim, per the 25 Aug ruling below.
+ *
+ * MEASURE THIS WITH THE CLOCK RUNNING. matter-js advances on
+ * requestAnimationFrame, so in a hidden tab or a headless pane no frames run,
+ * every pill sits at its spawn point (6-34% of hero height, i.e. across the
+ * wordmark) and nothing moves. That reads exactly like a settled pile jammed on
+ * top of the type, and it is not: it is a frozen simulation. The 1 Sep brief's
+ * mobile figures were taken that way and describe spawn positions, not resting
+ * ones. Pump rAF manually before believing any measurement here.
+ */
+const MAX_PILLS_DESKTOP = 30;
+const MAX_PILLS_MOBILE = 12;
 
 /**
  * The falling pills are decoration, not a claim. Jasmin's ruling, 2026-08-25.
@@ -84,7 +115,7 @@ const MAX_PILLS = 18;
  */
 export function HomeGravity({ names }: { names: string[] }) {
   const isMobile = useIsMobile();
-  const pills = names.slice(0, MAX_PILLS);
+  const pills = names.slice(0, isMobile ? MAX_PILLS_MOBILE : MAX_PILLS_DESKTOP);
 
   if (pills.length === 0) return null;
 
