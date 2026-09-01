@@ -4,9 +4,12 @@ Paste everything below the line into a fresh Cowork thread.
 
 ---
 
-Picking up The Edit relaunch build. The decision in force: the relaunch
-finishes before October. Read these, in order, before doing anything or asking
-me anything:
+**The October window is dissolved, launch when F2 passes; legal is signed off
+and placed; the Sheet edit pack is the paste source.**
+
+Picking up The Edit relaunch build. The decision in force: launch happens
+when F2 passes, not on a calendar date. Read these, in order, before doing
+anything or asking me anything:
 
 1. `reports/2026-08-22-pre-october-roadmap.html`, the sequencing plan: merge
    gates, sittings, sessions, dependencies.
@@ -81,10 +84,7 @@ verdicts exist, so treat the capture track as the critical path.
    it.
 5. **C2**, the template's brand and format. The format half can be decided
    without the edited draft.
-6. **F2a**, whether the homepage hero makes a checked claim or a personal one.
-   The hero names eighteen tools; three are in the directory; the counter says
-   four.
-7. **The radar**, whether it gets its own tab or stays in `tools` with blank
+6. **The radar**, whether it gets its own tab or stays in `tools` with blank
    axis fields, and confirmation that the ceiling of 45 counts published rows.
 
 Parked deliberately, do not reopen unless I raise it: widening the buyer beyond

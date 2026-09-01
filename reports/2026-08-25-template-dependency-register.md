@@ -100,9 +100,47 @@ touches rows 9 or 11 without Jasmin reading the source herself.
 These are the project's existing rule, machines maintain facts and Jasmin owns
 judgement, applied to a new surface. They do not need separate debate.
 
-## First job on the first run
+## First job on the first run — DONE 28 August 2026
 
 **Resolve and verify every source URL.** This register deliberately names
-sources rather than pasting URLs, because a register full of dead links is worse
-than no register: it reads as maintained. Only the ICO DPIA trigger page has
-been verified live so far. Verifying the rest is step one, not an afterthought.
+sources rather than pasting URLs in the table above, because a register full
+of dead links is worse than no register: it reads as maintained. All eighteen
+rows now have a live, verified URL below, dated to when it was checked.
+
+**The find that justified doing this properly.** Row 17, OSCR, was live-checked
+against `oscr.org.uk` rather than assumed from training knowledge. OSCR retired
+its "notifiable events" process on **1 April 2024** — over two years before this
+template was drafted — and replaced it with a "raise a concern" report, used
+once trustees cannot resolve the issue themselves. §14 step 3 named "notifiable
+event" by that exact word. **It was wrong the day it was written, not a future
+drift risk**, which the "Dated" severity tag on this row did not anticipate.
+Fixed in the template 28 Aug: the sentence no longer names OSCR's process by a
+retired term, and states the 2024 replacement plainly. Nothing else in the
+eighteen turned up wrong on live-checking: row 9 (CDPA s9(3), the Copyright and
+AI report) held exactly as drafted, and row 1 (trade union membership as an
+Article 9 category) checked out on the ICO's own page and was added to §5,
+which had omitted it.
+
+## Source URLs, verified 28 August 2026
+
+| Row | Live source | Note |
+|---|---|---|
+| 1 | [ICO, What is special category data?](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/lawful-basis/special-category-data/what-is-special-category-data/) | Confirms all nine categories including trade union membership, added to §5 today |
+| 2 | [ICO, When is a contract needed and why is it important?](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/accountability-and-governance/contracts-and-liabilities-between-controllers-and-processors-multi/when-is-a-contract-needed-and-why-is-it-important/) | Also covers row 6 and row 12 |
+| 3 | [ICO, What is the right of access?](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/individual-rights/right-of-access/what-is-the-right-of-access/) | Also covers row 7 |
+| 4 | UK GDPR Art 30 (statute, no ICO guidance page cited — not watchable, per the table) | |
+| 5 | [ICO, A brief guide to international transfers](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/international-transfers/a-brief-guide-to-international-transfers/) | |
+| 6 | UK GDPR Art 28(3) (statute) — see row 2's guidance page for the practical explanation | |
+| 7 | See row 3 | |
+| 8 | [ICO, Guide to accountability and governance](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/accountability-and-governance/guide-to-accountability-and-governance/) | |
+| 9 | [CDPA 1988 s9 (legislation.gov.uk)](https://www.legislation.gov.uk/ukpga/1988/48/section/9); [HSF Kramer on the March 2026 Copyright and AI report](https://www.hsfkramer.com/notes/ip/2026-03/uk-government-report-on-copyright-and-ai-concludes-more-evidence-is-needed-although-s9-3-cdpa-could-go) | Re-verified today, holds exactly as drafted. The report proposes removing s9(3) for works with no human author, while stating AI-assisted work with genuine human involvement keeps copyright — a nuance the template doesn't need since it doesn't overclaim either way |
+| 10 | Provider terms — out of scope, belongs to The Edit | |
+| 11 | [ICO, When do we need to do a DPIA?](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/accountability-and-governance/data-protection-impact-assessments-dpias/when-do-we-need-to-do-a-dpia/) | The false "this is the law, not regulator guidance" sentence flagged in the 26 Aug review was found still in the template and deleted 28 Aug |
+| 12 | See row 2 (Art 28(3)(f) is the same contract relationship) | |
+| 13 | [ICO, Guide to the data protection fee](https://ico.org.uk/for-organisations/data-protection-fee/data-protection-fee/) | Nuance for later: the page describes two different things — a genuine not-for-profit purpose exemption (narrow, self-assessed, pays nothing) and a flat £52 charity-capped tier (most charities, not a full exemption). §12's bracketed choice reads as binary; worth tightening to three states if this gets revisited, not urgent now |
+| 14 | [ICO, Personal data breaches: a guide](https://ico.org.uk/for-organisations/report-a-breach/personal-data-breach/personal-data-breaches-a-guide/) | Also covers row 15 |
+| 15 | See row 14 | |
+| 16 | [GOV.UK, How to report a serious incident in your charity](https://www.gov.uk/guidance/how-to-report-a-serious-incident-in-your-charity) | Charity Commission for England and Wales, current |
+| 17 | [OSCR, The Notifiable Events process has been replaced](https://www.oscr.org.uk/news/the-notifiable-events-process-has-been-replaced-changes-in-the-way-charities-report-important-issues-to-oscr/); [OSCR, Raise a concern](https://www.oscr.org.uk/raise-a-concern/concern-form/) | See the finding above — this is the one that turned up wrong |
+| 18 | [CCNI, Serious incident reporting](https://www.charitycommissionni.org.uk/concerns-about-a-charity/serious-incident-reporting/) | Current |
+
