@@ -8,8 +8,9 @@ import { useIsMobile } from "@/hooks/use-mobile";
  *
  * Position:
  *  - Mobile: centered above where pills settle.
- *  - Desktop: tucked into the vacant space to the right of the period
- *    after "Edit.", with the chevron centered beneath the label.
+ *  - Desktop: in the vacant strip to the right of the period after "Edit.",
+ *    64px off the right edge, with the chevron to the LEFT of the label and
+ *    pointing at the pile, which ends before it.
  *
  * Behaviour:
  *  - Hidden during the initial fall (~2s) so it doesn't compete with motion.
@@ -94,13 +95,27 @@ export function DragHint() {
               gap: 4,
             }
           : {
-              // Vacant space to the right of the period after "Edit."
-              // Period sits at ~76vw; place hint further right at ~97vw,
-              // vertically aligned with the dot (~7.7vw from hero bottom).
-              left: "clamp(720px, 97vw, 1460px)",
+              // Desktop sits in the vacant strip to the right of the period
+              // after "Edit.", which is the only clear space: measured at
+              // 1280x900 the glyphs run to x=1088 and everything left of that,
+              // above the pile, is wordmark.
+              //
+              // Anchored 64px off the right edge rather than at
+              // clamp(720px, 97vw, 1460px), which put it 11px from the edge at
+              // 1280 and read as something that had fallen off the page. 64px
+              // holds at every width because the strip only widens as the type
+              // hits its 560px cap.
+              //
+              // THE ARROW POINTS LEFT HERE, NOT DOWN, and that is the point of
+              // this block. The pile's right edge is x=1143 and the hint sits
+              // beyond it, so a down arrow pointed into empty margin: the one
+              // thing a direction cue must not do. Left aims it at the nearest
+              // pills. Mobile keeps the down arrow, because there the pile
+              // genuinely is underneath.
+              right: "64px",
               bottom: "clamp(80px, 7.7vw, 130px)",
-              transform: "translate(-50%, -50%)",
-              flexDirection: "column",
+              transform: "translateY(50%)",
+              flexDirection: "row-reverse",
               alignItems: "center",
               gap: 8,
             }),
@@ -140,14 +155,15 @@ export function DragHint() {
         Drag me
       </span>
       <div
-        className="drag-hint-arrow-down"
+        className={isMobile ? "drag-hint-arrow-down" : "drag-hint-arrow-left"}
         style={{
           width: arrowSize,
           height: arrowSize,
-          // Down chevron (right + bottom borders, rotate 45deg).
+          // Right + bottom borders make an L; rotating it turns it into a
+          // chevron. 45deg points down, 135deg points left.
           borderRight: "2px solid #C8F04A",
           borderBottom: "2px solid #C8F04A",
-          transform: "rotate(45deg)",
+          transform: isMobile ? "rotate(45deg)" : "rotate(135deg)",
           filter: "drop-shadow(0 1px 6px rgba(26, 21, 16, 0.35))",
           marginRight: 0,
         }}
@@ -157,10 +173,19 @@ export function DragHint() {
           .drag-hint-arrow-down {
             animation: dragHintBounceDown 1.4s ease-in-out infinite;
           }
+          .drag-hint-arrow-left {
+            animation: dragHintBounceLeft 1.4s ease-in-out infinite;
+          }
         }
+        /* translate(3px, 3px) is applied AFTER the rotation, so it moves along
+           the chevron's own axis and each one drifts toward its own point. */
         @keyframes dragHintBounceDown {
           0%, 100% { transform: rotate(45deg) translate(0, 0); }
           50% { transform: rotate(45deg) translate(3px, 3px); }
+        }
+        @keyframes dragHintBounceLeft {
+          0%, 100% { transform: rotate(135deg) translate(0, 0); }
+          50% { transform: rotate(135deg) translate(3px, 3px); }
         }
       `}</style>
     </div>
