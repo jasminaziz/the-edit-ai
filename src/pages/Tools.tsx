@@ -235,6 +235,41 @@ const Tools = () => {
   };
 
   /**
+   * Signpost to the radar. It is deliberately not in the main nav: it is a
+   * secondary view of this same directory rather than a seventh destination,
+   * and a seventh nav item silently clipped "Work with me" at 1024px. So this
+   * is the only way in, which makes it load-bearing rather than decorative,
+   * and it was a plain text link until Jasmin ruled on 1 Sep that it needed a
+   * clear CTA.
+   *
+   * Still no authored copy. The sentence is the radar page's own approved
+   * subheading, reused verbatim so the signpost explains what it points at,
+   * and the label is that page's approved h1 plus the trailing arrow this site
+   * uses on every forward link.
+   *
+   * Cobalt pill rather than lime: the template card in this same grid already
+   * carries the lime CTA, and two identical pills on one page compete. Hover is
+   * the locked cobalt-to-ink. Colours are Tailwind arbitrary values, not inline
+   * style, because an inline declaration would outrank the hover rule.
+   *
+   * Rendered twice, at two breakpoints, never both at once. See the two call
+   * sites below for why.
+   */
+  const radarSignpost = (
+    <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
+      <p className="font-body text-[15px] leading-relaxed m-0 text-foreground">
+        Tools I've spotted but haven't put through the checks yet.
+      </p>
+      <Link
+        to="/radar"
+        className="font-body inline-block shrink-0 no-underline text-[15px] font-semibold rounded-full px-6 py-3 bg-[#2D35C9] text-[#FAF8F4] hover:bg-[#1A1510] transition-colors duration-200"
+      >
+        On My Radar →
+      </Link>
+    </div>
+  );
+
+  /**
    * C4(a), approved copy. Sits after the sixth tool card, or at the end when
    * the grid is shorter, and only when no filter is active: someone who has
    * narrowed to "DPIA unlikely plus nonprofit pricing" is working, and a promo
@@ -328,34 +363,15 @@ const Tools = () => {
 
       <section className="bg-background py-10 px-6 sm:px-12 pb-[72px]">
         <div className="max-w-[1280px] mx-auto">
-          {/* Signpost to the radar. It is deliberately not in the main nav: it
-              is a secondary view of this same directory rather than a seventh
-              destination, and a seventh nav item silently clipped "Work with
-              me" at 1024px. So this is the only way in, which makes it
-              load-bearing rather than decorative, and it was a plain text link
-              until Jasmin ruled on 1 Sep that it needed a clear CTA.
+          {/* Above the grid from sm up only. Ruled 1 Sep: on a phone this
+              cannot sit at the top, because it takes the first screen away
+              from a reader still working out what /tools is. Below sm the
+              same signpost renders after the grid instead.
 
-              Still no authored copy. The sentence is the radar page's own
-              approved subheading, reused verbatim so the signpost explains
-              what it points at, and the label is that page's approved h1 plus
-              the trailing arrow this site uses on every forward link.
-
-              Cobalt pill rather than lime: the template card further down this
-              same grid already carries the lime CTA, and two identical pills on
-              one page compete. Hover is the locked cobalt-to-ink. Colours are
-              Tailwind arbitrary values, not inline style, because an inline
-              declaration would outrank the hover rule. */}
-          <div className="mb-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
-            <p className="font-body text-[15px] leading-relaxed m-0 text-foreground">
-              Tools I've spotted but haven't put through the checks yet.
-            </p>
-            <Link
-              to="/radar"
-              className="font-body inline-block shrink-0 no-underline text-[15px] font-semibold rounded-full px-6 py-3 bg-[#2D35C9] text-[#FAF8F4] hover:bg-[#1A1510] transition-colors duration-200"
-            >
-              On My Radar →
-            </Link>
-          </div>
+              sm, not the 1024 JS hook: the breakpoint contract is that
+              Tailwind sm governs content layout and MOBILE_BREAKPOINT governs
+              chrome, and no element consults both. This is content. */}
+          <div className="hidden sm:block mb-8">{radarSignpost}</div>
 
           {loading ? (
             <LoadingSpinner />
@@ -371,6 +387,11 @@ const Tools = () => {
               {gridItems(filtered)}
             </RevealGroup>
           )}
+
+          {/* The phone's copy of the signpost, below the grid. Only one of the
+              two is ever in the layout: the other is display:none, so it is out
+              of the accessibility tree too and nothing is announced twice. */}
+          <div className="sm:hidden mt-12">{radarSignpost}</div>
         </div>
       </section>
     </>
