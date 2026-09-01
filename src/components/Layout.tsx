@@ -1,6 +1,6 @@
 import { NavLink, useLocation, Link } from "react-router-dom";
 import { ReactNode, useEffect, useState, useRef, useCallback } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowUp } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { FooterEmailCapture } from "@/components/FooterEmailCapture";
@@ -28,13 +28,25 @@ export function Layout({ children }: { children: ReactNode }) {
   const navRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const navContainerRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const [pillStyle, setPillStyle] = useState<{ left: number; width: number; visible: boolean }>({ left: 0, width: 0, visible: false });
 
   // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
     scrollRef.current?.scrollTo(0, 0);
+    setShowScrollTop(false);
   }, [location.pathname]);
+
+  // Same 300px trigger as the consultancy site, read off the inner pane
+  // rather than off window. Passive because it only reads scrollTop.
+  useEffect(() => {
+    const pane = scrollRef.current;
+    if (!pane) return;
+    const onScroll = () => setShowScrollTop(pane.scrollTop > 300);
+    pane.addEventListener("scroll", onScroll, { passive: true });
+    return () => pane.removeEventListener("scroll", onScroll);
+  }, []);
 
   const updatePill = useCallback(() => {
     const activeItem = navItems.find((item) =>
@@ -244,6 +256,37 @@ export function Layout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </nav>
+
+      {/* Back to top. The pattern is the consultancy site's
+          (~/Developer/jasmin-aziz: scroll-top.js plus .scroll-top-btn), reused
+          rather than rebuilt: same 300px trigger, same 48px circle bottom-right,
+          same reduced-motion fallback, same aria-label.
+
+          ONE THING HAD TO CHANGE, and it is the whole reason a straight port
+          would have shipped dead. That script listens on `window` scroll and
+          calls `window.scrollTo`. This site locks body scroll and scrolls an
+          inner pane instead, so window.scrollY is 0 no matter how far down the
+          page you are: verified with the pane at scrollTop 800 and
+          window.scrollY still 0. Both halves therefore read and write
+          scrollRef, the same element the route-change reset above already uses.
+
+          Gated on isMobile, which is the 1024 chrome hook, because this is
+          chrome. It does not also consult a Tailwind breakpoint, per the
+          breakpoint contract. */}
+      {isMobile && showScrollTop && (
+        <button
+          type="button"
+          aria-label="Back to top"
+          onClick={() => {
+            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            scrollRef.current?.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+          }}
+          className="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full flex items-center justify-center border-none cursor-pointer text-white bg-[#2D35C9] hover:bg-[#1A1510] transition-colors duration-200"
+          style={{ boxShadow: "0 2px 8px rgba(26, 21, 16, 0.18)" }}
+        >
+          <ArrowUp size={22} aria-hidden="true" />
+        </button>
+      )}
 
       <div
         id="app-scroll"
