@@ -770,7 +770,12 @@ Colours (hex only, never names):
   the legal and policy `h1`s passing at 3.38:1. Do not "finish the job" by
   reverting the token: that breaks four pages nobody asked about.
 - `#C8F04A` electric lime (accent/punctuation only — never a category
-  colour or badge) · `#1A1510` text · `#9A8F82` muted · `#E8E2D8` borders
+  colour or badge, **and never a section ground**). The one breach is gone:
+  `/my-stack` carried a full-width lime "How I built this" band until 1 Sep
+  2026, measuring 249,600px2 against 6,480 for the next largest lime element on
+  the same page. A 38x outlier is the measurement that settles whether
+  something is an accent, so take it if this is ever in question. Largest lime
+  on any page is now a CTA at roughly 160x40. · `#1A1510` text · `#9A8F82` muted · `#E8E2D8` borders
 - `#6B625A` secondary text, token `--text-secondary`. **Muted `#9A8F82` never
   carries text**, ruled 2026-08-29: it measures 2.99:1 on cream and 3.17:1 on
   the card, so it fails AA at every size and sits below even the 3:1
@@ -862,6 +867,21 @@ Nine changes, one job each, after Jasmin compared a cached pre-merge mobile
 snapshot against the live site. The homepage colour, pill and wordmark rulings
 are recorded in the design section above; the rest are here so they are not
 rediscovered as accidents.
+
+- **`/my-stack` has no "How I built this" section and should not get one
+  back.** Cut 1 Sep 2026. Beyond the lime, its claim was "what you see here is
+  always current", and `my_stack` is the tab with **no fact owner at all**:
+  Pass 1a sweeps its URLs and nothing checks its prices, descriptions or
+  verdicts, and it has no `last_checked` column. A freshness guarantee over
+  unverified rows is the one promise this site's positioning cannot carry. The
+  page's `bodyText` already says "including the ones that build this site", so
+  nothing was lost.
+
+- **The DragHint points down on mobile and LEFT on desktop.** Not a style
+  choice. On desktop the pile ends at x=1143 at 1280 wide and the hint sits
+  beyond it in the strip right of the period, so a down arrow pointed into
+  empty margin. It is anchored 64px off the right edge, verified at 1280, 1440
+  and 1920, because the clamp it replaced left it 11px from the edge.
 
 - **The mobile hero is `min-h-[500px]` flat, and the wordmark sits at the top.**
   Shortening the hero is the only thing that moves the settled pills, because
