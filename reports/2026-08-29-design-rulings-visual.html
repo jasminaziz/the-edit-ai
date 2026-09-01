@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two design rulings, shown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FAF8F4; --card:#FFFFFF; --cobalt:#2D35C9; --lime:#C8F04A;
+    --text:#1A1510; --muted:#9A8F82; --border:#E8E2D8; --tint:#EEF0FB;
+    --amber-t:#7A5200; --amber-b:#FAF0DB;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--text);
+    font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;
+    font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:40px 24px 80px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px;font-weight:700;letter-spacing:-0.02em}
+  .lede{color:#6B625A;margin:0 0 44px;max-width:640px}
+  h2{font-size:20px;font-weight:700;margin:56px 0 4px;letter-spacing:-0.01em}
+  h2:first-of-type{margin-top:8px}
+  .q{color:#6B625A;margin:0 0 24px;max-width:700px}
+  .opt{margin:0 0 34px;padding:22px;background:var(--card);
+    border:1px solid var(--border);border-radius:14px}
+  .opt.rec{border-color:var(--cobalt);border-width:2px;padding:21px}
+  .opthead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+  .opthead h3{font-size:16px;font-weight:700;margin:0}
+  .tag{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 8px;border-radius:20px;background:var(--tint);color:var(--cobalt)}
+  .tag.no{background:#FBE9E6;color:#A8261C}
+  .note{color:#6B625A;font-size:13.5px;margin:0 0 18px;max-width:760px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+
+  /* base tool card */
+  .tc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;
+    transition:all .18s ease}
+  .tc .nm{font-size:19px;font-weight:700;margin:0 0 5px;letter-spacing:-0.01em}
+  .tc .wd{font-size:13.5px;margin:0 0 11px}
+  .chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:11px}
+  .chip{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    padding:3px 9px;border-radius:20px;background:var(--tint);color:var(--cobalt)}
+  .chip.amber{background:var(--amber-b);color:var(--amber-t);border:1px solid var(--amber-t)}
+  .axis{font-size:12.5px;margin:0 0 3px}
+  .axis .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;display:block}
+  .stamp{font-size:11px;margin-top:11px;padding-top:11px;border-top:1px solid var(--border)}
+  /* everything that is currently #9A8F82 */
+  .m{color:var(--muted)}
+
+  /* option A: current behaviour */
+  .demoA:hover .tc{opacity:.45}
+  .demoA .tc:hover{opacity:1;background:var(--cobalt);border-color:var(--cobalt)}
+  .demoA .tc:hover .nm,.demoA .tc:hover .wd,.demoA .tc:hover .axis{color:#FAF8F4}
+  .demoA .tc:hover .m{color:rgba(250,248,244,.6)}
+  .demoA .tc:hover .chip{background:rgba(250,248,244,.15);color:#C8F04A}
+  .demoA .tc:hover .chip.amber{background:rgba(250,248,244,.15);color:#C8F04A;border-color:#C8F04A}
+  .demoA .tc:hover .stamp{border-top-color:rgba(250,248,244,.3)}
+
+  /* option B: recommended */
+  .demoB .tc{border-width:2px;border-color:var(--border)}
+  .demoB .tc:hover{border-color:var(--cobalt);
+    box-shadow:0 6px 18px rgba(45,53,201,.13);transform:translateY(-2px)}
+  .demoB .tc:focus-within{border-color:var(--cobalt)}
+
+  .btn{display:inline-block;font-size:13px;font-weight:700;padding:9px 16px;border-radius:22px;
+    border:none;cursor:pointer;font-family:inherit;margin-top:14px}
+  .btn.lime{background:var(--lime);color:var(--text)}
+  .btn.cob{background:var(--cobalt);color:#FAF8F4}
+  .demoA .tc:hover .btn.lime{background:var(--lime);color:var(--text)}
+
+  table{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:6px}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border)}
+  th{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#6B625A;font-weight:700}
+  td.ratio{font-variant-numeric:tabular-nums;font-weight:700}
+  .pass{color:#2D6A4F}.fail{color:#A8261C}
+  .swatch{display:inline-block;width:13px;height:13px;border-radius:3px;
+    vertical-align:-2px;margin-right:7px;border:1px solid rgba(0,0,0,.12)}
+  .hint{font-size:12.5px;color:#6B625A;margin-top:10px;font-style:italic}
+  .rule{height:1px;background:var(--border);border:0;margin:52px 0 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Two design rulings, shown</h1>
+<p class="lede">Real Canva row, real palette, real measured ratios. Hover the cards in section one, they behave as described. 29 August 2026.</p>
+
+<h2>1. Hover: how does someone track the card they are on?</h2>
+<p class="q">You are right that deleting the inversion removes the affordance. The affordance is not the problem. Inverting every colour inside the card is, because it forces every text colour to become an inline conditional, which is why ToolCard has 20 inline style blocks and no responsive classes. You can keep the signal and drop the mechanism.</p>
+
+<div class="opt">
+  <div class="opthead"><h3>A. What it does now</h3><span class="tag no">Costs the rebuild</span></div>
+  <p class="note">Card inverts to cobalt, neighbours dim to 45%. Hover one and watch the other two. Nothing happens on touch, so a phone user gets no state at all, and dimming the neighbours actively fights scanning, which is the main thing anyone does on a directory grid.</p>
+  <div class="grid demoA">
+    <div class="tc"><p class="nm">Canva</p><p class="wd">Design platform for social graphics, presentations, print and video.</p>
+      <div class="chips"><span class="chip">Social</span><span class="chip amber">DPIA Amber</span></div>
+      <p class="axis"><span class="lbl m">Where your data sits</span>US</p>
+      <p class="axis"><span class="lbl m">Trains on your content</span>Varies by tier</p>
+      <p class="stamp m">Checked 24 Aug 2026</p></div>
+    <div class="tc"><p class="nm">Perplexity</p><p class="wd">Research assistant that answers with sources attached.</p>
+      <div class="chips"><span class="chip">Research</span><span class="chip amber">DPIA Amber</span></div>
+      <p class="axis"><span class="lbl m">Where your data sits</span>US</p>
+      <p class="axis"><span class="lbl m">Trains on your content</span>No by default</p>
+      <p class="stamp m">Checked 24 Aug 2026</p></div>
+    <div class="tc"><p class="nm">Descript</p><p class="wd">Edit the transcript and the video edits itself.</p>
+      <div class="chips"><span class="chip">Accessibility</span><span class="chip amber">DPIA Amber</span></div>
+      <p class="axis"><span class="lbl m">Where your data sits</span>US</p>
+      <p class="axis"><span class="lbl m">Trains on your content</span>No by default</p>
+      <p class="stamp m">Checked 24 Aug 2026</p></div>
+  </div>
+</div>
+
+<div class="opt rec">
+  <div class="opthead"><h3>B. Border, lift, no inversion</h3><span class="tag">Recommended</span></div>
+  <p class="note">The border goes cobalt, the card lifts 2px, a soft cobalt shadow appears. Neighbours are untouched. Every text colour stays constant, so the whole inline conditional pattern disappears and the card can finally take responsive classes. It also survives touch, because the same rule fires on focus.</p>
+  <div class="grid demoB">
+    <div class="tc"><p class="nm">Canva</p><p class="wd">Design platform for social graphics, presentations, print and video.</p>
+      <div class="chips"><span class="chip">Social</span><span class="chip amber">DPIA Amber</span></div>
+      <p class="axis"><span class="lbl m">Where your data sits</span>US</p>
+      <p class="axis"><span class="lbl m">Trains on your content</span>Varies by tier</p>
+      <p class="stamp m">Checked 24 Aug 2026</p></div>
+    <div class="tc"><p class="nm">Perplexity</p><p class="wd">Research assistant that answers with sources attached.</p>
+      <div class="chips"><span class="chip">Research</span><span class="chip amber">DPIA Amber</span></div>
+      <p class="axis"><span class="lbl m">Where your data sits</span>US</p>
+      <p class="axis"><span class="lbl m">Trains on your content</span>No by default</p>
+      <p class="stamp m">Checked 24 Aug 2026</p></div>
+    <div class="tc"><p class="nm">Descript</p><p class="wd">Edit the transcript and the video edits itself.</p>
+      <div class="chips"><span class="chip">Accessibility</span><span class="chip amber">DPIA Amber</span></div>
+      <p class="axis"><span class="lbl m">Where your data sits</span>US</p>
+      <p class="axis"><span class="lbl m">Trains on your content</span>No by default</p>
+      <p class="stamp m">Checked 24 Aug 2026</p></div>
+  </div>
+  <p class="hint">This also settles the lime question. With no cobalt ground, a cobalt button reads perfectly well on white, and lime goes back to being punctuation on the one CTA you actually want clicked.</p>
+</div>
+
+<hr class="rule">
+
+<h2>2. Muted text: what replaces #9A8F82 at the ~19 sites?</h2>
+<p class="q">You ratified that #9A8F82 never carries text. It keeps its job on rules, dividers and icons. These are the same two card labels and the date stamp, rendered in each candidate.</p>
+
+<div class="grid" style="margin-bottom:22px">
+  <div class="tc"><p class="nm">#9A8F82 today</p>
+    <p class="axis"><span class="lbl" style="color:#9A8F82">Where your data sits</span>US</p>
+    <p class="axis"><span class="lbl" style="color:#9A8F82">Trains on your content</span>Varies by tier</p>
+    <p class="stamp" style="color:#9A8F82">Checked 24 Aug 2026</p></div>
+  <div class="tc" style="border-color:#2D35C9;border-width:2px"><p class="nm">#6B625A proposed</p>
+    <p class="axis"><span class="lbl" style="color:#6B625A">Where your data sits</span>US</p>
+    <p class="axis"><span class="lbl" style="color:#6B625A">Trains on your content</span>Varies by tier</p>
+    <p class="stamp" style="color:#6B625A">Checked 24 Aug 2026</p></div>
+  <div class="tc"><p class="nm">#1A1510 body text</p>
+    <p class="axis"><span class="lbl" style="color:#1A1510">Where your data sits</span>US</p>
+    <p class="axis"><span class="lbl" style="color:#1A1510">Trains on your content</span>Varies by tier</p>
+    <p class="stamp" style="color:#1A1510">Checked 24 Aug 2026</p></div>
+</div>
+
+<table>
+  <tr><th>Colour</th><th>On cream</th><th>On card</th><th>Verdict</th></tr>
+  <tr><td><span class="swatch" style="background:#9A8F82"></span>#9A8F82 today</td>
+      <td class="ratio fail">2.99</td><td class="ratio fail">3.17</td>
+      <td class="fail">Below the 3.0 large-text floor on cream. Fails everywhere it carries text.</td></tr>
+  <tr><td><span class="swatch" style="background:#6B625A"></span>#6B625A proposed</td>
+      <td class="ratio pass">5.62</td><td class="ratio pass">5.97</td>
+      <td class="pass">Passes AA at any size, still clearly secondary to body text.</td></tr>
+  <tr><td><span class="swatch" style="background:#78706A"></span>#78706A alternative</td>
+      <td class="ratio pass">4.58</td><td class="ratio pass">4.86</td>
+      <td class="pass">Passes AA, but only just on cream. Little headroom if a background ever lightens.</td></tr>
+  <tr><td><span class="swatch" style="background:#1A1510"></span>#1A1510 body text</td>
+      <td class="ratio pass">17.09</td><td class="ratio pass">18.12</td>
+      <td>Passes, but flattens the card. The middle panel above is the hierarchy the audit already calls too flat.</td></tr>
+</table>
+
+<p class="hint">The three panels are the argument. The left one is what a trustee reads a governance note in today. The right one has no hierarchy left. The middle one is the only one that does both jobs, which is why I would add #6B625A to the palette as a secondary-text token and leave #9A8F82 exactly where you ratified it.</p>
+
+</div>
+</body>
+</html>
