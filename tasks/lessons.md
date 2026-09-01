@@ -901,3 +901,54 @@ Session corrections and rules built up over time. Add entries; do not delete his
   and no value permits one, with the shape comparison running regardless. **Ask
   of any proposed safeguard: what does the failure case write here?** If the
   answer is "whatever gets it past", the safeguard is documentation.
+
+- **A hidden browser pane freezes requestAnimationFrame, so any rAF-driven
+  simulation reads as settled when it is frozen (2026-09-01).** matter-js
+  advances on rAF. Measuring the homepage pills in a hidden pane returned every
+  pill at its spawn point, 6–34% of hero height and directly across the
+  wordmark, with positions identical between samples. That reads exactly like a
+  settled pile jammed on the type, and `movedCount: 0` reads as "settled" when
+  it means "no frames ran". Confirmed with 0 rAF callbacks in one second at
+  `visibilityState: hidden`. The 1 Sep brief's mobile figures were taken that
+  way and were wrong; so was my first diagnosis, which invented an arch-and-jam
+  mechanism to explain an artefact. **Before believing any measurement of an
+  animated or simulated system, count rAF firings.** The fix that worked was to
+  replace `requestAnimationFrame` with a queue and pump it by hand, which
+  advances the simulation deterministically regardless of visibility. This
+  extends the existing transitioned-property rule from CSS transitions to
+  anything driven by frames.
+
+- **Never pipe a build through a grep that can only match success
+  (2026-09-01).** Running `bun run build 2>&1 | grep "built in"` prints nothing
+  when the build fails, and nothing is easy to read as fine. A malformed JSX
+  comment broke the bundle and I carried on for two more steps, debugging a
+  z-index that was never being served, because the browser was still on the last
+  good build. `tsc --noEmit` passed throughout, which is the documented reason
+  the build is a separate gate. **Show the build's own tail, never a
+  success-only filter.**
+
+- **Verifying the property you designed for is not looking at the render
+  (2026-09-01).** The DPIA trigger overlapped the subheading. My check asked
+  whether it sat beside the h1; it did, so the check passed while the defect was
+  in the same screenshot I had just taken. Jasmin caught it. **When a check
+  passes, ask what it did not ask** — and for anything positioned, test overlap
+  against every neighbour, not just alignment with the intended one.
+
+- **Absolute positioning reserves no space, and a transform creates a stacking
+  context (2026-09-01).** Two separate bugs in one element. The trigger was
+  `absolute right-0`, so the full-width subheading ran underneath it; the fix is
+  a real flex column, not padding, because padding is a magic number that breaks
+  when the string gets longer. And its wrapper carried `-translate-y-1/2`, which
+  establishes a stacking context on its own, so the panel's `z-50` was scoped
+  inside the wrapper's `z-20` and lost to a sticky bar at `z-40`. The bar
+  painted over the text and cut it off mid-sentence, which looks exactly like
+  clipping by `overflow: hidden` and is not. **Check the stacking chain for
+  transforms before assuming a clip.**
+
+- **A responsive component can put two copies of the same control in the DOM,
+  and `.find()` will grab the hidden one (2026-09-01).** The bubble renders a
+  desktop instance and a mobile instance, one `display:none` at any width.
+  `[...querySelectorAll('button')].find(...)` returned the hidden desktop one at
+  375px and reported a zero-size rect, which read as "the trigger is missing" on
+  a page where the screenshot plainly showed it. **When a component has
+  breakpoint variants, filter to the one with a non-zero box before measuring.**

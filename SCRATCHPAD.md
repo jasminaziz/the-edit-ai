@@ -3000,3 +3000,61 @@ Plus the pricing conventions and eight explicitly named report sections, with
 A3 (`Unclear`), A4 (delete the two answered "decisions needed") and B5 (drop
 order under time pressure) from the gap-check report. Jasmin named six items and
 not these. A3 is a ruling that is hers.
+
+---
+
+## 1 September 2026 — UX and design session (separate from the axis-audit thread above)
+
+Eighteen commits, all pushed to both refs and verified on production. Started
+from a Cowork brief of seven issues, then four rounds of Jasmin's rulings on
+top.
+
+### Shipped
+
+Homepage h1 ascender clipped to the cap line (0.06em, em-relative so one value
+covers the whole clamp). 404 rebuilt: voice, own meta with `noindex`, a redirect
+that cancels on any interaction, `404:` restored to the h1 and its em dash
+swapped for a colon. Drag hint enabled on desktop and its label stopped
+wrapping. `/policy-template` moved onto `CobaltZone`. `/design-kit` given a
+plain heading. A tap on a tool card now holds instead of flashing. Pill caps
+split 30 desktop / 12 mobile, and `#A8261C` added to the rotation. `/radar`
+built, then reshaped twice. The DPIA explainer moved into a header speech
+bubble. Heading outline fixed sitewide.
+
+### Three things the brief got wrong, worth not re-inheriting
+
+- Its mobile pill figures were measured in a hidden pane with rAF frozen, so
+  they describe spawn positions, not settled ones. With the clock pumped by
+  hand, 19 pills settle clear of the wordmark at 360x780.
+- `WhatsNew`'s two-line heading is not redundant plumbing: `/ai-news` renders
+  "AI" cream and "News" lime. Only `/design-kit` was simplifiable.
+- The neighbour-dim was already 0.7, not 0.45. That ruling had shipped.
+
+### Next step
+
+1. **Radar status chip.** The design agent's highest-severity finding, half
+   done: the Visit link is demoted off the lime pill, but the chip needs a
+   string from Jasmin. It must survive a card being seen alone, out of page
+   context.
+2. **`/radar` SEO title and description.** Placeholders, flagged in the file.
+   Title follows the site's `<Page> | The Edit` pattern; description reuses the
+   approved subheading verbatim.
+3. **"The checks" means two things.** The DPIA in the bubble, the full
+   seven-field axis in the signpost. Copy fix, hers.
+4. **Desktop signpost placement.** Mobile is resolved (below the grid under
+   `sm`). The agent recommends below at all widths; not actioned.
+5. **The desktop dead-column** Jasmin reported. Not reproducible at 1440 or
+   1728; needs the specific page and width from her.
+6. **Whether the PWA manifest stays.** Her phone held a stale build. The server
+   is verifiably correct, so the stuck copy is device-side, and an installed
+   home-screen instance is the likeliest holder. Offline was never a
+   requirement.
+
+### Stale claims in `.claude/CLAUDE.md` found this session
+
+`src/components/ui/` holds four files, not the seven listed, and
+`src/hooks/use-toast.ts` does not exist. `CobaltZone`'s non-inline
+`twoLineHeading` branch is now unreachable, since its only consumer passes
+`inline`. And the locked rule `"Your stack" not "my stack"` is contradicted by
+the live `/my-stack` h1, nav label and IN MY STACK badge — the design agent
+surfaced it; whether the rule is stale or the code is drift is Jasmin's call.
