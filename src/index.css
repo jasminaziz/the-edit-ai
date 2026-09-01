@@ -250,11 +250,33 @@
    * of the browser's own focus ring, which nothing in this project overrides,
    * and on ink link text that carries the meaning on its own.
    */
-  .about-byline { text-decoration: none; }
-  .about-byline:hover,
-  .about-byline:focus-visible {
+  /* Persistent from 1 Sep 2026, on Jasmin's ruling. It was hover and
+     focus-visible only, which left the one outbound link on the homepage
+     looking like body text until you touched it. Hover and focus now thicken
+     it rather than introduce it, so both states still have somewhere to go. */
+  .about-byline {
     text-decoration: underline;
     text-decoration-color: #C8F04A;
     text-underline-offset: 3px;
+  }
+  .about-byline:hover,
+  .about-byline:focus-visible {
+    text-decoration-thickness: 2px;
+  }
+
+  /* The same lime underline, for prose links inside body copy. Added 1 Sep
+     2026 for the two on /policy-template: the Substack mention and the DPIA
+     reference out to the ICO. Declared here rather than inline because an
+     inline text-decoration would outrank the hover rule, which is the trap
+     .about-byline was rebuilt to escape. */
+  .lime-link {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: #C8F04A;
+    text-underline-offset: 3px;
+  }
+  .lime-link:hover,
+  .lime-link:focus-visible {
+    text-decoration-thickness: 2px;
   }
 }
