@@ -178,24 +178,63 @@ export function CobaltZone({ heading, subheading, bodyText, illustration, rightB
           </div>
         )}
 
-        {/* Desktop bubble — same slot and same md breakpoint as the badge, so
-            two elements in one header never switch layout at two widths.
+        {/* When a bubble is present the header becomes a two-column row and
+            the bubble gets a real column, rather than being an overlay.
 
-            z-50, not the badge's z-10. This wrapper carries -translate-y-1/2,
-            and a transform creates a stacking context on its own, so the open
-            panel's z-50 is scoped INSIDE this wrapper rather than competing at
-            the root. At z-20 the whole bubble lost to the sticky filter bar
-            below it (z-40), which painted over the panel and cut the answer off
-            mid-sentence. That reads exactly like clipping and is not: nothing
-            in the chain has overflow hidden. */}
-        {helpBubble && (
-          <div className="hidden md:block absolute top-1/2 right-0 -translate-y-1/2 z-50">
-            <HelpBubble {...helpBubble} align="right" />
-          </div>
-        )}
+            It was absolutely positioned at right-0 like rightBadge, which
+            reserves no space: the subheading runs the full 1280px container
+            width, so at 1440px the trigger sat over the last 141px of it and
+            over the h1's box too. Padding would have fixed the symptom with a
+            magic number that breaks the moment the question string gets
+            longer. A flex row with the text at flex-1 min-w-0 and the bubble
+            shrink-0 cannot overlap at any question length.
 
-        {twoLineHeading ? (
-          twoLineHeading.inline ? (
+            The no-bubble path is untouched: the six other routes render the
+            same JSX with no wrapper, so their layout is unchanged. */}
+        <div className={helpBubble ? "md:flex md:items-center md:gap-10" : undefined}>
+          <div className={helpBubble ? "md:flex-1 md:min-w-0" : undefined}>
+          {twoLineHeading ? (
+            twoLineHeading.inline ? (
+              <h1
+                className="font-heading font-bold leading-[0.95]"
+                style={{
+                  fontSize: "clamp(56px, 8vw, 96px)",
+                  color: "#FAF8F4",
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                {twoLineHeading.line1}{" "}
+                <span style={{ color: twoLineHeading.line2Color || "#C8F04A" }}>
+                  {twoLineHeading.line2}
+                </span>
+              </h1>
+            ) : (
+              /* One h1 carrying two block spans, not two h1 elements. A page has
+                 one first-level heading, and the second was rendering empty on
+                 /design-kit, which passes line2 as "": an empty h1 is announced
+                 as a heading with no content. The span is now skipped entirely
+                 when line2 is blank. Renders identically. */
+              <h1
+                className="font-heading font-bold leading-[0.95]"
+                style={{
+                  fontSize: "clamp(56px, 8vw, 96px)",
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                <span className="block" style={{ color: "#FAF8F4" }}>
+                  {twoLineHeading.line1}
+                </span>
+                {twoLineHeading.line2 && (
+                  <span
+                    className="block"
+                    style={{ color: twoLineHeading.line2Color || "#C8F04A" }}
+                  >
+                    {twoLineHeading.line2}
+                  </span>
+                )}
+              </h1>
+            )
+          ) : (
             <h1
               className="font-heading font-bold leading-[0.95]"
               style={{
@@ -204,62 +243,31 @@ export function CobaltZone({ heading, subheading, bodyText, illustration, rightB
                 letterSpacing: "-0.02em",
               }}
             >
-              {twoLineHeading.line1}{" "}
-              <span style={{ color: twoLineHeading.line2Color || "#C8F04A" }}>
-                {twoLineHeading.line2}
-              </span>
+              {heading}
             </h1>
-          ) : (
-            /* One h1 carrying two block spans, not two h1 elements. A page has
-               one first-level heading, and the second was rendering empty on
-               /design-kit, which passes line2 as "": an empty h1 is announced
-               as a heading with no content. The span is now skipped entirely
-               when line2 is blank. Renders identically. */
-            <h1
-              className="font-heading font-bold leading-[0.95]"
-              style={{
-                fontSize: "clamp(56px, 8vw, 96px)",
-                letterSpacing: "-0.02em",
-              }}
+          )}
+          {subheading && (
+            <p
+              className="font-heading font-semibold mt-3"
+              style={{ fontSize: "clamp(20px, 3vw, 32px)", color: "#C8F04A" }}
             >
-              <span className="block" style={{ color: "#FAF8F4" }}>
-                {twoLineHeading.line1}
-              </span>
-              {twoLineHeading.line2 && (
-                <span
-                  className="block"
-                  style={{ color: twoLineHeading.line2Color || "#C8F04A" }}
-                >
-                  {twoLineHeading.line2}
-                </span>
-              )}
-            </h1>
-          )
-        ) : (
-          <h1
-            className="font-heading font-bold leading-[0.95]"
-            style={{
-              fontSize: "clamp(56px, 8vw, 96px)",
-              color: "#FAF8F4",
-              letterSpacing: "-0.02em",
-            }}
-          >
-            {heading}
-          </h1>
-        )}
-        {subheading && (
-          <p
-            className="font-heading font-semibold mt-3"
-            style={{ fontSize: "clamp(20px, 3vw, 32px)", color: "#C8F04A" }}
-          >
-            {subheading}
-          </p>
-        )}
-        {bodyText && (
-          <p className="font-body text-[16px] mt-4 max-w-3xl" style={{ color: "rgba(250,248,244,0.6)" }}>
-            {bodyText}
-          </p>
-        )}
+              {subheading}
+            </p>
+          )}
+          {bodyText && (
+            <p className="font-body text-[16px] mt-4 max-w-3xl" style={{ color: "rgba(250,248,244,0.6)" }}>
+              {bodyText}
+            </p>
+          )}
+          </div>
+
+          {helpBubble && (
+            <div className="hidden md:block shrink-0 relative z-50">
+              <HelpBubble {...helpBubble} align="right" />
+            </div>
+          )}
+        </div>
+
         {/* Mobile badge — drops below subheading/body, left-aligned */}
         {badge && (
           <div className="md:hidden mt-6">
