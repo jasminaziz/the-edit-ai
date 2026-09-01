@@ -10,7 +10,6 @@ const navItems = [
   { to: "/", label: "Home" },
   { to: "/my-stack", label: "My Stack" },
   { to: "/tools", label: "Tools" },
-  { to: "/radar", label: "Radar" },
   { to: "/design-kit", label: "Design" },
   { to: "/learning", label: "Learning" },
   { to: "/ai-news", label: "AI News" },
@@ -195,7 +194,7 @@ export function Layout({ children }: { children: ReactNode }) {
                         ref={(el) => { navRefs.current[item.to] = el; }}
                         onMouseEnter={() => setHoveredItem(item.to)}
                         onMouseLeave={() => setHoveredItem(null)}
-                        className={`relative z-10 font-body text-sm font-medium px-2 xl:px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-colors duration-150 ${
+                        className={`relative z-10 font-body text-sm font-medium px-3 xl:px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-colors duration-150 ${
                           isActive
                             ? pillText
                             : `${textColor} hover:bg-white/[0.15]`

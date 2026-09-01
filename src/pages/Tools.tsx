@@ -324,6 +324,22 @@ const Tools = () => {
             A DPIA is the assessment your organisation carries out before using personal data in a way that could put people at risk. The flag on each card says how likely typical comms use is to trigger one.
           </p>
 
+          {/* Route to the radar. It is deliberately not in the main nav: it is
+              a secondary view of this same directory rather than a seventh
+              destination, and a seventh nav item silently clipped "Work with
+              me" at 1024px. So /tools is the only way in, which makes this
+              link load-bearing rather than decorative.
+
+              The label is the radar page's own approved h1 plus the trailing
+              arrow this site uses on every forward link. No new copy: a
+              sentence of context here would be authoring, and is Jasmin's. */}
+          <Link
+            to="/radar"
+            className="inline-block mb-8 font-body font-medium text-[15px] text-primary hover:underline"
+          >
+            On My Radar →
+          </Link>
+
           {loading ? (
             <LoadingSpinner />
           ) : error ? (

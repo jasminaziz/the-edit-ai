@@ -42,6 +42,63 @@ const AxisLine = ({ label, value }: { label: string; value: string }) => (
   </div>
 );
 
+/**
+ * Selection handlers shared by the directory card and the radar card.
+ *
+ * Exported rather than duplicated because the touch/mouse split below is
+ * subtle enough that two copies would drift, and the two cards must feel
+ * identical: /radar is the old directory experience, so it inverts and dims
+ * exactly the way /tools does.
+ *
+ * Two separate input models, split on pointerType. Ruled 1 Sep 2026.
+ *
+ * Mouse keeps hover exactly as built: enter selects, leave clears. That
+ * behaviour was ruled on 29 Aug and nothing here reopens it.
+ *
+ * Touch is a selection, not a hover. Hover does not exist on touch, and this
+ * card has been through both failure modes. Originally a tap raised a
+ * compatibility mouseenter with no matching mouseleave, so the card stuck
+ * inverted and every other card stayed dimmed. Switching to pointer events
+ * fixed that, but pointers are created and destroyed per touch, so the state
+ * then cleared on finger-lift and the card flashed cobalt for the tap.
+ *
+ * Holding is correct and sticking is not, and the difference is a way out. So
+ * touch selection is handled in pointerdown, deliberately NOT in pointerenter:
+ * pointerenter fires first and React flushes between the two events, so a
+ * toggle written there would read its own freshly-set state and deselect on the
+ * first tap. Tapping again clears it; tapping another card moves it.
+ *
+ * Taps landing on a link or button are ignored so the card's own controls keep
+ * doing only their own job. onFocus and onBlur bubble from those controls,
+ * which is what makes the state reachable by keyboard.
+ */
+export function cardSelectionProps({
+  isSelected,
+  onActivate,
+  onDeactivate,
+}: {
+  isSelected: boolean;
+  onActivate: () => void;
+  onDeactivate: () => void;
+}) {
+  return {
+    onPointerEnter: (e: React.PointerEvent) => {
+      if (e.pointerType === "mouse") onActivate();
+    },
+    onPointerLeave: (e: React.PointerEvent) => {
+      if (e.pointerType === "mouse") onDeactivate();
+    },
+    onPointerDown: (e: React.PointerEvent) => {
+      if (e.pointerType === "mouse") return;
+      if ((e.target as Element).closest("a, button")) return;
+      if (isSelected) onDeactivate();
+      else onActivate();
+    },
+    onFocus: onActivate,
+    onBlur: onDeactivate,
+  };
+}
+
 interface ToolCardProps {
   tool: Tool;
   isSelected: boolean;
@@ -67,46 +124,8 @@ export const ToolCard = ({
 
   return (
     <div
-      // Two separate input models, split on pointerType. Ruled 1 Sep 2026.
-      //
-      // Mouse keeps hover exactly as built: enter selects, leave clears. That
-      // behaviour was ruled on 29 Aug and nothing here reopens it.
-      //
-      // Touch is a selection, not a hover. Hover does not exist on touch, and
-      // this card has been through both failure modes. Originally a tap raised
-      // a compatibility mouseenter with no matching mouseleave, so the card
-      // stuck inverted and every other card stayed dimmed: the grid looked
-      // broken after one touch. Switching to pointer events fixed that, but
-      // pointers are created and destroyed per touch, so the state then cleared
-      // on finger-lift and the card flashed cobalt for the length of the tap.
-      //
-      // The resolution is that holding is correct and sticking is not, and the
-      // difference between them is a way out. Touch selection is handled in
-      // pointerdown, deliberately NOT in pointerenter: pointerenter fires first
-      // and React flushes between the two events, so a toggle written there
-      // would read its own freshly-set state on the first tap and deselect
-      // immediately. Tapping the card again clears it, and tapping a different
-      // card moves the selection, because Tools.tsx holds one card name.
-      //
-      // Taps landing on a link or button are ignored here so that "Visit tool"
-      // and the verdict toggle keep doing only their own job.
-      //
-      // onFocus and onBlur bubble from the card's own links and buttons, which
-      // is what makes the state reachable by keyboard.
-      onPointerEnter={(e) => {
-        if (e.pointerType === "mouse") onActivate();
-      }}
-      onPointerLeave={(e) => {
-        if (e.pointerType === "mouse") onDeactivate();
-      }}
-      onPointerDown={(e) => {
-        if (e.pointerType === "mouse") return;
-        if ((e.target as Element).closest("a, button")) return;
-        if (isSelected) onDeactivate();
-        else onActivate();
-      }}
-      onFocus={onActivate}
-      onBlur={onDeactivate}
+      // Handlers live in cardSelectionProps above, shared with the radar card.
+      {...cardSelectionProps({ isSelected, onActivate, onDeactivate })}
       // The state is an attribute, not a branch: `data-selected` and
       // `data-dimmed` are omitted entirely when false, and index.css keys off
       // their presence.

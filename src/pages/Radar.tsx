@@ -1,86 +1,152 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { fetchTools, isComplete, type Tool } from "@/lib/sheets";
 
 import { LoadingSpinner } from "@/components/LoadingSpinner";
-import { ErrorState } from "@/components/ErrorState";
+import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
 import { RevealGroup, RevealItem } from "@/components/Reveal";
 import { SEO } from "@/components/SEO";
+import { cardSelectionProps } from "@/components/ToolCard";
+
+import { Search } from "lucide-react";
 
 /**
- * The radar, built 1 Sep 2026 on Jasmin's ruling of 28 August: the radar gets
- * its own tab. The reasoning on record is that an uncapped radar list sharing a
- * page with the capped, complete directory is how the 45-row ceiling erodes.
+ * The radar, built 1 Sep 2026 on Jasmin's ruling of 28 August that the radar
+ * gets its own page, and rebuilt the same day on her ruling that it should
+ * mirror what the tools page used to be rather than be a stripped-down list.
+ *
+ * It is deliberately NOT in the main nav. It is reached from /tools, because it
+ * is a secondary view of the same directory rather than a seventh destination.
+ * A seventh nav item also broke the header: it measured scrollWidth 1046
+ * against clientWidth 1024 and silently clipped "Work with me", which is the
+ * failure recorded in CLAUDE.md for 768-1086px.
  *
  * Rows are selected by !isComplete(), NOT by status === "on_radar", and the
  * difference is load-bearing. Blotato and Grok are finished, published rows
- * that still carry on_radar in the Sheet's status column from before they were
- * completed, so filtering on status would list two tools that already live on
- * /tools. isComplete() is the predicate the grid and the homepage counter
- * already share, so using it here means a row is on exactly one of the two
- * pages and the three surfaces cannot disagree.
+ * that still carry on_radar in the Sheet from before they were completed, so a
+ * status filter would list two tools that already live on /tools. isComplete()
+ * is the predicate the grid and the homepage counter already share, so a row is
+ * on exactly one of the two pages.
  *
- * ToolCard is deliberately not reused. Its "THE CHECKS" heading and rule render
- * unconditionally, before the axis fields they introduce, and every one of
- * those fields is empty by definition on a radar row. A radar card built from
- * it would print a checks header above nothing, which reads as "checked, found
- * nothing" on the one page whose whole point is "not checked yet". The card
- * below carries only what an incomplete row actually holds: name, url,
- * what_it_does and verdict, none of which isComplete() gates on.
+ * What these rows actually hold, checked against the live Sheet on 1 Sep: all
+ * 44 carry name, category, cost, verdict, url and status. Only what_it_does and
+ * jobs are empty, because those were added for the sector re-point and have not
+ * been filled below the line. So the card shows the category chip and the price
+ * as well as the verdict: that information is recorded and there is no reason
+ * to withhold it.
+ *
+ * The filter rail runs on column B `category`, the legacy tool-type taxonomy,
+ * not on `jobs`. That is what the old tools page filtered on and it is the only
+ * taxonomy these rows carry. Options are derived from the data rather than
+ * hardcoded, so the rail cannot drift from the Sheet.
+ *
+ * ToolCard itself is not reused. Its "THE CHECKS" heading and rule render
+ * unconditionally, above fields that are empty by definition here, so it would
+ * print a checks header over nothing on the one page whose point is "not
+ * checked yet". The look and feel is shared a better way: this card carries the
+ * same `.tool-card` class and the same tc-* descendant classes from index.css,
+ * so the cobalt inversion, the neighbour dim and every colour are the same
+ * rules, not a copy of them. Selection handlers are imported for the same
+ * reason.
  */
 
-/**
- * One radar row. Light by design: no axis fields, no DPIA chip, no job chips,
- * no Checked stamp, because a radar row has none of those and showing empty
- * furniture would overstate the work done.
- *
- * "First look" is approved copy and is deliberately not "Honest verdict", the
- * label the directory card uses. The directory's verdict sits behind the seven
- * checks; this one does not, and reusing the label would promise the same
- * rigour. Do not reword either.
- */
-const RadarCard = ({ tool }: { tool: Tool }) => {
+const RadarCard = ({
+  tool,
+  isSelected,
+  isDimmed,
+  onActivate,
+  onDeactivate,
+}: {
+  tool: Tool;
+  isSelected: boolean;
+  isDimmed: boolean;
+  onActivate: () => void;
+  onDeactivate: () => void;
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="bg-card border border-border rounded-xl p-5 flex flex-col h-full">
+    <div
+      {...cardSelectionProps({ isSelected, onActivate, onDeactivate })}
+      data-selected={isSelected || undefined}
+      data-dimmed={isDimmed || undefined}
+      className="tool-card rounded-xl border p-4 sm:p-5 flex flex-col h-full transition-all duration-200"
+    >
       {tool.url ? (
         <a
           href={tool.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-heading font-semibold text-xl no-underline text-foreground hover:text-primary transition-colors"
+          className="font-heading font-semibold text-xl no-underline tc-primary"
+          onClick={(e) => e.stopPropagation()}
         >
           {tool.name}
         </a>
       ) : (
-        <h3 className="font-heading font-semibold text-xl text-foreground">{tool.name}</h3>
+        <h3 className="font-heading font-semibold text-xl tc-primary">{tool.name}</h3>
       )}
 
+      {/* Category chip. tc-chip-job is the locked cobalt-on-#EEF0FB pairing,
+          which is exactly what the old category chip used, so this is the
+          original treatment rather than a new one. */}
+      <div className="flex flex-wrap gap-2 mt-2.5">
+        {tool.category && (
+          <span className="inline-block px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full tc-chip-job">
+            {tool.category}
+          </span>
+        )}
+        {tool.status === "in_stack" && (
+          <span className="inline-block px-2.5 py-0.5 font-body text-[11px] font-semibold uppercase tracking-[0.05em] rounded-full tc-chip-stack">
+            IN MY STACK
+          </span>
+        )}
+      </div>
+
+      {/* Guarded: empty on all 44 rows as at 1 Sep, but it is a real column and
+          a row that gains one should show it. */}
       {tool.what_it_does && (
-        <p className="mt-2 font-body text-[15px] leading-relaxed text-foreground">
+        <p className="mt-2.5 font-body text-[15px] leading-relaxed line-clamp-2 tc-primary">
           {tool.what_it_does}
         </p>
       )}
 
-      {/* Guarded, because plenty of radar rows carry no verdict yet. A toggle
-          that opens onto nothing is worse than no toggle. */}
+      {tool.pricing && (
+        <p className="mt-3 font-body text-[13px] tc-secondary">{tool.pricing}</p>
+      )}
+
       {tool.verdict && (
         <div className="mt-auto pt-4">
           <button
-            onClick={() => setIsExpanded((v) => !v)}
-            className="text-left font-body font-semibold text-[15px] min-h-[44px] flex items-center text-primary hover:text-foreground transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsExpanded((v) => !v);
+            }}
+            className="text-left font-body font-semibold text-[15px] min-h-[44px] flex items-center transition-colors tc-verdict-toggle"
           >
+            {/* Approved copy. Deliberately not "Honest verdict", the directory
+                label: that verdict sits behind the seven checks and this one
+                does not, so reusing it would promise the same rigour. */}
             {isExpanded ? "First look ↑" : "First look ↓"}
           </button>
           {isExpanded && (
-            <p
-              className="mt-1 pl-4 font-body text-[15px] leading-relaxed text-foreground"
-              style={{ borderLeft: "4px solid #2D35C9" }}
-            >
+            <div className="mt-3 pt-4 pl-4 font-body text-[15px] leading-relaxed tc-verdict tc-primary">
               {tool.verdict}
-            </p>
+            </div>
           )}
+        </div>
+      )}
+
+      {tool.url && (
+        <div className="mt-3 flex justify-end">
+          <a
+            href={tool.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="font-body inline-flex items-center min-h-[44px] text-[13px] font-medium no-underline rounded-[20px] px-5 transition-colors duration-200 tc-visit"
+          >
+            Visit tool →
+          </a>
         </div>
       )}
     </div>
@@ -91,16 +157,37 @@ const Radar = () => {
   const [tools, setTools] = useState<Tool[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("ALL");
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   useEffect(() => {
     fetchTools().then((t) => {
       // Same error rule as /tools: zero rows from the fetch is a 403, whereas
-      // zero rows after filtering is a legitimate (if unlikely) state.
+      // zero rows after filtering is a legitimate state.
       if (t.length === 0 && import.meta.env.VITE_GOOGLE_SHEETS_ID) setError(true);
       setTools(t.filter((row) => !isComplete(row)));
       setLoading(false);
     });
   }, []);
+
+  // Derived from the rows on the page, not hardcoded, so the rail cannot drift
+  // from the Sheet as rows are completed and leave for /tools.
+  const categories = useMemo(
+    () => ["ALL", ...Array.from(new Set(tools.map((t) => t.category).filter(Boolean))).sort()],
+    [tools],
+  );
+
+  const filtered = tools.filter((t) => {
+    const q = search.toLowerCase();
+    const matchSearch =
+      !q ||
+      t.name.toLowerCase().includes(q) ||
+      t.category.toLowerCase().includes(q) ||
+      t.verdict.toLowerCase().includes(q);
+    const matchCat = category === "ALL" || t.category.toLowerCase() === category.toLowerCase();
+    return matchSearch && matchCat;
+  });
 
   return (
     <>
@@ -108,8 +195,7 @@ const Radar = () => {
         // NOT approved copy. The 1 Sep pack supplied the h1, subheading, body
         // and toggle label but no meta, so the title follows the site's
         // established "<Page> | The Edit" pattern and the description reuses
-        // the approved subheading verbatim rather than writing a new sentence.
-        // Both are placeholders for Jasmin to approve or replace.
+        // the approved subheading verbatim. Placeholders for Jasmin.
         title="On My Radar | The Edit"
         description="Tools I've spotted but haven't put through the checks yet."
         canonical="https://theeditai.co.uk/radar"
@@ -119,11 +205,54 @@ const Radar = () => {
         subheading="Tools I've spotted but haven't put through the checks yet."
       />
 
+      {/* Filter bar, mirroring /tools: same sticky behaviour, same search box,
+          same lime-active chip rail. */}
+      <section className="sticky top-0 z-40 bg-background border-b border-border/60 py-3 sm:py-5 px-4 sm:px-12">
+        <div className="max-w-[1280px] mx-auto flex flex-col gap-2.5 lg:gap-4 lg:flex-row lg:items-center">
+          <div className="relative w-full lg:max-w-[400px]">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
+            <input
+              type="text"
+              placeholder="Search tools..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-10 pr-3 py-2.5 text-[15px] bg-card border border-border rounded-lg font-body text-foreground placeholder:text-text-secondary focus:border-primary focus:ring-[3px] focus:ring-primary/[0.12] outline-none transition-all"
+            />
+          </div>
+
+          <div className="relative w-full lg:flex-1 min-w-0">
+            {/* Same rail rule as /tools: scroller below lg, wraps at lg and up.
+                Restoring the sm wrap reintroduces horizontal page scroll. */}
+            <div className="flex gap-2 flex-nowrap overflow-x-auto no-scrollbar scroll-smooth lg:flex-wrap lg:overflow-visible">
+              {categories.map((c) => (
+                <button
+                  key={c}
+                  onClick={() => setCategory(c)}
+                  aria-pressed={category === c}
+                  className={`shrink-0 px-3.5 py-1.5 font-body text-xs font-medium uppercase tracking-[0.04em] rounded-full border transition-colors duration-150 ${
+                    category === c
+                      ? "text-foreground border-transparent"
+                      : "bg-transparent border-border text-foreground hover:bg-card"
+                  }`}
+                  style={category === c ? { backgroundColor: "#C8F04A" } : undefined}
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute top-0 right-0 h-full w-10 bg-gradient-to-l from-background to-transparent lg:hidden"
+            />
+          </div>
+        </div>
+      </section>
+
       <section className="bg-background py-10 px-6 sm:px-12 pb-[72px]">
         <div className="max-w-[1280px] mx-auto">
-          {/* Sits above the grid rather than in the hero, matching where /tools
-              puts its DPIA definition. It is the page's honesty statement, so
-              it reads before the first card, not after. */}
+          {/* Approved copy. Sits above the grid, matching where /tools puts its
+              DPIA definition: it is the page's honesty statement, so it reads
+              before the first card. */}
           <p
             className="font-body text-[13px] leading-relaxed mb-6"
             style={{ color: "hsl(var(--text-secondary))", maxWidth: 720 }}
@@ -135,11 +264,27 @@ const Radar = () => {
             <LoadingSpinner />
           ) : error ? (
             <ErrorState />
+          ) : filtered.length === 0 ? (
+            <EmptyState />
           ) : (
-            <RevealGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {tools.map((tool) => (
+            <RevealGroup
+              key={`${category}-${search}`}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {filtered.map((tool) => (
                 <RevealItem key={tool.name}>
-                  <RadarCard tool={tool} />
+                  <RadarCard
+                    tool={tool}
+                    isSelected={hoveredCard === tool.name}
+                    isDimmed={!!hoveredCard && hoveredCard !== tool.name}
+                    onActivate={() => setHoveredCard(tool.name)}
+                    // Clears only if this card is still the selected one, so a
+                    // stale blur cannot wipe a selection just set by another
+                    // card. Same guard as /tools.
+                    onDeactivate={() =>
+                      setHoveredCard((cur) => (cur === tool.name ? null : cur))
+                    }
+                  />
                 </RevealItem>
               ))}
             </RevealGroup>
