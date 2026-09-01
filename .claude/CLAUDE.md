@@ -158,6 +158,17 @@ accept "No by default" as a URL. Writable: `tools` A, D, F, H, I, J, M;
 everything else, including `learning` column A, because those names are
 composite labels Jasmin wrote rather than vendor strings.
 
+**Column D carries one extra rule.** Only a number or a currency symbol
+substituted inside the existing string shape may be written. A restructured
+tier, a renamed plan or a withdrawn free tier is **flagged, not written**,
+because that string carries editorial shape as well as a number, and the shape
+is Jasmin's. HubSpot's 30 August move from a flat monthly fee to
+seat-plus-credits is the worked example. `costShape()` enforces it by
+normalising out digits and currency symbols and comparing what is left, and a D
+write must carry the old value so there is something to compare. The
+`shape_change` field is **refuse-only**: setting it true refuses the write and
+no value permits one, so it cannot be used to force a restructure through.
+
 Four guards, each because the failure it prevents is silent:
 
 - **Every write must cite a source URL** or it is refused. A cell with no

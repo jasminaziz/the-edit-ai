@@ -2946,3 +2946,57 @@ until someone fetches.
   should not be made into one. Separately worth noting on the security queue: its
   `doGet` returns the entire `tools` tab, unpublished rows and draft verdicts
   included, to anyone with the URL and no authentication at all.
+
+---
+
+## Session 2026-09-01 — the prompt corrected against its own code
+
+**Where we got to.** Three commits, none pushed. No Sheet writes this session.
+
+**The Cowork task is out of the audit business.** Jasmin replaced its prompt
+with a reminder plus the monthly design_kit/learning discovery pass; it does not
+check facts and does not write. So the audit runs **only** when the prompt is
+pasted into Claude Code. `.claude/CLAUDE.md` now says so in the write-path
+section, and the stale "rebuild the Cowork task as the checks engine" line is
+retired from the whats_new planned-changes list.
+
+**The real find: the prompt contradicted the code it drives.** It said A and F
+were never writable and tools was the only writable tab, while
+`sheet-write.mjs` writes A and F across four tabs. It also described plain ADC
+when the auth is gcloud impersonation. Corrected, along with two further ADC
+references and a spent "build the script first" clause that the gap-check report
+had not listed.
+
+**Three rules recovered from the retired Cowork prompt:**
+
+- **Column D carve-out.** Only a number or currency substituted inside the
+  existing string shape may be written; a restructure is flagged. Enforced by
+  `costShape()`. `shape_change` is refuse-only by design and cannot force a
+  write through.
+- **The Green-row rule.** Any fact change at all on a Green row escalates
+  `dpia_flag` and `trustee_note`, always, no threshold.
+- **Two consecutive failures escalate.** Pass 1 reads the previous diff and the
+  previous report's "Could not check". Adobe 28 and 29 already qualify.
+
+Plus the pricing conventions and eight explicitly named report sections, with
+"Became completable" required to say "None" rather than be omitted.
+
+### Next step
+
+1. **Push, or decide not to.** Three of mine plus whatever the parallel session
+   has added since. Check `git fetch` for the real gap first.
+2. **Rule on `Unclear` for column I.** Flagged three times now. The script
+   refuses it, so a legitimate write on rows 5 and 47 is blocked. One word.
+3. **Close the four rulings in `axis-rulings.md`** before 14 September, or they
+   regenerate.
+4. **Adobe rows 28 and 29.** Unreachable from this machine by three methods,
+   twice. Now formally escalated by the two-failures rule on the next run. Both
+   sit inside "Doesn't train on your content". Needs a different fetch route.
+5. **22 November** is when the whole 23-row cohort comes due on the 90-day
+   clock at once. Worth staggering `last_checked` by hand before then.
+
+### Not actioned, deliberately
+
+A3 (`Unclear`), A4 (delete the two answered "decisions needed") and B5 (drop
+order under time pressure) from the gap-check report. Jasmin named six items and
+not these. A3 is a ruling that is hers.

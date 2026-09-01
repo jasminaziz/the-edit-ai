@@ -868,3 +868,36 @@ Session corrections and rules built up over time. Add entries; do not delete his
   string, here are the candidates", which is the honest framing and the one
   she can rule on. Where a pack recorded no reasoning, say so, so she knows
   she is superseding a string rather than overturning an argument.
+
+- **A document that instructs an agent to use a script is untested code
+  (2026-09-01).** `reports/2026-08-31-axis-audit-claude-code-prompt.md` said
+  columns A and F were "never writable, by any route" and that tools was the
+  only writable tab. `scripts/sheet-write.mjs`, written the same day, writes A
+  and F across four tabs. Both were correct when written and the ruling that
+  separated them was Jasmin's, but nothing failed when they diverged: no test
+  covers a prose file, and the prompt is only read by a human pasting it. Anyone
+  running the audit on 14 September would have got a document arguing with its
+  own guard, and the likeliest outcome is the agent believing the prompt over
+  the code. **When a doc tells an agent to use a script, changing the script
+  means changing the doc in the same commit**, and the doc should quote the
+  script's own structure rather than paraphrasing it.
+
+- **An advisory report's list of instances is not the full set (2026-09-01).**
+  The gap-check flagged the prompt's auth section as describing plain ADC.
+  Fixing only what it cited would have left three more: two further ADC
+  references in the guard description and the constraints block, and a spent
+  "if sheet-write.mjs does not exist yet, build it first" clause. The report was
+  right about the defect and incomplete about its extent, which is the normal
+  shape of a good review. **Grep for the pattern the finding describes, not just
+  the lines it quotes.** This sits alongside the existing rule that an advisory
+  agent's diagnosis and its remedy are separate claims: so is its inventory.
+
+- **A control that can be switched off by asserting it does not apply is not a
+  control (2026-09-01).** The brief for the column D carve-out asked that the
+  diff carry `"shape_change": false` to confirm the check had happened. Built as
+  described, the field would have been an honesty box: the one case it exists to
+  catch is a restructure, and a run that had misjudged a restructure would write
+  `false` and sail through. Built refuse-only instead, `true` refuses the write
+  and no value permits one, with the shape comparison running regardless. **Ask
+  of any proposed safeguard: what does the failure case write here?** If the
+  answer is "whatever gets it past", the safeguard is documentation.
