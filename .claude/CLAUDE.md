@@ -387,11 +387,17 @@ is at `reports/AI-Use-Policy-Template.pdf` (142,558 bytes) and is not served.
 longer blocks either file.
 
 **Never verify a file on this site by status code.** `vercel.json` is a SPA
-catch-all, so a missing file returns **200 `text/html` at 3,071 bytes** — the
-size of `dist/index.html`. That byte count is the reliable fingerprint for "this
-does not exist". Check content-type and length, or grep the body for a string
-only the real thing contains. Verified 2026-08-31: the `.docx` returns 21,711
-bytes with the correct wordprocessingml MIME type.
+catch-all, so a missing file returns **200 with `content-type: text/html`** and
+the body of `dist/index.html`. **Check the content-type**, or grep the body for
+a string only the real thing contains. Verified 2026-08-31: the `.docx` returns
+21,711 bytes with the correct wordprocessingml MIME type, while `/llms.txt` and
+`/AI-Use-Policy-Template.pdf` both return `text/html`.
+
+Do **not** memorise the shell's byte count as the fingerprint. An earlier
+version of this block named 3,071 bytes, and that number was stale within the
+hour: adding a comment to `index.html` in the same session took it to 4,380. Any
+edit to `index.html` moves it. Compare against the current `dist/index.html` if
+you want a size check, and treat content-type as the durable signal.
 
 ## Codebase conventions
 
