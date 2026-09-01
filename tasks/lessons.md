@@ -816,6 +816,48 @@ Session corrections and rules built up over time. Add entries; do not delete his
   entirely, because helmet unmounts and cleans up what it owns. A direct load of
   that URL is unaffected, which is what crawlers do.
 
+- **Never record a derived number as a fingerprint; record the invariant
+  (2026-08-31).** I wrote into CLAUDE.md that a missing file on this site
+  returns "200 `text/html` at 3,071 bytes" and called the byte count "the
+  reliable fingerprint". Adding a comment to `index.html` **in the same
+  session** took the shell to 4,380 bytes, so the number was stale within the
+  hour — and a stale fingerprint is worse than none, because the check reports a
+  missing file as present. The durable signal was sitting next to it in the same
+  sentence: `content-type`. It does not move when `index.html` is edited.
+  The general form, and it is not only about byte counts: **before writing a
+  number into a permanent doc, ask what changes it.** If the answer is "an
+  ordinary edit anyone might make, including me, later today", write the rule
+  that survives instead. Same family as the hand-maintained `lastmod` in
+  `sitemap.xml` and the commit tally that went stale twice in one report.
+
+- **Helmet reconciles every tag type it manages, so a one-tag Helmet is not a
+  one-tag change (2026-08-31).** Adding a canonical to the legal pages meant
+  mounting `<Helmet><link rel="canonical" .../></Helmet>`. That is not additive:
+  helmet recomputes *all* the tag types it owns from the mounted instances, so
+  emitting no `meta` means removing every `data-rh`-marked meta on the page —
+  including the static fallback block, which had just been marked so helmet
+  would adopt it. Measured on the built dist before shipping: canonical 1 and
+  correct, description 0, with `og:image` and `og:type` surviving only because
+  they are deliberately unmarked.
+  **Before adding a Helmet that emits one tag type, check what else on the page
+  helmet already owns.** The trade here was judged acceptable and disclosed (a
+  missing description beats a wrong one, and search engines generate a snippet
+  from content), but it was a trade, not a clean win, and it would have been
+  invisible on a typecheck.
+
+- **When a user reports a second odd symptom just after a caching bug, suspect
+  the same root cause before hunting a new one (2026-08-31).** Jasmin reported
+  the footer LinkedIn linking to the wrong person. `links.ts` has held the
+  correct slug since 22 August and the live bundle contained only that slug, so
+  there was no defect to find. The wrong slug shipped on 6 June and was fixed on
+  22 August — **after** the service worker shipped on 5 August — so a cached
+  build had been serving it ever since. Two symptoms she reported in one
+  session, one cause.
+  The check is cheap and should come first: **`git log -S` the reported string
+  and compare the fix date against the date the caching layer shipped.** If the
+  fix lands inside the caching window, the report is about a stale build, and
+  the answer is "already fixed, now visible" rather than a code change.
+
 - **Check provenance before proposing to change visitor-facing copy
   (2026-08-31).** Two strings I was about to treat as fixable inconsistencies
   turned out to be signed-off pack copy: "Say this to a trustee" from the B3
