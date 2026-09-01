@@ -50,7 +50,7 @@ export const SHEET_ID = '1RIO-WY9H75gML_UgdQbHGgDl-R0MfaG3CRPUp3PtAUI';
 
 export const LEGAL = {
   data_location:   ['UK', 'EU', 'EU option', 'US', 'Your tenant', 'Other', 'Unclear'],
-  trains_on_input: ['No', 'No by default', 'Yes unless you opt out', 'Yes', 'Varies by tier'],
+  trains_on_input: ['No', 'No by default', 'Yes unless you opt out', 'Yes', 'Varies by tier', 'Unclear'],
 };
 export const M_RE = /^(0?[1-9]|[12][0-9]|3[01]) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{4}$/;
 const URL_RE = /^https?:\/\/[^\s"<>]+$/;

@@ -97,6 +97,11 @@ test('illegal H and I values refused, legal ones pass', () => {
   assert.ok(checkEdit({ range: 'tools!H27', name: 'C', value: 'us' }).length > 0);   // case matters
   assert.ok(checkEdit({ range: 'tools!I27', name: 'C', value: 'Maybe' }).length > 0);
   assert.deepEqual(checkEdit({ range: 'tools!I27', name: 'C', value: 'Varies by tier', source: 'https://example.com/p' }), []);
+  // 'Unclear' means the vendor publishes no position at all, which is itself a
+  // warning and a legitimate published value. Added to the axis lock by
+  // amendment on 25 Aug 2026; this set omitted it until 1 Sep, so a row the
+  // lock allows was refused by the only path that can write it.
+  assert.deepEqual(checkEdit({ range: 'tools!I27', name: 'C', value: 'Unclear', source: 'https://example.com/p' }), []);
 });
 
 test('last_checked must be DD MMM YYYY', () => {

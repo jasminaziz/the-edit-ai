@@ -161,7 +161,7 @@ Abort if any disagree.
 
 Legal values. Writing anything else corrupts the row silently.
   H: UK | EU | EU option | US | Your tenant | Other | Unclear
-  I: No | No by default | Yes unless you opt out | Yes | Varies by tier
+  I: No | No by default | Yes unless you opt out | Yes | Varies by tier | Unclear
   J: the programme description, or the literal word None. Never blank.
   M: DD MMM YYYY.
 If the true position does not fit, leave the cell and flag it. Never pick the
