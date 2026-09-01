@@ -243,30 +243,64 @@ than leaving the homepage's copy. A direct load of those URLs is unchanged,
 which is what crawlers do, so the practical effect is nil — but it strengthens
 the case for giving those four pages their own meta.
 
+### 2026-08-31 RULINGS: mobile hero closed, structured data part-closed
+
+Four decisions put to Jasmin as one batch at the end of the session.
+
+- **Hero pills stay at `MAX_PILLS = 18`. No mobile cap.** Closed. The evidence
+  was put fully (at 360x780, 14 of 19 pills overlap the wordmark and 7 sit
+  behind the nav) and she ruled against changing it. The hero reads as texture;
+  the pills are the point. **Do not reopen this on the strength of the
+  measurements — she has seen them.**
+- **Hero `min-h-[78vh]` stays.** Closed. The 332px of empty hero below the type
+  at 360px is deliberate breathing room and holds the drag hint.
+- **`llms.txt`: yes, structure only.** Draft at
+  `reports/2026-08-31-llms-txt-draft.md`, deliberately not in `public/` because
+  a file full of placeholder brackets would be read verbatim by the engines it
+  exists to inform. Ships by moving one fenced block once the copy lands.
+- **Structured data: `author.url` fixed, `ItemList` not selected.** The
+  homepage JSON-LD author now points at jasminaziz.co.uk instead of circularly
+  back at The Edit. `ItemList` on `/tools` remains unbuilt and is not queued.
+
+**The LinkedIn report resolved to the cache bug, not a code defect.** Jasmin
+reported the footer LinkedIn linking to the wrong person. `src/lib/links.ts:27`
+is the only LinkedIn URL in the tree and has read `jasmin-r-aziz` since
+`3227fb4` on 22 August; the live bundle contains only that slug. The wrong slug
+(`jasminaziz`) shipped in `4523cd7` on 6 June and was corrected on 22 August —
+**after** the service worker shipped on 5 August. So a returning visitor whose
+worker had cached a build from between those dates kept being served the wrong
+link indefinitely. Nothing to fix; today's service-worker removal is what makes
+the nine-day-old correction visible. Logged because it is the second symptom
+traced to the same root cause in one session.
+
 ### NEXT STEP (2026-08-31, end of session)
 
 Everything unblocked is done, live and verified. What remains needs a ruling or
 copy from Jasmin, in rough value order:
 
-1. **Meta for `/privacy-policy`, `/terms-of-service`, `/cookie-policy` and the
-   404.** They ship no title, description or canonical, and all three legal
-   routes are in `sitemap.xml`. Titles and descriptions are copy; the canonical
-   is not and could go in on its own.
+1. **Titles and descriptions for `/privacy-policy`, `/terms-of-service`,
+   `/cookie-policy` and the 404.** The **canonical is now done** (`5c1e9e1`,
+   derived from `useLocation`); titles and descriptions are copy and are still
+   Jasmin's. Note the measured side effect of adding that Helmet: the three
+   legal pages now carry **no** description rather than the homepage's, because
+   helmet reconciles every tag type it manages and strips the data-rh-marked
+   static fallback. Better of two wrong answers until they get their own, and
+   reversible in one commit if she disagrees. The 404 was deliberately left
+   without a canonical.
 2. **Four over-length meta descriptions**: 193 (`/`), 177 (`index.html`
    static), 175 (`/tools`), 168 (`/design-kit`), against a ~155 snippet limit.
    `/submit` at 159 is borderline. On both homepage strings the sentence
    truncation loses is "No sponsored lists".
-3. **Mobile rulings, now with evidence.** `MAX_PILLS` mobile cap: at 360x780 on
-   live, 14 of 19 pills overlap the wordmark and 7 sit behind the nav. Hero
-   `min-h-[78vh]`: 608px tall with 332px empty below the type. Plus the mobile
-   wordmark string, which needs approved copy.
+3. ~~Mobile pill cap and hero height~~ **both closed 2026-08-31: no change.**
+   The mobile wordmark string is still open and needs approved copy.
 4. **`what_it_does` for the batch-two eight** (Blotato, Ideogram, Granola,
    Submagic, Seedance, Gemini, Gamma, Grok) — complete rows rendering without
    the line the card leads with. And **row 40's trustee note still names
    NotebookLM**.
-5. **GEO judgement calls**: whether to add `llms.txt`, whether `/tools` gets
-   `ItemList` structured data, and whether the homepage JSON-LD's `author.url`
-   should point at jasminaziz.co.uk rather than back at The Edit.
+5. **GEO**: `author.url` fixed. `llms.txt` structure drafted and **waiting on
+   Jasmin's copy** — see `reports/2026-08-31-llms-txt-draft.md`, which also
+   flags three decisions to take before it ships. `ItemList` not selected and
+   not queued.
 6. **Not closable from a desk**: the ToolCard tap on a real finger, a real
    360px device, rotation against the physics canvas.
 7. **SCRATCHPAD archive split.** This file is past 2,800 lines. No cut line
