@@ -114,27 +114,39 @@ const RadarCard = ({
         <p className="mt-3 font-body text-[13px] tc-secondary">{tool.pricing}</p>
       )}
 
+      {/* The text slot, and the reason this card no longer leads with nothing.
+          The old tools page always showed a description up front and kept the
+          verdict behind a toggle. Here what_it_does is empty on every row and
+          the verdict is present on every row, so the verdict fills the slot the
+          description used to hold: two clamped lines visible, expanding in
+          place rather than into a second copy of itself.
+
+          "What it is" is Jasmin's label, ruled 1 Sep, replacing "First look".
+          Both were chosen against the same constraint: this is not the
+          directory's "Honest verdict", which sits behind the seven checks, so
+          it must not borrow that label and promise the same rigour. */}
       {tool.verdict && (
-        <div className="mt-auto pt-4">
+        <div className="mt-3">
+          <p
+            className={`font-body text-[15px] leading-relaxed tc-primary ${
+              isExpanded ? "" : "line-clamp-2"
+            }`}
+          >
+            {tool.verdict}
+          </p>
           <button
             onClick={(e) => {
               e.stopPropagation();
               setIsExpanded((v) => !v);
             }}
-            className="text-left font-body font-semibold text-[15px] min-h-[44px] flex items-center transition-colors tc-verdict-toggle"
+            className="mt-1 text-left font-body font-semibold text-[15px] min-h-[44px] flex items-center transition-colors tc-verdict-toggle"
           >
-            {/* Approved copy. Deliberately not "Honest verdict", the directory
-                label: that verdict sits behind the seven checks and this one
-                does not, so reusing it would promise the same rigour. */}
-            {isExpanded ? "First look ↑" : "First look ↓"}
+            {isExpanded ? "What it is ↑" : "What it is ↓"}
           </button>
-          {isExpanded && (
-            <div className="mt-3 pt-4 pl-4 font-body text-[15px] leading-relaxed tc-verdict tc-primary">
-              {tool.verdict}
-            </div>
-          )}
         </div>
       )}
+
+      <div className="mt-auto" />
 
       {tool.url && (
         <div className="mt-3 flex justify-end">
