@@ -1082,3 +1082,29 @@ Session corrections and rules built up over time. Add entries; do not delete his
 - **An animated counter's `innerText` carries every digit reel.** The homepage
   counter reads `01234567890123456789` to a text query. Already documented
   globally; met it live this session. Count rendered elements, never parse.
+
+### Later the same day
+
+- **"It renders" is not "it works", and every presence check will pass on
+  something useless.** The desktop drag hint was in the viewport, had both its
+  children, had target opacity 1 and measured cleanly. It was also pointing at
+  empty margin, because the pill pile ends 71px to its left. Every check I had
+  written would have gone green. **For an affordance, verify its RELATIONSHIP
+  to the thing it refers to** — that the arrow has something to point at, that
+  the label sits near what it labels — not merely that it exists and is
+  on-screen.
+
+- **Whether something is still an accent is a measurement.** The lime band was
+  arguable as taste and settled in one query: compute the rendered area of
+  every element with that background and sort. 249,600px2 against 6,480 for the
+  next largest is not a matter of opinion. **When a design rule uses a word like
+  "accent" or "sparingly", compute the distribution rather than arguing about
+  the word.**
+
+- **A copy claim that promises an operation can be checked against the
+  operation.** "What you see here is always current" was falsifiable in about a
+  minute against the ownership map: `my_stack` has no fact owner, so nothing
+  re-verifies what that page publishes. **When visitor-facing copy promises
+  something ongoing — current, checked, monitored, updated — go and find the
+  mechanism that would have to deliver it, and confirm it covers that surface.**
+  Copy is Jasmin's, but whether a claim is backed is checkable and mine to raise.

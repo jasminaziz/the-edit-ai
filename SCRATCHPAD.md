@@ -2,8 +2,17 @@
 
 ## Where we got to — 1 September 2026 (post-merge design pass)
 
-**Shipped and verified on production.** 24 commits, `main` and
-`overhaul/sector-axis` level at `22ee71b`, tree clean.
+**Shipped and verified on production.** 30 commits, `main` and
+`overhaul/sector-axis` level at `4c78c44`, tree clean.
+
+Two later items after the first wrap. The **desktop drag hint** now points left
+at the pills rather than down into empty margin: it had been rendering
+correctly and doing nothing, because the pile ends 71px to its left. And
+**"How I built this" was cut from `/my-stack`** — not recoloured, cut. Its
+claim was "always current", and `my_stack` is the only tab with no fact owner,
+so nothing re-verifies what that page publishes. It was separately the largest
+lime breach on the site at 38x the next largest element. `.claude/CLAUDE.md`
+carries both, and the lime rule now says "never a section ground".
 
 Jasmin compared a cached pre-merge mobile snapshot against the live site and
 raised ten items plus a copy pack. All ten are closed. Three site agents ran in
