@@ -1,4 +1,6 @@
 import { ReactNode } from "react";
+import { Helmet } from "react-helmet-async";
+import { useLocation } from "react-router-dom";
 
 interface LegalPageProps {
   title: string;
@@ -7,8 +9,26 @@ interface LegalPageProps {
 }
 
 export function LegalPage({ title, lastUpdated, children }: LegalPageProps) {
+  const { pathname } = useLocation();
   return (
     <>
+      {/* Canonical only, deliberately. /privacy-policy, /terms-of-service and
+          /cookie-policy are all listed in sitemap.xml and shipped no canonical
+          at all until 31 Aug 2026, so search engines were pointed at three
+          indexed URLs that never declared themselves. A canonical is not copy,
+          so it can be fixed without a ruling; the title and description for
+          these pages are copy and are still Jasmin's to write.
+
+          Note the side effect, which is helmet's design and not a bug: helmet
+          reconciles every tag type it manages, so mounting any Helmet here
+          removes the data-rh-marked static meta tags that index.html supplies
+          as the no-JS fallback. These three pages therefore now carry no
+          description rather than the homepage's, which is the better of two
+          wrong answers until they get their own. Adding a title and description
+          to this component closes it properly. */}
+      <Helmet>
+        <link rel="canonical" href={`https://theeditai.co.uk${pathname}`} />
+      </Helmet>
       {/* Hero — mirrors Subscribe page style */}
       <section
         className="relative min-h-[30vh] sm:min-h-[40vh] flex flex-col justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-8 sm:pb-12 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
