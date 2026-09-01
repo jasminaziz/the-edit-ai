@@ -24,6 +24,9 @@
  * correct value, refused when someone has to choose it. Every write must also
  * cite a source URL, or it is refused.
  *
+ * Column D carries one extra rule: only a number or currency substituted inside
+ * the existing string shape may be written. A restructured tier is editorial.
+ *
  * Note the collision this guard exists to prevent: column I is `url` on the
  * learning tab and `trains_on_input` on tools. The spec is per tab, never a
  * global set of column letters.
@@ -68,6 +71,24 @@ export function parseRange(range) {
 }
 export const fieldOf = range => { const p = parseRange(range); return p ? WRITABLE[p.tab]?.[p.col] ?? null : null; };
 
+/**
+ * The shape of a cost string, with the parts that are allowed to change removed.
+ * Substituting a number or a currency symbol inside the existing shape is a
+ * write; changing the shape itself is a restructure and is Jasmin's.
+ *
+ *   "Pro £100 a year"  -> "pro ¤# a year"
+ *   "Pro $120 a year"  -> "pro ¤# a year"   same shape, allowed
+ *   "$20 per seat/mo"  -> different shape,  refused
+ */
+export function costShape(v) {
+  return String(v ?? '')
+    .replace(/[£$€¥]/g, '¤')        // currency substitution is allowed
+    .replace(/\d[\d,.]*/g, '#')     // number substitution is allowed
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
 /** Guard one proposed edit. Returns reasons; empty means allowed. */
 export function checkEdit(edit) {
   const errs = [];
@@ -92,6 +113,20 @@ export function checkEdit(edit) {
   if (field === 'last_checked' && !M_RE.test(value)) errs.push(`${range}: "${value}" is not DD MMM YYYY`);
   if (field === 'url' && !URL_RE.test(value)) errs.push(`${range}: "${value}" is not an http(s) URL`);
   if (LEGAL[field] && !LEGAL[field].includes(value)) errs.push(`${range}: "${value}" is not a legal ${field} (${LEGAL[field].join(' | ')})`);
+  // Column D carve-out. A cost string carries editorial shape as well as a
+  // number, so only a substitution inside the existing shape may be written.
+  // Note shape_change can only ever REFUSE: it is the agent declaring a
+  // restructure, never a way to force one through.
+  if (field === 'cost') {
+    if (edit.shape_change === true) {
+      errs.push(`${range}: shape_change is true, so this is a pricing restructure. Flag it, do not write it.`);
+    }
+    if (typeof edit.old !== 'string') {
+      errs.push(`${range}: a cost write must carry the old value so its shape can be compared`);
+    } else if (costShape(edit.old) !== costShape(value)) {
+      errs.push(`${range}: cost SHAPE changed, not just a number.\n      was: "${edit.old}"\n      now: "${value}"\n      A restructured tier, a renamed plan or a withdrawn free tier is Jasmin's call. Flag it.`);
+    }
+  }
   if (['nonprofit_tier', 'cost', 'name'].includes(field) && value.trim() === '') {
     errs.push(`${range}: ${field} must not be blank${field === 'nonprofit_tier' ? ' — use the literal "None"' : ''}`);
   }

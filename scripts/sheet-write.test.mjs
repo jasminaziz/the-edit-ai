@@ -5,11 +5,50 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { checkEdit, checkBatch, checkNames, gateMStamps, invert, parseRange, fieldOf, WRITABLE } from './sheet-write.mjs';
+import { checkEdit, checkBatch, checkNames, gateMStamps, invert, costShape, parseRange, fieldOf, WRITABLE } from './sheet-write.mjs';
+
+test('a cost write that only substitutes a number or currency is allowed', () => {
+  const base = { range: 'tools!D27', name: 'Canva', source: 'https://x.com/pricing' };
+  assert.deepEqual(checkEdit({ ...base, old: 'Free tier / Pro £100 a year', value: 'Free tier / Pro £120 a year' }), []);
+  assert.deepEqual(checkEdit({ ...base, old: 'Pro £100 a year', value: 'Pro $100 a year' }), []);  // currency swap ok
+});
+
+test('a cost RESTRUCTURE is refused, not written', () => {
+  const base = { range: 'tools!D3', name: 'HubSpot', source: 'https://x.com/pricing' };
+  // the real 30 August HubSpot case: flat monthly fee -> seat plus credits
+  const errs = checkEdit({ ...base,
+    old: 'Free CRM / Marketing Starter from £18 a month',
+    value: '$20 per seat monthly, 500 credits, 1,000 contacts' });
+  assert.ok(errs.length > 0);
+  assert.match(errs[0], /SHAPE changed/);
+  // a free tier being withdrawn is a shape change too
+  assert.ok(checkEdit({ ...base, old: 'Free tier / Pro £100 a year', value: 'Pro £100 a year' }).length > 0);
+});
+
+test('shape_change can only refuse, never force a write through', () => {
+  const base = { range: 'tools!D27', name: 'Canva', source: 'https://x.com/p',
+                 old: 'Pro £100 a year', value: 'Pro £120 a year' };
+  assert.deepEqual(checkEdit(base), []);                        // allowed without the flag
+  const errs = checkEdit({ ...base, shape_change: true });      // declaring a restructure
+  assert.ok(errs.length > 0);
+  assert.match(errs[0], /restructure. Flag it/);
+  // and it cannot be used to bypass the shape check either
+  assert.ok(checkEdit({ ...base, value: '$20 per seat', shape_change: false }).length > 0);
+});
+
+test('a cost write without the old value is refused', () => {
+  assert.ok(checkEdit({ range: 'tools!D27', name: 'Canva', value: 'Pro £120 a year',
+                        source: 'https://x.com/p' }).length > 0);
+});
+
+test('costShape normalises only numbers and currency', () => {
+  assert.equal(costShape('Pro £100 a year'), costShape('Pro $120 a year'));
+  assert.notEqual(costShape('Free tier / Pro £100'), costShape('Pro £100'));
+});
 
 test('the writable fact columns are allowed', () => {
   for (const [r, v] of [
-    ['tools!A40', 'Gemini Notebook'], ['tools!D27', 'Free / Pro £100 a year'], ['tools!F40', 'https://notebook.google.com'],
+    ['tools!A40', 'Gemini Notebook'],  ['tools!F40', 'https://notebook.google.com'],
     ['tools!H27', 'US'], ['tools!I27', 'No by default'], ['tools!J27', 'None'], ['tools!M27', '31 Aug 2026'],
     ['my_stack!E12', 'https://notebook.google.com'], ['design_kit!E42', 'https://www.canva.com/mockups/'],
     ['learning!I2', 'https://academy.claude.com/courses/ai-fluency-framework-foundations'],
