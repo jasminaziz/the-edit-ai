@@ -15,10 +15,16 @@ import { DragHint } from "@/components/DragHint";
  * below 2.06 to 1.44. Light colours go the other way, so the lime accent
  * improves from 1.92 to 2.75.
  *
- * So separation no longer comes from the fill. Every pill carries a 2px ink
- * rim (see pillStyle), which fixes it at ink-on-hero, 5.03:1, whatever colour
- * sits inside. That is a harder edge than any pill had on the lighter hero,
- * and it is what makes the rest of this list a free choice.
+ * A 2px ink rim briefly carried that separation instead of the fill. It is
+ * GONE, removed 1 Sep 2026 on Jasmin's ruling that it looked wrong, and it
+ * should not come back without her.
+ *
+ * So separation is on the fill alone and is genuinely softer than it was on the
+ * lighter hero. That is accepted rather than overlooked: the pills are
+ * decorative draggable objects rather than text or controls, they separate on
+ * hue against a lilac ground, and every LABEL still clears 4.5:1, which is the
+ * part that carries meaning. The orange is the softest at 1.44:1 and is here on
+ * Jasmin"s explicit approval.
  *
  * Orange #C2410C replaced Red #A8261C on Jasmin's ruling. She asked for a
  * brighter, warmer orange than the Red, which had been standing in for the
@@ -76,15 +82,6 @@ function pillStyle(label: string, isMobile: boolean): React.CSSProperties {
     fontSize: isMobile ? 13 : 15,
     padding: isMobile ? "8px 14px" : "10px 18px",
     borderRadius: 9999,
-    // 2px ink rim, added 1 Sep 2026 with the hero's return to #7B7FD4.
-    //
-    // It is what lets the darker hero, the brighter orange and "the pills
-    // still separate" all be true at once, which they cannot be on fill alone.
-    // Against #7B7FD4 the fills fall to: orange 1.44:1, forest 1.77, red 1.97,
-    // cobalt 2.37. The rim takes separation off the fill entirely and fixes it
-    // at ink-on-hero, 5.03:1, whatever colour sits inside. Every pill gains a
-    // harder edge than any of them had on the lighter hero.
-    border: "2px solid #1A1510",
     whiteSpace: "nowrap",
     userSelect: "none",
     lineHeight: 1,
