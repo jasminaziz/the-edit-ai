@@ -26,12 +26,33 @@ import { DragHint } from "@/components/DragHint";
  * its own label passes at 6.39:1, and green against lilac separates on hue with
  * room to spare. Same reasoning for the lime accent at 1.92:1.
  *
+ * Red #A8261C joined on 1 Sep 2026, on Jasmin's ruling, restoring some of the
+ * warmth burnt orange used to carry. It is a locked hex rather than a new one:
+ * it is the Red DPIA ink and the "Judged, not recommended" badge. That reuse is
+ * deliberate and has precedent, since forest green already serves as the In My
+ * Stack badge, the Green DPIA chip, a DesignKit cost badge and a pill.
+ *
+ * It was chosen over reviving burnt orange because the two converge. The hero
+ * is light enough that any warm colour clearing the 2.54:1 boundary floor has
+ * to be dark, and #E8572A's own hue only clears it at about 36% lightness,
+ * which lands on #A63512 and reads almost identically to this. Given the
+ * choice between a near-identical new hex and a locked one, the locked one
+ * wins.
+ *
+ * Boundary against the hero 2.82:1, above Forest's accepted 2.54:1. White label
+ * 7.10:1. Both measured, not assumed.
+ *
+ * Note this changes every pill's colour, not just the new one: colourFor()
+ * indexes with `h % CORE_COLOURS.length`, so going from three to four
+ * reshuffles the whole rotation. That is expected.
+ *
  * Every label pairing here now clears 4.5:1.
  */
 const CORE_COLOURS = [
   { bg: "#2D35C9", fg: "#FFFFFF" }, // Cobalt, label 8.52:1, boundary 3.38:1
-  { bg: "#2D6A4F", fg: "#FFFFFF" }, // Forest, label 6.39:1
+  { bg: "#2D6A4F", fg: "#FFFFFF" }, // Forest, label 6.39:1, boundary 2.54:1
   { bg: "#1A1510", fg: "#FFFFFF" }, // Ink,    label 18.12:1, boundary 7.20:1
+  { bg: "#A8261C", fg: "#FFFFFF" }, // Red,    label 7.10:1, boundary 2.82:1
 ];
 const ACCENT_COLOUR = { bg: "#C8F04A", fg: "#1A1510" }; // Lime, label 13.83:1
 
