@@ -121,6 +121,24 @@ the row is, and that stays hers (Windsurf, Smartmockups).
 
 ## The Sheet write path
 
+**Nothing schedules the axis audit. It runs only when Jasmin pastes
+`reports/2026-08-31-axis-audit-claude-code-prompt.md` into Claude Code, and
+nothing else starts it.** Ruled 2026-09-01. The fortnightly Cowork task no
+longer runs the audit: its prompt is now a reminder plus a monthly
+design_kit/learning discovery pass, and it explicitly does not check facts or
+write to the Sheet. The only other automation touching this Sheet is the daily
+8am `whats_new` Routine, which is a separate pipeline and writes only to that
+tab.
+
+So the failure mode is silence. If the prompt is never pasted, the audit does
+not happen and nothing reports that it did not. A fortnightly calendar reminder
+(Mondays from 14 September 2026) is the mechanism that fires; the run itself is
+manual by design, because it writes to a live site.
+
+The monthly discovery pass (design_kit and learning suggestions, capped, never
+writes) lives in the Cowork task alone. **It was deleted from the audit prompt
+on 2026-09-01 so the two cannot drift.** Do not re-add it here.
+
 `scripts/sheet-write.mjs` is the **only** path that writes to the Sheet, with 19
 tests in `scripts/sheet-write.test.mjs`. Run them with `node --test
 scripts/sheet-write.test.mjs`; `bun test` also picks them up, so the project gate
@@ -789,9 +807,10 @@ No ranges, no "Unknown".
 
 Planned changes, still outstanding (see audit): the Routine's extraction rule
 re-points to sector-relevant stories only (zero-story days are correct
-behaviour); the fortnightly Cowork task is rebuilt as the checks engine
-(facts with sources, last_checked stamps, judgement flagged never
-written). Post-relaunch option: script.google.com is reachable from the
+behaviour). **The "rebuild the fortnightly Cowork task as the checks engine"
+item is DONE and has been removed from this list.** The checks engine shipped
+on 2026-08-31 as `scripts/sheet-write.mjs` plus the audit prompt, running in
+Claude Code, not in Cowork. Do not rebuild it. Post-relaunch option: script.google.com is reachable from the
 Cowork cloud environment (verified 22 Aug), so if a direct Apps Script
 call passes a redirect check, the GitHub relay and watchdog can be
 deleted and the shared secret added.
