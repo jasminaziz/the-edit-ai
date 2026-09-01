@@ -30,16 +30,16 @@ import { DragHint } from "@/components/DragHint";
  * brighter, warmer orange than the Red, which had been standing in for the
  * retired burnt orange #E8572A since 1 Sep. It is a NEW HEX, outside the
  * locked palette, and it is here on her explicit approval rather than by
- * precedent. Its white label is 5.18:1. Its own fill boundary is 1.44:1, which
- * would have been disqualifying before the rim and is now not what carries the
- * separation.
+ * precedent. Its white label is 5.18:1, which is the number that matters. Its
+ * fill boundary against the hero is 1.44:1, the softest here, and it is on the
+ * page because Jasmin approved the colour knowing that.
  *
- * Burnt orange #E8572A was reconsidered and still not revived: its white label
- * is 3.60:1, a real text failure the rim does nothing about, where #C2410C's
- * clears 4.5 comfortably.
+ * Burnt orange #E8572A was reconsidered and still not revived. Its boundary is
+ * no worse, at 1.43:1, but its white LABEL is 3.60:1, and a label is text: that
+ * is a real AA failure rather than a soft edge, where #C2410C clears 4.5.
  *
- * Cobalt, forest and ink stay. Ink is the strongest of them at 5.03:1 even
- * without the rim, and it is already a ground in the footer.
+ * Cobalt, forest and ink stay. Ink is much the strongest at 5.03:1 against the
+ * hero, and it is already a ground in the footer.
  *
  * Note colourFor() indexes with `h % CORE_COLOURS.length`, so swapping a
  * colour reshuffles every pill rather than just the one. That is expected.
@@ -50,7 +50,7 @@ const CORE_COLOURS = [
   { bg: "#2D35C9", fg: "#FFFFFF" }, // Cobalt, label 8.52:1, boundary 3.38:1
   { bg: "#2D6A4F", fg: "#FFFFFF" }, // Forest, label 6.39:1, boundary 2.54:1
   { bg: "#1A1510", fg: "#FFFFFF" }, // Ink,    label 18.12:1, boundary 7.20:1
-  { bg: "#C2410C", fg: "#FFFFFF" }, // Orange, label 5.18:1, rim 5.03:1
+  { bg: "#C2410C", fg: "#FFFFFF" }, // Orange, label 5.18:1, boundary 1.44:1
 ];
 const ACCENT_COLOUR = { bg: "#C8F04A", fg: "#1A1510" }; // Lime, label 13.83:1
 
