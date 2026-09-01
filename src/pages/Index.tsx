@@ -103,12 +103,32 @@ const Index = () => {
       {/* Hero */}
       <section
         ref={pillsSectionRef}
-        className="relative min-h-[78vh] sm:min-h-[100vh] flex flex-col justify-start sm:justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
+        className="relative min-h-[78vh] sm:min-h-[100vh] flex flex-col justify-center sm:justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-24 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
         // #7B7FD4, matching the nav exactly so the header blends into the
         // hero rather than banding across it. See Layout.tsx for the contrast
         // this knowingly gives up, and for why no periwinkle satisfies both.
         style={{ backgroundColor: "#7B7FD4" }}
       >
+        {/* justify-center on mobile, and pb-24 rather than pb-10, are one
+            decision. Centring closed the gap between the wordmark and the
+            settled pills from 138px to 30, but 30 is narrower than the DragHint
+            that has to live in it, so the hint landed on top of "Edit."
+
+            Flex centres within the content box, so padding-bottom moves the
+            centre up by half of what you add: pb-10 to pb-24 is 56px of padding
+            and 28px of lift. That leaves the hint clear of the type above it
+            and the pills below it.
+
+            The pills are unaffected, being absolutely positioned on inset-0, so
+            this moves the wordmark alone. Desktop keeps pb-16 and justify-end
+            and is untouched.
+
+            EVERY NUMBER HERE WAS MEASURED WITH THE SIMULATION RUNNING, by
+            hijacking requestAnimationFrame and pumping it by hand. In a hidden
+            pane no frames run, matter-js sits at its spawn positions across the
+            wordmark, and two samples seconds apart are identical, which reads
+            as settled when it is frozen. Confirm settling by sampling twice and
+            checking the drift, not by waiting. */}
         {/* Pills layer — sits IN FRONT of the headlines so they can be dragged across the type, on every device */}
         <div className="absolute inset-0 z-20">
           {!loading && (
@@ -130,14 +150,18 @@ const Index = () => {
             <span
               className="block leading-[0.82] w-full"
               style={{
-                // Floor raised 120 to 150, 1 Sep 2026. At 375px both clamps
-                // sit on their floor, so the phone never scaled with the
-                // viewport, and "The" drew 207px of glyph in a 343px column:
-                // 60 per cent of the width, against "Edit." at 101. 150 takes
-                // it to 259px, 75 per cent, and adds 25px of height to a
-                // wordmark that had 357px of empty hero under it. It stays
-                // below Edit."s 160 so the stagger is unchanged.
-                fontSize: "clamp(150px, 28vw, 420px)",
+                // Floor 110, not the 150 tried earlier the same day and not
+                // the original 120. Jasmin's ruling: "The" should read clearly
+                // smaller than "Edit." for variety, and at 150 against 160 the
+                // six per cent difference read as an accident rather than a
+                // choice. 110 against 160 is unmistakably deliberate.
+                //
+                // Height is what this costs, and it is paid for on the section
+                // above: the wordmark centres in the hero on mobile now instead
+                // of sitting at the top, so a shorter word does not reopen the
+                // gap above the pills. Do not raise this to close a gap; the
+                // hero's justification is the lever, not the type size.
+                fontSize: "clamp(110px, 28vw, 420px)",
                 color: "#2D35C9",
                 letterSpacing: "-0.04em",
                 marginLeft: "-0.04em",
