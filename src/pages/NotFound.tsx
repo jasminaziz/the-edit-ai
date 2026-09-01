@@ -16,6 +16,12 @@ import { SEO } from "@/components/SEO";
  *
  * Strings are approved copy supplied 1 Sep 2026. Do not reword them.
  *
+ * Two amendments the same day, both Jasmin's. The second paragraph's em dash
+ * became a colon: it was the only em dash in visitor-facing copy anywhere in
+ * src/, against a locked voice rule that bans them, and a colon does the same
+ * list-introducing job. And the h1 regained its "404:" prefix, matching the
+ * consultancy site's own 404 that this page was built from.
+ *
  * Colours are Tailwind arbitrary values, not inline style, and deliberately:
  * an inline style declaration outranks the stylesheet, so setting the pill's
  * background inline would beat its own hover rule. That is the same mechanism
@@ -102,14 +108,14 @@ const NotFound = () => {
             className="font-heading font-bold text-[#2D35C9] leading-[1.05] tracking-[-0.025em]"
             style={{ fontSize: "clamp(32px, 5vw, 48px)" }}
           >
-            Page not found
+            404: Page not found
           </h1>
 
           <p className="font-body text-foreground text-[17px] leading-[1.72] mt-9">
             That link's dead, or that page never existed. Either way, you're not where you meant to be.
           </p>
           <p className="font-body text-foreground text-[17px] leading-[1.72] mt-5">
-            Everything else on the site is where it should be — the directory, the stack, the policy template. Home's the fastest way back to all of it.
+            Everything else on the site is where it should be: the directory, the stack, the policy template. Home's the fastest way back to all of it.
           </p>
 
           <div className="mt-9">
