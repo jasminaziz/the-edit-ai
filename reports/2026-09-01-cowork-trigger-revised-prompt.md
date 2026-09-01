@@ -1,8 +1,14 @@
 # Revised Cowork trigger prompt
 
 For "The Edit's fortnightly axis audit", `trig_01WgEnqKWcJc2WGby5Ecn5QQ`.
-Ruled 1 September 2026. **Paste the block below into Cowork, replacing the
-current prompt. Leave the schedule alone: weekly, Monday 08:00.**
+Ruled 1 September 2026 and **applied the same day: this is live in Cowork.**
+The schedule was deliberately left alone at weekly, Monday 08:00, and no
+setting was changed.
+
+**This file is the record of what the trigger says.** If the Cowork copy is
+edited, change this file in the same pass. The defect it fixes was a prompt and
+a schedule drifting apart, and a prompt drifting from its own record is the
+same failure one level up.
 
 ## What changed and why
 

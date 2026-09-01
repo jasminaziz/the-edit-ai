@@ -3109,10 +3109,10 @@ is why the Cowork task tells discovery the tab is full.
 
 ### Next step, in order
 
-1. **Before Monday 7 September.** Paste the revised prompt from
-   `reports/2026-09-01-cowork-trigger-revised-prompt.md` into Cowork. The
-   trigger fires that morning and will say the audit is due a week early.
-   **No settings change: weekly / Monday / 08:00 all stay.**
+1. ~~Paste the revised Cowork prompt.~~ **DONE 1 September**, same day it was
+   drafted. Settings untouched: weekly / Monday / 08:00. The 7 September firing
+   will now correctly say the audit is not due, and 14 September will be the
+   first real one.
 2. **The radar chip string.** The one ruling that could not be executed here.
    Until it lands, 44 cards lead with an undated early take.
 3. **Rule on the 45-row ceiling.** It is set on the directory in `CLAUDE.md`;

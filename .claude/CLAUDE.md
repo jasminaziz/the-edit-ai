@@ -140,24 +140,35 @@ documented here for the first time on that date.** An earlier version of this
 paragraph called the mechanism "a fortnightly calendar reminder (Mondays from
 14 September 2026)", which named no system and no owner.
 
-Its settings and its prompt do not agree, and this is unresolved as at
-1 September. **Schedule: weekly, Monday 08:00, automatic approval on, "require
-this computer" off, so it runs in the cloud whether or not the Mac is on.** Its
-prompt branches on the **1st** and the **15th**. Over the twelve months from
-7 September 2026 there are 53 Monday firings and exactly 4 land on either date,
-all in February and March 2027. There is no fall-through branch, so the other
-49 run the every-run nudge, which opens by asserting the audit is due today
-with no condition attached. That is the pattern this project has already
-watched destroy an alert channel's credibility once, in the whats_new watchdog.
-The discovery pass, meanwhile, runs twice in twelve months rather than twelve.
+**Schedule: weekly, Monday 08:00, automatic approval on, "require this
+computer" off, so it runs in the cloud whether or not the Mac is on.** Those
+settings are correct and were deliberately left alone.
 
-**Ruled 1 September 2026, and NOT yet applied:** move the prompt to the
-schedule rather than the schedule to the prompt. Audit due on the **2nd and 4th
-Monday** (14 and 28 September, then 12 and 26 October), discovery on the
-**first Monday of the month**, silent otherwise. Readable straight off the date
-with no state to keep, and it preserves the 14 September anchor. The edit is in
-Cowork and is Jasmin's to make; until it lands, the 7 September firing and
-every Monday after it will say the audit is due when it is not.
+**The prompt was rewritten to match them on 1 September 2026, and the revision
+is live in Cowork.** Audit due on the **2nd and 4th Monday**, discovery on the
+**first Monday of the month**, quiet otherwise, including on a 5th Monday and
+on any day that is not a Monday at all. Every branch reads straight off the
+date with no state to keep, and 14 September is a 2nd Monday, so the original
+anchor survived the change. Verified against a real calendar rather than
+assumed: **25 audit-due runs and 12 discovery runs a year**, with gaps of 14
+days or, in the four months carrying five Mondays, 21. It runs slightly less
+often than a strict fortnight and never more often, which is the safe direction
+for a job whose whole output is a claim about whether you should go and write
+to a live site.
+
+**Why it was rewritten, kept because the failure is worth not repeating.** The
+schedule fired weekly on Mondays while the prompt branched on the **1st** and
+the **15th**. Over twelve months that is 53 firings and 4 hits, all bunched in
+February and March 2027. There was no fall-through branch, so the other 49 ran
+the every-run nudge, which opened by asserting the audit was due with no
+condition on it, and the discovery pass ran twice a year instead of twelve
+times. The near-miss is the tell: 14 September is a Monday and the 15th a
+Tuesday, so schedule and prompt described the same intended run one day apart.
+That is the pattern this project has already watched destroy an alert channel's
+credibility once, in the whats_new watchdog. **The replacement text is kept at
+`reports/2026-09-01-cowork-trigger-revised-prompt.md`; if the Cowork copy is
+ever edited, update that file in the same change or the two will drift, which
+is exactly how this happened.**
 
 **The Cowork task's "never write to the Sheet" is prose, not a control.**
 Ruled 1 September 2026 to leave it that way, and recorded here as a known risk
