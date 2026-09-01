@@ -952,3 +952,49 @@ Session corrections and rules built up over time. Add entries; do not delete his
   375px and reported a zero-size rect, which read as "the trigger is missing" on
   a page where the screenshot plainly showed it. **When a component has
   breakpoint variants, filter to the one with a non-zero box before measuring.**
+
+- **`git push origin <branch>` pushes the ref of that NAME, not HEAD, and the
+  trap has a mirror image (2026-09-01).** The global rules document one
+  direction: HEAD on a feature branch, `git push origin main` pushes main to
+  itself and exits 0. I hit the mirror. HEAD was on `main`, and the project
+  convention is `git push origin overhaul/sector-axis` then
+  `...:main`, so both commands pushed the *local* `overhaul/sector-axis` ref,
+  still sitting at the old commit, to itself and to main. Seven commits went
+  nowhere and both commands exited 0. Caught only because the verification step
+  compares `git rev-parse` against a fresh fetch rather than trusting exit
+  codes. **Push `HEAD:<target>` explicitly.** It is unambiguous whatever branch
+  is checked out, and it makes the convention immune to which branch a parallel
+  session left checked out.
+
+- **Three documents can state a count and all be wrong (2026-09-01).**
+  `design_kit` was 45 in `schema.md`, 46 in the audit prompt, and 46 in the
+  Cowork task, which used that number to instruct discovery that the tab was
+  full and could only take swaps. Live it is 44. There was no majority to trust
+  and no way to tell from the documents which was stale. **Read the source
+  before repeating any count, and prefer a live read to the most recent
+  document.** The two counts that did match `schema.md`, learning 26 and
+  my_stack 19, are what proved the method rather than the memory.
+
+- **A stale document is most dangerous where it is most confident
+  (2026-09-01).** The artifact's wrongest claims were its two most emphatic
+  sections, "It is not a scheduled task" and "Nothing tells you", both set in
+  the lede treatment reserved for the thing most worth knowing. Both were true
+  for about twenty-four hours. **When a document asserts an absence, date the
+  assertion inside the sentence**, because an absence is exactly the claim that
+  a single new thing falsifies, silently, from somewhere the document cannot
+  see.
+
+- **Republishing an artifact requires having viewed the live version in the
+  current session (2026-09-01).** Reading the copy saved by a *previous*
+  session does not count, and neither does re-reading the file a refusal hands
+  you. The sequence that works: `action: "read"` on the URL, then Read every
+  line of the file it saves under the current session's directory, then
+  publish. Budget two extra round trips for any artifact update.
+
+- **The scoped ceiling is not the global one (2026-09-01).** `CLAUDE.md`'s
+  45-row ceiling is set on the tools directory. The Cowork task applies it to
+  `design_kit`, and the audit prompt's own open decision 3 asks whether it
+  should. An unruled question was being obeyed as settled. **When a rule names
+  a scope, check the scope before enforcing it somewhere else** — and when you
+  find it already being enforced out of scope, flag it rather than quietly
+  correcting it, because the enforcement may be the intent.

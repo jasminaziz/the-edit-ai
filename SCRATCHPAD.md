@@ -3058,3 +3058,67 @@ bubble. Heading outline fixed sitewide.
 `inline`. And the locked rule `"Your stack" not "my stack"` is contradicted by
 the live `/my-stack` h1, nav label and IN MY STACK badge — the design agent
 surfaced it; whether the rule is stale or the code is drift is Jasmin's call.
+
+---
+
+## Session 2, 1 September 2026 — who keeps each surface accurate
+
+Triggered by shipping `/radar`: a new place publishing tool information made
+the question unavoidable of whether every existing surface has an owner.
+
+### The finding
+
+**Every surface has a link checker. Only one has a fact checker.** Pass 1a
+sweeps ~156 URLs across four tabs. Pass 1b and Pass 2 are both scoped by
+"published", which the audit prompt defines by reimplementing `isComplete()`,
+a `tools` predicate. Fact-checking therefore reaches 23 rows on one tab, and
+`my_stack`, `design_kit`, `learning` and all 44 radar rows publish prices,
+descriptions and verdicts that nothing re-verifies.
+
+`/radar` is the sharp end: `RadarCard` leads with `verdict` on every row
+because `what_it_does` is empty on all 44, and `verdict` is a judgement field
+no automation may write. The word "radar" appears nowhere in the audit prompt,
+the gap check, or the unattended-writer report; all three predate the page.
+
+Full map with the verified counts: `reports/2026-09-01-staleness-ownership-map.md`.
+
+### The Cowork trigger
+
+`trig_01WgEnqKWcJc2WGby5Ecn5QQ`, created 1 Sep, undocumented until this
+session. **Weekly Monday 08:00, auto-approve on, "require this computer" off.**
+Its prompt branches on the 1st and the 15th. 53 firings a year, 4 hits, no
+fall-through branch, so 49 assert the audit is due when it is not and discovery
+runs twice a year instead of twelve.
+
+### Seven rulings, six executed
+
+Boundary stays prose (recorded as a known risk); cadence moves the prompt to
+the schedule; radar shrinks the claim rather than extending the audit;
+`Unclear` joins column I; `whats_new` links stay out; watchdog committed;
+radar signal is a per-card chip. Commits `275cb1d` through `7bac47e`, both refs
+verified, **no `src/` changes**.
+
+### Live counts, read per tab
+
+    tools  67 rows, 23 published, 44 radar
+    design_kit 44   learning 26   my_stack 19
+
+`design_kit` matched none of the three documents that state it (45 in
+`schema.md`, 46 in the audit prompt and in the Cowork task). That wrong number
+is why the Cowork task tells discovery the tab is full.
+
+### Next step, in order
+
+1. **Before Monday 7 September.** Paste the revised prompt from
+   `reports/2026-09-01-cowork-trigger-revised-prompt.md` into Cowork. The
+   trigger fires that morning and will say the audit is due a week early.
+   **No settings change: weekly / Monday / 08:00 all stay.**
+2. **The radar chip string.** The one ruling that could not be executed here.
+   Until it lands, 44 cards lead with an undated early take.
+3. **Rule on the 45-row ceiling.** It is set on the directory in `CLAUDE.md`;
+   the Cowork task enforces it on `design_kit`, and the audit prompt's own
+   decision 3 asks whether it should. Left conservative, not corrected.
+
+Carried forward unchanged from session 1: `/radar` SEO title and description
+are placeholders; "the checks" means two things; desktop signpost placement;
+the unreproducible dead-column; whether the PWA manifest stays.
