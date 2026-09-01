@@ -410,15 +410,26 @@ const MyStack = () => {
         </div>
       </section>
 
-      <section className="py-12 px-6 sm:px-12" style={{ backgroundColor: "#C8F04A" }}>
-        <div className="max-w-[1280px] mx-auto">
-          <h2 className="font-heading font-bold text-[28px] text-foreground mb-3">How I built this</h2>
-          <p className="font-body text-[15px] text-foreground max-w-2xl">
-            This stack is tracked in a living spreadsheet and updated every time something changes. The site pulls
-            directly from that data, so what you see here is always current.
-          </p>
-        </div>
-      </section>
+      {/* THE "HOW I BUILT THIS" SECTION WAS CUT, 1 Sep 2026, on Jasmin's
+          ruling. Do not restore it: it went for two independent reasons and
+          both still hold.
+
+          Its claim was one nothing on the site enforces. It said "what you see
+          here is always current", and `my_stack` is the tab with no fact owner
+          at all: the fortnightly audit gives it Pass 1a, a URL sweep, and
+          nothing else, because Passes 1b and 2 are scoped by "published" which
+          is a `tools` predicate. The tab has no `last_checked` column either.
+          See reports/2026-09-01-staleness-ownership-map.md. On a site whose
+          whole positioning is "been through the checks" and never "passed", a
+          freshness guarantee over unverified rows was the wrong promise.
+
+          It was also the largest breach of the lime rule on the site. The band
+          measured 249,600px2 against 6,480 for the next largest lime element on
+          the same page, a 38x outlier, where the locked palette scopes
+          #C8F04A to accent and punctuation and never a ground.
+
+          Nothing is lost by removing it: the CobaltZone bodyText at the top of
+          this page already says "including the ones that build this site". */}
     </>
   );
 };
