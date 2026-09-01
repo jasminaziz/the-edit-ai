@@ -717,17 +717,24 @@ The re-point changes who the site speaks to, not how it sounds.
 - No em dashes anywhere, including meta tags and OG titles
 - No inline quote marks in verdicts
 - UK English, contractions throughout
-- "Your stack" not "my stack" in all visitor-facing copy. **This rule is
-  contradicted by live code and the conflict is unresolved.** Surfaced by the
-  design agent on 1 Sep 2026: `/my-stack`'s own h1 is "My Stack", its nav label
-  is "My Stack", its subheading is "What I'm actually using and why", and the
-  badge on both card types reads "IN MY STACK". `/radar`'s h1 is "On My Radar"
-  and follows the same first-person pattern. Either the rule is stale and was
-  superseded without being written back, or those are drift; deciding which is
-  Jasmin's and cannot be settled from source. Until it is, do not "fix" either
-  page against this line. If the persona is revisited, "On My Radar" and "My
-  Stack" should be decided together, because they are the same choice made
-  twice
+- **"My stack", first person, throughout. Ruled 1 Sep 2026.** This line used to
+  read `"Your stack" not "my stack" in all visitor-facing copy`, and **that rule
+  is spent**. It belonged to Build Your Own Stack, the feature where a visitor
+  assembled a stack of their own and the possessive genuinely was theirs. That
+  feature was cut on 2026-08-26 (`792360a`), and with it the only context in
+  which "your stack" made sense. What remains is Jasmin's own stack, so the
+  possessive is hers.
+
+  The code was already right and never drifted: `MyStack.tsx:337` is "My Stack",
+  `Layout.tsx:11` is "My Stack", the subheading is "What I'm actually using and
+  why", and the badge is "IN MY STACK". `/radar`'s "On My Radar" is the same
+  choice made again and is correct for the same reason. Verified 1 Sep: the
+  string "your stack" appears nowhere in `src/`, `index.html` or
+  `vite.config.ts`.
+
+  The design agent flagged this as a rule-versus-code conflict and was right to
+  raise it; it could not tell from source which side was stale. It was the rule.
+  **Do not "restore" the old wording**
 - Verdicts: direct, frank, name the catch, do not bury limitations
 - Sector precision is credibility: a DPIA is something an organisation
   does, not something a tool "needs" — the flag means typical comms use is
