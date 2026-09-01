@@ -35,6 +35,51 @@ export default function PolicyTemplate() {
         className="px-4 sm:px-10 md:px-16 py-16 sm:py-24"
       >
         <div className="max-w-[640px] mx-auto">
+          {/* Split into three paragraphs 1 Sep 2026. NOT A COPY CHANGE: every
+              word, every full stop and the order are exactly as approved, and
+              the two breaks fall on full stops that were already there. Only
+              the tag boundaries moved.
+
+              It was one 93-word block of eight sentences, which measured 16
+              lines at 375px, and the page it opens is the one asking a reader
+              to trust the document enough to download it.
+
+              The breaks are where the block already changes job: framing, then
+              the four questions the template answers, then the credibility
+              close. The four fragments are deliberately fragments and stay
+              together, because they are the list that sentence two promises
+              ("the questions that actually come up") and each one alone is not
+              a sentence.
+
+              marginBottom moves from 24 to 12 between them so the three read as
+              one block rather than three sections, and the last keeps 24 to
+              hold the gap above the download line. */}
+          <p
+            className="font-body"
+            style={{
+              fontWeight: 500,
+              fontSize: 20,
+              lineHeight: 1.4,
+              color: "#1A1510",
+              margin: 0,
+              marginBottom: 12,
+            }}
+          >
+            Most AI policies are written for organisations with a legal team. This one is written for yours: a working AI-use policy for charity, cultural and heritage organisations, covering the questions that actually come up.
+          </p>
+          <p
+            className="font-body"
+            style={{
+              fontWeight: 500,
+              fontSize: 20,
+              lineHeight: 1.4,
+              color: "#1A1510",
+              margin: 0,
+              marginBottom: 12,
+            }}
+          >
+            Which tools staff can use and for what. What must never go into them. How to work out whether your organisation needs to do a DPIA. What you tell trustees, funders and supporters.
+          </p>
           <p
             className="font-body"
             style={{
@@ -46,7 +91,7 @@ export default function PolicyTemplate() {
               marginBottom: 24,
             }}
           >
-            Most AI policies are written for organisations with a legal team. This one is written for yours: a working AI-use policy for charity, cultural and heritage organisations, covering the questions that actually come up. Which tools staff can use and for what. What must never go into them. How to work out whether your organisation needs to do a DPIA. What you tell trustees, funders and supporters. It's the starting point I use with consultancy clients, ready to adapt to your organisation. It's the document you can put in front of your board.
+            It's the starting point I use with consultancy clients, ready to adapt to your organisation. It's the document you can put in front of your board.
           </p>
           {/* THESE TWO LINES WERE WRITTEN BY A CODE SESSION, 30 Aug 2026, on
               Jasmin's explicit instruction to implement the copy changes as
