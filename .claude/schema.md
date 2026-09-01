@@ -7,13 +7,14 @@ live immediately without a deploy. The Google Drive connector can read the
 spreadsheet but may return only the first tab; for reliable per-tab reads use
 the Sheets values API (production key + theeditai.co.uk referer).
 
-Last verified from live data: 2026-08-26. Sector-axis columns G–M are
+Last verified from live data: 2026-09-01 (row counts, read per tab through
+the Sheets API). Column notes below were last verified 2026-08-26. Sector-axis columns G–M are
 populated and read by the site on `overhaul/sector-axis`; column N
 (`what_it_does`) was added and populated 2026-08-26.
 
 ---
 
-## tools (67 rows as at 2026-08-26, 15 of them complete)
+## tools (67 rows as at 2026-09-01, 23 of them complete)
 
 **Column layout is read by header name** on `overhaul/sector-axis`:
 `parseToolRows()` matches normalised header strings, so column order no
@@ -27,10 +28,15 @@ Status column is legacy and still awaiting retirement (see overhaul audit,
 section 06).
 
 **Only complete rows render.** `isComplete()` requires all seven axis fields,
-with `dpia_flag` one of the canonical three. 15 of the 67 rows passed as at
-2026-08-26; the other 52 are on the radar and invisible to the site. The
-homepage counter uses the same predicate, so the count and the grid cannot
-disagree.
+with `dpia_flag` one of the canonical three. 23 of the 67 rows passed as at
+2026-09-01; the other 44 are on the radar. The homepage counter uses the same
+predicate, so the count and the grid cannot disagree.
+
+**They are no longer invisible.** This paragraph said the incomplete rows were
+"invisible to the site" until 1 September 2026, when `/radar` shipped and began
+publishing all 44, leading each card with the `verdict`. `isComplete()` still
+decides which of the two pages a row appears on, and a row appears on exactly
+one, but it no longer decides whether a row is published at all.
 
 ### Original columns A–F (live, unchanged)
 
@@ -72,7 +78,7 @@ never written by automation or a code session.
 
 ---
 
-## my_stack (19 rows as at 2026-08-26)
+## my_stack (19 rows as at 2026-09-01)
 
 Claude is the single featured entry (`featured=true`), covering the full
 ecosystem (chat, Code, Cowork, Design, Skills). Adobe Suite and Firefly
@@ -90,7 +96,7 @@ combined into one row. Nano Banana merged into Google AI Studio.
 
 ---
 
-## design_kit (45 rows)
+## design_kit (44 rows as at 2026-09-01)
 
 Phases (in order): Get Inspired, Define Visual Direction, Plan the Build,
 Build the UI, Present the Work, Check Before You Ship. Each phase contains
@@ -110,7 +116,7 @@ named sub-groups.
 
 ---
 
-## learning (26 rows)
+## learning (26 rows as at 2026-09-01)
 
 Categories: Learn, Reference, Stay Current.
 
