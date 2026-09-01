@@ -83,7 +83,17 @@ export function cardSelectionProps({
 }) {
   return {
     onPointerEnter: (e: React.PointerEvent) => {
-      if (e.pointerType === "mouse") onActivate();
+      if (e.pointerType !== "mouse") return;
+      // A card that scrolls up under a stationary cursor genuinely enters its
+      // hover state, so the browser fires pointerenter for it with no mouse
+      // movement at all. With the whole grid sharing one hovered value, that
+      // made the cobalt inversion chase down the column on every scroll while
+      // the mouse sat still. Requiring movement is what separates a hover the
+      // reader performed from one the scroll performed: a pointer crossing a
+      // boundary because it moved always carries a non-zero delta on at least
+      // one axis, and a scroll-induced entry carries zero on both.
+      if (e.movementX === 0 && e.movementY === 0) return;
+      onActivate();
     },
     onPointerLeave: (e: React.PointerEvent) => {
       if (e.pointerType === "mouse") onDeactivate();
