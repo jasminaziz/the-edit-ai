@@ -1,5 +1,6 @@
 import { SEO } from "@/components/SEO";
 import { CobaltZone } from "@/components/CobaltZone";
+import { SUBSTACK_URL } from "@/lib/links";
 
 export default function PolicyTemplate() {
   return (
@@ -78,7 +79,21 @@ export default function PolicyTemplate() {
               marginBottom: 12,
             }}
           >
-            Which tools staff can use and for what. What must never go into them. How to work out whether your organisation needs to do a DPIA. What you tell trustees, funders and supporters.
+            {/* DPIA links out to the ICO's own guidance. This is the page a
+                reader is deciding whether to trust, the claim is the one their
+                board will test, and the site asserts a DPIA likelihood on 23
+                cards without ever citing the source for what one is. Verified
+                by loading it and reading the body, not by a status code. */}
+            Which tools staff can use and for what. What must never go into them. How to work out whether your organisation needs to do a{" "}
+            <a
+              href="https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/accountability-and-governance/data-protection-impact-assessments-dpias/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="lime-link"
+            >
+              DPIA
+            </a>
+            . What you tell trustees, funders and supporters.
           </p>
           <p
             className="font-body"
@@ -165,7 +180,21 @@ export default function PolicyTemplate() {
               marginBottom: 0,
             }}
           >
-            It's a Word document, so you can make it yours. If you want more of this thinking, I write it up on the Substack.
+            {/* "the Substack" becomes the link, not the whole sentence: it is
+                the noun the reader is being pointed at. No word changed, and the
+                URL is the one SUBSTACK_LIVE already gates the nav and footer
+                links on, so this cannot point somewhere the rest of the site
+                does not. */}
+            It's a Word document, so you can make it yours. If you want more of this thinking, I write it up on{" "}
+            <a
+              href={SUBSTACK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="lime-link"
+            >
+              the Substack
+            </a>
+            .
           </p>
 
           {/* Ungated DPIA explainer, ruled 28 Aug: this page owns the term, so
