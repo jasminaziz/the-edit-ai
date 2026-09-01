@@ -103,32 +103,40 @@ const Index = () => {
       {/* Hero */}
       <section
         ref={pillsSectionRef}
-        className="relative min-h-[78vh] sm:min-h-[100vh] flex flex-col justify-center sm:justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-24 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
+        className="relative min-h-[500px] sm:min-h-[100vh] flex flex-col justify-start sm:justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
         // #7B7FD4, matching the nav exactly so the header blends into the
         // hero rather than banding across it. See Layout.tsx for the contrast
         // this knowingly gives up, and for why no periwinkle satisfies both.
         style={{ backgroundColor: "#7B7FD4" }}
       >
-        {/* justify-center on mobile, and pb-24 rather than pb-10, are one
-            decision. Centring closed the gap between the wordmark and the
-            settled pills from 138px to 30, but 30 is narrower than the DragHint
-            that has to live in it, so the hint landed on top of "Edit."
+        {/* THE MOBILE HERO IS 500px FLAT, not a vh fraction. It was 78vh,
+            and shortening it is what closes the gap between the wordmark and
+            the settled pills: the pills fall to the hero's floor, so the floor
+            is the only thing that decides where the pile sits.
 
-            Flex centres within the content box, so padding-bottom moves the
-            centre up by half of what you add: pb-10 to pb-24 is 56px of padding
-            and 28px of lift. That leaves the hint clear of the type above it
-            and the pills below it.
+            Flat, because vh and the wordmark disagree. Below about 393px wide
+            both clamps sit on their floor, so the wordmark is a FIXED 212px
+            however tall the phone is, while a vh hero is not. At 60vh the gap
+            came out 24px on a 780px phone and 64px on a 932px one, from the
+            same code. 500px flat gives roughly 44px on every one of them.
 
-            The pills are unaffected, being absolutely positioned on inset-0, so
-            this moves the wordmark alone. Desktop keeps pb-16 and justify-end
-            and is untouched.
+            Derived, not picked: 56 top inset + 212 wordmark + 44 gap + 188 pile
+            = 500. The pile figure is for 16 pills at 375px wide and grows on
+            narrower phones, which is where the gap tightens first.
+
+            Landscape is unaffected: a phone on its side is past sm, so it takes
+            sm:min-h-[100vh] and never sees this value.
+
+            Centring the wordmark was tried first and rejected. It closed the
+            gap below by opening an identical one above, which is not what
+            "shorter" means.
 
             EVERY NUMBER HERE WAS MEASURED WITH THE SIMULATION RUNNING, by
             hijacking requestAnimationFrame and pumping it by hand. In a hidden
-            pane no frames run, matter-js sits at its spawn positions across the
+            pane no frames run, matter-js sits at its spawn points across the
             wordmark, and two samples seconds apart are identical, which reads
-            as settled when it is frozen. Confirm settling by sampling twice and
-            checking the drift, not by waiting. */}
+            as settled when it is frozen. Confirm rest by sampling twice and
+            checking the drift, never by waiting. */}
         {/* Pills layer — sits IN FRONT of the headlines so they can be dragged across the type, on every device */}
         <div className="absolute inset-0 z-20">
           {!loading && (
