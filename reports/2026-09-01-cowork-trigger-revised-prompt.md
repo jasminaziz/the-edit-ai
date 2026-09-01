@@ -14,9 +14,17 @@ so the default output was a false alarm and the discovery pass ran twice a
 year instead of twelve times.
 
 Now: **1st Monday** runs discovery, **2nd and 4th Monday** say the audit is
-due, other Mondays say plainly that nothing is due. All four are readable
-straight off the date with no state to keep. 14 September is the 2nd Monday,
-so your existing anchor survives untouched.
+due, other Mondays say plainly that nothing is due. All are readable straight
+off the date with no state to keep. 14 September is the 2nd Monday, so your
+existing anchor survives untouched.
+
+Verified against a real calendar rather than assumed. Over the twelve months
+from 14 September 2026 this gives **25 audit-due runs** and **12 discovery
+runs**, out of 53 firings. Gaps between due runs are **14 days, or 21 days
+four times a year** in the months that carry five Mondays (November 2026,
+March, May and August 2027). So it runs slightly less often than a strict
+fortnight, never more often, which is the safer direction for a job that
+writes to a live site.
 
 **2. design_kit is 44 rows, not 46.** Read live 1 September. The old figure
 drove the instruction to propose swaps rather than additions.
@@ -45,12 +53,17 @@ as settled a question you have not answered. It is left conservative for now.
 ## The prompt
 
 ```
-The Edit's axis audit runs fortnightly. Work out from today's date which kind
-of Monday this is, and run only that section.
+The Edit's axis audit runs fortnightly. Work out from today's date which
+Monday of the month this is, and run only that one section.
 
   1st Monday of the month   -> DISCOVERY. The audit is not due.
   2nd or 4th Monday         -> AUDIT DUE. No discovery.
-  any other Monday          -> QUIET. Say so in one line and stop.
+  3rd or 5th Monday         -> QUIET.
+  not a Monday at all       -> QUIET. Do not assume you were meant to fire.
+
+Count Mondays from the 1st of the month, not from today. Never state the audit
+is due on any other day: that claim is the whole point of this task and a
+wrong one costs you the next real one.
 
 YOU ARE NOT THE AUDIT. Do not check tool facts, do not fetch vendor privacy or
 pricing pages, and never write to the Sheet or modify any Drive file. The
