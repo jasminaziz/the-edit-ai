@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { fetchTools, isComplete, type Tool } from "@/lib/sheets";
 
 import { LoadingSpinner } from "@/components/LoadingSpinner";
@@ -279,7 +280,16 @@ const Radar = () => {
             className="font-body text-[13px] leading-relaxed mb-6"
             style={{ color: "hsl(var(--text-secondary))", maxWidth: 720 }}
           >
-            These haven't been through the DPIA, data and training checks that get a tool onto the main directory, so treat them as leads, not recommendations. If one earns its place, it moves to Tools once it's checked.
+            These haven't been through the DPIA, data and training checks that get a tool onto the main directory, so treat them as leads, not recommendations. If one earns its place, it moves to{" "}
+            {/* Design audit finding 5: the nav covers the return path but only
+                ambiently. A visitor who arrived through the signpost's CTA has
+                no contextual way back. This paragraph already named Tools in
+                prose, so linking that word costs no new copy and the rendered
+                sentence is unchanged. */}
+            <Link to="/tools" className="underline hover:no-underline" style={{ color: "#2D35C9" }}>
+              Tools
+            </Link>{" "}
+            once it's checked.
           </p>
 
           {loading ? (
