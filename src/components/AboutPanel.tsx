@@ -60,13 +60,24 @@ export const AboutPanel = () => {
               margin: 0,
             }}
           >
-            {/* Two block spans, not a natural wrap: "This helps." is the turn
-                in the line and has to start its own, rather than being broken
-                across one wherever the column happens to run out. The first
-                sentence still wraps freely above it. The space between the
-                spans keeps the accessible name reading as one sentence pair. */}
-            <span className="block">There's a lot to keep up with in AI.</span>{" "}
-            <span className="block">This helps.</span>
+            {/* Two spans that only become blocks at sm. "This helps." is the
+                turn in the line and starts its own from 640px up, where the
+                column is wide enough for the first sentence to hold one line
+                and the break is a display decision.
+
+                BELOW sm THEY ARE INLINE AND WRAP NATURALLY. Ruled 1 Sep 2026:
+                the break was unconditional, so on a phone it forced a two-line
+                render on a column that cannot fit the first sentence anyway,
+                which stacked a hard break on top of a natural one. Do not put
+                the unconditional `block` back.
+
+                Note this changes where the sentence wraps on a phone rather
+                than making it one line: at the 30px clamp floor the first
+                sentence needs roughly 525px and a 375px screen gives the column
+                343. The space between the spans keeps the accessible name
+                reading as one sentence pair at every width. */}
+            <span className="sm:block">There's a lot to keep up with in AI.</span>{" "}
+            <span className="sm:block">This helps.</span>
           </h2>
         </div>
 
