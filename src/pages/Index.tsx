@@ -104,7 +104,10 @@ const Index = () => {
       <section
         ref={pillsSectionRef}
         className="relative min-h-[78vh] sm:min-h-[100vh] flex flex-col justify-start sm:justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
-        style={{ backgroundColor: "#9B9EDE" }}
+        // #7B7FD4, matching the nav exactly so the header blends into the
+        // hero rather than banding across it. See Layout.tsx for the contrast
+        // this knowingly gives up, and for why no periwinkle satisfies both.
+        style={{ backgroundColor: "#7B7FD4" }}
       >
         {/* Pills layer — sits IN FRONT of the headlines so they can be dragged across the type, on every device */}
         <div className="absolute inset-0 z-20">
@@ -127,7 +130,14 @@ const Index = () => {
             <span
               className="block leading-[0.82] w-full"
               style={{
-                fontSize: "clamp(120px, 28vw, 420px)",
+                // Floor raised 120 to 150, 1 Sep 2026. At 375px both clamps
+                // sit on their floor, so the phone never scaled with the
+                // viewport, and "The" drew 207px of glyph in a 343px column:
+                // 60 per cent of the width, against "Edit." at 101. 150 takes
+                // it to 259px, 75 per cent, and adds 25px of height to a
+                // wordmark that had 357px of empty hero under it. It stays
+                // below Edit."s 160 so the stagger is unchanged.
+                fontSize: "clamp(150px, 28vw, 420px)",
                 color: "#2D35C9",
                 letterSpacing: "-0.04em",
                 marginLeft: "-0.04em",
