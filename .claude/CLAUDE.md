@@ -131,9 +131,46 @@ write to the Sheet. The only other automation touching this Sheet is the daily
 tab.
 
 So the failure mode is silence. If the prompt is never pasted, the audit does
-not happen and nothing reports that it did not. A fortnightly calendar reminder
-(Mondays from 14 September 2026) is the mechanism that fires; the run itself is
-manual by design, because it writes to a live site.
+not happen and nothing reports that it did not. The run itself is manual by
+design, because it writes to a live site.
+
+**The thing that fires is a Cowork trigger, "The Edit's fortnightly axis
+audit" (`trig_01WgEnqKWcJc2WGby5Ecn5QQ`), created 1 September 2026 and
+documented here for the first time on that date.** An earlier version of this
+paragraph called the mechanism "a fortnightly calendar reminder (Mondays from
+14 September 2026)", which named no system and no owner.
+
+Its settings and its prompt do not agree, and this is unresolved as at
+1 September. **Schedule: weekly, Monday 08:00, automatic approval on, "require
+this computer" off, so it runs in the cloud whether or not the Mac is on.** Its
+prompt branches on the **1st** and the **15th**. Over the twelve months from
+7 September 2026 there are 53 Monday firings and exactly 4 land on either date,
+all in February and March 2027. There is no fall-through branch, so the other
+49 run the every-run nudge, which opens by asserting the audit is due today
+with no condition attached. That is the pattern this project has already
+watched destroy an alert channel's credibility once, in the whats_new watchdog.
+The discovery pass, meanwhile, runs twice in twelve months rather than twelve.
+
+**Ruled 1 September 2026, and NOT yet applied:** move the prompt to the
+schedule rather than the schedule to the prompt. Audit due on the **2nd and 4th
+Monday** (14 and 28 September, then 12 and 26 October), discovery on the
+**first Monday of the month**, silent otherwise. Readable straight off the date
+with no state to keep, and it preserves the 14 September anchor. The edit is in
+Cowork and is Jasmin's to make; until it lands, the 7 September firing and
+every Monday after it will say the audit is due when it is not.
+
+**The Cowork task's "never write to the Sheet" is prose, not a control.**
+Ruled 1 September 2026 to leave it that way, and recorded here as a known risk
+rather than left to be rediscovered. The prompt forbids writes and forbids fact
+checks, and it is well argued: the audit runs from a UK IP and renders
+JavaScript pricing pages, which that environment cannot do, and duplicate
+findings are what `reports/axis-rulings.md` exists to stop. But the same prompt
+hands the model the spreadsheet ID, approval is automatic and nobody is
+present. The boundary holds while the model keeps following an instruction.
+**Do not describe this and `sheet-write.mjs` as equivalent safeguards.** One is
+enforced per tab and per column in code with tests behind it; the other is a
+sentence. If that ever needs to become real, the lever is the Cowork
+connector's scope, not more emphasis in the prompt.
 
 The monthly discovery pass (design_kit and learning suggestions, capped, never
 writes) lives in the Cowork task alone. **It was deleted from the audit prompt
