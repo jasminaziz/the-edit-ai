@@ -88,7 +88,13 @@ const Index = () => {
           author: {
             "@type": "Person",
             name: "Jasmin Aziz",
-            url: "https://theeditai.co.uk",
+            // The Person's own page, not this site's. It pointed at
+            // https://theeditai.co.uk until 31 Aug 2026, which made the author
+            // reference circular: the WebSite's author resolved to the WebSite.
+            // This is the one link that ties The Edit to the consultancy for
+            // anything building an entity graph, which is the whole reason the
+            // author block is here.
+            url: "https://jasminaziz.co.uk",
             jobTitle: "Strategic Communications Consultant",
             email: "hello@jasminaziz.co.uk",
           },
