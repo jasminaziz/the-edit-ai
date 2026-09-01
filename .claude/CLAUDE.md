@@ -736,21 +736,39 @@ paragraph claimed they were still on disk until 2026-08-26.
 Colours (hex only, never names):
 - `#FAF8F4` page bg · `#FFFFFF` card · `#9B9EDE` periwinkle · `#2D35C9` cobalt
   (display type, nav, CTAs, month headers)
-- **Periwinkle moved from `#7B7FD4` to `#9B9EDE` on 2026-08-30**, on Jasmin's
-  ruling that the periwinkle and cobalt combination stays but the hex may move
-  to fix accessibility. Cobalt on it went 2.37:1 to **3.38:1**, clearing the 3:1
+- **Periwinkle is `#9B9EDE` as a token and `#7B7FD4` on the homepage.** The
+  token moved from `#7B7FD4` to `#9B9EDE` on 2026-08-30; the homepage moved
+  back on 1 Sep 2026 (see the nav block below).
+
+  The 30 August reasoning is kept, because it is still why the token is what it
+  is. It moved on Jasmin's ruling that the periwinkle and cobalt combination
+  stays but the hex may move to fix accessibility. Cobalt on it went 2.37:1 to
+  **3.38:1**, clearing the 3:1
   display-type floor it had been failing on the homepage wordmark and on every
   legal and policy `h1`. Hue is unchanged to the decimal (237.3) and saturation
   barely moves; only lightness, 65.7 to 73.9.
 - **Periwinkle never carries white text**: white measures 2.52:1 on it. Its
   foreground is ink `#1A1510` at 7.20:1, which is what `--secondary-foreground`
   is now set to.
-- **The nav is cobalt on every route, including home.** It used to be
-  periwinkle on the homepage, which put cream nav text at 3.40:1 and the lime
-  "Menu" label at 2.75:1. A periwinkle dark enough to rescue them would have
-  landed almost on cobalt and erased the wordmark, so the nav gave up the
-  colour and the hero kept it. The "Work with me" pill lost its white-on-home
-  special case with it and is lime everywhere.
+- **The nav is periwinkle `#7B7FD4` on the homepage and cobalt everywhere
+  else, and the homepage hero is the same `#7B7FD4`.** Restored 1 Sep 2026 on
+  Jasmin's ruling, reverting the 30 August removal that this block used to
+  describe. The two hexes must stay identical: a nav one step off the hero is
+  the defect the colour exists to fix, not the fix. The "Work with me" pill is
+  white with cobalt text on the homepage and lime elsewhere, because lime on
+  periwinkle is a 1.92:1 boundary and the pill dissolved into the nav.
+
+  **This knowingly carries three AA failures on the homepage.** Cream nav links
+  3.40:1 against 4.5, the lime "Menu" label 2.75:1, and the cobalt wordmark on
+  the hero 2.37:1 against the 3:1 display floor. It is a decision, not an
+  oversight: the whole hue ramp was computed first, and cream and lime only both
+  clear 4.5:1 at `#4E53C6`, which sits close enough to cobalt that the blend
+  disappears and the wordmark falls to 1.37:1. No periwinkle satisfies both. It
+  was put to Jasmin with the numbers twice and she ruled for the colour.
+
+  **Scoped to the homepage. `--secondary` stays `#9B9EDE`**, which is what keeps
+  the legal and policy `h1`s passing at 3.38:1. Do not "finish the job" by
+  reverting the token: that breaks four pages nobody asked about.
 - `#C8F04A` electric lime (accent/punctuation only — never a category
   colour or badge) · `#1A1510` text · `#9A8F82` muted · `#E8E2D8` borders
 - `#6B625A` secondary text, token `--text-secondary`. **Muted `#9A8F82` never
@@ -778,25 +796,37 @@ Colours (hex only, never names):
   at 1.42:1, close enough to the ground that it separated on hue alone. If it
   ever returns it needs a darker variant and a ruling.
 - **Hero pills** (`HomeGravity.tsx`) rotate cobalt, forest, ink `#1A1510` and
-  red `#A8261C`, with lime as a roughly 1-in-8 accent. Indigo `#4A4A9A` was
-  removed in the 30 Aug pass: no contrast defect, simply a colour the site never
-  owned. **Red joined on 1 Sep 2026**, on Jasmin's ruling, restoring some of the
-  warmth burnt orange carried. It is a locked hex rather than a new one, so this
-  is the Red DPIA ink and the "Judged, not recommended" badge doing a third job;
-  that reuse has precedent, since forest already serves as a badge, a chip and a
-  pill. It was chosen over reviving burnt orange because the two converge: the
-  hero is light enough that any warm colour clearing the 2.54:1 boundary floor
-  has to be dark, and `#E8572A`'s own hue only clears it near 36% lightness,
-  which lands on `#A63512` and reads almost identically. Boundary 2.82:1, white
-  label 7.10:1. Note the rotation is indexed `h % CORE_COLOURS.length`, so
-  adding a colour reshuffles every pill, not just the new ones.
+  orange `#C2410C`, with lime as a roughly 1-in-8 accent, and **every pill
+  carries a 2px ink rim**. Rewritten 1 Sep 2026 when the homepage hero went back
+  to `#7B7FD4`, which inverts the arithmetic all the 30 August pill work rested
+  on: on the darker ground cobalt falls 3.38 to 2.37, forest 2.54 to 1.77, the
+  orange sits at 1.44, and only the lime accent improves, 1.92 to 2.75.
+
+  **The rim is what makes the rest of it possible.** It takes separation off the
+  fill entirely and fixes it at ink-on-hero, 5.03:1, whatever colour is inside,
+  which is a harder edge than any pill had on the lighter hero. Without it the
+  darker ground, a brighter orange and "the pills still separate" cannot all be
+  true at once.
+
+  `#C2410C` replaced Red `#A8261C` on Jasmin's approval and is a **new hex
+  outside the locked palette**, here on her explicit ruling rather than by
+  precedent. White label 5.18:1. Burnt orange `#E8572A` was reconsidered again
+  and still not revived: its white label is 3.60:1, a real text failure the rim
+  does nothing about. Indigo `#4A4A9A` went on 30 Aug for being off-palette.
+
+  Mobile cap is **16**, up from 12 on 1 Sep; desktop stays 30. It was 18 on
+  every device pre-overhaul, and the cut to 12 was much of why the header read
+  empty. Note the rotation is indexed `h % CORE_COLOURS.length`, so swapping a
+  colour reshuffles every pill, not just the new one.
 - **The cobalt hover is ink `#1A1510`. Ruled 2026-08-30.** A cobalt surface
   darkens to ink on hover, white text on it at 18.12:1. Three improvised
   hovers had grown up instead: `#1A22A8` on `/learning` and `/submit`, ink on
   `/policy-template` and in the news card toggle, and a lime swap on the
   ToolCard. Ink won because it was already the majority and it is locked, so
   nothing new entered the palette. `#1A22A8` is gone.
-- **As at 2026-08-30 there is no off-palette hex left in live code.** Every
+- **One off-palette hex is live and approved: the pill orange `#C2410C`.**
+  Added 1 Sep 2026 on Jasmin's ruling; see the hero pills block. Otherwise, as
+  at 2026-08-30 there is no off-palette hex left in live code. Every
   remaining non-palette value in `src/` sits inside an explanatory comment. The
   other exception this line used to name, `Subscribe.tsx`, was deleted in the
   2026-08-31 sweep, so the carve-out for it is spent and the claim is now
@@ -821,6 +851,51 @@ locked trio listed above, signed off 2026-08-23. That sign-off included the
 deliberate reuse of forest green `#2D6A4F` for the Green chip, so the earlier
 instruction not to reuse it is spent and has been removed: it contradicted
 the locked palette three lines above it.
+
+### The 1 September post-merge pass
+
+Nine changes, one job each, after Jasmin compared a cached pre-merge mobile
+snapshot against the live site. The homepage colour, pill and wordmark rulings
+are recorded in the design section above; the rest are here so they are not
+rediscovered as accidents.
+
+- **`Layout.tsx` renders a mobile back-to-top button.** The pattern is the
+  consultancy site's, reused rather than rebuilt. **The one thing that had to
+  change is the whole reason a straight port ships dead:** that script listens
+  on `window` scroll and calls `window.scrollTo`, and this site locks body
+  scroll and scrolls an inner pane, so `window.scrollY` is 0 however far down
+  the page you are (verified with the pane at `scrollTop` 800). Both halves read
+  and write `scrollRef`. Gated on `isMobile`, the 1024 chrome hook, and it does
+  not also consult a Tailwind breakpoint.
+- **`cardSelectionProps` ignores a `pointerenter` with zero movement.** A card
+  scrolling under a stationary cursor genuinely enters its hover state, so the
+  browser fires the event with no mouse movement, and with the grid sharing one
+  hovered value the cobalt inversion chased down the column on every scroll.
+  This is the same browser behaviour this file already documents as a
+  *measurement* hazard; it is also a real user-facing bug.
+- **The `/tools` grid carries a third radar signpost, phone only, spliced at
+  12.** /radar is out of the nav so the signpost is the only route in, and on a
+  one-column phone the below-grid copy sits after two dozen cards. It is kept
+  away from the template card at 6 so two CTAs do not land back to back.
+  **`sm:hidden` must stay on the `RevealItem`, not the div inside it:** on the
+  inner div the grid slot survived and stretched to the row height, putting a
+  471px hole in the desktop grid.
+- **The My Stack `bodyText` leads with the personal claim**, not the directory.
+- **`/policy-template` has two prose links**, DPIA out to the ICO and "the
+  Substack", both using the new `.lime-link` rule in `index.css`. Its intro is
+  three paragraphs rather than one 93-word block of eight sentences; **no word
+  changed**, only the tag boundaries.
+- **`.about-byline` is underlined at rest**, with hover and focus thickening
+  rather than introducing it.
+- **The `my_stack` featured card's header row is `pr-[52px]` below `sm`.** The
+  48px Claude mark is absolutely positioned so it reserves no space, and 37px of
+  the pricing string sat underneath it. The 52 is derived from the two constants
+  in that file, not guessed.
+
+**Left deliberately:** the word "AI" is absent from the visible subline on
+`/tools`, `/my-stack`, `/learning`, `/radar` and `/submit`. Raised 1 Sep and
+Jasmin ruled to leave all five, since AI is already in every title, meta
+description and the site name. Do not "fix" it as an oversight.
 
 ## Voice rules (locked — unchanged by the re-point)
 
@@ -858,7 +933,12 @@ strings; they never author or improvise visitor-facing copy.
 
 **Closed 2026-08-28 by copy pack four.** The homepage counter used to read
 "Passed the checks", against the ruled claim. It now reads "tools that have
-been through the checks" (`Index.tsx:304`). Verified 2026-08-29: the string
+checked so far" (`Index.tsx:287`), changed from "tools that have been through
+the checks" on 1 Sep 2026 because the eyebrow above it already reads THROUGH
+THE CHECKS and the caption repeated the word. **"Passed" was ruled against
+again** in the same change: of the 23 rows the counter counts, 19 are Amber and
+3 are Red (HubSpot, Seedance, DeepSeek), counted live off the rendered grid.
+Verified 2026-08-29: the string
 "passed the checks" appears nowhere in `src/` or `index.html`.
 
 **Audience phrasing, ruled 2026-08-29** (full reasoning in
