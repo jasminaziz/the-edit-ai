@@ -324,21 +324,34 @@ const Tools = () => {
             A DPIA is the assessment your organisation carries out before using personal data in a way that could put people at risk. The flag on each card says how likely typical comms use is to trigger one.
           </p>
 
-          {/* Route to the radar. It is deliberately not in the main nav: it is
-              a secondary view of this same directory rather than a seventh
+          {/* Signpost to the radar. It is deliberately not in the main nav: it
+              is a secondary view of this same directory rather than a seventh
               destination, and a seventh nav item silently clipped "Work with
-              me" at 1024px. So /tools is the only way in, which makes this
-              link load-bearing rather than decorative.
+              me" at 1024px. So this is the only way in, which makes it
+              load-bearing rather than decorative, and it was a plain text link
+              until Jasmin ruled on 1 Sep that it needed a clear CTA.
 
-              The label is the radar page's own approved h1 plus the trailing
-              arrow this site uses on every forward link. No new copy: a
-              sentence of context here would be authoring, and is Jasmin's. */}
-          <Link
-            to="/radar"
-            className="inline-block mb-8 font-body font-medium text-[15px] text-primary hover:underline"
-          >
-            On My Radar →
-          </Link>
+              Still no authored copy. The sentence is the radar page's own
+              approved subheading, reused verbatim so the signpost explains
+              what it points at, and the label is that page's approved h1 plus
+              the trailing arrow this site uses on every forward link.
+
+              Cobalt pill rather than lime: the template card further down this
+              same grid already carries the lime CTA, and two identical pills on
+              one page compete. Hover is the locked cobalt-to-ink. Colours are
+              Tailwind arbitrary values, not inline style, because an inline
+              declaration would outrank the hover rule. */}
+          <div className="mb-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
+            <p className="font-body text-[15px] leading-relaxed m-0 text-foreground">
+              Tools I've spotted but haven't put through the checks yet.
+            </p>
+            <Link
+              to="/radar"
+              className="font-body inline-block shrink-0 no-underline text-[15px] font-semibold rounded-full px-6 py-3 bg-[#2D35C9] text-[#FAF8F4] hover:bg-[#1A1510] transition-colors duration-200"
+            >
+              On My Radar →
+            </Link>
+          </div>
 
           {loading ? (
             <LoadingSpinner />
