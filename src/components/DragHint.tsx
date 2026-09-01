@@ -63,11 +63,21 @@ export function DragHint() {
           ? {
               left: "50%",
               transform: "translateX(-50%)",
-              // 210px from the hero floor, flat, so the hint tracks the pile
+              // 200px from the hero floor, flat, so the hint tracks the pile
               // rather than the viewport: the pile rests on that floor and is
-              // 188 to 204px tall depending on how narrow the phone is. It was
-              // clamp(150px, 34vh, 190px), tuned against a 78vh hero.
-              bottom: "210px",
+              // 170 to 236px tall depending on how narrow the phone is. It was
+              // clamp(150px, 34vh, 190px), tuned against a 78vh hero, then 210
+              // for one afternoon.
+              //
+              // Lowered 10px on Jasmin's eye. At 390 that reads better because
+              // the slack in the gap was lopsided, 7px above the hint and 41
+              // below; it is now nearer the middle of the space it sits in. The
+              // narrowest phones have no such slack, because a 360px screen
+              // spreads the same 16 pills into a 204px pile against 170 at 390,
+              // so the hint sits right on the top of the pile there rather than
+              // above it. That is the accepted end of the trade: it is an
+              // aria-hidden decorative hint pointing at the pills it touches.
+              bottom: "200px",
               // ROW on mobile, not column. Stacked, this is 31px tall and the
               // space it has to live in is the gap between the wordmark and the
               // settled pills, which measures 29px on a 360px phone and 44px on
