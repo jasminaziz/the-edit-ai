@@ -43,8 +43,13 @@ export function DragHint() {
     };
   }, []);
 
-  // Desktop hint is temporarily hidden — only show on mobile.
-  if (!isMobile || hasScrolled) return null;
+  // Shown on desktop as well as mobile from 1 Sep 2026, on Jasmin's ruling.
+  //
+  // The desktop branch below was written and then switched off behind
+  // `!isMobile` in 12d55c2, a Lovable-era bulk "Changes" commit, with the
+  // comment "temporarily hidden" and no reason recorded anywhere. It had been
+  // dead ever since while its positioning maths sat here intact.
+  if (hasScrolled) return null;
 
   // The label and arrow stay centered as a pair on both mobile and desktop.
   const arrowSize = isMobile ? 10 : 14;
@@ -74,6 +79,15 @@ export function DragHint() {
               alignItems: "center",
               gap: 8,
             }),
+        // Without this the desktop label wraps to "Drag" / "me".
+        //
+        // The box is absolutely positioned with `left` and no `right` or
+        // `width`, so its shrink-to-fit width is capped by the distance from
+        // `left` to the containing block's right edge. At 1440px that is
+        // 1440 - 1396.8 = 43.2px, which is narrower than the words. nowrap
+        // lets it take its intrinsic width instead, and translateX(-50%) then
+        // centres that on the same point, so the placement is unchanged.
+        whiteSpace: "nowrap",
         opacity: visible ? 1 : 0,
         transition: "opacity 500ms ease-out",
       }}
