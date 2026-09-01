@@ -998,3 +998,28 @@ Session corrections and rules built up over time. Add entries; do not delete his
   a scope, check the scope before enforcing it somewhere else** — and when you
   find it already being enforced out of scope, flag it rather than quietly
   correcting it, because the enforcement may be the intent.
+
+- **react-helmet-async writes on `requestAnimationFrame`, so meta tags cannot
+  be verified in a hidden pane (2026-09-01).** `Helmet.defaultProps` sets
+  `defer: true`, which schedules the DOM write in a frame callback. In a hidden
+  pane no frames run, so the write never happens and every route shows
+  `index.html`'s static tags: the homepage title, the homepage description, and
+  **no canonical at all**, because `SEO.tsx` is the only thing that emits one.
+  Verified on production and reported as a live site-wide SEO failure before
+  checking `document.hidden`. It was `hidden: true` with **0 rAF callbacks in
+  1016ms**.
+
+  This is the existing rAF rule reaching somewhere nobody would look for it.
+  The documented cases are animations and physics, things that obviously tick.
+  Nothing about a `<meta>` tag suggests a frame loop, which is what makes this
+  the most convincing false positive available: the page renders perfectly, the
+  h1 and all 44 cards are correct, and only the head is wrong, which reads
+  exactly like a broken SEO component rather than a stopped clock.
+
+  **Before reporting any head-tag defect, check `document.hidden` and count rAF
+  firings.** Fronting the tab does not help when the pane itself is hidden. The
+  technique that works: replace `window.requestAnimationFrame` with a
+  queue-capturing stub, trigger a client-side navigation so helmet schedules an
+  update through the stub, then call the captured callbacks by hand. Two
+  callbacks were enough, and the correct title, description, canonical and
+  og:url all appeared at once.
