@@ -796,17 +796,21 @@ Colours (hex only, never names):
   at 1.42:1, close enough to the ground that it separated on hue alone. If it
   ever returns it needs a darker variant and a ruling.
 - **Hero pills** (`HomeGravity.tsx`) rotate cobalt, forest, ink `#1A1510` and
-  orange `#C2410C`, with lime as a roughly 1-in-8 accent, and **every pill
-  carries a 2px ink rim**. Rewritten 1 Sep 2026 when the homepage hero went back
+  orange `#C2410C`, with lime as a roughly 1-in-8 accent. Rewritten 1 Sep 2026
+  when the homepage hero went back
   to `#7B7FD4`, which inverts the arithmetic all the 30 August pill work rested
   on: on the darker ground cobalt falls 3.38 to 2.37, forest 2.54 to 1.77, the
   orange sits at 1.44, and only the lime accent improves, 1.92 to 2.75.
 
-  **The rim is what makes the rest of it possible.** It takes separation off the
-  fill entirely and fixes it at ink-on-hero, 5.03:1, whatever colour is inside,
-  which is a harder edge than any pill had on the lighter hero. Without it the
-  darker ground, a brighter orange and "the pills still separate" cannot all be
-  true at once.
+  **A 2px ink rim briefly carried that separation and is gone**, removed the
+  same day on Jasmin's ruling that it looked wrong. Do not reintroduce it
+  without her: it was the tidy answer, not the wanted one.
+
+  So separation rests on the fill and is softer than it was on the lighter
+  hero. Accepted rather than overlooked: the pills are decorative draggable
+  objects rather than text or controls, they separate on hue against a lilac
+  ground, and every **label** still clears 4.5:1, which is the part that
+  carries meaning.
 
   `#C2410C` replaced Red `#A8261C` on Jasmin's approval and is a **new hex
   outside the locked palette**, here on her explicit ruling rather than by
@@ -858,6 +862,24 @@ Nine changes, one job each, after Jasmin compared a cached pre-merge mobile
 snapshot against the live site. The homepage colour, pill and wordmark rulings
 are recorded in the design section above; the rest are here so they are not
 rediscovered as accidents.
+
+- **The mobile hero is composed against measured physics, not guesses.** The
+  wordmark centres (`justify-center sm:justify-end`) with `pb-24 sm:pb-16`, and
+  the "The" clamp floors at **110px** against Edit."s 160 so the two words read
+  as deliberately different sizes rather than six per cent apart. Those are one
+  decision: centring alone closed the gap from 138px to 30, which is narrower
+  than the DragHint that lives in it, and the hint landed on the type. Flex
+  centres within the content box, so the extra 56px of padding lifts the centre
+  by 28. Settled gap 58px, hint clear by 10 above and 17 below. Desktop is
+  untouched at 1280.
+
+  **Never measure this hero in a hidden pane.** matter-js runs on
+  `requestAnimationFrame`, which does not fire when the pane is hidden, so every
+  pill sits at its spawn point across the wordmark and two samples seconds apart
+  are identical. That reads exactly like a settled pile and it is a frozen one.
+  Hijack `requestAnimationFrame` into a queue, pump it by hand, and confirm rest
+  by sampling twice and checking the drift, which is how every figure above was
+  taken. The 1 Sep brief's original mobile figures were taken the frozen way.
 
 - **`Layout.tsx` renders a mobile back-to-top button.** The pattern is the
   consultancy site's, reused rather than rebuilt. **The one thing that had to
