@@ -1023,3 +1023,62 @@ Session corrections and rules built up over time. Add entries; do not delete his
   update through the stub, then call the captured callbacks by hand. Two
   callbacks were enough, and the correct title, description, canonical and
   og:url all appeared at once.
+
+## 2026-09-01 — post-merge design pass
+
+- **A physics hero cannot be measured at all in a hidden pane, and the fix is
+  to drive the clock yourself.** Every homepage figure this session was
+  worthless until I hijacked `requestAnimationFrame` into a queue and pumped it
+  by hand. The recipe that works: navigate, install the stub IMMEDIATELY in the
+  next call (the pills are lazy-loaded behind three Sheets fetches, so there is
+  a one to two second window before matter-js boots), then pump in bursts while
+  waiting, then pump hard and **sample twice and diff**. Settled means under a
+  pixel of drift across 400 extra frames. Do not infer settling from elapsed
+  time. Client-side navigating to the route after patching does NOT work: the
+  component never re-requested a frame and the probe found zero pills.
+
+- **A fix that relocates a symptom is not a fix, and it will be obvious to
+  everyone but me.** Asked to close the gap under the wordmark, I centred it,
+  which produced an identical gap above. I reported it as done with
+  measurements. Before claiming a spacing fix, measure BOTH sides of the thing
+  moved, not just the side complained about.
+
+- **When one side of a gap is a fixed height and the other scales with the
+  viewport, the gap is not a constant and cannot be tuned to one.** The
+  wordmark floors at a fixed 212px below ~393px wide while a vh hero does not,
+  so 60vh produced a 24px gap on one phone and 64px on another from identical
+  code. **If the content has a clamp floor, size its container in pixels too.**
+  What varies after that is the pile, which tracks screen WIDTH, so measure
+  across widths and not just heights.
+
+- **Porting a working script from another repo: verify its assumptions, not its
+  code.** The consultancy's scroll-to-top is correct and battle-tested, and it
+  would have shipped completely dead here, because it listens on `window`
+  scroll and calls `window.scrollTo` while this site locks body scroll and
+  scrolls an inner pane. `window.scrollY` reads 0 at any depth. It would have
+  thrown no error and logged nothing. **Prove the host's assumptions hold
+  before reusing anything, and prove it by measurement.**
+
+- **`sm:hidden` on the inner div of a grid child hides the content and keeps
+  the cell.** The slot survived and stretched to the row height, leaving a
+  471px hole in the desktop grid. Caught only by counting grid children at
+  1280px and comparing total against visible. The class belongs on the element
+  that IS the grid child.
+
+- **Removing a component means auditing the file's own prose for arguments that
+  depend on it.** After the pill rim came out, four sentences still reasoned
+  from a rim that existed, including the colour line citing its number as the
+  orange's. Found in a completeness audit, not by me. **After deleting
+  anything, grep the file for its name and read every hit.**
+
+- **Three agents, three inventory errors, all in the same direction.** The copy
+  pass found two Red rows where live data has three; the stranger concluded a
+  component predated a ref when the diff is 14 lines; the design pass declared a
+  bright orange impossible without considering a border. Each diagnosis was
+  sound and each inventory was short. **Take the finding, re-count the extent
+  yourself** — and note two of the three told me their own tooling limits
+  unprompted, which is the signal to check hardest.
+
+- **An animated counter's `innerText` carries every digit reel.** The homepage
+  counter reads `01234567890123456789` to a text query. Already documented
+  globally; met it live this session. Count rendered elements, never parse.

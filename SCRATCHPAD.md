@@ -1,5 +1,53 @@
 # The Edit AI — Scratchpad
 
+## Where we got to — 1 September 2026 (post-merge design pass)
+
+**Shipped and verified on production.** 24 commits, `main` and
+`overhaul/sector-axis` level at `22ee71b`, tree clean.
+
+Jasmin compared a cached pre-merge mobile snapshot against the live site and
+raised ten items plus a copy pack. All ten are closed. Three site agents ran in
+parallel and their reports are committed at `reports/2026-09-01-postmerge-*`.
+
+**What changed, briefly.** Homepage nav and hero back to `#7B7FD4` and seamless;
+mobile hero `min-h-[500px]` flat with the gap to the pills down from 138px to
+63; "The" at 110 against Edit's 160; 16 pills in a new off-palette
+`#C2410C`; drag hint lime, stacked, lowered; the counter caption deleted; card
+inversion no longer chases the scroll; the Claude mark no longer paints over its
+pricing; a back-to-top that reads the scroll pane; the policy intro split in
+three with two prose links added; a second radar signpost mid-grid on mobile.
+
+**Read `.claude/CLAUDE.md` before touching the homepage.** Two things there are
+decisions that will otherwise read as defects: the homepage knowingly carries
+three AA failures on Jasmin's ruling with the full hue ramp recorded, and the
+mobile hero is a flat pixel height on purpose because a vh hero makes the gap a
+function of phone height.
+
+**Never measure the hero without pumping requestAnimationFrame by hand.** See
+`tasks/lessons.md`. In a hidden pane matter-js sits at its spawn points and two
+samples seconds apart are identical, which reads as settled when it is frozen.
+
+## Next step
+
+Nothing is blocking. Outstanding and hers:
+
+1. **Chrome versus Safari** on the "body text reads smaller" question was never
+   tested; the in-app browser is Chromium. The type scale is confirmed
+   unchanged, so if a difference remains it is browser rendering.
+2. **The desktop wordmark was left alone.** "Boldly oversized headers" only
+   reached mobile. Desktop is still 28vw/38vw capped at 420/560, so "Edit."
+   fills about 90 per cent of the column at 1440.
+3. **Mobile pill count is the lever** if the hero gap ever needs tightening
+   further, not the hero height: a 390px phone spreads 16 pills into a 170px
+   pile against 236px at 320, which is the whole of the remaining variance.
+4. Carried, unchanged: `tools!L40` still names NotebookLM; Adobe rows 28 and 29
+   unreachable; four open rulings in `reports/axis-rulings.md`.
+
+**Next scheduled event:** the Cowork trigger fires Monday 7 September and
+should say the audit is not due. First audit-due Monday is 14 September.
+
+---
+
 Project: The Edit AI
 Live URL: theeditai.co.uk
 Repo: github.com/jasminaziz/the-edit-ai
