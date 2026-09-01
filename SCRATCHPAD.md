@@ -3032,10 +3032,12 @@ bubble. Heading outline fixed sitewide.
 
 ### Next step
 
-1. **Radar status chip.** The design agent's highest-severity finding, half
-   done: the Visit link is demoted off the lime pill, but the chip needs a
-   string from Jasmin. It must survive a card being seen alone, out of page
-   context.
+1. ~~Radar status chip.~~ **CLOSED 1 September, declined, no code change.** The
+   Visit link demotion off the lime pill shipped and was the half that mattered.
+   The chip itself would have been identical on all 44 cards, so it was a
+   page-level statement printed 44 times, and the page already carries the point
+   in three places. See `.claude/CLAUDE.md` under the Sheet write path for the
+   full reasoning. Not an unfinished job.
 2. **`/radar` SEO title and description.** Placeholders, flagged in the file.
    Title follows the site's `<Page> | The Edit` pattern; description reuses the
    approved subheading verbatim.
@@ -3113,8 +3115,10 @@ is why the Cowork task tells discovery the tab is full.
    drafted. Settings untouched: weekly / Monday / 08:00. The 7 September firing
    will now correctly say the audit is not due, and 14 September will be the
    first real one.
-2. **The radar chip string.** The one ruling that could not be executed here.
-   Until it lands, 44 cards lead with an undated early take.
+2. ~~The radar chip string.~~ **CLOSED, declined.** Jasmin ruled against
+   rendering it on the cards and the reasoning held up: a chip true of all 44
+   rows by definition varies by nothing, so per-row was the wrong granularity
+   for it. No string needed and no code changed.
 3. **Rule on the 45-row ceiling.** It is set on the directory in `CLAUDE.md`;
    the Cowork task enforces it on `design_kit`, and the audit prompt's own
    decision 3 asks whether it should. Left conservative, not corrected.

@@ -276,12 +276,35 @@ facts are checked on those rows, so that trigger is structurally unreachable.
 
 **Ruled 1 September: shrink the claim, do not extend the audit.** Checking 67
 rows instead of 23 breaks the design point that makes a quiet fortnight nearly
-free, and a cheap run is what makes it get run at all. The radar carries a
-staleness signal as a **per-card chip**, not a line above the grid, because a
-card is seen alone in a screenshot where a page-level disclaimer is not there to
-qualify it. That also closes the open "radar status chip" item with one string.
-**Still blocked on that approved string**; code sessions place copy and never
-author it.
+free, and a cheap run is what makes it get run at all.
+
+**Closed 1 September with no code change, on Jasmin's ruling: the page already
+does it, and a per-card chip would have made it worse.** The plan had been a
+staleness chip on every radar card. She declined it and was right. A chip
+reading "not yet checked" is true of all 44 rows by definition, so it carries no
+information that varies by row: it is a page-level statement printed 44 times.
+That is the opposite of how the badge slot earns its place on `/tools`, where
+IN MY STACK means something precisely because it is not on every card.
+
+The page already says it three times, and each was a deliberate choice: the
+subheading, the disclaimer above the grid at `Radar.tsx:290`, and the
+deliberate absence of the IN MY STACK badge, with the Visit link on
+`tc-policy-link` rather than the lime pill for the same reason. A fourth
+statement of one fact is not more honest, only louder.
+
+The argument for the chip had been screenshot portability, from the comment in
+`Radar.tsx` about a card seen out of page context. That is thinner than it
+looked: radar cards have no permalink and no share control and the name links
+straight out to the vendor, so "a card seen alone" means someone manually
+cropping one. **Do not reopen this as an unfinished job waiting on copy.** It
+was considered and declined.
+
+What is genuinely not addressed, if it ever matters: a radar verdict carries no
+date, so a reader cannot tell when the opinion was formed. That cannot be fixed
+per card, because **none of the 44 rows holds a date** — all seven axis columns
+are empty on all 44, verified live 1 September — so it would have to be one
+page-level line with a hardcoded month, which is a staleness signal that goes
+stale with nothing enforcing its update.
 
 **Read row counts live, never carry them.** `design_kit` is **44**. It was 45 in
 `.claude/schema.md` and 46 in both the audit prompt and the Cowork task, so no
