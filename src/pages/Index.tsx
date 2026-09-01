@@ -131,6 +131,23 @@ const Index = () => {
                 color: "#2D35C9",
                 letterSpacing: "-0.04em",
                 marginLeft: "-0.04em",
+                // The h's ascender overshoots the T's cap line, so "The" reads
+                // as two different heights. Clipped back to the cap line.
+                //
+                // Measured off the live render, not guessed. In Chillax 700 the
+                // cap height is 0.675em and the ascender 0.730em, so the
+                // overshoot is exactly 0.055em, and `h` is the tallest glyph in
+                // the word (T 0.675, h 0.730, e 0.520). Clipping at the cap line
+                // therefore touches the h and nothing else.
+                //
+                // 0.06em is the distance from the box top to the cap line, not
+                // the overshoot itself: line-height 0.82 is tighter than the
+                // font's 1.310em content area, so half-leading is -0.245em and
+                // the baseline sits 0.735em down. 0.735 - 0.675 = 0.0599em.
+                //
+                // Every term is em-relative, so this one value holds across the
+                // whole clamp range, phone to desktop. Do not convert it to px.
+                clipPath: "inset(0.06em 0 0 0)",
               }}
             >
               The
