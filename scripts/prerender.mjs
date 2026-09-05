@@ -29,11 +29,22 @@
  * stops being true for crawlers specifically. If that window ever needs
  * closing, the lever is a scheduled rebuild, not a change here.
  *
- * NOT VERIFIED: this has been proven against a local static server only.
- * Vercel preview URLs sit behind SSO protection (`all_except_custom_domains`),
- * so they cannot be fetched with curl to confirm Vercel's own routing, and
- * whether the Sheets API key exists in the Vercel build environment is unknown
- * from here. Both are named in the handover rather than assumed away.
+ * STATE, 4 Sep 2026. Proven locally: twelve routes, /tools at 9,613 characters
+ * of readable text against 0 before. Proven on Vercel: the browser launches and
+ * the build completes.
+ *
+ * KNOWN BROKEN ON VERCEL: the Sheets fetch fails there, so the seven
+ * data-driven routes prerender their empty state. The five static routes came
+ * back byte-identical to the local run, which is what isolates the fault to the
+ * fetch rather than to the browser or the capture. The likely cause is
+ * VITE_GOOGLE_SHEETS_API_KEY being absent from the environment being built,
+ * since Vite bakes VITE_ variables in at build time and an absent key yields a
+ * request with no key rather than an error. That is an account setting and has
+ * not been confirmed from here.
+ *
+ * ALSO NOT VERIFIED: Vercel's own routing of the rewrites below, because
+ * preview URLs sit behind SSO protection (`all_except_custom_domains`) and
+ * cannot be fetched with curl.
  */
 
 import { createServer } from "node:http";
@@ -92,29 +103,52 @@ const PORT = Number(process.env.PRERENDER_PORT ?? 8080);
  * Every route in App.tsx that renders a page, excluding the three redirects
  * and the catch-all. Keep in step with App.tsx: a route missing here silently
  * keeps the old empty shell, which is the failure this script exists to fix.
+ *
+ * THE FLOORS ARE NOT ROUND NUMBERS AND THAT IS THE POINT. The first version of
+ * this script used one global floor of 400 characters, and it passed a Vercel
+ * build that had written seven broken pages: the Sheets fetch failed there, so
+ * every data-driven route prerendered its empty state, and an empty state still
+ * carries the nav, the headings and the footer, which clears 400 easily. The
+ * build went green while producing pages that look finished and say nothing.
+ *
+ * Each floor below sits between a value measured on a good run and the value
+ * that same route produced when the data was missing, both taken on 4 Sep 2026:
+ *
+ *      route             good     broken    floor
+ *      /                 1688       1400     1550
+ *      /tools            9613        747     4000
+ *      /radar           20957        672     8000
+ *      /my-stack         4440        553     2000
+ *      /design-kit      10202        617     4000
+ *      /learning        11395        465     4000
+ *      /ai-news          2385        458     1200
+ *
+ * The five static routes were byte-identical on both runs, which is what
+ * identified the fault as the Sheets fetch rather than the browser.
+ *
+ * `cards` is the stronger check where it applies, because it counts rendered
+ * elements rather than measuring prose. Prefer adding one over tightening a
+ * character floor.
+ *
+ * A floor that starts failing after a legitimate content change is doing its
+ * job: go and look, then move the number deliberately.
  */
 const ROUTES = [
-  "/",
-  "/tools",
-  "/radar",
-  "/my-stack",
-  "/design-kit",
-  "/learning",
-  "/ai-news",
-  "/policy-template",
-  "/submit",
-  "/privacy-policy",
-  "/terms-of-service",
-  "/cookie-policy",
+  { path: "/", minChars: 1550 },
+  { path: "/tools", minChars: 4000, cards: 20 },
+  { path: "/radar", minChars: 8000, cards: 40 },
+  { path: "/my-stack", minChars: 2000 },
+  { path: "/design-kit", minChars: 4000 },
+  { path: "/learning", minChars: 4000 },
+  { path: "/ai-news", minChars: 1200 },
+  { path: "/policy-template", minChars: 1400 },
+  { path: "/submit", minChars: 380 },
+  { path: "/privacy-policy", minChars: 1600 },
+  { path: "/terms-of-service", minChars: 880 },
+  { path: "/cookie-policy", minChars: 570 },
 ];
 
-/**
- * A route is only accepted if its rendered text clears this. The number is a
- * floor for "something actually rendered", not a quality bar: the shortest
- * real page here is an order of magnitude above it. Its job is to fail the
- * build loudly rather than write a confidently empty page, which would be
- * worse than the bug being fixed because it would look done.
- */
+/** Enough text to be worth waiting for, before the per-route floor is applied. */
 const MIN_TEXT_LENGTH = 400;
 
 const MIME = {
@@ -182,7 +216,8 @@ async function main() {
   }
 
   const results = [];
-  for (const routePath of ROUTES) {
+  for (const route of ROUTES) {
+    const routePath = route.path;
     const page = await context.newPage();
     await page.goto(`http://localhost:${PORT}${routePath}`, { waitUntil: "networkidle", timeout: 45000 });
 
@@ -227,19 +262,26 @@ async function main() {
     const html = await page.content();
     await page.close();
 
-    if (text.trim().length < MIN_TEXT_LENGTH) {
-      throw new Error(
-        `Prerender produced ${text.trim().length} characters for ${routePath}, below the ${MIN_TEXT_LENGTH} floor. ` +
-          `The usual cause is the Sheets fetch failing: the key is referrer-restricted, so check it matches the ` +
-          `port being served (localhost:8080 for the local key) or set PRERENDER_REFERER. Refusing to write an ` +
-          `empty page.`,
-      );
+    const chars = text.trim().length;
+    const cards = (html.match(/class="[^"]*\btool-card\b/g) ?? []).length;
+    const why =
+      `The usual cause is the Sheets fetch failing, which prerenders the empty state rather than the data. ` +
+      `The key is referrer-restricted, so check it is present in this environment and that the referer matches: ` +
+      `locally that means serving on port 8080 for the localhost-scoped key, and on Vercel it means ` +
+      `VITE_GOOGLE_SHEETS_API_KEY being set for the environment being built plus PRERENDER_REFERER. ` +
+      `Refusing to write a page that would look finished and say nothing.`;
+
+    if (chars < route.minChars) {
+      throw new Error(`Prerender: ${routePath} produced ${chars} characters, below its floor of ${route.minChars}. ${why}`);
+    }
+    if (route.cards && cards < route.cards) {
+      throw new Error(`Prerender: ${routePath} rendered ${cards} cards, below its floor of ${route.cards}. ${why}`);
     }
 
     const outDir = routePath === "/" ? DIST : join(DIST, routePath);
     await mkdir(outDir, { recursive: true });
     await writeFile(join(outDir, "index.html"), html, "utf8");
-    results.push({ route: routePath, chars: text.trim().length, bytes: Buffer.byteLength(html) });
+    results.push({ route: routePath, chars, cards, bytes: Buffer.byteLength(html) });
   }
 
   await browser.close();
@@ -247,7 +289,7 @@ async function main() {
 
   console.log("\nPrerendered:");
   for (const r of results) {
-    console.log(`  ${r.route.padEnd(20)} ${String(r.chars).padStart(6)} chars of text   ${String(r.bytes).padStart(7)} bytes html`);
+    console.log(`  ${r.route.padEnd(20)} ${String(r.chars).padStart(6)} chars   ${String(r.cards).padStart(3)} cards   ${String(r.bytes).padStart(7)} bytes`);
   }
   console.log(`\n${results.length} routes written. Shell preserved as dist/app.html.\n`);
 }
