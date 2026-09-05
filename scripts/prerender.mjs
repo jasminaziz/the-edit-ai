@@ -41,7 +41,41 @@ import { readFile, writeFile, mkdir, copyFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join, extname, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { chromium } from "playwright";
+
+/**
+ * Two ways to get a browser, because Vercel's build image cannot run the one
+ * Playwright downloads.
+ *
+ * Locally, plain `playwright`. Its Chromium is already on the machine and it
+ * needs no special handling.
+ *
+ * On Vercel, `npx playwright install chromium` puts the binary in place and it
+ * still will not start: the image carries none of Chromium's shared libraries
+ * and the first one it looks for, libnspr4.so, is missing. `--with-deps` does
+ * not rescue it either, because that shells out to apt and the image is Amazon
+ * Linux. Verified from the build log of dpl_6Jwn1Mqpmba8ke65T9VrrWgKq2oz on
+ * 4 Sep 2026, not assumed.
+ *
+ * @sparticuz/chromium is a Chromium built for exactly this: it carries its own
+ * libraries, so nothing has to be installed into the image. It is driven with
+ * playwright-core rather than playwright, which is the pairing that package
+ * documents.
+ */
+async function launchBrowser() {
+  if (process.env.VERCEL) {
+    const [{ default: sparticuz }, { chromium }] = await Promise.all([
+      import("@sparticuz/chromium"),
+      import("playwright-core"),
+    ]);
+    return chromium.launch({
+      args: sparticuz.args,
+      executablePath: await sparticuz.executablePath(),
+      headless: true,
+    });
+  }
+  const { chromium } = await import("playwright");
+  return chromium.launch();
+}
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = join(ROOT, "dist");
@@ -129,7 +163,7 @@ async function main() {
   const server = serve(shellHtml);
   await new Promise((resolve) => server.listen(PORT, resolve));
 
-  const browser = await chromium.launch();
+  const browser = await launchBrowser();
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
 
   /**
