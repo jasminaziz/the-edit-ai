@@ -3239,3 +3239,69 @@ a working **email-enumeration oracle**: 201 for a new address, 409 `23505` for
 one already on the list. Confirmed against production. Harmless only while
 nothing ships the anon key to a browser. Any future client-side insert makes it
 live.
+
+## 2026-09-04 session: capture ruling, deep links, the nav, and the GEO branch
+
+**Shipped to main and live** (`fe3d681`, then `07353ca`):
+
+1. **`?tool=` deep links.** `theeditai.co.uk/tools?tool=granola` opens that
+   verdict and lands on it with the tool's name visible. A query param, not
+   `/tools/:slug`: it is a share link rather than an indexable page, which is
+   the actual job, and it avoids 23 SEO surfaces to maintain. It does not block
+   real routes later. `src/utils/slugify.ts` is back as one module, matching the
+   note left at its deletion on 26 Aug. Verified at 375, 768 and 1280.
+2. **Privacy §2 rewritten.** Both its sentences were false: it described the
+   Substack gate removed on 30 Aug, and it claimed no subscriber list while six
+   addresses sat in Supabase. Supabase is now named, no retention position is
+   stated (both Jasmin's calls), and §4 lost "and we can't lose what we never
+   collected", which read as a claim to hold nothing.
+3. **The consultancy line in AboutPanel**, giving The Edit a route back to the
+   practice that is not just a link to another homepage.
+4. **My Stack out of the nav, into a button.** Nav is now Home / Tools / Design
+   / Learning / AI News, so Tools is second. "Read the Substack" left the
+   desktop bar to make room and **deliberately stays in the mobile drawer.**
+
+**Filed, not built: the capture mechanism.** Hosted MailerLite, linked and
+never embedded, from `/policy-template` below the download, ungated, framed as
+an update register. Full reasoning in the 2026-09-04 entry above and in
+`reports/2026-09-04-capture-*.md`.
+
+### Next step, in the order I would take it
+
+1. **`VITE_GOOGLE_SHEETS_API_KEY` in Vercel's Preview environment.** One
+   dashboard setting. It is the only thing standing between the `geo/prerender`
+   branch and a green build.
+2. **The verdict-visibility decision.** The prerender writes 23 verdict toggles
+   and zero verdict prose, because the verdict sits behind a conditional
+   render. That is the strongest lever in the practice's own GEO evidence table,
+   so the prerender is worth much less than it looks until this is settled.
+   Two options, both crossing a stated constraint: expand during prerender
+   (cards visibly collapse on load) or render always and toggle visibility (an
+   app change, visually identical, better for find-in-page and screen readers).
+   I would take the second.
+3. **The 24 vs 29 August copy conflict**, which is the two-site question in
+   smaller clothes. Decide them together.
+4. Housekeeping: eight `audit-*@example.invalid` rows in `subscribers`; the
+   `web-build-guide` §7/§8 staleness flag still not appended.
+
+### Benched deliberately
+
+- **Two sites split by job** rather than by brand. Jasmin's framing, and it
+  resolves the builder-page question as arithmetic rather than taste: if The
+  Edit is a governance reference, `my-stack`, `design-kit` and `learning` fail
+  the test and `radar` passes. It also reverses the other thread's brand
+  convergence recommendation, which is why it needs deciding once rather than
+  twice.
+- **The builder-page cull.** Green-lit in the scope question then answered
+  "leave as is" on the specific one; the specific answer governs.
+- **The palette fold.** 76 live style declarations across 15 files, lime alone
+  46 times. Depends on the two-site decision, and mostly evaporates if it goes
+  that way.
+
+### One thing to know about the `geo/prerender` branch
+
+Its Vercel build is **red on purpose**. The prerender refuses to write pages
+that would look finished and say nothing, and the Sheets key is missing in that
+environment, so it fails with the reason in the message. That is the guard
+working. An earlier version of it went green and deployed seven hollow pages,
+which is the failure worth not repeating.

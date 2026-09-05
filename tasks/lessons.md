@@ -1108,3 +1108,66 @@ Session corrections and rules built up over time. Add entries; do not delete his
   something ongoing — current, checked, monitored, updated — go and find the
   mechanism that would have to deliver it, and confirm it covers that surface.**
   Copy is Jasmin's, but whether a claim is backed is checkable and mine to raise.
+
+## 2026-09-04 — capture, deep links, the nav, and the GEO prerender
+
+- **Ask what the failure case writes, then go and make it write it.** I built a
+  prerender guard that refused any page under 400 characters of text. A Vercel
+  build then went green while producing seven broken pages: the Sheets fetch
+  failed there, every data-driven route prerendered its empty state, and an
+  empty state still carries the nav, the headings and the footer, which clears
+  400 easily. **A floor the failure state clears is documentation, not a
+  control.** The fix was per-route floors set between a measured good value and
+  the measured broken value, plus a rendered card count on the two grid pages,
+  because counting elements beats measuring prose. Then I forced the failure
+  by building with an invalid key and watched the guard fire. **Prove a
+  safeguard in both directions, or you have only proved it does not fire.**
+
+- **A row count from an API can be an estimate, and estimates read zero.**
+  Supabase's `list_tables` reported `rows: 0` for `subscribers`. I repeated that
+  to Jasmin twice. A `SELECT` returned six real addresses, three of them third
+  parties, collected March to June 2026. The count comes from planner
+  statistics, which sit at zero until the table is analysed. **Never report a
+  row count that came from a listing; run the query.** The cost here was not
+  academic: the live privacy policy claimed the site "holds no subscriber list",
+  and on the wrong number I would have left it standing.
+
+- **The browser pane reports a 0x0 viewport when hidden, and every measurement
+  taken then is fiction.** A 0-width viewport wrapped the filter rail from 149px
+  to 226px, which flipped a "does the name clear the sticky bar" check from pass
+  to fail. Twice. The tell is `window.innerWidth` reading 0 on a page that
+  screenshots fine, which this project's global file already names. **The fix is
+  `resize_window` with explicit width and height, and asserting the viewport is
+  non-zero inside the same measurement you are about to trust.**
+
+- **A smooth scroll is an animation and cannot be verified in a hidden pane.**
+  `scrollIntoView({behavior:"smooth"})` is driven by requestAnimationFrame, so
+  it stalled part-way and left the card 75px high. I diagnosed that as a sticky
+  rail shrinking on scroll and was about to write that mechanism into a
+  permanent comment. Measuring it disproved it: `railDelta 0`, `cardDelta 0`,
+  nothing moved. **The invented mechanism was plausible and wrong, which is the
+  dangerous combination.** The real cause was the frozen pane. An instant scroll
+  removed the dependency altogether and works in a background tab as a bonus.
+
+- **Verify the relationship, not the existence — the deep-link version.** A
+  `?tool=` link that opens the right verdict is not finished if the reader lands
+  with the tool's own name behind the sticky filter rail. The check that matters
+  is "can they see which tool this verdict belongs to", not "did the card
+  expand". And it needed a different answer at every breakpoint: the rail is
+  188px below `lg` and 149px above it, so one `scroll-margin-top` was wrong on
+  half the devices.
+
+- **A branch is not proven because the push succeeded.** The first prerender
+  commit changed `vercel.json`'s catch-all to `/app.html` but left the build
+  command as the plain Vite build, so Vercel produced neither the prerendered
+  files nor `app.html`, and every route rewrote to something that did not
+  exist. Found by reading the deployment, not by assuming the push was the end
+  of the job. **When a change depends on the build producing something new,
+  check the build produced it.**
+
+- **An SSO-protected preview cannot be curled, and returns 200 with a full body
+  when you try.** Vercel's deployment protection here is
+  `all_except_custom_domains`, so every `*.vercel.app` URL sits behind auth.
+  That was worth finding before promising a curl-based proof rather than after.
+  Build logs are still readable through the API, which is what made the Chromium
+  and Sheets diagnoses possible without ever fetching the site.
