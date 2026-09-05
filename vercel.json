@@ -1,4 +1,5 @@
 {
+  "buildCommand": "bun run build && npx playwright install chromium && PRERENDER_REFERER=https://www.theeditai.co.uk/ node scripts/prerender.mjs",
   "rewrites": [
     { "source": "/tools", "destination": "/tools/index.html" },
     { "source": "/radar", "destination": "/radar/index.html" },
