@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { normaliseDpiaFlag, type Tool } from "@/lib/sheets";
+import { toSlug } from "@/utils/slugify";
 
 /**
  * Colour lives in index.css under `.tool-card`, not here.
@@ -116,6 +117,12 @@ interface ToolCardProps {
   /** Fired by pointer entry and by focus, so the state is not mouse-only. */
   onActivate: () => void;
   onDeactivate: () => void;
+  /**
+   * Opens the verdict on first render, for a `?tool=` deep link. Read once as
+   * the initial state and never again, so a reader who closes a deep-linked
+   * verdict is not fighting the URL to keep it shut.
+   */
+  defaultExpanded?: boolean;
 }
 
 export const ToolCard = ({
@@ -124,8 +131,9 @@ export const ToolCard = ({
   isDimmed,
   onActivate,
   onDeactivate,
+  defaultExpanded = false,
 }: ToolCardProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   // normaliseDpiaFlag resolves casing, and returns "" for anything that is not
   // one of the three allowed values, so an unrecognised flag renders no chip
   // rather than an empty one. isComplete() keeps such a row off the grid anyway.
@@ -141,6 +149,10 @@ export const ToolCard = ({
       // their presence.
       data-selected={isSelected || undefined}
       data-dimmed={isDimmed || undefined}
+      // The scroll target for a `?tool=` deep link. An attribute rather than an
+      // id because ids have to be unique document-wide and the radar card
+      // shares these class names; nothing styles off this.
+      data-tool={toSlug(tool.name)}
       className="tool-card rounded-xl border p-4 sm:p-5 flex flex-col h-full transition-all duration-200"
     >
       {/* Always an h3, with the link inside it rather than instead of it.

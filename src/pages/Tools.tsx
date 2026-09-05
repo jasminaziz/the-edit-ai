@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   fetchTools,
   isComplete,
@@ -16,6 +16,7 @@ import { CobaltZone } from "@/components/CobaltZone";
 import { RevealGroup, RevealItem } from "@/components/Reveal";
 import { SEO } from "@/components/SEO";
 import { ToolCard } from "@/components/ToolCard";
+import { toSlug } from "@/utils/slugify";
 
 import { Search } from "lucide-react";
 
@@ -32,6 +33,55 @@ const Tools = () => {
   const [onlyDpiaGreen, setOnlyDpiaGreen] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+
+  /**
+   * `?tool=` deep link. Opens one card's verdict and scrolls to it, so a
+   * verdict can be linked to from outside the site. There is no per-tool
+   * route: this is a share link rather than an indexable page, which is what
+   * the job actually needs, and it leaves a real route free to be added later
+   * without breaking anything pasted in the meantime.
+   *
+   * The parameter is run through toSlug as well as the name, so both
+   * `?tool=gemini-notebook` and `?tool=Gemini%20Notebook` resolve. A parameter
+   * matching nothing is a silent no-op: the page renders normally rather than
+   * erroring, which is the right behaviour for a link to a row that has since
+   * been renamed, or to one that lives on /radar and never reaches this grid.
+   */
+  const [searchParams] = useSearchParams();
+  // Empty is treated as absent, so `?tool=` and `?tool=!!!` both fall through
+  // to the normal page. Both slug to "", and without this guard an empty slug
+  // would match any tool whose name also slugged to "".
+  const wantedSlug = toSlug(searchParams.get("tool") ?? "") || null;
+  const deepLinkedName = wantedSlug
+    ? (tools.find((t) => toSlug(t.name) === wantedSlug)?.name ?? null)
+    : null;
+
+  /**
+   * Scroll the deep-linked card into view once the grid exists.
+   *
+   * `block: "start"` plus a `scroll-margin-top` on `.tool-card` in index.css,
+   * rather than `block: "center"`. Centring an expanded card puts its own name
+   * above the fold, so the reader arrives at a verdict with nothing saying
+   * which tool it belongs to. The margin clears the sticky filter rail: the
+   * card top lands at 212px, which is the scroller's own 64px offset plus the
+   * 148px margin, with the name clear of the rail bottom at 197px. Measured on
+   * the dev server rather than derived.
+   *
+   * No `behavior: "smooth"`, deliberately. A smooth scroll is driven by
+   * requestAnimationFrame, so it does not run in a background tab and stalls
+   * part-way through wherever frames are not being produced. An instant scroll
+   * lands correctly regardless, which is also what an anchor link would do.
+   * Nothing here needs a frame to settle first: the reveal wrappers animate
+   * transform and opacity only, neither of which reflows, so the card's
+   * position is final as soon as the grid commits (verified: the card's offset
+   * is identical at rest and after scrolling).
+   */
+  useEffect(() => {
+    if (!deepLinkedName) return;
+    document
+      .querySelector(`[data-tool="${toSlug(deepLinkedName)}"]`)
+      ?.scrollIntoView({ block: "start" });
+  }, [deepLinkedName]);
 
   useEffect(() => {
     fetchTools().then((t) => {
@@ -217,6 +267,7 @@ const Tools = () => {
           tool={tool}
           isSelected={isSelected}
           isDimmed={isDimmed}
+          defaultExpanded={tool.name === deepLinkedName}
           onActivate={() => setHoveredCard(tool.name)}
           // Clears only if this card is still the selected one.
           //
