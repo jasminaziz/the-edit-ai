@@ -144,6 +144,47 @@ export const AboutPanel = () => {
           >
             I'm Jasmin. I work with exactly these teams. This is the resource I wanted to hand them, so I made it.
           </p>
+          {/* The route back to the consultancy. Approved by Jasmin 4 Sep 2026
+              (copywriter candidate C, reports/2026-09-04-copy-candidates-
+              privacy-and-conversion.md), chosen over two warmer drafts.
+
+              Here rather than on /tools, in the footer, or in a section of its
+              own: /tools is the site's highest-trust surface and already has a
+              documented history of CTA crowding, the footer renders on every
+              route and has had wording cut from it for that same reason, and a
+              CobaltZone section would give the hand-off the same visual weight
+              as the checks system and read as an advert bolted onto a resource.
+
+              It sits before the byline, not instead of it. The byline is locked
+              by the positioning statement's own ruling.
+
+              Note "Get in touch" is the consultancy's own CTA phrasing and is
+              deliberately not "Work with me", the label every other outbound
+              link on this site uses. That is Jasmin's call, signalling a
+              lighter link than the standing nav CTA, and it means the
+              five-identical-labels rule in CLAUDE.md is untouched by it. */}
+          <p
+            className="font-body"
+            style={{
+              fontWeight: 400,
+              fontSize: 15,
+              lineHeight: 1.6,
+              color: "hsl(var(--text-secondary))",
+              margin: 0,
+              marginTop: 16,
+            }}
+          >
+            Jasmin also runs a consultancy: comms audits, brand and positioning, campaign strategy, content systems, and AI, trust and communications.{" "}
+            <a
+              href={WORK_WITH_ME_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="lime-link"
+            >
+              Get in touch
+            </a>
+            .
+          </p>
           <p
             className="font-body"
             style={{
