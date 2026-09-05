@@ -299,4 +299,43 @@
   .lime-link:focus-visible {
     text-decoration-thickness: 2px;
   }
+
+  /**
+   * The My Stack button in the top bar. Tier two of three: the plain nav links
+   * are tabs, this is a secondary button, "Work with me" is the primary CTA.
+   * The ranking is carried by fill, weight and size together rather than by
+   * colour alone, which is the same principle the DPIA chips follow.
+   *
+   * Forest #2D6A4F because it already means "my stack" here: it is the IN MY
+   * STACK badge on every card in that list. This is that job extended to the
+   * page's own front door, not a new job for the colour.
+   *
+   * THE WHITE BORDER IS LOAD-BEARING, NOT DECORATION. Forest measures 1.33:1
+   * against the cobalt nav and 1.77:1 against the periwinkle homepage, so a
+   * bare fill has almost no visible edge on either ground. The border carries
+   * the separation: 8.52:1 on cobalt and 3.60:1 on periwinkle, both judged
+   * against the 3:1 non-text floor rather than the 4.5:1 text floor. Periwinkle
+   * clears it by 0.60, which is the tightest number on this button and the one
+   * to re-measure if the homepage hue ever moves again.
+   *
+   * White text on forest is 6.39:1, so no fourth homepage AA failure is added
+   * to the three already ruled acceptable.
+   *
+   * Hover is ink, the sitewide rule since 30 Aug. The border stays through it,
+   * so the edge never depends on the hover fill's own contrast.
+   */
+  .nav-stack-btn {
+    background-color: #2D6A4F;
+    border: 1.5px solid #FFFFFF;
+    color: #FFFFFF;
+    transition: background-color 150ms ease-out;
+  }
+  .nav-stack-btn:hover {
+    background-color: #1A1510;
+  }
+  .nav-stack-btn:focus-visible {
+    background-color: #1A1510;
+    outline: 2px solid #FFFFFF;
+    outline-offset: 2px;
+  }
 }
