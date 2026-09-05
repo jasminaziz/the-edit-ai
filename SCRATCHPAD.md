@@ -3183,3 +3183,59 @@ is why the Cowork task tells discovery the tab is full.
 Carried forward unchanged from session 1: `/radar` SEO title and description
 are placeholders; "the checks" means two things; desktop signpost placement;
 the unreproducible dead-column; whether the PWA manifest stays.
+
+web-build-guide stale: live email-enumeration oracle confirmed on the subscribers table (23505 duplicate-key response distinguishes existing emails), and the INSERT-only RLS claim reconfirmed by oracle test rather than HTTP status (204 on UPDATE/DELETE proved a no-op, not a write) — see reports/2026-09-04-capture-security-audit.md
+
+### 2026-09-04 ACTION FILED: the capture mechanism, replacing the dead Substack gate
+
+**Decided this session with the site team (planner, governance-assessor,
+security, stranger). Four reports in `reports/2026-09-04-capture-*.md`.**
+
+**The mechanism.** A hosted MailerLite list, **linked and never embedded**,
+from `/policy-template` below the download. Ungated. Framed as an update
+register for when the law under the template moves, not a newsletter.
+
+**Not a gate.** All three advisory agents converged, and governance gave it a
+legal spine the trust argument did not have: making the document conditional
+on an email is an **Article 7(4) bundled-consent** problem, which is what the
+Substack gate always was. The 30 Aug ruling therefore stands on stronger
+ground than it was made on. Governance also cleared the **DPIA screening as
+not triggered** on these facts.
+
+**Linked, not embedded, is the load-bearing word.** Security's objection to any
+third-party vendor was that an embedded widget drops cookies and needs new CSP
+origins, reintroducing the consent burden the site shed with GA4 on 28 Aug. A
+hosted page on the vendor's domain puts zero third-party JS on theeditai.co.uk,
+so "sets no cookies" stays true and no banner returns.
+
+**Supabase-behind-a-serverless-function was rejected, against two agents'
+advice.** It is the better *design* (kills the enumeration oracle, real rate
+limiting, no new origins) and the wrong answer for this brief: it is the site's
+first `api/` endpoint, needs Vercel KV or Upstash provisioned, and planner
+priced it at four to five days against an admin-week constraint and a
+non-technical owner. A permanently maintained backend is a liability here.
+
+**CONDITION, and it is load-bearing.** The honest ask ("tell me where to send
+corrections when the law moves") is a promise the site cannot currently keep:
+the currency watcher (E2/E8) is **Not started**, and the two WRONG-class
+clauses rest partly on legislation.gov.uk, which the dependency register
+already proved cannot be fetched here. **Ship with copy saying plainly this is
+a review by a person, not an automated watch.** Do not block on building the
+watcher, and do not imply one exists. Promising an unbuilt service is the C3
+mistake again.
+
+**Live finding, unresolved by choice.** `subscribers` holds six real addresses
+(three third parties), not zero: Supabase `list_tables` returns an *estimated*
+row count that reads 0 until the table is analysed, and it was believed twice
+this session before a `SELECT` disproved it. **Never read a row count off an
+estimate.** Jasmin ruled 4 Sep that the six are friends who tested the site and
+no action is needed. Consequence left standing deliberately:
+`PrivacyPolicy.tsx:25` "holds no subscriber list" is false while those rows
+exist, and §2 still describes the Substack gate removed on 30 Aug. Eight
+`audit-*@example.invalid` rows from the security audit are also still there.
+
+**Security finding, live now.** The anon-insert RLS policy on `subscribers` is
+a working **email-enumeration oracle**: 201 for a new address, 409 `23505` for
+one already on the list. Confirmed against production. Harmless only while
+nothing ships the anon key to a browser. Any future client-side insert makes it
+live.
