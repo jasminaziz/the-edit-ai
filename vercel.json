@@ -1,5 +1,16 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/tools", "destination": "/tools/index.html" },
+    { "source": "/radar", "destination": "/radar/index.html" },
+    { "source": "/my-stack", "destination": "/my-stack/index.html" },
+    { "source": "/design-kit", "destination": "/design-kit/index.html" },
+    { "source": "/learning", "destination": "/learning/index.html" },
+    { "source": "/ai-news", "destination": "/ai-news/index.html" },
+    { "source": "/policy-template", "destination": "/policy-template/index.html" },
+    { "source": "/submit", "destination": "/submit/index.html" },
+    { "source": "/privacy-policy", "destination": "/privacy-policy/index.html" },
+    { "source": "/terms-of-service", "destination": "/terms-of-service/index.html" },
+    { "source": "/cookie-policy", "destination": "/cookie-policy/index.html" },
+    { "source": "/(.*)", "destination": "/app.html" }
   ]
 }
