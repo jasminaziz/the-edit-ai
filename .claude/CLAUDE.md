@@ -190,8 +190,9 @@ on 2026-09-01 so the two cannot drift.** Do not re-add it here.
 `scripts/sheet-write.mjs` is the **only** path that writes to the Sheet, with 24
 tests in `scripts/sheet-write.test.mjs` as at 2026-09-01. Run them with `node
 --test scripts/sheet-write.test.mjs`; `bun test` also picks them up, so the
-project gate reports **88 across 4 files, 64 of them the app's and 24 these
-guards**. They sit outside the vitest `src/**` glob deliberately: this is a
+project gate reports **96 across 5 files, 72 of them the app's and 24 these
+guards** (was 88 across 4 until 2026-09-04, when `slugify.test.ts` added
+eight). They sit outside the vitest `src/**` glob deliberately: this is a
 script, not the app.
 
 The guard count moves as guards are added — it went 19 to 24 on 2026-09-01 when
@@ -356,12 +357,24 @@ asks about `learning`, and nothing currently enforces a ceiling there either.
   unreadable and `getRegistrations()` at 0.
 - Styling: Tailwind
 - Data layer: Google Sheets (all content lives here)
-- Subscriber capture: **none in this repo.** The Supabase `subscribers`
-  write path was removed on the branch (2026-08-22). No file in `src/`
-  imports the Supabase client or calls `.insert()`. The table still exists
-  in the Supabase project but is orphaned: nothing writes to it, nothing
-  reads it. Capture is a gated Substack post (see Conversion). Do not
-  rebuild against the Supabase table.
+- Subscriber capture: **no mechanism in this repo, but the table is not
+  empty.** The write path was removed on 2026-08-22 and no file in `src/`
+  imports the Supabase client or calls `.insert()`. Nothing writes to
+  `subscribers` and nothing reads it.
+  **It nevertheless holds six real email addresses, three of them third
+  parties, collected March to June 2026.** Verified live 2026-09-04. An
+  earlier version of this block called the table "orphaned", which was true
+  of the code path and false about the contents, and it was believed twice
+  in one session because Supabase's `list_tables` reports `rows: 0` until the
+  table is analysed. **Read a row count with a `SELECT`, never off a
+  listing.** Jasmin ruled on 2026-09-04 that the six are friends who tested
+  the site and they stay.
+  Two live consequences. `PrivacyPolicy.tsx` §2 was rewritten the same day so
+  the site no longer claims to hold no list, and the anon-insert RLS policy on
+  that table is a **working email-enumeration oracle**: 201 for a new address,
+  409 `23505` for one already present, confirmed against production. Harmless
+  only while nothing ships the anon key to a browser, so **any client-side
+  insert makes it live.** Do not rebuild capture against this table.
 - SEO: react-helmet-async. `SEO.tsx` emits per-page title, description,
   canonical, `og:title`, `og:description`, `og:url`, `twitter:title` and
   `twitter:description`, all derived from the props each page passes. It
@@ -486,6 +499,30 @@ Routes: `/`, `/tools`, `/radar`, `/my-stack`, `/design-kit`, `/learning`,
 `/ai-news`, `/policy-template`, `/submit`, `/privacy-policy`,
 `/terms-of-service`, `/cookie-policy`.
 
+**The nav is five items: Home, Tools, Design, Learning, AI News.** My Stack
+left the list on 2026-09-04 and is a **button in the CTA cluster** instead,
+which put Tools second without reordering anything: the directory, the reason
+the site exists, had been third behind a page about Jasmin's own toolkit. The
+bar now reads nav tabs, then "Get the template →", then the My Stack button,
+then the divider, then "Work with me". Three tiers, ranked by fill, weight and
+size together rather than by colour alone.
+
+**"Read the Substack →" is gone from the DESKTOP bar and deliberately still in
+the mobile drawer.** The asymmetry is the decision, not an oversight: do not
+"finish the job" by removing it from the drawer. It came out of the desktop bar
+to make room, because at 1040px, the tightest width the desktop nav renders at,
+there were **34px** between the nav items and the CTA cluster and the button
+needed about 50 more than the removed My Stack text link gave back. Measured
+after the change: **171px** of slack, rightmost element at 1008 against a 1040
+viewport, nothing clipped. The drawer is a vertical list with no width pressure
+at all, so the same argument does not apply there. Nothing became unreachable:
+the Substack is in the footer on every route and linked in prose on
+`/policy-template`.
+
+**The sliding active pill needed no change.** `updatePill` already hides when
+no nav item matches the path, so `/my-stack` shows no active tab, which is
+correct now that it is not a tab.
+
 **`/radar` is deliberately NOT in the main nav.** Added 1 Sep 2026 on Jasmin's
 28 August ruling that the radar gets its own tab, then kept out of the nav on
 her ruling of 1 September that it should link off `/tools` instead. It is a
@@ -536,9 +573,37 @@ read before anyone reopens it.
 The funnel: the directory attracts the charity, cultural and heritage comms
 buyer → the AI-use policy template downloads directly and proves the expertise
 → "Work with me" converts to the consultancy. The Substack is an invitation in
-the nav and footer, not a toll on the template. **There is no email capture
-anywhere on the site**, and no email infrastructure is built or maintained in
-this repo.
+the footer and the mobile drawer, not a toll on the template. **There is no
+email capture anywhere on the site**, and no email infrastructure is built or
+maintained in this repo. (The `subscribers` table holds six legacy rows from
+early testing; see the Tech stack entry. Nothing on the site writes to it.)
+
+**The replacement mechanism is decided and NOT built. Ruled 2026-09-04.** A
+**hosted MailerLite list, linked and never embedded**, from `/policy-template`
+below the ungated download, framed as an **update register** rather than a
+newsletter. Four reports at `reports/2026-09-04-capture-*.md`.
+
+Four things that will otherwise be relitigated:
+
+- **Optional, never a gate**, and this now has a legal spine rather than only a
+  trust argument: making the document conditional on an email is an **Article
+  7(4) bundled-consent** problem, which is what the Substack gate always was.
+  The 30 August ruling stands on firmer ground than it was made on. DPIA
+  screening came back **not triggered**.
+- **"Linked" is the load-bearing word.** An embedded widget drops cookies and
+  needs new CSP origins, reintroducing the consent burden the site shed when
+  GA4 went on 28 August. A hosted page on the vendor's own domain puts zero
+  third-party JS on theeditai.co.uk, so "sets no cookies" stays true.
+- **Supabase behind a serverless function was rejected against two advisers'
+  advice.** It is the better design and the wrong answer here: the site's first
+  `api/` endpoint, needing Vercel KV or Upstash, priced at four to five days
+  against an admin-week constraint and a non-technical owner.
+- **Condition, load-bearing.** The honest ask, telling people where to send
+  corrections when the law under the template moves, depends on a currency
+  watcher that is **Not started**, over clauses partly resting on
+  legislation.gov.uk, which cannot be fetched from here. Ship with copy saying
+  plainly that a person reviews it. Promising an unbuilt service is the C3
+  mistake repeating.
 
 Why the gate went, in short: it was never built (C3 delivered nothing), it
 leaked by design because the files sit at public URLs that the welcome email
@@ -547,12 +612,12 @@ answer straight, and it filtered for the incautious reader when the careful one
 is the buyer. Optimised for trust and reach over subscriber count.
 
 Live in code, re-counted 2026-08-31: **five** links carry "Get the template →",
-not four. `Layout.tsx:145` (mobile nav), `Layout.tsx:226` (desktop nav),
-`FooterEmailCapture.tsx:61`, `Tools.tsx:265` and `PolicyTemplate.tsx:106`, which
+not four. `Layout.tsx:181` (mobile drawer), `Layout.tsx:284` (desktop bar),
+`FooterEmailCapture.tsx:61`, `Tools.tsx:361` and `PolicyTemplate.tsx:169`, which
 is the one that downloads `/AI-Use-Policy-Template.docx` directly. **Keep all
 five labels identical.** The `Tools.tsx` one was missing from this list; the
 labels themselves were already consistent, so the rule held and only the
-inventory was short. `ToolCard.tsx:213` is a sixth link to the same route,
+inventory was short. `ToolCard.tsx:289` is a sixth link to the same route,
 gated to Red, and carries a deliberately different sentence.
 
 **There is no PDF at `/AI-Use-Policy-Template.pdf`.** An earlier version of this
@@ -575,6 +640,73 @@ version of this block named 3,071 bytes, and that number was stale within the
 hour: adding a comment to `index.html` in the same session took it to 4,380. Any
 edit to `index.html` moves it. Compare against the current `dist/index.html` if
 you want a size check, and treat content-type as the durable signal.
+
+## Crawlability and GEO
+
+**The live site serves nothing to a crawler that does not run JavaScript.**
+Verified against production 2026-09-04: every route returns an identical
+4,380-byte shell whose entire body is `<div id="root"></div>`. No heading, no
+copy, no verdicts, no footer, no attribution to Jasmin. Googlebot renders and
+so sees the site; OAI-SearchBot and PerplexityBot most likely do not, which is
+a factual gate on being cited at all rather than a ranking signal. **This is
+still true on `main`.**
+
+**There is no such thing as a tool page here.** Twelve routes, none
+parameterised; the directory is one page. Any audit claiming the site "cannot
+cite a single tool page" is describing pages that do not exist, and the
+achievable goal is that `/tools` carries all 23 tools' text in its served HTML.
+
+**The fix lives on branch `geo/prerender`, not merged.** Build-time
+prerendering with a headless browser: `scripts/prerender.mjs` serves the built
+`dist`, drives each route in Chromium so the effects run and the Sheet
+responds, and writes the resulting HTML beside the bundle. **No file in `src/`
+changes and the data flow is untouched.** Proven locally: `/tools` goes from 0
+to 9,613 characters of readable text and 23 cards.
+
+Four things that will otherwise be rediscovered the hard way:
+
+- **`react-dom/server` cannot work here.** Every page fetches in a `useEffect`
+  and `renderToString` never runs effects, so server rendering prerenders the
+  loading spinner. Getting data in means restructuring how it reaches
+  components, which is a change to the data flow.
+- **Hand-written static HTML was rejected** as two renderers for one set of
+  content with nothing failing when they disagree.
+- **Vercel needs `@sparticuz/chromium`.** The build image carries none of
+  Chromium's shared libraries and fails on `libnspr4.so`; `--with-deps` cannot
+  rescue it because it shells out to apt while the image is Amazon Linux.
+- **Preview URLs cannot be curled.** Deployment protection is SSO,
+  `all_except_custom_domains`, so a fetch returns an auth wall with a 200 and a
+  full body. Build logs are still readable through the Vercel API, which is
+  what made both diagnoses possible without fetching the site.
+
+**Blocked on one dashboard setting:** `VITE_GOOGLE_SHEETS_API_KEY` is absent
+from Vercel's **Preview** environment, so the data-driven routes prerender
+their empty state there. Vite bakes `VITE_` variables in at build time, so a
+missing key ships a request with no key rather than raising an error. The
+branch's build is **red on purpose** until that is set: the prerender refuses
+to write pages that would look finished and say nothing.
+
+**Accepted trade, ruled 2026-09-04:** prerendered HTML freezes a Sheet snapshot
+at build time. Readers still get live data on every visit; a non-JS crawler
+sees rows as of the last deploy, so "a Sheet edit is public in seconds" stops
+being true for crawlers specifically. The lever, if that window ever needs
+closing, is a scheduled rebuild.
+
+**Open, and it is the reason the prerender is worth less than it looks: the
+verdicts are not in the HTML.** 23 toggles reach the served markup and zero
+verdict prose does, because the verdict sits behind a conditional render.
+Quotations from a named person are the strongest lever in the practice's own
+GEO evidence table (+41%), so this is most of the value. Two ways to close it,
+both crossing a stated constraint: expand during prerender (cards visibly
+collapse on load, changing what a reader sees) or render always and toggle
+visibility (an app change, visually identical, better for find-in-page and
+screen readers). The second is the better answer and is Jasmin's call.
+
+**Two things are NOT levers and must never be recommended as GEO work**, on the
+evidence table in `CONSULTING/CONSULTANCY_GEO-Audit-Product_v1.html`: **schema
+markup / JSON-LD** (1,885 treated pages against 4,000 controls, no uplift and a
+4.6% decline in AI Overviews) and **llms.txt** (137,210 domains, 97% received
+zero requests). Neither has been added and neither should be.
 
 ## Codebase conventions
 
@@ -607,7 +739,7 @@ what the old `onMouseEnter`/`onMouseLeave` pair existed to work around. Hover
 and `:focus-visible` share one rule, because the mouse-only version left the
 single outbound link on the homepage with no visible state under the keyboard.
 
-**`FooterEmailCapture` renders from `Layout.tsx:258`, so it is on every route.**
+**`FooterEmailCapture` renders from `Layout.tsx:363`, so it is on every route.**
 Anything it names is multiplied across the whole site, and on a page that also
 names the audience in body copy the reader meets it twice: `/tools` and
 `/policy-template` both did. It carried the three-part audience phrase until
@@ -675,10 +807,37 @@ above renders as it always did. Before 2026-08-29 the hook was 768, which put
 `Layout.tsx:70`'s `overflow-hidden` clipped it rather than producing a
 scrollbar.
 
-`src/utils/slugify.ts` was deleted with the Stack cut on 2026-08-26. It
-existed only to build `?stack=` share URLs, and nothing slugifies a tool name
-any more. If URL encoding is ever needed again, add one module and keep it
-single-source, as that file was.
+**`src/utils/slugify.ts` is back, and it is the single source it was told to
+be.** It was deleted with the Stack cut on 2026-08-26, with a note saying that
+if URL encoding were ever needed again it should return as one module. It was,
+on 2026-09-04, for the `?tool=` deep links.
+
+**Deep-linkable verdicts: `/tools?tool=<slug>`** opens one card's verdict and
+scrolls to it, so a verdict can be linked to from off-site. A query parameter,
+not `/tools/:slug`, and the reasoning matters if anyone reopens it: the job is a
+shareable link, not an indexable page, and per-tool routes would create 23 SEO
+surfaces with their own meta and sitemap entries to maintain. It does not block
+real routes later.
+
+Three things about it that are not obvious:
+
+- **Matching is one-way and deliberately brittle.** Both the parameter and each
+  tool name are slugged and compared; there is no stored slug and no lookup
+  table. A tool renamed in the Sheet therefore breaks its old link rather than
+  resolving to the wrong card, which is the safer failure for a link pasted
+  under a post making a claim about that specific tool. An unmatched, empty or
+  unsluggable parameter loads the page normally with nothing open.
+- **No `behavior: "smooth"`, deliberately.** A smooth scroll is driven by
+  `requestAnimationFrame`, so it does not run in a background tab and stalls
+  wherever frames are not produced. An instant scroll lands correctly
+  regardless. Nothing needs a frame to settle first: the reveal wrappers animate
+  transform and opacity, neither of which reflows.
+- **`.tool-card` carries a `scroll-margin-top` and it is two values.** The
+  sticky filter rail is 188px below `lg` and 149px at `lg` and up, so a single
+  offset lands the card's own name behind the rail on half the devices. Verified
+  at 375, 768 and 1280: the name clears the rail by 36, 62 and 31px. A deep link
+  that opens the right verdict but hides which tool it belongs to is not
+  finished.
 
 `stripEmoji` in `src/lib/sheets.ts` applies to all text fields parsed from
 the Sheet. Preserve it in any fetcher change.
@@ -792,8 +951,20 @@ Colours (hex only, never names):
   **Before adding or editing any token, compute what it renders and compare to
   the locked hex. An integer triple almost never round-trips.**
 - `#2D6A4F` forest green: the In My Stack badge, the Green DPIA chip, the
-  DesignKit `free` cost badge and one of the three hero pill colours. The old
-  "In My Stack badge only" scope had not been true for some time.
+  DesignKit `free` cost badge, one of the hero pill colours, and since
+  2026-09-04 the **My Stack nav button**. The old "In My Stack badge only"
+  scope had not been true for some time. The working rule now: forest
+  identifies Jasmin's own stack, on a card or as a destination.
+  **On the nav button the white border is load-bearing, not decoration.**
+  Forest measures 1.33:1 against the cobalt nav and 1.77:1 against the
+  periwinkle homepage, so a bare fill has almost no visible edge on either
+  ground. The border gives 8.52:1 and 3.60:1 against the 3:1 non-text floor,
+  and white text on forest is 6.39:1, so no fourth homepage AA failure is
+  added. Periwinkle clears by 0.60, the tightest number on the button and the
+  one to re-measure if that hue ever moves again.
+  **Known and accepted:** on the homepage the button is the same forest as
+  several hero pills sitting directly beneath it. The white border and the nav
+  context separate them. Raised 2026-09-04, not treated as a defect.
 - **`#E8572A` burnt orange is retired, 2026-08-30.** It was the legacy On My
   Radar badge, and this file claimed it rendered nowhere while it was in fact
   colouring news category badges and hero pills. Both uses are gone: as a badge
