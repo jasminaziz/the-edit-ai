@@ -1,0 +1,45 @@
+<!doctype html>
+<!--
+  Source for the share card, public/og-edit-2026-09.png (1200x630 PNG).
+  Never deployed: Vite only publishes public/, and Tailwind only scans src/.
+
+  Render from the repo root (needs network, for the same font CDNs the site
+  loads; the time budget gives the fonts time, or you capture fallback type):
+
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
+      --hide-scrollbars --force-device-scale-factor=1 --window-size=1200,630 \
+      --virtual-time-budget=8000 --screenshot=public/og-edit-YYYY-MM.png \
+      "file://$PWD/assets-src/og-card.html"
+
+  A CHANGED CARD GETS A NEW FILENAME (og-<card>-YYYY-MM.png), never an
+  overwrite: LinkedIn, X, Slack and WhatsApp cache by URL, so an overwritten
+  file leaves the old card live for weeks. Then update og:image in index.html.
+
+  Ground ruled 12 Sep 2026: cobalt #2D35C9, cream wordmark, lime full stop
+  (punctuation is lime's locked job). Copy is the page title in the ruled
+  adjectival form. No counts here, ever: tool numbers are live Sheet data and
+  a static image cannot track them.
+
+  The wordmark reproduces the homepage h1 in Index.tsx: two stacked lines,
+  "The" smaller than "Edit.", with the same letter-spacing and the same
+  cap-line clip on the h. Only the sizes differ.
+-->
+<html><head><meta charset="utf-8">
+<link href="https://api.fontshare.com/v2/css?f[]=chillax@700&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600&display=block" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1200px;height:630px;overflow:hidden;background:#2D35C9}
+.wm{position:absolute;left:52px;bottom:102px;font-family:Chillax;font-weight:700;color:#FAF8F4}
+.the{display:block;font-size:220px;line-height:.82;letter-spacing:-.04em;margin-left:-.04em;clip-path:inset(.06em 0 0 0)}
+.edit{display:block;font-size:318px;line-height:.78;letter-spacing:-.05em;margin-left:-.05em;margin-top:-.02em}
+.dot{color:#C8F04A}
+/* Copy sits on the same baseline as "Edit.", and the group is centred:
+   measured 119px above and 115px below. */
+.copy{position:absolute;right:60px;bottom:118px;width:392px;color:#FAF8F4;font-family:"Plus Jakarta Sans"}
+.line{font-weight:600;font-size:52px;line-height:1.18;letter-spacing:-.01em}
+.by{font-weight:600;font-size:26px;margin-top:24px;line-height:1}
+</style></head><body>
+<div class="wm"><span class="the">The</span><span class="edit">Edit<span class="dot">.</span></span></div>
+<div class="copy"><div class="line">AI tools for charity, cultural and heritage comms.</div><div class="by">Curated by Jasmin Aziz</div></div>
+</body></html>
