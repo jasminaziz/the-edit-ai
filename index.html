@@ -30,14 +30,16 @@
     <meta name="google-site-verification" content="2_93U4mtnkpPZgW6fZZJaOIQ7tEKv7__f8JSMuO0HC8" />
 
 
+    <!--
+      Icons, pruned 12 Sep 2026 to three links. Every raster is drawn from
+      favicon.svg by assets-src/render-icons.py; do not hand-edit a PNG.
+      The .ico says sizes="32x32", not "any": with "any", Chrome prefers the
+      .ico over the SVG. The 192 and 512 PNGs are linked from the web
+      manifest (vite.config.ts), which the PWA plugin injects below.
+    -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
-    <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <meta name="theme-color" content="#2D35C9" />
     <meta name="apple-mobile-web-app-capable" content="yes" />

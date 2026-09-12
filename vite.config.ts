@@ -59,8 +59,9 @@ export default defineConfig(({ mode }) => ({
        */
       selfDestroying: true,
       registerType: "autoUpdate",
-      // Reuse the existing brand icon set as-is — never regenerate or reinterpret.
-      includeAssets: ["favicon.ico", "favicon.svg", "favicon-16.png", "favicon-32.png", "favicon-64.png"],
+      // Every icon is drawn from public/favicon.svg by assets-src/render-icons.py
+      // (redrawn and pruned 12 Sep 2026). Regenerate with the script, never by hand.
+      includeAssets: ["favicon.ico", "favicon.svg", "apple-touch-icon.png"],
       manifest: {
         name: "The Edit: AI Tools for Charity Comms",
         short_name: "The Edit",
