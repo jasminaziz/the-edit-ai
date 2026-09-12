@@ -85,6 +85,14 @@ stay honest, and it carries the six-question test every surface is read
 against. `reports/2026-08-28-surface-audit.md` holds one committed verdict per
 surface against that test.
 
+Claims register: kept privately at `~/.claude/steward/claims-the-edit-ai.md`
+(claude-config), not in this public repo. It lists every claim that lives on
+more than one surface, depends on another property or the code, or can go
+stale by itself, with Jasmin's exceptions and parked findings. The
+site-steward agent checks it on the 1st and 15th and at /wrap. Changing a
+claim means changing every surface its `Lives on:` line names, or the
+register.
+
 ## The evaluation axis (the moat)
 
 Seven fields per tool row beyond the basics. Field names are frozen (code
