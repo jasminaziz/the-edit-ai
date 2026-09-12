@@ -84,8 +84,20 @@ export function Layout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     updatePill();
+    // Measure again once the web fonts have loaded. On a first visit the
+    // first measurement is taken against the fallback font, so the pill sat
+    // up to 14px left of the rightmost tab, with its label running off the
+    // pill's edge, until the window was resized. Found 13 Sep 2026 when
+    // My Stack became the last tab, the one the drift hits hardest.
+    let cancelled = false;
+    document.fonts?.ready.then(() => {
+      if (!cancelled) updatePill();
+    });
     window.addEventListener("resize", updatePill);
-    return () => window.removeEventListener("resize", updatePill);
+    return () => {
+      cancelled = true;
+      window.removeEventListener("resize", updatePill);
+    };
   }, [updatePill]);
 
   // Periwinkle on the homepage, cobalt everywhere else. Restored 1 Sep 2026
