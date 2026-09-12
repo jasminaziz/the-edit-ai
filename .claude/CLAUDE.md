@@ -524,13 +524,21 @@ Routes: `/`, `/tools`, `/radar`, `/my-stack`, `/design-kit`, `/learning`,
 `/ai-news`, `/policy-template`, `/submit`, `/privacy-policy`,
 `/terms-of-service`, `/cookie-policy`.
 
-**The nav is five items: Home, Tools, Design, Learning, AI News.** My Stack
-left the list on 2026-09-04 and is a **button in the CTA cluster** instead,
-which put Tools second without reordering anything: the directory, the reason
-the site exists, had been third behind a page about Jasmin's own toolkit. The
-bar now reads nav tabs, then "Get the template →", then the My Stack button,
-then the divider, then "Work with me". Three tiers, ranked by fill, weight and
-size together rather than by colour alone.
+**The nav is six items: Home, Tools, Design, Learning, AI News, My Stack.
+Ruled 2026-09-13.** My Stack is the **last tab**, and the position is the
+decision. The bar reads the six tabs, then "Get the template →", the divider,
+then "Work with me"; the phone drawer lists the same six rows, then the
+template and Substack links, with Work with me alone at its foot.
+
+History, so it is not rediscovered: on 2026-09-04 My Stack left the list (it
+had been second) and became a forest-green button in the CTA cluster. That
+move had one goal, Tools second, and last-tab keeps it. The button was wrong
+in kind: a place dressed as a call to action and ranked between the two real
+ones, so the "Get the template →" arrow pointed straight into it and on the
+homepage it read as one of the forest hero pills. **Do not bring the button
+back, and do not move My Stack up the list.** Measured at 1040px: 195px
+between the My Stack tab and the template link, rightmost element at 1008,
+nothing clipped.
 
 **"Read the Substack →" is gone from the DESKTOP bar and deliberately still in
 the mobile drawer.** The asymmetry is the decision, not an oversight: do not
@@ -542,11 +550,15 @@ after the change: **171px** of slack, rightmost element at 1008 against a 1040
 viewport, nothing clipped. The drawer is a vertical list with no width pressure
 at all, so the same argument does not apply there. Nothing became unreachable:
 the Substack is in the footer on every route and linked in prose on
-`/policy-template`.
+`/policy-template`. **Since 2026-09-13 that width argument no longer holds**:
+with the button gone there is 195px of slack at 1040px. The link stays out of
+the desktop bar until Jasmin rules otherwise; it is her call, not a gap.
 
-**The sliding active pill needed no change.** `updatePill` already hides when
-no nav item matches the path, so `/my-stack` shows no active tab, which is
-correct now that it is not a tab.
+**The sliding active pill re-measures once web fonts load** (2026-09-13). On a
+first visit it was measured against the fallback font and sat up to 14px left
+of the rightmost tab, label running off its edge, until a resize. Proven both
+ways on cold headless loads. Measuring it on a warm reload proves nothing,
+because the fonts are cached and the bug does not appear.
 
 **`/radar` is deliberately NOT in the main nav.** Added 1 Sep 2026 on Jasmin's
 28 August ruling that the radar gets its own tab, then kept out of the nav on
@@ -637,7 +649,7 @@ answer straight, and it filtered for the incautious reader when the careful one
 is the buyer. Optimised for trust and reach over subscriber count.
 
 Live in code, re-counted 2026-08-31: **five** links carry "Get the template →",
-not four. `Layout.tsx:181` (mobile drawer), `Layout.tsx:284` (desktop bar),
+not four. `Layout.tsx:199` (mobile drawer), `Layout.tsx:298` (desktop bar),
 `FooterEmailCapture.tsx:61`, `Tools.tsx:361` and `PolicyTemplate.tsx:169`, which
 is the one that downloads `/AI-Use-Policy-Template.docx` directly. **Keep all
 five labels identical.** The `Tools.tsx` one was missing from this list; the
@@ -764,7 +776,7 @@ what the old `onMouseEnter`/`onMouseLeave` pair existed to work around. Hover
 and `:focus-visible` share one rule, because the mouse-only version left the
 single outbound link on the homepage with no visible state under the keyboard.
 
-**`FooterEmailCapture` renders from `Layout.tsx:363`, so it is on every route.**
+**`FooterEmailCapture` renders from `Layout.tsx:366`, so it is on every route.**
 Anything it names is multiplied across the whole site, and on a page that also
 names the audience in body copy the reader meets it twice: `/tools` and
 `/policy-template` both did. It carried the three-part audience phrase until
@@ -976,20 +988,15 @@ Colours (hex only, never names):
   **Before adding or editing any token, compute what it renders and compare to
   the locked hex. An integer triple almost never round-trips.**
 - `#2D6A4F` forest green: the In My Stack badge, the Green DPIA chip, the
-  DesignKit `free` cost badge, one of the hero pill colours, and since
-  2026-09-04 the **My Stack nav button**. The old "In My Stack badge only"
-  scope had not been true for some time. The working rule now: forest
-  identifies Jasmin's own stack, on a card or as a destination.
-  **On the nav button the white border is load-bearing, not decoration.**
-  Forest measures 1.33:1 against the cobalt nav and 1.77:1 against the
-  periwinkle homepage, so a bare fill has almost no visible edge on either
-  ground. The border gives 8.52:1 and 3.60:1 against the 3:1 non-text floor,
-  and white text on forest is 6.39:1, so no fourth homepage AA failure is
-  added. Periwinkle clears by 0.60, the tightest number on the button and the
-  one to re-measure if that hue ever moves again.
-  **Known and accepted:** on the homepage the button is the same forest as
-  several hero pills sitting directly beneath it. The white border and the nav
-  context separate them. Raised 2026-09-04, not treated as a defect.
+  DesignKit `free` cost badge and one of the hero pill colours. The old "In My
+  Stack badge only" scope had not been true for some time. The working rule:
+  forest identifies Jasmin's own stack on a card.
+  **It is no longer on the nav.** From 2026-09-04 to 2026-09-13 it filled a
+  My Stack button with a load-bearing white border, because forest measures
+  1.33:1 against the cobalt nav and 1.77:1 against the periwinkle homepage.
+  The button went when My Stack became the last tab; `.nav-stack-btn` is
+  deleted. If forest is ever put on the nav again, those two numbers are why
+  a bare fill has no visible edge there.
 - **`#E8572A` burnt orange is retired, 2026-08-30.** It was the legacy On My
   Radar badge, and this file claimed it rendered nowhere while it was in fact
   colouring news category badges and hero pills. Both uses are gone: as a badge
