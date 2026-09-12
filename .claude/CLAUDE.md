@@ -417,6 +417,23 @@ asks about `learning`, and nothing currently enforces a ceiling there either.
   `sitemap.xml`. Found 2026-08-31 and still open: titles and descriptions are
   copy and are Jasmin's, but the canonical is not copy and could be fixed on
   its own.
+- **Icons and share card, ruled 12 Sep 2026.** `public/favicon.svg` is the
+  single source: the same three lime capsules on cobalt, redrawn so every edge
+  lands on a whole pixel at 16px. `assets-src/render-icons.py` draws every
+  raster from it (`.ico` 16/32/48, apple-touch-icon inset to 84%, the manifest's
+  192, 512 and 74% maskable). **Never hand-edit a PNG; rerun the script.** It
+  exists because the old set came from mixed renderers and the 16px PNG had
+  fused into one blob. Three icon links only; the manifest links the rest.
+  The share card is **one card for every route**, `og-edit-2026-09.png`: cream
+  wordmark and lime full stop on cobalt, "AI tools for charity, cultural and
+  heritage comms." and "Curated by Jasmin Aziz". Ground and copy were Jasmin's
+  choice from rendered feed mocks. **A changed card gets a new filename**
+  (`og-<card>-YYYY-MM.png`), never an overwrite, because platforms cache by
+  URL. No counts on any card or icon. Source and render command:
+  `assets-src/og-card.html`; `assets-src/` is never deployed. A per-route card
+  is not worth building while every route serves the same shell, because
+  platforms would still read the homepage title beneath it: revisit when
+  `geo/prerender` lands.
 - Analytics: none. GA4 and the cookie banner were removed 2026-08-28 (commit d7221c8); the site sets no cookies, and Search Console is the measurement. If analytics ever returns, it returns with consent done properly.
 
 ### Branch discipline (the F2 gate is spent, 2026-08-30)
