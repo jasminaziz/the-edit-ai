@@ -7,14 +7,19 @@ import { FooterEmailCapture } from "@/components/FooterEmailCapture";
 import { WORK_WITH_ME_HREF, SUBSTACK_LIVE, SUBSTACK_URL, LINKEDIN_URL } from "@/lib/links";
 
 /**
- * My Stack is deliberately not in this list. It is a button in the CTA cluster
- * instead, ruled 4 Sep 2026, which moves Tools to second without touching the
- * order: the directory is the reason the site exists and it was sitting third,
- * behind a page about Jasmin's own toolkit.
+ * My Stack is the LAST tab, and that position is the decision. Ruled 13 Sep
+ * 2026, replacing the 4 Sep forest button in the CTA cluster.
  *
- * The sliding active pill handles its absence already. `updatePill` hides the
- * pill when no item matches the path, so /my-stack simply shows no tab as
- * active, which is correct now that it is not a tab.
+ * The 4 Sep move had one goal, which still holds: Tools second, because the
+ * directory is the reason the site exists and it had been sitting third behind
+ * a page about Jasmin's own toolkit. Last keeps that. What the button got wrong
+ * was kind: My Stack is a place, and it was dressed as a call to action and
+ * parked between the two real ones, so the "Get the template →" arrow pointed
+ * straight into it and on the homepage it read as one of the forest hero pills.
+ *
+ * Width was measured, not assumed: at 1040px, the tightest the desktop bar
+ * renders at, there are 195px between this tab and "Get the template →",
+ * against 171px with the button, and nothing clips.
  */
 const navItems = [
   { to: "/", label: "Home" },
@@ -22,6 +27,7 @@ const navItems = [
   { to: "/design-kit", label: "Design" },
   { to: "/learning", label: "Learning" },
   { to: "/ai-news", label: "AI News" },
+  { to: "/my-stack", label: "My Stack" },
 ];
 
 const isExternalHref = (href: string) => /^https?:\/\//i.test(href);
@@ -192,21 +198,11 @@ export function Layout({ children }: { children: ReactNode }) {
                         </a>
                       )}
                     </div>
-                    {/* The drawer's foot mirrors the desktop bar's ranking:
-                        secondary button, then primary CTA. My Stack is a button
-                        here rather than a plain row for the same reason it is
-                        one on desktop, so the two do not describe it
-                        differently. Full width because everything in this
-                        drawer is, and the desktop button's px-4 would read as a
-                        stray tab in a vertical stack. */}
+                    {/* The drawer's foot carries the one primary CTA, as the
+                        desktop bar does. My Stack is an ordinary row above,
+                        after AI News, because it is in navItems: a place, like
+                        the other rows, not a second button down here. */}
                     <div className="px-6 pb-8 flex flex-col gap-3">
-                      <Link
-                        to="/my-stack"
-                        onClick={() => setMobileOpen(false)}
-                        className="nav-stack-btn block w-full text-center font-body text-base font-medium rounded-full py-3"
-                      >
-                        My Stack
-                      </Link>
                       <a
                         href={WORK_WITH_ME_HREF}
                         {...(isExternalHref(WORK_WITH_ME_HREF)
@@ -256,7 +252,7 @@ export function Layout({ children }: { children: ReactNode }) {
                   })}
                 </div>
 
-                {/* CTA cluster — secondary text link, secondary button, primary pill */}
+                {/* CTA cluster: secondary text link, divider, primary pill */}
                 <div className="flex items-center gap-5">
                   <div className="flex items-center gap-5">
                     {/* "Read the Substack →" is deliberately absent from the
@@ -276,7 +272,13 @@ export function Layout({ children }: { children: ReactNode }) {
 
                         Nothing became unreachable: the Substack is in the
                         footer on every route and linked in prose on
-                        /policy-template. */}
+                        /policy-template.
+
+                        Since 13 Sep the My Stack button is gone and My Stack is
+                        the last tab, which leaves 195px of slack at 1040px, so
+                        the width argument above no longer forces this link out.
+                        Whether it returns is Jasmin's call; until she makes it,
+                        the 4 Sep ruling stands. */}
                     <Link
                       to="/policy-template"
                       className={`font-body text-sm font-medium whitespace-nowrap transition-colors text-primary-foreground/70 hover:text-primary-foreground`}
@@ -284,17 +286,6 @@ export function Layout({ children }: { children: ReactNode }) {
                       Get the template →
                     </Link>
                   </div>
-                  {/* Secondary button. Colour, border and the reasoning behind
-                      both live in index.css under .nav-stack-btn. Size is one
-                      step down from "Work with me" (px-4 py-1.5 against px-5
-                      py-2) and the weight is medium against semibold, so the
-                      ranking survives even where colour does not carry it. */}
-                  <Link
-                    to="/my-stack"
-                    className="nav-stack-btn font-body text-sm font-medium px-4 py-1.5 rounded-full whitespace-nowrap"
-                  >
-                    My Stack
-                  </Link>
                   <span aria-hidden="true" className="w-px h-5 bg-white/15" />
                   <a
                     href={WORK_WITH_ME_HREF}
