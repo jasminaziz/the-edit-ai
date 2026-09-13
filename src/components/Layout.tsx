@@ -36,8 +36,10 @@ const navItems = [
   { to: hubItems[0].to, label: HUB_LABEL, hub: true },
 ];
 
+// Exact, or a path beneath it after a slash. A bare startsWith would put a
+// future route such as /tools-archive under the Tools tab without complaint.
 const onRoute = (pathname: string, to: string) =>
-  to === "/" ? pathname === "/" : pathname.startsWith(to);
+  to === "/" ? pathname === "/" : pathname === to || pathname.startsWith(to + "/");
 
 const isExternalHref = (href: string) => /^https?:\/\//i.test(href);
 const CONTACT_EMAIL = "hello@jasminaziz.co.uk";
