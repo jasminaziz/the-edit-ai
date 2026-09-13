@@ -1139,10 +1139,42 @@ rediscovered as accidents.
   nothing was lost.
 
 - **The DragHint points down on mobile and LEFT on desktop.** Not a style
-  choice. On desktop the pile ends at x=1143 at 1280 wide and the hint sits
-  beyond it in the strip right of the period, so a down arrow pointed into
-  empty margin. It is anchored 64px off the right edge, verified at 1280, 1440
-  and 1920, because the clamp it replaced left it 11px from the edge.
+  choice. On desktop the pile ends before the strip right of the period, where
+  the hint sits, so a down arrow pointed into empty margin. It is anchored 64px
+  off the right edge, because the clamp it replaced left it 11px from the edge,
+  and **`clamp(80px, 7.7vw, 100px)` above the hero floor since 13 Sep 2026**.
+  The cap was 130px, which at 1920 put the arrow above a pile only about 115px
+  tall, pointing at nothing. Re-measured 13 Sep: the arrow's line crosses pills
+  at 1280, 1440, 1680, 1920 and 2560 wide. **Verify the relationship, not the
+  position**: count pills on the arrow's line, never just that the hint is on
+  screen.
+
+- **The desktop hero is as tall as its content, not full-screen. Ruled 13 Sep
+  2026** (site map build, step 4b, from a rendered board). From `sm` up the
+  section is `sm:min-h-0` with 64px (`sm:pb-16`) kept under the type, and the
+  wordmark is capped by screen height as well as width: "The" at
+  `clamp(110px, min(28vw, 36vh), 420px)`, "Edit." at
+  `clamp(160px, min(38vw, 49vh), 560px)`. Full height had put the wordmark
+  alone in the first screen and the sector sentence below the fold on every
+  desktop. Measured on cold loads, sector lines in view (was 0 everywhere):
+  1024x768 3 of 7, 1280x800 3 of 5, 1440x900 5 of 5, 1920x1080 5 of 5; the
+  wordmark is 81% of its old size on laptops, 93% at 1920.
+
+  **The full stop is not protected from the pills, by ruling.** A first board
+  capped harder and put the pills over it at 1280 and 1440 (61% and 70%); no
+  sizing clears it reliably, because **the pile settles differently from run to
+  run**, even in headless Chrome; and the full-height hero already covered it
+  partly at 1024. At 1280 it is about half covered now. Jasmin chose this over
+  an invisible matter-js disc at the full stop, which would have guaranteed it
+  at the cost of a physics change. Do not add the disc without her.
+
+  **Portrait phones are untouched and measured so**: the vh terms only bind
+  when the screen is less than about 0.78 times as tall as it is wide, and
+  360x780 and 390x844 measure identical to the full-height version (hero 500px,
+  type on its floors, same pills). Landscape phones take the desktop sizing and
+  now fit the wordmark to the screen. From 640 to 1023, chrome is mobile, so the
+  phone-style hint sits 200px above the floor and can float over the lower
+  letters (the "d" at 1023x768); that was equally true before step 4b.
 
 - **The mobile hero is `min-h-[500px]` flat, and the wordmark sits at the top.**
   Shortening the hero is the only thing that moves the settled pills, because
@@ -1165,9 +1197,11 @@ rediscovered as accidents.
   **Centring the wordmark was tried and rejected** on 1 Sep. It closed the gap
   below by opening an identical one above. Do not reach for it again.
 
-  The DragHint lays out **inline on mobile** and stacked on desktop, at a flat
-  210px from the hero floor. Stacked it is 31px tall and the gap it lives in is
-  29 to 38, so it did not fit. Desktop is untouched at 1280.
+  On mobile the DragHint is **stacked** (label over arrow) at a flat **200px**
+  from the hero floor, per `DragHint.tsx`. Corrected 13 Sep 2026: this line said
+  inline at 210px, which was the state for one afternoon on 1 Sep before it went
+  back to a column with a tighter line-height and came down 10px. The code
+  comments carry the clearances.
 
   **Never measure this hero in a hidden pane.** matter-js runs on
   `requestAnimationFrame`, which does not fire when the pane is hidden, so every
