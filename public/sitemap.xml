@@ -33,10 +33,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://theeditai.co.uk/submit</loc>
-    <priority>0.4</priority>
-  </url>
-  <url>
     <loc>https://theeditai.co.uk/privacy-policy</loc>
     <priority>0.1</priority>
   </url>

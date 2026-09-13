@@ -1338,6 +1338,11 @@ Done 2026-08-28 (three commits, both code jobs ruled and copy-free):
   against a `path=` in `App.tsx` in both directions; the only routes absent are
   the three redirects and the catch-all. No `lastmod` or `changefreq`: a
   hand-maintained date field on eleven routes goes stale and then lies.
+  **Since then:** `/radar` was added on 1 Sep, and `/submit` came out on 13 Sep
+  on Jasmin's ruling, because nothing on the site links to it and the sitemap
+  was inviting search engines to a page the site itself does not. The route
+  stays, so old links still work. Eleven URLs again; the routes absent are now
+  the three redirects, the catch-all and `/submit`.
 - **The pre-launch surface audit committed** (`2122b6e`). Two findings the
   relaunch gate needs: the legal pages describe the Supabase capture path
   removed on 22 August and claim session cookies that do not exist, while GA4
