@@ -1,5 +1,4 @@
 import { ReactNode, useEffect, useId, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 
 interface CobaltZoneProps {
   heading: string;
@@ -31,16 +30,17 @@ interface CobaltZoneProps {
    */
   helpBubble?: { question: string; answer: string };
   /**
-   * The checks line, for pages whose content has not been through the checks.
-   * Ruled 13 Sep 2026 (build-plan.md, ruling 2) for /learning, /design-kit,
-   * /ai-news and /my-stack. /radar says the same thing in its own words and
-   * does not pass this.
+   * Set by the four How I work pages, which render under the section banner
+   * in Layout.tsx. The banner already gives the top of the page its space, so
+   * the header's own top padding tightens rather than leaving a dead gap
+   * between banner and heading. Ruled 13 Sep 2026.
    *
-   * A flag rather than a string prop so the approved sentence lives in one
-   * place and the four pages cannot drift apart. It is a claim that lives on
-   * four surfaces, so it is also listed in the private claims register.
+   * The checks line used to be rendered here, behind a checksLine flag on the
+   * same four pages. It moved into the banner the same day, on Jasmin's
+   * ruling, because under the heading it read as page copy rather than a fact
+   * about the whole section.
    */
-  checksLine?: boolean;
+  inHub?: boolean;
 }
 
 /**
@@ -136,7 +136,7 @@ function HelpBubble({
   );
 }
 
-export function CobaltZone({ heading, subheading, bodyText, illustration, rightBadge, twoLineHeading, helpBubble, checksLine }: CobaltZoneProps) {
+export function CobaltZone({ heading, subheading, bodyText, illustration, rightBadge, twoLineHeading, helpBubble, inHub }: CobaltZoneProps) {
   const badgeText = typeof rightBadge === "string" ? rightBadge : rightBadge?.text;
   const badgeUrl = typeof rightBadge === "string" ? undefined : rightBadge?.url;
 
@@ -186,7 +186,10 @@ export function CobaltZone({ heading, subheading, bodyText, illustration, rightB
       // it are the ones passing an illustration or the rotating rightBadge,
       // and no page passes those alongside a bubble.
       className={`relative w-full -mt-14 sm:-mt-16 ${helpBubble ? "" : "overflow-hidden"}`}
-      style={{ backgroundColor: "#2D35C9", padding: "clamp(72px, 10vw, 96px) clamp(20px, 5vw, 48px) clamp(32px, 5vw, 48px)", paddingTop: "calc(clamp(72px, 10vw, 96px) + 4rem)" }}
+      // The + 4rem pays back the -mt that pulls the section up under the
+      // header. Under the How I work banner the visible top padding drops to
+      // 28 to 40px, since the banner above already separates the page.
+      style={{ backgroundColor: "#2D35C9", padding: "clamp(72px, 10vw, 96px) clamp(20px, 5vw, 48px) clamp(32px, 5vw, 48px)", paddingTop: inHub ? "calc(clamp(28px, 4vw, 40px) + 4rem)" : "calc(clamp(72px, 10vw, 96px) + 4rem)" }}
     >
       <div className="max-w-[1280px] mx-auto relative">
         {/* Desktop badge — top right, vertically centered against the heading */}
@@ -285,22 +288,9 @@ export function CobaltZone({ heading, subheading, bodyText, illustration, rightB
           )}
           {bodyText && (
             // Cream at 85%, 6.24:1 on cobalt. It was 60%, 3.86:1, below AA
-            // for 16px text, until 13 Sep 2026, when Jasmin ruled it up to match
-            // the checks line beneath it.
+            // for 16px text, until 13 Sep 2026, when Jasmin ruled it up.
             <p className="font-body text-[16px] mt-4 max-w-3xl" style={{ color: "rgba(250,248,244,0.85)" }}>
               {bodyText}
-            </p>
-          )}
-          {/* Approved copy, verbatim. Cream at 85%, 6.24:1, the same as the
-              bodyText above it. The link is the prose rule from index.css,
-              which inherits the text colour and adds the lime underline. */}
-          {checksLine && (
-            <p className="font-body text-[16px] mt-4 max-w-3xl" style={{ color: "rgba(250,248,244,0.85)" }}>
-              This page hasn't been through the checks. Everything on{" "}
-              <Link to="/tools" className="lime-link">
-                Tools
-              </Link>{" "}
-              has.
             </p>
           )}
           </div>

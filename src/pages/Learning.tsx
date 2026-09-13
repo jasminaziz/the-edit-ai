@@ -3,6 +3,7 @@ import { fetchLearning, type LearningItem } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
+import { hubSubheading } from "@/lib/links";
 import { RevealGroup, RevealItem } from "@/components/Reveal";
 import { SEO } from "@/components/SEO";
 
@@ -39,8 +40,8 @@ const Learning = () => {
       />
       <CobaltZone
         heading="Learning"
-        subheading="How I'm staying sharp, and where to start if you're new to all this."
-        checksLine
+        subheading={hubSubheading("/learning")}
+        inHub
       />
 
       <section className="bg-background py-10 px-6 sm:px-12">

@@ -4,6 +4,7 @@ import { fetchWhatsNew, type WhatsNew } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
+import { hubSubheading } from "@/lib/links";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { LeadCard, GridCard, monthYearKey, parseDate } from "@/components/WhatsNewCard";
 import { SEO } from "@/components/SEO";
@@ -180,9 +181,9 @@ const WhatsNewPage = () => {
       <CobaltZone
         heading=""
         twoLineHeading={{ line1: "AI", line2: "News", inline: true }}
-        subheading="Model updates, releases, and AI gossip."
+        subheading={hubSubheading("/ai-news")}
         rightBadge={{ text: "Source: The Rundown.ai", url: "https://www.therundown.ai" }}
-        checksLine
+        inHub
       />
 
       <section className="bg-background py-10 px-6 sm:px-12">

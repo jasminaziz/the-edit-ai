@@ -3,6 +3,7 @@ import { fetchDesignKit, type DesignKitItem } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
+import { hubSubheading } from "@/lib/links";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { SEO } from "@/components/SEO";
 
@@ -364,9 +365,9 @@ const DesignKitPage = () => {
       />
       <CobaltZone
         heading="Design Workflow"
-        subheading="From blank page to build-ready."
+        subheading={hubSubheading("/design-kit")}
         bodyText="The tools I use to keep taste in the process, in the order you'd actually use them. For teams making their own things with AI and wanting them to still look like your organisation."
-        checksLine
+        inHub
       />
 
       <section className="bg-background px-0" style={{ paddingTop: 0, paddingBottom: 40 }}>

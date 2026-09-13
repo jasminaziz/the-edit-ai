@@ -4,7 +4,7 @@ import { Menu, X, ArrowUp } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { FooterEmailCapture } from "@/components/FooterEmailCapture";
-import { WORK_WITH_ME_HREF, SUBSTACK_LIVE, SUBSTACK_URL, LINKEDIN_URL } from "@/lib/links";
+import { WORK_WITH_ME_HREF, SUBSTACK_LIVE, SUBSTACK_URL, LINKEDIN_URL, HUB_PAGES } from "@/lib/links";
 
 /**
  * The bar: three tabs and the "How I work" hub. Ruled 13 Sep 2026 (site map
@@ -12,20 +12,15 @@ import { WORK_WITH_ME_HREF, SUBSTACK_LIVE, SUBSTACK_URL, LINKEDIN_URL } from "@/
  *
  * The line the bar draws is checked against not checked. Tools is the checked
  * directory; the hub holds the pages that come from Jasmin rather than from
- * the checks, and each of them says so in its own header (CobaltZone's
- * checksLine). Tools stays second, which was the one goal of the 4 Sep and
- * morning rulings. Template became a tab, so "Get the template →" left the
- * bar and the drawer.
+ * the checks, and the section banner on those pages says so. Tools stays
+ * second, which was the one goal of the 4 Sep and morning rulings. Template
+ * became a tab, so "Get the template →" left the bar and the drawer.
  *
  * The hub tab links to My Stack, its first page, so no route is new and no URL
  * redirects. /radar stays off the bar; its way in is the signpost on /tools.
  */
-const hubItems = [
-  { to: "/my-stack", label: "My Stack" },
-  { to: "/design-kit", label: "Design" },
-  { to: "/learning", label: "Learning" },
-  { to: "/ai-news", label: "AI News" },
-];
+// The four pages, their labels and their subheadings: one source, in links.ts.
+const hubItems = HUB_PAGES;
 
 const HUB_LABEL = "How I work";
 
@@ -75,7 +70,7 @@ export function Layout({ children }: { children: ReactNode }) {
   }, []);
 
   // The hub tab is active on all four hub pages, not only on the page it links
-  // to, so the pill sits on "How I work" wherever the second row is showing.
+  // to, so the pill sits on "How I work" wherever the section banner shows.
   const isHubRoute = hubItems.some((h) => onRoute(location.pathname, h.to));
   const isActive = (item: (typeof navItems)[number]) =>
     item.hub ? isHubRoute : onRoute(location.pathname, item.to);
@@ -353,33 +348,66 @@ export function Layout({ children }: { children: ReactNode }) {
           </nav>
         </div>
 
-        {/* The second row, "How I work", on the four hub pages only, so never
-            on the homepage and its periwinkle blend. One row for phone and
-            desktop: it scrolls sideways when it runs out of width, the same
-            way the /tools job rail does, so there is no phone variant to drift.
+        {/* The How I work section banner, on the four hub pages only, so never
+            on the homepage and its periwinkle blend. Ruled 13 Sep 2026 (option
+            2 from a rendered board, without numbers so it does not read as a
+            numbered system). It replaced a thin 13px text row that read as a
+            breadcrumb rather than arriving somewhere.
 
-            Labels are cream at 75%, 5.18:1 on cobalt. The current page is full
-            cream with a 2px lime underline, which is how the board showed it.
-            The padding matches the bar's gutters and its item padding, so the
-            first label sits under the first tab. */}
+            A title, then the four pages as choices: each tile carries its
+            page's own subheading from links.ts, except the page you are on,
+            which is the filled tile and shows only its name, because its
+            subheading is already the h2 directly below.
+
+            The checks line lives here, as a fact about the section rather than
+            a third line of page copy under the heading. It shows from lg (the
+            1024 chrome breakpoint) and not on phones or tablets, on Jasmin's
+            ruling; below lg the tiles are names only, two by two.
+
+            Contrast on cobalt: title and names cream (8.03:1), descriptions and
+            the checks line cream at 75% and 85% (5.18:1 and 6.24:1), the
+            current tile cobalt on cream (8.03:1). */}
         {isHubRoute && (
-          <nav aria-label={HUB_LABEL} className="border-t border-white/10">
-            <div className="max-w-[1280px] mx-auto px-4 sm:px-12 lg:px-8 xl:px-12">
-              <ul className="flex items-center gap-1 sm:gap-2 h-10 overflow-x-auto no-scrollbar m-0 p-0 list-none">
+          <nav aria-labelledby="hub-banner-title" className="border-t border-[rgba(250,248,244,0.12)]">
+            <div className="max-w-[1280px] mx-auto px-4 sm:px-12 lg:px-8 xl:px-12 pt-[18px] pb-5 lg:pt-7 lg:pb-8">
+              <div className="mb-3.5 lg:mb-5 lg:flex lg:items-end lg:justify-between lg:gap-8">
+                <p id="hub-banner-title" className="font-heading font-bold m-0 leading-none text-[30px] lg:text-[44px] text-[#FAF8F4]">
+                  {HUB_LABEL}
+                </p>
+                <p className="hidden lg:block font-body m-0 max-w-[320px] text-right text-[14px] leading-[1.4] text-[rgba(250,248,244,0.85)]">
+                  This page hasn't been through the checks. Everything on{" "}
+                  <Link to="/tools" className="lime-link">
+                    Tools
+                  </Link>{" "}
+                  has.
+                </p>
+              </div>
+              <ul className="m-0 p-0 list-none grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-3.5">
                 {hubItems.map((item) => {
                   const current = onRoute(location.pathname, item.to);
                   return (
-                    <li key={item.to} className="shrink-0">
+                    <li key={item.to}>
                       <Link
                         to={item.to}
                         aria-current={current ? "page" : undefined}
-                        className={`inline-block font-body text-[13px] font-medium px-3 xl:px-4 py-1.5 whitespace-nowrap underline-offset-[6px] decoration-2 transition-colors duration-150 ${
+                        className={`block h-full no-underline rounded-[14px] px-3.5 py-3 lg:px-5 lg:pt-[18px] lg:pb-5 transition-colors duration-150 ${
                           current
-                            ? "text-[#FAF8F4] underline decoration-[#C8F04A]"
-                            : "text-[rgba(250,248,244,0.75)] no-underline hover:text-[#FAF8F4] focus-visible:text-[#FAF8F4]"
+                            ? "bg-[#FAF8F4]"
+                            : "shadow-[inset_0_0_0_1px_rgba(250,248,244,0.22)] hover:bg-[rgba(250,248,244,0.08)] focus-visible:bg-[rgba(250,248,244,0.08)]"
                         }`}
                       >
-                        {item.label}
+                        <span
+                          className={`block font-heading font-bold leading-[1.1] text-[17px] lg:text-[22px] ${
+                            current ? "text-[#2D35C9]" : "text-[#FAF8F4]"
+                          }`}
+                        >
+                          {item.label}
+                        </span>
+                        {!current && (
+                          <span className="hidden lg:block mt-1.5 font-body text-[14px] leading-[1.4] text-[rgba(250,248,244,0.75)]">
+                            {item.subheading}
+                          </span>
+                        )}
                       </Link>
                     </li>
                   );

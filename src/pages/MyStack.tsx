@@ -3,6 +3,7 @@ import { fetchMyStack, type MyStackItem } from "@/lib/sheets";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorState, EmptyState } from "@/components/ErrorState";
 import { CobaltZone } from "@/components/CobaltZone";
+import { hubSubheading } from "@/lib/links";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { AnimatePresence, motion } from "framer-motion";
 import { SEO } from "@/components/SEO";
@@ -346,9 +347,9 @@ const MyStack = () => {
       />
       <CobaltZone
         heading="My Stack"
-        subheading="What I'm actually using and why."
+        subheading={hubSubheading("/my-stack")}
         bodyText="These are the tools I run every day, including the ones that build this site."
-        checksLine
+        inHub
       />
 
       <section className="bg-background py-10 px-6 sm:px-12">
