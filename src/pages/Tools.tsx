@@ -91,10 +91,12 @@ const Tools = () => {
   }, [deepLinkedName]);
 
   /**
-   * `?job=` deep link. Selects that job's chip, so a link from elsewhere (the
-   * homepage job chips, in the site map build) lands on the directory already
-   * filtered to the reader's job. Matching lives in jobFromParam; an unknown
-   * value is null and the page loads with ALL.
+   * `?job=` deep link. Selects that job's chip, so a link from a post, the
+   * Substack or an email lands on the directory already filtered to the
+   * reader's job. Built for homepage job chips that were then dropped with the
+   * homepage rebuild on 13 Sep 2026, so nothing on the site links to it yet.
+   * Matching lives in jobFromParam; an unknown value is null and the page
+   * loads with ALL.
    *
    * Setting the chip is not enough below lg, where the rail is a sideways
    * scroller that overflows by 796px at 360 wide: Translation, the last
