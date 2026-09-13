@@ -79,7 +79,33 @@ implementation, this file wins.
 
 `reports/2026-08-28-positioning-statement.md`, signed off 28 August 2026, is
 canonical on what the site is for and who it speaks to, and outranks the
-audit's premise paragraph where they conflict. It settles the claim as **been
+audit's premise paragraph where they conflict.
+
+**Its "Who it's for" section was rewritten 13 September 2026 and is the
+canonical reader profile. There is no separate profile document and one must
+not be created**: two canonical files describing one reader drift apart, and
+this project has paid for that twice. What it settles: AI confidence and
+sector are separate measures, so the 29 August sector lock never settled who
+the reader is. Narrow on sector and job, stay wide on confidence, and the
+first screen opens at the least confident reader's level. The primary reader
+is a comms officer or manager in a one-to-three-person function; the
+secondary readers are the head of comms or director (the board moment, and
+the buyer), the confident practitioner (`/my-stack`, `/design-kit`,
+`/learning`) and the board member or DPO who only ever reads the forwarded
+template. The forwardables join the officer to the buyer. **The whole profile
+is assumption, marked as such**, because GA4 went on 28 August and the site
+relaunched on 30 August: Search Console, LinkedIn engagement and the hello@
+enquiries get read together at the end of October 2026, and that read also
+fires the 29 August `/policy-template` title tripwire.
+
+`reports/2026-09-13-audience-profile-consequences.md` lists the eight
+surfaces the profile calls into question. **It proposes no strings and
+authors no copy**, by design. Two items there are live copy questions on
+approved pack copy: "whether there's a charity price" at `AboutPanel.tsx:119`
+(the last live instance of finding 5 of the 29 August review) and the absence
+of any audience naming on `/my-stack`, `/design-kit`, `/learning`, `/ai-news`
+and the legal pages since the footer string changed in the 31 August board
+swap. Neither is a defect until Jasmin rules it one. It settles the claim as **been
 through the checks**, never "passed", which is what lets the published failures
 stay honest, and it carries the six-question test every surface is read
 against. `reports/2026-08-28-surface-audit.md` holds one committed verdict per
