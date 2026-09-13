@@ -222,10 +222,20 @@ export function Layout({ children }: { children: ReactNode }) {
                           </Link>
                         );
                       })}
-                      <div role="group" aria-labelledby="drawer-hub-label" className="mt-3 flex flex-col gap-1">
+                      {/* The How I work pages as their own panel, ruled 13 Sep
+                          2026 (option B from a rendered board). The heading was
+                          an 11px tracked-caps label sitting 12px under Template,
+                          so the two groups ran together; it is now a real
+                          heading in the display face, in a lighter panel set
+                          24px below the main three. */}
+                      <div
+                        role="group"
+                        aria-labelledby="drawer-hub-label"
+                        className="mt-6 flex flex-col gap-1 rounded-2xl bg-[rgba(250,248,244,0.08)] pt-3.5 px-1.5 pb-1.5"
+                      >
                         <p
                           id="drawer-hub-label"
-                          className="font-body text-[11px] font-semibold uppercase tracking-wide px-4 pb-1 m-0 text-white/70"
+                          className="font-heading font-bold text-[20px] leading-tight px-4 pb-1.5 m-0 text-[#FAF8F4]"
                         >
                           {HUB_LABEL}
                         </p>
@@ -240,7 +250,10 @@ export function Layout({ children }: { children: ReactNode }) {
                               className={`font-body text-base font-medium px-4 py-3 rounded-lg transition-colors ${
                                 active
                                   ? "bg-white/20 text-white"
-                                  : "text-white/70 hover:text-white hover:bg-white/10"
+                                  : // 80%, not the 70% of the rows above: on the panel's
+                                    // lighter ground 70% measures 4.39:1, under AA, and
+                                    // 80% measures 5.22:1.
+                                    "text-white/80 hover:text-white hover:bg-white/10"
                               }`}
                             >
                               {item.label}
@@ -254,7 +267,7 @@ export function Layout({ children }: { children: ReactNode }) {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={() => setMobileOpen(false)}
-                          className="mt-3 font-body text-base font-medium px-4 py-3 rounded-lg transition-colors text-white/70 hover:text-white hover:bg-white/10"
+                          className="mt-5 font-body text-base font-medium px-4 py-3 rounded-lg transition-colors text-white/70 hover:text-white hover:bg-white/10"
                         >
                           Read the Substack →
                         </a>
