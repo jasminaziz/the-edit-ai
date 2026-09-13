@@ -3305,3 +3305,43 @@ that would look finished and say nothing, and the Sheets key is missing in that
 environment, so it fails with the reason in the message. That is the guard
 working. An earlier version of it went green and deployed seven hollow pages,
 which is the failure worth not repeating.
+
+## 2026-09-12 to 13 session: icons, share card, and My Stack back in the nav
+
+**Shipped to main and live, verified on production.** `main` and
+`overhaul/sector-axis` level at `5a832f2`.
+
+1. **Favicon kept and redrawn for 16px** (`514ec0c`). Same three lime capsules on
+   cobalt; every edge now on an even unit, so at 16px the gaps stay open. Every
+   raster is drawn from `public/favicon.svg` by `assets-src/render-icons.py`.
+   The old set came from mixed renderers: `favicon-16.png` had fused into one
+   blob and the 32 and 64 had no anti-aliasing. Pruned to three icon links;
+   favicon-16/32/64/180 deleted. The apple-touch-icon is inset to 84%.
+2. **New share card** (`c82f599`), `og-edit-2026-09.png`: cream wordmark and lime
+   full stop on cobalt, "AI tools for charity, cultural and heritage comms." and
+   "Curated by Jasmin Aziz". 40 KB against 474 KB. Width, height and both alt
+   tags added. Ground and copy were Jasmin's choice from rendered LinkedIn feed
+   and phone mocks set beside the consultancy's two cards. `og-image.png`
+   deleted. Every route's served HTML checked for the new tags.
+3. **My Stack is the last nav tab** (`cefa8e0`), superseding item 4 of the
+   4 Sep entry above. The forest button was a place dressed as a call to action:
+   the "Get the template →" arrow pointed into it. Tools stays second. 195px of
+   slack at 1040px. `.nav-stack-btn` deleted.
+4. **Nav pill re-measures after web fonts load** (`573c600`). On a first visit it
+   sat up to 14px off the rightmost tab until a resize. Proven both ways on cold
+   headless loads.
+
+### Next step
+
+1. **Jasmin: run LinkedIn's Post Inspector on `https://theeditai.co.uk/`** to pull
+   the new card and clear LinkedIn's copy of the old one.
+2. **The axis audit is due Monday 14 September**, the first audit-due Monday
+   (2nd Monday). Nothing starts it but pasting the prompt.
+3. **Open, Jasmin's call:** whether "Read the Substack →" returns to the desktop
+   bar, now that the width argument that removed it no longer holds.
+4. **Untracked `reports/2026-09-04-my-stack-button-treatment.md`** is from the
+   parallel session and is now superseded. Commit as history, delete, or leave.
+5. Carried from 4 Sep, unchanged: the Preview-environment Sheets key for
+   `geo/prerender`, then the verdict-visibility decision. A per-route share card
+   waits on that branch too, because every route serves the homepage title to
+   platforms that do not run JS.

@@ -1171,3 +1171,41 @@ Session corrections and rules built up over time. Add entries; do not delete his
   That was worth finding before promising a curl-based proof rather than after.
   Build logs are still readable through the API, which is what made the Chromium
   and Sheets diagnoses possible without ever fetching the site.
+
+## 2026-09-12 to 13: icons, share card, the My Stack tab
+
+- **A favicon that is crisp at 32 can smear at 16, and the cause is arithmetic.**
+  In a 32 viewBox, any edge on an odd unit lands on a half pixel at 16px, so a
+  1px gap anti-aliases to grey and three capsules fuse. Keep every edge on an
+  even unit. Check the true-16px render enlarged with nearest-neighbour, never
+  the SVG at retina size, where the fault is invisible.
+
+- **Draw every raster from one source with one renderer.** The old `.ico` frames
+  and PNGs came from different tools and no two files of the same size matched.
+  `assets-src/render-icons.py` renders each size through Chrome, then each `.ico`
+  frame is diffed against a fresh render of its size. The check that matters is
+  "identical to its own render", not "looks fine".
+
+- **A bundle hash does not compare across environments on a Vite site.** Vite
+  bakes `VITE_` variables into the bundle, and the local Sheets key differs from
+  production's, so a local build and Vercel's build of the same commit never
+  share a hash. Polling production for the local hash timed out while the deploy
+  was already live. Verify a deploy by grepping the live bundle for a string the
+  change introduced, never by hash.
+
+- **`2>/dev/null` hides a missing command as well as noise.** macOS ships no
+  `timeout`, so `timeout 60 chrome ... 2>/dev/null` ran nothing, printed nothing,
+  and the failure surfaced one step later as a missing file. Silence stderr on
+  the tool you know, not on a wrapper you have not confirmed exists.
+
+- **A layout bug that depends on font loading only shows on a cold load.** The
+  nav pill was sized against the fallback font on a first visit; on any warm
+  reload the fonts are cached and it measures perfectly, which is how it
+  survived. Headless Chrome starts with an empty profile, so it reproduces a
+  first visit every run: use it to prove such a fix both ways.
+
+- **Name the kind of element before choosing its style.** The 4 Sep My Stack
+  button was well specified (contrast, border, three-tier ranking) and still
+  wrong, because a destination was dressed as a call to action. The advisory
+  report said twice it had never been rendered. Render a nav change in the real
+  bar at the tightest width before styling it.
