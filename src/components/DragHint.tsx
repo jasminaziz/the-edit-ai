@@ -113,7 +113,12 @@ export function DragHint() {
               // pills. Mobile keeps the down arrow, because there the pile
               // genuinely is underneath.
               right: "64px",
-              bottom: "clamp(80px, 7.7vw, 130px)",
+              // Capped at 100px, not 130, since 13 Sep 2026. The pile is only
+              // about 115px tall on a big monitor, so at 1920 a 130px anchor
+              // put the arrow above it, pointing at nothing (measured, and true
+              // of the full-height hero too). Below about 1300px wide 7.7vw is
+              // already under 100, so nothing changes there.
+              bottom: "clamp(80px, 7.7vw, 100px)",
               transform: "translateY(50%)",
               flexDirection: "row-reverse",
               alignItems: "center",
