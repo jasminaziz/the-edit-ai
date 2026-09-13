@@ -104,7 +104,9 @@ options and trade-offs on screen. Where a ruling departs from the plan report,
 this list wins.
 
 1. **Hub label: "How I work"**, landing on **My Stack**, with `/learning`
-   inside the hub. The label came from the one-off shortlist.
+   inside the hub. The label came from the one-off shortlist. The second row's
+   order, **My Stack, Design, Learning, AI News**, was chosen from the question
+   preview that showed it, and supersedes the board's order.
 2. **The checks line: "This page hasn't been through the checks. Everything on
    Tools has."** (candidate B1 in `reports/copy-proposals-2026-09-13-checks-line.md`).
    My Stack's "The tools directory is the recommended list." comes out, because
