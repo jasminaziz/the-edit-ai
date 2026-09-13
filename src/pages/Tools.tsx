@@ -226,6 +226,10 @@ const Tools = () => {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
           <input
             type="text"
+            // A placeholder is not a label, and vanishes once typing starts,
+            // so the box had no accessible name (gates audit, 13 Sep 2026).
+            // The name is the placeholder's own words; nothing visible changes.
+            aria-label="Search tools"
             placeholder="Search tools..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
