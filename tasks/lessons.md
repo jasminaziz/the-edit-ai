@@ -1210,6 +1210,26 @@ Session corrections and rules built up over time. Add entries; do not delete his
   report said twice it had never been rendered. Render a nav change in the real
   bar at the tightest width before styling it.
 
+- **A question mark does not survive a handover.** The sitemap board labelled
+  `/learning` "the beginner's on-ramp?" as a guess. The Cowork judgement took it as
+  a premise and built its most important finding on it. Live data then showed seven
+  of 26 rows are for builders. Check a claim before it goes on anything another
+  session will judge, or say "unverified" in words. Punctuation does not travel.
+
+- **Check a "missing from the page" claim against the whole render.** I told Jasmin
+  the homepage lacked the template. It carries it, in the footer block on every
+  route. The capture showed it the moment I looked at the full page. The same pass
+  found `/submit` linked from nowhere before the board drew it in the footer.
+
+- **`site-stranger` cannot see The Edit by fetching it.** The site serves an empty
+  shell to anything that does not run JavaScript. Hand it first-viewport PNGs and
+  the rendered text instead.
+
+- **An element screenshot inside a reveal wrapper comes out faded.** Tool cards
+  captured at about 30% opacity. Multiply the ancestors' opacity and refuse to
+  capture below 0.99. Likewise inject a style override before load
+  (`addInitScript`), or a physics layer sized first settles out of view.
+
 ## 2026-09-13 (night): the site map build
 
 - **A hit test can look straight through the thing you are measuring.** Checking

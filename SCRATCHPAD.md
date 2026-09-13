@@ -3346,6 +3346,38 @@ which is the failure worth not repeating.
    waits on that branch too, because every route serves the homepage title to
    platforms that do not run JS.
 
+## 2026-09-13 (evening): reader profile, site map plan, build handed to its own session
+
+### Done
+
+1. **Preview boards of the proposed site map**: site map, homepage at 1280 and 390,
+   nav and hub. Built from real parts on live data. Kept with their HTML and scripts
+   in `.superpowers/site-map-boards/`, which is git-ignored and local to this Mac.
+2. **Reader profile ruled** in Cowork as a rewrite of the positioning statement's
+   "Who it's for" (`72b32f6`), with a consequences list. Jasmin's judgement of the
+   boards is "build it", seven things first (`2a23d09`).
+3. **The code plan for sign-off** (`a2fb9ab`), `reports/2026-09-13-sitemap-build-plan.md`.
+   Two live-data facts changed the brief. Seven of 26 `/learning` rows are for people
+   building software by their own titles. Appeals & fundraising has two complete
+   tools, one of them Red.
+4. **The build is opened** on `design/site-map` (`f38f02a`, pushed), in the worktree
+   `~/Developer/the-edit-ai-site-map`. Its contract is `build-plan.md`, on that branch
+   only. The gate is green there, 96 tests.
+5. **Housekeeping.** Stale git locks and 29 orphaned temp objects removed; gc and fsck
+   clean. `.claude/settings.local.json` added to the repo `.gitignore` (`1fcc3dd`).
+   The 4 Sep My Stack button ruling committed as superseded (`95720b6`), which closes
+   item 4 of the previous entry.
+
+### Next step
+
+1. **Jasmin: rule on the seven items** in the Rulings list of `build-plan.md`.
+2. **Start the build session in `~/Developer/the-edit-ai-site-map`.** Step 0 (the
+   stranger baseline) and step 2 (`?job=`) need no ruling.
+3. **main trails `overhaul/sector-axis`** by doc commits that touch no served file.
+   Level it only on Jasmin's say-so.
+4. Carried: Post Inspector on the homepage; the axis audit due Monday 14 September;
+   whether "Read the Substack →" returns to the desktop bar; the Preview Sheets key.
+
 web-build-guide stale: gates run on design/site-map (reports/2026-09-13-gates-site-map.md) confirms the 14 Aug 2026 §7/§8 theeditai.co.uk panel is out of date on Gate 1 (heading skips, duplicate h1, Subscribe/Footer labels all fixed; only the Tools/Radar search-input labels persist) and Gate 3 (307 is now a permanent 308, /toolkit canonical and homepage-OG-on-every-share both fixed, sitemap /submit removal verified); Gate 2 and Gate 4 unchanged, still open on missing recorded evidence rather than new code.
 
 ## Where we got to: 13 September 2026 (night), site map build merged
