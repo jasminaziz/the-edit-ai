@@ -550,21 +550,43 @@ Routes: `/`, `/tools`, `/radar`, `/my-stack`, `/design-kit`, `/learning`,
 `/ai-news`, `/policy-template`, `/submit`, `/privacy-policy`,
 `/terms-of-service`, `/cookie-policy`.
 
-**The nav is six items: Home, Tools, Design, Learning, AI News, My Stack.
-Ruled 2026-09-13.** My Stack is the **last tab**, and the position is the
-decision. The bar reads the six tabs, then "Get the template →", the divider,
-then "Work with me"; the phone drawer lists the same six rows, then the
-template and Substack links, with Work with me alone at its foot.
+**The nav is three tabs and a hub: Home, Tools, Template, How I work. Ruled
+2026-09-13** (site map build, step 3, rulings 1 and 7 in the branch's
+`build-plan.md`), superseding the six-tab bar ruled the same morning. The bar
+reads the four tabs, then "Work with me". **The line the bar draws is checked
+against not checked**: Tools is the checked directory, and the hub holds the
+four pages that come from Jasmin rather than the checks, each of which says so
+in its own header (`CobaltZone`'s `checksLine`).
 
-History, so it is not rediscovered: on 2026-09-04 My Stack left the list (it
-had been second) and became a forest-green button in the CTA cluster. That
-move had one goal, Tools second, and last-tab keeps it. The button was wrong
-in kind: a place dressed as a call to action and ranked between the two real
-ones, so the "Get the template →" arrow pointed straight into it and on the
-homepage it read as one of the forest hero pills. **Do not bring the button
-back, and do not move My Stack up the list.** Measured at 1040px: 195px
-between the My Stack tab and the template link, rightmost element at 1008,
-nothing clipped.
+- **The hub tab links to `/my-stack`** and is active on all four hub pages,
+  so the sliding pill sits on it wherever the second row shows. No route is
+  new and no URL redirects.
+- **The second row**, a `<nav aria-label="How I work">` on the same ground,
+  renders on `/my-stack`, `/design-kit`, `/learning` and `/ai-news` only, in
+  that order, with the existing labels My Stack, Design, Learning, AI News.
+  Current page cream with a 2px lime underline; the rest cream at 75%,
+  5.18:1 on cobalt. **One row serves phone and desktop** and scrolls sideways
+  if it runs short of width; it fits without scrolling at 375. It never
+  renders on the homepage, so the periwinkle blend is untouched.
+- **The drawer** lists Home, Tools, Template, then the four hub pages under a
+  small "How I work" label (a `role="group"`), then "Read the Substack →",
+  with Work with me alone at its foot.
+- **Landmarks**: the outer element is a `<header>`; the bar is
+  `<nav aria-label="Main">`, and the drawer, which renders in a portal, carries
+  its own "Main". Links set `aria-current` by hand, since `NavLink` could only
+  mark the hub tab on the one page it links to: "page" on the current page,
+  and on the hub tab "true" on the three hub pages it does not link to.
+- **Template is a tab, so "Get the template →" left the bar and the drawer**,
+  and the divider that separated it from Work with me went with it.
+
+History, so it is not rediscovered. On 2026-09-04 My Stack became a forest
+button in the CTA cluster to put Tools second; on the morning of 2026-09-13 it
+became the last of six tabs, because the button was a place dressed as a call
+to action. Both moves had one goal, Tools second, and the hub keeps it. **Do not
+bring the button back.** The morning's "do not move My Stack up the list" is
+spent: My Stack now leads the hub row. Measured at 1040px on 2026-09-13:
+**514px** of slack between the last tab and Work with me, rightmost element at
+1008, nothing clipped.
 
 **"Read the Substack →" is gone from the DESKTOP bar and deliberately still in
 the mobile drawer.** The asymmetry is the decision, not an oversight: do not
@@ -577,21 +599,26 @@ viewport, nothing clipped. The drawer is a vertical list with no width pressure
 at all, so the same argument does not apply there. Nothing became unreachable:
 the Substack is in the footer on every route and linked in prose on
 `/policy-template`. **Since 2026-09-13 that width argument no longer holds**:
-with the button gone there is 195px of slack at 1040px. The link stays out of
-the desktop bar until Jasmin rules otherwise; it is her call, not a gap.
+the hub bar leaves 514px of slack at 1040px. The link stays out of the desktop
+bar until Jasmin rules otherwise; it is her call, not a gap.
 
 **The sliding active pill re-measures once web fonts load** (2026-09-13). On a
 first visit it was measured against the fallback font and sat up to 14px left
 of the rightmost tab, label running off its edge, until a resize. Proven both
 ways on cold headless loads. Measuring it on a warm reload proves nothing,
-because the fonts are cached and the bug does not appear.
+because the fonts are cached and the bug does not appear. Re-checked with the
+hub bar on 2026-09-13: cold loads at 1040 and 1280 on eleven routes put the pill
+within 1px of the right tab, and hide it on `/radar`, `/submit`, the legal
+pages and the 404, where no tab applies.
 
 **`/radar` is deliberately NOT in the main nav.** Added 1 Sep 2026 on Jasmin's
 28 August ruling that the radar gets its own tab, then kept out of the nav on
 her ruling of 1 September that it should link off `/tools` instead. It is a
-secondary view of the same directory, not a seventh destination, and a seventh
-nav item measured scrollWidth 1046 against clientWidth 1024 and silently
-clipped "Work with me" — the same failure this file records for 768-1086px. The
+secondary view of the same directory, not a destination of its own. On the
+six-tab bar of the time, a seventh item measured scrollWidth 1046 against
+clientWidth 1024 and silently clipped "Work with me", the same failure this
+file records for 768-1086px. The hub bar has the room now; the ruling is about
+what `/radar` is, not about width, and it stands. The
 signpost on `/tools` is therefore the only route in, which makes it
 load-bearing rather than decorative. It renders above the grid from `sm` up and
 below the grid beneath it, never both, because on a phone it took the first
@@ -674,14 +701,15 @@ was going to link, it contradicted a positioning built on giving the sector the
 answer straight, and it filtered for the incautious reader when the careful one
 is the buyer. Optimised for trust and reach over subscriber count.
 
-Live in code, re-counted 2026-08-31: **five** links carry "Get the template →",
-not four. `Layout.tsx:199` (mobile drawer), `Layout.tsx:298` (desktop bar),
-`FooterEmailCapture.tsx:61`, `Tools.tsx:361` and `PolicyTemplate.tsx:169`, which
-is the one that downloads `/AI-Use-Policy-Template.docx` directly. **Keep all
-five labels identical.** The `Tools.tsx` one was missing from this list; the
-labels themselves were already consistent, so the rule held and only the
-inventory was short. `ToolCard.tsx:289` is a sixth link to the same route,
-gated to Red, and carries a deliberately different sentence.
+Live in code, re-counted 2026-09-13: **three** links carry "Get the template
+→": `FooterEmailCapture.tsx:61` (every route), `Tools.tsx:420` (the template
+card in the grid) and `PolicyTemplate.tsx:169`, which is the one that downloads
+`/AI-Use-Policy-Template.docx` directly. **Keep all three labels identical.**
+There were five until the hub bar of 2026-09-13 made Template a tab and took the
+two chrome copies out (`Layout.tsx`'s drawer and desktop bar); the nav's
+"Template" tab is a place, not this CTA, so it is not part of the set.
+`ToolCard.tsx:289` is a further link to the same route, gated to Red, and
+carries a deliberately different sentence.
 
 **There is no PDF at `/AI-Use-Policy-Template.pdf`.** An earlier version of this
 block said it "sits at" that URL, unlinked. It does not: the file was removed
@@ -863,9 +891,11 @@ it still reads as one sentence to a screen reader.
 governs *chrome* (nav, homepage counter, hero pills, drag hint) at **1024**;
 Tailwind's `sm:` governs *content layout* at **640**. No element should consult
 both. 1024 is Tailwind's `lg`, so JS and CSS agree wherever they meet. The
-desktop nav needs 1087px to lay out and every child is `whitespace-nowrap`, so
+six-tab nav needed 1087px to lay out and every child is `whitespace-nowrap`, so
 the nav gutter and item padding tighten at `lg` and return at `xl`; 1280 and
-above renders as it always did. Before 2026-08-29 the hook was 768, which put
+above renders as it always did. The hub bar of 2026-09-13 needs about 526px at
+the `lg` gutters (measured), so that tightening no longer does any work; it was
+left in place rather than removed inside the nav rebuild. Before 2026-08-29 the hook was 768, which put
 "Work with me" entirely off-screen from 768 to about 1086px, silently, because
 `Layout.tsx:70`'s `overflow-hidden` clipped it rather than producing a
 scrollbar.
@@ -917,8 +947,9 @@ reachability from `main.tsx`, not by hand:
   was removed on 22 August
 - `src/pages/Subscribe.tsx` and `src/components/NavLink.tsx`, the latter a
   Lovable-era compat wrapper nothing ever imported. Worth noting for anyone
-  re-reading `Layout.tsx`: it does import `NavLink` at `:126` and `:191`, but
-  **from `react-router-dom`**, not from the deleted module
+  re-reading `Layout.tsx`: it imported `NavLink` **from `react-router-dom`**,
+  not from the deleted module. Since the hub bar of 2026-09-13 it imports only
+  `Link`, because the nav sets `aria-current` by hand
 - 44 of the 51 `src/components/ui/` components, plus the duplicate
   `ui/use-toast.ts`. **Four remain: `animated-counter`, `gravity`, `sheet`,
   `tooltip`.** Corrected 1 Sep 2026. This line previously named seven, adding
@@ -1020,8 +1051,9 @@ Colours (hex only, never names):
   **It is no longer on the nav.** From 2026-09-04 to 2026-09-13 it filled a
   My Stack button with a load-bearing white border, because forest measures
   1.33:1 against the cobalt nav and 1.77:1 against the periwinkle homepage.
-  The button went when My Stack became the last tab; `.nav-stack-btn` is
-  deleted. If forest is ever put on the nav again, those two numbers are why
+  The button went when My Stack became the last tab, and My Stack has since
+  moved into the How I work hub row; `.nav-stack-btn` is deleted. If forest is
+  ever put on the nav again, those two numbers are why
   a bare fill has no visible edge there.
 - **`#E8572A` burnt orange is retired, 2026-08-30.** It was the legacy On My
   Radar badge, and this file claimed it rendered nowhere while it was in fact
