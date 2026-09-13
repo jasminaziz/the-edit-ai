@@ -1145,7 +1145,7 @@ rediscovered as accidents.
   and **`clamp(80px, 7.7vw, 100px)` above the hero floor since 13 Sep 2026**.
   The cap was 130px, which at 1920 put the arrow above a pile only about 115px
   tall, pointing at nothing. Re-measured 13 Sep: the arrow's line crosses pills
-  at 1280, 1440, 1680, 1920 and 2560 wide. **Verify the relationship, not the
+  at 1024, 1280, 1440, 1680, 1920 and 2560 wide. **Verify the relationship, not the
   position**: count pills on the arrow's line, never just that the hint is on
   screen.
 
