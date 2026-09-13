@@ -11,6 +11,9 @@ node_modules
 dist
 dist-ssr
 *.local
+# Claude Code's per-machine permissions. *.local above does not match it, and
+# the global git ignore that does is not read by every tool (the Cowork bridge).
+.claude/settings.local.json
 
 # Editor directories and files
 .vscode/*
