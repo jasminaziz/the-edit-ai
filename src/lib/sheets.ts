@@ -1,3 +1,5 @@
+import { toSlug } from '@/utils/slugify';
+
 export interface Tool {
   name: string;
   category: string;
@@ -435,3 +437,23 @@ export const CATEGORIES = [
   'Accessibility',
   'Translation',
 ];
+
+/**
+ * The `?job=` deep link on /tools: which chip a parameter names, or null.
+ *
+ * Both sides go through toSlug, the same one-way matching the `?tool=` link
+ * uses, so `?job=appeals-fundraising` and `?job=Appeals%20%26%20fundraising`
+ * both resolve. There is no lookup table to keep in step: the slug is made
+ * from the chip label, so renaming a job here changes its link and an old link
+ * then loads the page normally rather than landing on the wrong chip.
+ *
+ * ALL is skipped because it is the default, not a job. Empty, unsluggable or
+ * unknown values return null and the page loads with ALL, exactly as with no
+ * parameter. An empty slug is guarded for the same reason as on `?tool=`: it
+ * would otherwise match any label that also slugged to "".
+ */
+export function jobFromParam(param: string | null): string | null {
+  const wanted = toSlug(param ?? '');
+  if (!wanted) return null;
+  return CATEGORIES.find((c) => c !== 'ALL' && toSlug(c) === wanted) ?? null;
+}

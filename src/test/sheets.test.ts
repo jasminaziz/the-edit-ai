@@ -6,6 +6,8 @@ import {
   hasNonprofitPricing,
   doesNotTrainOnInput,
   isDpiaGreen,
+  jobFromParam,
+  CATEGORIES,
   type Tool,
 } from '@/lib/sheets';
 
@@ -449,5 +451,46 @@ describe('toggle predicates', () => {
       expect(isDpiaGreen(tool({ dpia_flag: '' }))).toBe(false);
       expect(isDpiaGreen(tool({ dpia_flag: 'Amberish' }))).toBe(false);
     });
+  });
+});
+
+// ---------------------------------------------------------------------------
+// jobFromParam: the `?job=` deep link on /tools
+// ---------------------------------------------------------------------------
+
+describe('jobFromParam', () => {
+  it('resolves the slug form to the chip label', () => {
+    expect(jobFromParam('appeals-fundraising')).toBe('Appeals & fundraising');
+    expect(jobFromParam('case-studies-storytelling')).toBe('Case studies & storytelling');
+  });
+
+  it('resolves the display form and ignores case', () => {
+    // A link typed by hand, or one decoded from %20 and %26.
+    expect(jobFromParam('Appeals & fundraising')).toBe('Appeals & fundraising');
+    expect(jobFromParam('INTERNAL-COMMS')).toBe('Internal comms');
+  });
+
+  it('resolves every job on the rail, first and last included', () => {
+    // If a job is ever renamed in CATEGORIES, its link must still come from
+    // the same label, so the round trip is checked for each one.
+    for (const job of CATEGORIES.filter((c) => c !== 'ALL')) {
+      expect(jobFromParam(job.toLowerCase().replace(/[^a-z0-9]+/g, '-'))).toBe(job);
+    }
+    expect(jobFromParam('research')).toBe('Research');
+    expect(jobFromParam('translation')).toBe('Translation');
+  });
+
+  it('returns null for ALL, which is the default and not a job', () => {
+    expect(jobFromParam('all')).toBeNull();
+    expect(jobFromParam('ALL')).toBeNull();
+  });
+
+  it('returns null for an unknown, empty, unsluggable or missing value', () => {
+    // The page then loads with ALL, as it does with no parameter at all.
+    expect(jobFromParam('fundraising')).toBeNull();
+    expect(jobFromParam('video')).toBeNull();
+    expect(jobFromParam('')).toBeNull();
+    expect(jobFromParam('!!!')).toBeNull();
+    expect(jobFromParam(null)).toBeNull();
   });
 });

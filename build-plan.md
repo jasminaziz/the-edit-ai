@@ -86,7 +86,7 @@ Not needed, and why:
 |---|---|---|---|---|
 | 0 | Stranger baseline of today's first viewport, production, at 390 and 1280. No code; propose nothing | nothing | Report in `reports/` says what a beginner meets before scrolling | not started |
 | 1 | The checks line on `/learning`, `/design-kit`, `/ai-news` and `/my-stack`: one shared string rendered by `CobaltZone`, the four pages pass a flag, `/radar` keeps its own | Rulings 2 | Renders on all four at 375 and 1280 on a cold direct load; the claims register updated by Jasmin | not started |
-| 2 | `?job=` on `/tools`: match by `toSlug` against `CATEGORIES`, set the chip, scroll it into view in the rail; an unknown value loads normally; tests for the matcher | nothing | Verified at 360, 768 and 1280 on a cold load, the last chip included | not started |
+| 2 | `?job=` on `/tools`: match by `toSlug` against `CATEGORIES`, set the chip, scroll it into view in the rail; an unknown value loads normally; tests for the matcher | nothing | Verified at 360, 768 and 1280 on a cold load, the last chip included | **done 13 Sep**: 15 cases on the dev server, cold Playwright loads, chip inside the rail and grid filtered each time; fonts re-centre proven; `?tool=` unaffected |
 | 3 | Nav and hub: three tabs plus the hub; the second row on hub routes; a grouped drawer; the phone second row; both "Get the template →" links out of the chrome; labelled landmarks; `aria-current` | Rulings 1 and 7 | Measured at 375, 1040 and 1280; the pill is correct on every route; the CLAUDE.md nav block and link inventory rewritten in the same set of commits | not started |
 | 4a | Homepage order (hero, checks, About, template, Go further). The checks strip reuses `ToolCard` unchanged, on the card rule; desktop row, phone sideways rail; the template block moved up with `FooterEmailCapture` skipped on `/`; compact Go further on phone | Steps 2 and 3; Rulings 3, 5 and 6 | Page length measured and reported against today's 1,834 (1280) and 2,139 (390) | not started |
 | 4b | Hero: desktop wordmark on a clamp with a px cap; the proposition above the pills layer; DragHint re-anchored; 640 to 1023 designed; the phone untouched | Ruling 4 | Measured at 1024, 1280, 1440 and 1920 and at 640 to 1023; the pile measured over several runs with rAF pumped; CLAUDE.md hero rulings rewritten, not carried | not started |
@@ -148,3 +148,10 @@ tools: read one before running it.
 - The Agent & Skill Workshop, Field Notes, and the budget stacks (13 September
   brief). They become tabs in the hub once they exist.
 - Per-route share cards, when `geo/prerender` lands.
+- **`?job=` and `?tool=` in one link**, found at step 2. If the tool does not
+  carry that job, the job filter removes its card and the tool link does
+  nothing. Nothing generates such a link, so it is not fixed.
+- **The last chip sits under the rail's edge fade at the end of the scroll**
+  below `lg`. Pre-existing for anyone scrolling to the end, and now also where
+  `?job=translation` lands. The label stays readable; the fade is a design
+  choice recorded in CLAUDE.md, so it is Jasmin's to change.

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import {
   fetchTools,
@@ -8,6 +8,7 @@ import {
   isDpiaGreen,
   type Tool,
   CATEGORIES,
+  jobFromParam,
 } from "@/lib/sheets";
 
 import { LoadingSpinner } from "@/components/LoadingSpinner";
@@ -25,7 +26,14 @@ const Tools = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("ALL");
+  // Read here, above the chip state, because the `?job=` link sets the chip's
+  // first value. The `?tool=` link further down reads the same params.
+  const [searchParams] = useSearchParams();
+  const wantedJob = jobFromParam(searchParams.get("job"));
+  // Seeded from the link rather than set by an effect, so a deep-linked page
+  // never paints the ALL chip first and then jumps.
+  const [category, setCategory] = useState(() => wantedJob ?? "ALL");
+  const railRef = useRef<HTMLDivElement>(null);
   // The three sector toggles. Pass rules live in sheets.ts, held by tests, so
   // they cannot be widened here by accident.
   const [onlyNonprofit, setOnlyNonprofit] = useState(false);
@@ -47,7 +55,6 @@ const Tools = () => {
    * erroring, which is the right behaviour for a link to a row that has since
    * been renamed, or to one that lives on /radar and never reaches this grid.
    */
-  const [searchParams] = useSearchParams();
   // Empty is treated as absent, so `?tool=` and `?tool=!!!` both fall through
   // to the normal page. Both slug to "", and without this guard an empty slug
   // would match any tool whose name also slugged to "".
@@ -82,6 +89,50 @@ const Tools = () => {
       .querySelector(`[data-tool="${toSlug(deepLinkedName)}"]`)
       ?.scrollIntoView({ block: "start" });
   }, [deepLinkedName]);
+
+  /**
+   * `?job=` deep link. Selects that job's chip, so a link from elsewhere (the
+   * homepage job chips, in the site map build) lands on the directory already
+   * filtered to the reader's job. Matching lives in jobFromParam; an unknown
+   * value is null and the page loads with ALL.
+   *
+   * Setting the chip is not enough below lg, where the rail is a sideways
+   * scroller that overflows by 756px at 360 wide: Translation, the last
+   * chip, would be selected but off-screen, and the reader would see a filtered
+   * grid with nothing saying which filter did it. So the rail is scrolled to
+   * centre the chip. From lg up the rail wraps and cannot scroll, and scrollTo
+   * does nothing.
+   *
+   * Instant, not smooth, for the same reason as the `?tool=` scroll above, and
+   * "instant" also overrides the rail's own scroll-smooth class. It centres
+   * twice: once now, and again once the web fonts have loaded, because on a
+   * first visit the chips are measured in the fallback font and every chip
+   * widens when Plus Jakarta Sans arrives. The nav pill in Layout.tsx had
+   * exactly this bug and it only shows on a cold load.
+   *
+   * Clicking another chip does not rewrite the URL. The link is a way in, not
+   * a record of the filter.
+   */
+  useEffect(() => {
+    if (!wantedJob) return;
+    setCategory(wantedJob);
+    const rail = railRef.current;
+    // The rail renders CATEGORIES in order, so the index is the chip.
+    const chip = rail?.children[CATEGORIES.indexOf(wantedJob)] as HTMLElement | undefined;
+    if (!rail || !chip) return;
+    let live = true;
+    const centre = () => {
+      if (!live) return;
+      const left =
+        chip.getBoundingClientRect().left - rail.getBoundingClientRect().left + rail.scrollLeft;
+      rail.scrollTo({ left: left - (rail.clientWidth - chip.offsetWidth) / 2, behavior: "instant" });
+    };
+    centre();
+    document.fonts?.ready.then(centre);
+    return () => {
+      live = false;
+    };
+  }, [wantedJob]);
 
   useEffect(() => {
     fetchTools().then((t) => {
@@ -199,7 +250,10 @@ const Tools = () => {
               Below lg the rail now gets its own full-width row and keeps the
               scroller it already had at 375px. At lg and up nothing changes:
               the rail wraps and no job is hidden, which is what F2c ruled. */}
-          <div className="flex gap-2 flex-nowrap overflow-x-auto no-scrollbar scroll-smooth lg:flex-wrap lg:overflow-visible">
+          <div
+            ref={railRef}
+            className="flex gap-2 flex-nowrap overflow-x-auto no-scrollbar scroll-smooth lg:flex-wrap lg:overflow-visible"
+          >
             {CATEGORIES.map((c) => (
               <button
                 key={c}
