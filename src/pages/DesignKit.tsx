@@ -366,6 +366,7 @@ const DesignKitPage = () => {
         heading="Design Workflow"
         subheading="From blank page to build-ready."
         bodyText="The tools I use to keep taste in the process, in the order you'd actually use them. For teams making their own things with AI and wanting them to still look like your organisation."
+        checksLine
       />
 
       <section className="bg-background px-0" style={{ paddingTop: 0, paddingBottom: 40 }}>

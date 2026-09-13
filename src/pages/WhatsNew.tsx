@@ -182,6 +182,7 @@ const WhatsNewPage = () => {
         twoLineHeading={{ line1: "AI", line2: "News", inline: true }}
         subheading="Model updates, releases, and AI gossip."
         rightBadge={{ text: "Source: The Rundown.ai", url: "https://www.therundown.ai" }}
+        checksLine
       />
 
       <section className="bg-background py-10 px-6 sm:px-12">

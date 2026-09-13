@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useId, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 interface CobaltZoneProps {
   heading: string;
@@ -29,6 +30,17 @@ interface CobaltZoneProps {
    * overlap them; no page does, and /tools passes no rightBadge.
    */
   helpBubble?: { question: string; answer: string };
+  /**
+   * The checks line, for pages whose content has not been through the checks.
+   * Ruled 13 Sep 2026 (build-plan.md, ruling 2) for /learning, /design-kit,
+   * /ai-news and /my-stack. /radar says the same thing in its own words and
+   * does not pass this.
+   *
+   * A flag rather than a string prop so the approved sentence lives in one
+   * place and the four pages cannot drift apart. It is a claim that lives on
+   * four surfaces, so it is also listed in the private claims register.
+   */
+  checksLine?: boolean;
 }
 
 /**
@@ -124,7 +136,7 @@ function HelpBubble({
   );
 }
 
-export function CobaltZone({ heading, subheading, bodyText, illustration, rightBadge, twoLineHeading, helpBubble }: CobaltZoneProps) {
+export function CobaltZone({ heading, subheading, bodyText, illustration, rightBadge, twoLineHeading, helpBubble, checksLine }: CobaltZoneProps) {
   const badgeText = typeof rightBadge === "string" ? rightBadge : rightBadge?.text;
   const badgeUrl = typeof rightBadge === "string" ? undefined : rightBadge?.url;
 
@@ -274,6 +286,20 @@ export function CobaltZone({ heading, subheading, bodyText, illustration, rightB
           {bodyText && (
             <p className="font-body text-[16px] mt-4 max-w-3xl" style={{ color: "rgba(250,248,244,0.6)" }}>
               {bodyText}
+            </p>
+          )}
+          {/* Approved copy, verbatim. Cream at 85%, not the 60% the bodyText
+              above uses: 60% measures 3.86:1 on cobalt and fails AA for 16px
+              text, so this line does not copy it. 85% is 6.24:1. The link is
+              the prose rule from index.css, which inherits the text colour and
+              adds the lime underline. */}
+          {checksLine && (
+            <p className="font-body text-[16px] mt-4 max-w-3xl" style={{ color: "rgba(250,248,244,0.85)" }}>
+              This page hasn't been through the checks. Everything on{" "}
+              <Link to="/tools" className="lime-link">
+                Tools
+              </Link>{" "}
+              has.
             </p>
           )}
           </div>
