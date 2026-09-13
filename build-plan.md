@@ -97,10 +97,10 @@ Not needed, and why:
 | # | Step | Blocked on | Done when | Status |
 |---|---|---|---|---|
 | 0 | Stranger baseline of today's first viewport, production, at 390 and 1280. No code; propose nothing | nothing | Report in `reports/` says what a beginner meets before scrolling | **done 13 Sep**: `reports/2026-09-13-stranger-first-viewport-baseline.md`; captures kept in the review folder |
-| 1 | The checks line on `/learning`, `/design-kit`, `/ai-news` and `/my-stack`: one shared string rendered by `CobaltZone`, the four pages pass a flag, `/radar` keeps its own | nothing: string approved 13 Sep | Renders on all four at 375 and 1280 on a cold direct load; the claims register updated by Jasmin | **built 13 Sep**, verified on 12 cold loads (four pages plus `/radar` and `/tools` as controls), in the first screen on every page at both widths. **Not done until Jasmin adds the claims register entry** |
+| 1 | The checks line on `/learning`, `/design-kit`, `/ai-news` and `/my-stack`: one shared string rendered by `CobaltZone`, the four pages pass a flag, `/radar` keeps its own | nothing: string approved 13 Sep | Renders on all four at 375 and 1280 on a cold direct load; the claims register updated by Jasmin | **built 13 Sep**, verified on 12 cold loads (four pages plus `/radar` and `/tools` as controls), in the first screen on every page at both widths. **Not done until Jasmin adds the claims register entry**. Moved into the How I work banner, from 1024 up only, in Jasmin's review (see "Ruled in Jasmin's review"); the register entry should say desktop only |
 | 2 | `?job=` on `/tools`: match by `toSlug` against `CATEGORIES`, set the chip, scroll it into view in the rail; an unknown value loads normally; tests for the matcher | nothing | Verified at 360, 768 and 1280 on a cold load, the last chip included | **done 13 Sep**: 15 cases on the dev server, cold Playwright loads, chip inside the rail and grid filtered each time; fonts re-centre proven; `?tool=` unaffected |
 | 2b | Rail end spacing below `lg`, so the last chip clears the 40px edge fade at the end of the scroll. Ruled 13 Sep | nothing | Translation clear of the fade at 360 and 768 on `?job=translation`; nothing changes from 1024 up | **done 13 Sep**: the 15 step 2 cases re-run, Translation clear of the fade at 360 and 768, every 1280 figure unchanged |
-| 3 | Nav and hub: three tabs plus the hub; the second row on hub routes; a grouped drawer; the phone second row; both "Get the template →" links out of the chrome; labelled landmarks; `aria-current` | nothing: rulings 1 and 7 settled 13 Sep | Measured at 375, 1040 and 1280; the pill is correct on every route; the CLAUDE.md nav block and link inventory rewritten in the same set of commits | **done 13 Sep**: 33 cold loads across eleven routes, all passing; drawer read on a phone; CLAUDE.md nav block, link inventory (five to three), Substack, `/radar`, breakpoint and sweep notes rewritten with measured figures |
+| 3 | Nav and hub: three tabs plus the hub; the second row on hub routes; a grouped drawer; the phone second row; both "Get the template →" links out of the chrome; labelled landmarks; `aria-current` | nothing: rulings 1 and 7 settled 13 Sep | Measured at 375, 1040 and 1280; the pill is correct on every route; the CLAUDE.md nav block and link inventory rewritten in the same set of commits | **done 13 Sep**: 33 cold loads across eleven routes, all passing; drawer read on a phone; CLAUDE.md nav block, link inventory (five to three), Substack, `/radar`, breakpoint and sweep notes rewritten with measured figures. The second row and the drawer were redesigned in Jasmin's review the same evening |
 | 4a | Homepage order (hero, checks, About, template, Go further). The checks strip reuses `ToolCard` unchanged, on the card rule; desktop row, phone sideways rail; the template block moved up with `FooterEmailCapture` skipped on `/`; compact Go further on phone | n/a | n/a | **dropped 13 Sep**: the homepage keeps today's layout and section order, on Jasmin's ruling. Rulings 3 and 5 fall with it |
 | 4b | Hero, desktop only, redefined 13 Sep and tuned the same day: today's layout kept; the hero stops being full-height, 64px stays under the type as today, and the wordmark is sized by the smaller of width and height (`min(28vw,36vh)` and `min(38vw,49vh)` inside the existing clamps); the pills still fall across the type, and some cover of the full stop is accepted; DragHint still points at the pile; 640 to 1023 checked; portrait phones unchanged | nothing | Measured at 1024, 1280, 1440 and 1920 and at 640 to 1023, with the sector lines in view reported against the tuned board (3 of 5 at 1280, 5 at 1440 and 1920); the pile measured over several runs; CLAUDE.md hero rulings rewritten, not carried | **done 13 Sep**: sector lines 3/7, 3/5, 5/5, 5/5 at 1024, 1280, 1440, 1920 (was 0); three runs each; 640 to 1023 and landscape phones clip nothing; portrait phones identical to live; Drag me re-anchored for big monitors; CLAUDE.md rewritten |
 | 6 | `/submit` out of `sitemap.xml`; the route stays. Ruled 13 Sep | nothing | The sitemap lists every live route except `/submit`, checked both ways against `App.tsx`; `/submit` still renders | **done 13 Sep**: 11 URLs, none invented, only `/submit` omitted; valid XML; `/submit` renders its h1 |
@@ -163,6 +163,22 @@ rail gets end spacing (step 2b).
   the site map steps.
 - **site-design-check's proposed learning stays in the queue** for the next
   ratification review.
+
+**Ruled in Jasmin's review, 13 September**, from a board of options mocked in
+the real pages with live data:
+- **The hub's second row becomes a section banner** (option 2, without the
+  numbers, "so it doesn't look like a numbered system"): a "How I work" title
+  and the four pages as tiles, each with its page's own subheading, the
+  current page a filled tile. She had found the thin row not signposted enough
+  to feel like entering a new section.
+- **The checks line moves into that banner, and shows on desktop only.** Under
+  the page heading its look and feel did not work. On phones and tablets she
+  ruled it out altogether, so there the four pages carry no checks claim; the
+  consequence was put to her and stands.
+- **The phone menu gives How I work its own panel** (option B) with a real
+  heading, where it had been a small label crowded under Template.
+- Each hub page's subheading now lives once, in `links.ts`, because the banner
+  shows it too.
 
 Still open, and content rather than code:
 - the thin jobs (Appeals & fundraising and Translation, two complete tools

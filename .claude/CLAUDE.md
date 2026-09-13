@@ -558,25 +558,46 @@ Routes: `/`, `/tools`, `/radar`, `/my-stack`, `/design-kit`, `/learning`,
 `build-plan.md`), superseding the six-tab bar ruled the same morning. The bar
 reads the four tabs, then "Work with me". **The line the bar draws is checked
 against not checked**: Tools is the checked directory, and the hub holds the
-four pages that come from Jasmin rather than the checks, each of which says so
-in its own header (`CobaltZone`'s `checksLine`).
+four pages that come from Jasmin rather than the checks, and the section
+banner on those pages says so on desktop.
 
 - **The hub tab links to `/my-stack`** and is active on all four hub pages,
-  so the sliding pill sits on it wherever the second row shows. No route is
-  new and no URL redirects.
-- **The second row**, a `<nav aria-label="How I work">` on the same ground,
-  renders on `/my-stack`, `/design-kit`, `/learning` and `/ai-news` only, in
-  that order, with the existing labels My Stack, Design, Learning, AI News.
-  Current page cream with a 2px lime underline; the rest cream at 75%,
-  5.18:1 on cobalt. **One row serves phone and desktop** and scrolls sideways
-  if it runs short of width; it fits without scrolling at 375. It never
-  renders on the homepage, so the periwinkle blend is untouched.
-- **The drawer** lists Home, Tools, Template, then the four hub pages under a
-  small "How I work" label (a `role="group"`), then "Read the Substack →",
-  with Work with me alone at its foot.
+  so the sliding pill sits on it wherever the section banner shows. No route
+  is new and no URL redirects.
+- **The section banner** replaced a thin 13px second row on 2026-09-13, after
+  Jasmin's review said the row read as a breadcrumb rather than arriving
+  somewhere (option 2 from a board mocked in the real pages, without numbers
+  so it does not read as a numbered system). On `/my-stack`, `/design-kit`,
+  `/learning` and `/ai-news` only, never the homepage: a "How I work" title,
+  then the four pages as tiles, each carrying its page's own subheading. The
+  page you are on is the filled cream tile and shows only its name, because
+  its subheading is the h2 directly below. Below `lg` the tiles are names
+  only, two by two. Contrast on cobalt: names cream 8.03:1, descriptions cream
+  at 75% 5.18:1 (4.55:1 on the hover tint), current tile cobalt on cream
+  8.03:1. Page content starts 96px lower on desktop and 58px lower on a
+  phone than under the old row.
+- **The checks line lives in the banner, from `lg` only.** "This page hasn't
+  been through the checks. Everything on Tools has." moved out of the page
+  headers, where it read as a third line of page copy, on Jasmin's ruling of
+  2026-09-13; she ruled it off phones and tablets in the same breath. **So on
+  a phone the four hub pages carry no checks claim at all**, and My Stack's old
+  "recommended list" sentence is not there to stand in for it. That is the
+  ruling, not an omission: do not "restore" it without her. `CobaltZone`'s
+  `checksLine` flag is gone; the four pages pass `inHub`, which only tightens
+  the header's top padding under the banner.
+- **Each hub page's label and subheading live once, in `src/lib/links.ts`**
+  (`HUB_PAGES`), read by both the banner and the page's own h2 through
+  `hubSubheading()`, so the two copies cannot drift. Edit a subheading there.
+- **The drawer** lists Home, Tools, Template, then the four hub pages in their
+  own lighter panel (cream at 8%) 24px below, headed "How I work" in the
+  display face at 20px, then "Read the Substack →", with Work with me alone at
+  its foot. The heading was an 11px tracked-caps label until 2026-09-13
+  (option B from the same board). **The panel's links are white at 80%, not
+  70%**: on its lighter ground 70% measures 4.39:1, under AA, and 80% 5.22:1.
 - **Landmarks**: the outer element is a `<header>`; the bar is
-  `<nav aria-label="Main">`, and the drawer, which renders in a portal, carries
-  its own "Main". Links set `aria-current` by hand, since `NavLink` could only
+  `<nav aria-label="Main">`, the banner is a `<nav>` named by its visible
+  "How I work" title through `aria-labelledby`, and the drawer, which renders
+  in a portal, carries its own "Main". Links set `aria-current` by hand, since `NavLink` could only
   mark the hub tab on the one page it links to: "page" on the current page,
   and on the hub tab "true" on the three hub pages it does not link to.
 - **Template is a tab, so "Get the template →" left the bar and the drawer**,
@@ -587,7 +608,7 @@ button in the CTA cluster to put Tools second; on the morning of 2026-09-13 it
 became the last of six tabs, because the button was a place dressed as a call
 to action. Both moves had one goal, Tools second, and the hub keeps it. **Do not
 bring the button back.** The morning's "do not move My Stack up the list" is
-spent: My Stack now leads the hub row. Measured at 1040px on 2026-09-13:
+spent: My Stack now leads the hub banner. Measured at 1040px on 2026-09-13:
 **514px** of slack between the last tab and Work with me, rightmost element at
 1008, nothing clipped.
 
