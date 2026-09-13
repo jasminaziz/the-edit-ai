@@ -284,15 +284,16 @@ export function CobaltZone({ heading, subheading, bodyText, illustration, rightB
             </h2>
           )}
           {bodyText && (
-            <p className="font-body text-[16px] mt-4 max-w-3xl" style={{ color: "rgba(250,248,244,0.6)" }}>
+            // Cream at 85%, 6.24:1 on cobalt. It was 60%, 3.86:1, below AA
+            // for 16px text, until 13 Sep 2026, when Jasmin ruled it up to match
+            // the checks line beneath it.
+            <p className="font-body text-[16px] mt-4 max-w-3xl" style={{ color: "rgba(250,248,244,0.85)" }}>
               {bodyText}
             </p>
           )}
-          {/* Approved copy, verbatim. Cream at 85%, not the 60% the bodyText
-              above uses: 60% measures 3.86:1 on cobalt and fails AA for 16px
-              text, so this line does not copy it. 85% is 6.24:1. The link is
-              the prose rule from index.css, which inherits the text colour and
-              adds the lime underline. */}
+          {/* Approved copy, verbatim. Cream at 85%, 6.24:1, the same as the
+              bodyText above it. The link is the prose rule from index.css,
+              which inherits the text colour and adds the lime underline. */}
           {checksLine && (
             <p className="font-body text-[16px] mt-4 max-w-3xl" style={{ color: "rgba(250,248,244,0.85)" }}>
               This page hasn't been through the checks. Everything on{" "}
