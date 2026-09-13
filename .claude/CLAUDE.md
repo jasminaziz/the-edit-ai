@@ -436,13 +436,16 @@ asks about `learning`, and nothing currently enforces a ceiling there either.
   navigation to a route rendering no `<SEO>` now removes the adopted tags,
   because helmet unmounts and cleans up what it owns. A direct load of that URL
   is unaffected, which is what crawlers do.
-- **`/privacy-policy`, `/terms-of-service`, `/cookie-policy` and the 404 ship
-  no meta at all.** The three legal pages render through `LegalPage.tsx`, which
-  has no `Helmet`; `NotFound.tsx` imports only react and react-router-dom. No
-  title, no description, **no canonical**, and all three legal routes are in
-  `sitemap.xml`. Found 2026-08-31 and still open: titles and descriptions are
-  copy and are Jasmin's, but the canonical is not copy and could be fixed on
-  its own.
+- **`/privacy-policy`, `/terms-of-service` and `/cookie-policy` carry a
+  canonical and no title or description; the 404 carries none of the three.**
+  The legal pages render through `LegalPage.tsx`, which since 31 Aug 2026 mounts
+  a `Helmet` with the canonical only. Because helmet reconciles every tag type
+  it owns, that also removes the static fallback description, so these pages
+  have none rather than the homepage's. `NotFound.tsx` imports only react and
+  react-router-dom. All three legal routes are in `sitemap.xml`. Titles and
+  descriptions are copy and are Jasmin's. Corrected 13 Sep 2026: this line said
+  the legal pages had no `Helmet` and no canonical, which the 31 Aug fix had
+  already made untrue; the gates audit found it.
 - **Icons and share card, ruled 12 Sep 2026.** `public/favicon.svg` is the
   single source: the same three lime capsules on cobalt, redrawn so every edge
   lands on a whole pixel at 16px. `assets-src/render-icons.py` draws every
