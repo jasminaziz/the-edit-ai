@@ -103,7 +103,7 @@ const Index = () => {
       {/* Hero */}
       <section
         ref={pillsSectionRef}
-        className="relative min-h-[500px] sm:min-h-[100vh] flex flex-col justify-start sm:justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
+        className="relative min-h-[500px] sm:min-h-0 flex flex-col justify-start sm:justify-end overflow-hidden px-4 sm:px-10 md:px-16 pb-10 sm:pb-16 -mt-14 sm:-mt-16 pt-14 sm:pt-16"
         // #7B7FD4, matching the nav exactly so the header blends into the
         // hero rather than banding across it. See Layout.tsx for the contrast
         // this knowingly gives up, and for why no periwinkle satisfies both.
@@ -124,8 +124,23 @@ const Index = () => {
             = 500. The pile figure is for 16 pills at 375px wide and grows on
             narrower phones, which is where the gap tightens first.
 
-            Landscape is unaffected: a phone on its side is past sm, so it takes
-            sm:min-h-[100vh] and never sees this value.
+            Landscape phones are past sm, so they never see this value; they
+            take the desktop sizing described below.
+
+            FROM sm UP THE HERO IS AS TALL AS ITS CONTENT, not 100vh. Ruled 13 Sep
+            2026 (site map build, step 4b). Full height put the wordmark alone
+            in the first screen and the sector sentence below the fold on every
+            desktop. Now the wordmark is capped by screen height as well as
+            width (the min() terms in the two font sizes), 64px stays under the
+            type as before, and the About heading and sector sentence come into
+            the first screen: 3 of 5 sector lines at 1280x800, all 5 at 1440x900
+            and 1920x1080.
+
+            The full stop is NOT protected from the pills, deliberately. No
+            sizing keeps it clear reliably, because the pile settles differently
+            from run to run, and the hero already covered it partly at 1024
+            before this change. Jasmin chose this over an invisible physics disc
+            that would have guaranteed it.
 
             Centring the wordmark was tried first and rejected. It closed the
             gap below by opening an identical one above, which is not what
@@ -169,7 +184,7 @@ const Index = () => {
                 // of sitting at the top, so a shorter word does not reopen the
                 // gap above the pills. Do not raise this to close a gap; the
                 // hero's justification is the lever, not the type size.
-                fontSize: "clamp(110px, 28vw, 420px)",
+                fontSize: "clamp(110px, min(28vw, 36vh), 420px)",
                 color: "#2D35C9",
                 letterSpacing: "-0.04em",
                 marginLeft: "-0.04em",
@@ -198,7 +213,11 @@ const Index = () => {
             <span
               className="block leading-[0.78] w-full"
               style={{
-                fontSize: "clamp(160px, 38vw, 560px)",
+                // The vh term caps the size by screen height (see the hero comment
+                // above). It only binds when the screen is less than about 0.78
+                // times as tall as it is wide, so portrait phones compute
+                // exactly as before and sit on the 160px floor.
+                fontSize: "clamp(160px, min(38vw, 49vh), 560px)",
                 color: "#2D35C9",
                 letterSpacing: "-0.05em",
                 marginLeft: "-0.05em",
