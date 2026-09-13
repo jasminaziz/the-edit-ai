@@ -490,6 +490,15 @@ night. The branch and the worktree were then deleted. `build-plan.md` is on
 `main` as the build's closed record, with every ruling; the reasoning is in
 `reports/2026-09-13-sitemap-build-plan.md` and the reports it names.
 
+**That is the pattern for any build big enough to need it**: its own branch in
+its own worktree, so it never touches this shared tree, a contract file on that
+branch, and nothing to `main` without Jasmin's sign-off. **Before pushing a
+branch this tree has checked out from anywhere else, run
+`git -C ~/Developer/the-edit-ai log origin/<branch>..<branch>`** and surface
+anything unpushed. On 13 Sep the merge was pushed from the worktree while this
+tree held three unpushed commits on `overhaul/sector-axis`; nothing was lost,
+but they had to be rebased by hand before this tree could push again.
+
 ### Environment variables
 
 ```
@@ -562,8 +571,8 @@ Routes: `/`, `/tools`, `/radar`, `/my-stack`, `/design-kit`, `/learning`,
 `/terms-of-service`, `/cookie-policy`.
 
 **The nav is three tabs and a hub: Home, Tools, Template, How I work. Ruled
-2026-09-13** (site map build, step 3, rulings 1 and 7 in the branch's
-`build-plan.md`), superseding the six-tab bar ruled the same morning. The bar
+2026-09-13** (site map build, step 3, rulings 1 and 7 in the closed
+`build-plan.md` on main), superseding the six-tab bar ruled the same morning. The bar
 reads the four tabs, then "Work with me". **The line the bar draws is checked
 against not checked**: Tools is the checked directory, and the hub holds the
 four pages that come from Jasmin rather than the checks, and the section
@@ -1349,6 +1358,14 @@ and sits outside every copy inventory the project keeps: an audit that greps
 
 ## Current state (as at 2026-08-31)
 
+**Latest, 13 September 2026: the site map build is live.** Merged on Jasmin's
+sign-off: the four-item nav with the How I work hub and its section banner, the
+checks line in that banner on desktop only, the phone menu panel, the desktop
+hero capped by screen height so the sector line reaches the first screen, `?job=`
+deep links, `/submit` out of the sitemap, and AA fixes to the header text and the
+search inputs. `build-plan.md` on main is the build's closed record, with every
+ruling. The blocks below are dated where they predate it.
+
 **Live site (main): the overhaul.** It launched 2026-08-30. The sector axis,
 the rebuilt ToolCard, the three toggles, the DPIA chip and the ungated policy
 template are all what a visitor now sees at theeditai.co.uk. The paragraph that
@@ -1476,6 +1493,12 @@ is unreachable but still on disk: it sits inside `Submit.tsx`, which is a live
 route, so the 2026-08-31 sweep could not take it the way it took the
 free-standing `Subscribe.tsx`. Removing it means editing a rendering file, not
 deleting one. (`StatusBadge.tsx` was long gone; see Badge states.)
+
+**Unverified, 13 Sep 2026:** branch `claude/vibrant-fermi-ktbyx1` (one commit,
+12 July, never merged) says PAT 16554137 was revoked and the Apps Script
+`doPost` gained dedupe and validation, which contradicts the paragraph below.
+Jasmin checks GitHub's token list and the Apps Script before either is
+corrected; until then neither version is established.
 
 Also parked, SCRATCHPAD queue item 1: the Routine prompt still instructs
 curl dispatch and still contains PAT 16554137 (revoke it, GitHub never sees
