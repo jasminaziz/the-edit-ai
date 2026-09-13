@@ -3378,6 +3378,10 @@ which is the failure worth not repeating.
 4. Carried: Post Inspector on the homepage; the axis audit due Monday 14 September;
    whether "Read the Substack →" returns to the desktop bar; the Preview Sheets key.
 
+Afterwards, on Jasmin's approval, the project file gained a paragraph pointing at the
+build branch, its worktree and `build-plan.md` (`02d13c5`, rebased from `8ce2640`), and three rules went into
+the global CLAUDE.md.
+
 web-build-guide stale: gates run on design/site-map (reports/2026-09-13-gates-site-map.md) confirms the 14 Aug 2026 §7/§8 theeditai.co.uk panel is out of date on Gate 1 (heading skips, duplicate h1, Subscribe/Footer labels all fixed; only the Tools/Radar search-input labels persist) and Gate 3 (307 is now a permanent 308, /toolkit canonical and homepage-OG-on-every-share both fixed, sitemap /submit removal verified); Gate 2 and Gate 4 unchanged, still open on missing recorded evidence rather than new code.
 
 ## Where we got to: 13 September 2026 (night), site map build merged
