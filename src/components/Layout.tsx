@@ -1,4 +1,4 @@
-import { NavLink, useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { ReactNode, useEffect, useState, useRef, useCallback } from "react";
 import { Menu, X, ArrowUp } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -7,28 +7,37 @@ import { FooterEmailCapture } from "@/components/FooterEmailCapture";
 import { WORK_WITH_ME_HREF, SUBSTACK_LIVE, SUBSTACK_URL, LINKEDIN_URL } from "@/lib/links";
 
 /**
- * My Stack is the LAST tab, and that position is the decision. Ruled 13 Sep
- * 2026, replacing the 4 Sep forest button in the CTA cluster.
+ * The bar: three tabs and the "How I work" hub. Ruled 13 Sep 2026 (site map
+ * build, step 3), superseding the six-tab bar ruled the same morning.
  *
- * The 4 Sep move had one goal, which still holds: Tools second, because the
- * directory is the reason the site exists and it had been sitting third behind
- * a page about Jasmin's own toolkit. Last keeps that. What the button got wrong
- * was kind: My Stack is a place, and it was dressed as a call to action and
- * parked between the two real ones, so the "Get the template →" arrow pointed
- * straight into it and on the homepage it read as one of the forest hero pills.
+ * The line the bar draws is checked against not checked. Tools is the checked
+ * directory; the hub holds the pages that come from Jasmin rather than from
+ * the checks, and each of them says so in its own header (CobaltZone's
+ * checksLine). Tools stays second, which was the one goal of the 4 Sep and
+ * morning rulings. Template became a tab, so "Get the template →" left the
+ * bar and the drawer.
  *
- * Width was measured, not assumed: at 1040px, the tightest the desktop bar
- * renders at, there are 195px between this tab and "Get the template →",
- * against 171px with the button, and nothing clips.
+ * The hub tab links to My Stack, its first page, so no route is new and no URL
+ * redirects. /radar stays off the bar; its way in is the signpost on /tools.
  */
-const navItems = [
-  { to: "/", label: "Home" },
-  { to: "/tools", label: "Tools" },
+const hubItems = [
+  { to: "/my-stack", label: "My Stack" },
   { to: "/design-kit", label: "Design" },
   { to: "/learning", label: "Learning" },
   { to: "/ai-news", label: "AI News" },
-  { to: "/my-stack", label: "My Stack" },
 ];
+
+const HUB_LABEL = "How I work";
+
+const navItems = [
+  { to: "/", label: "Home", hub: false },
+  { to: "/tools", label: "Tools", hub: false },
+  { to: "/policy-template", label: "Template", hub: false },
+  { to: hubItems[0].to, label: HUB_LABEL, hub: true },
+];
+
+const onRoute = (pathname: string, to: string) =>
+  to === "/" ? pathname === "/" : pathname.startsWith(to);
 
 const isExternalHref = (href: string) => /^https?:\/\//i.test(href);
 const CONTACT_EMAIL = "hello@jasminaziz.co.uk";
@@ -63,9 +72,22 @@ export function Layout({ children }: { children: ReactNode }) {
     return () => pane.removeEventListener("scroll", onScroll);
   }, []);
 
+  // The hub tab is active on all four hub pages, not only on the page it links
+  // to, so the pill sits on "How I work" wherever the second row is showing.
+  const isHubRoute = hubItems.some((h) => onRoute(location.pathname, h.to));
+  const isActive = (item: (typeof navItems)[number]) =>
+    item.hub ? isHubRoute : onRoute(location.pathname, item.to);
+  // Set by hand rather than by NavLink, which could only mark the hub tab on
+  // the one page it links to. "page" where the link is the current page; on
+  // the hub tab, "true" on the other three hub pages, meaning current section.
+  const currentFor = (item: (typeof navItems)[number]) =>
+    !isActive(item) ? undefined : item.hub && location.pathname !== item.to ? ("true" as const) : ("page" as const);
+
   const updatePill = useCallback(() => {
     const activeItem = navItems.find((item) =>
-      item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to)
+      item.hub
+        ? hubItems.some((h) => onRoute(location.pathname, h.to))
+        : onRoute(location.pathname, item.to)
     );
     if (!activeItem || !navContainerRef.current) {
       setPillStyle((prev) => ({ ...prev, visible: false }));
@@ -127,7 +149,10 @@ export function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="h-dvh flex flex-col overflow-hidden">
-      <nav
+      {/* A header holding up to two labelled nav landmarks: "Main" (the bar,
+          or on a phone the drawer) and, on the four hub pages, "How I work".
+          Two unlabelled navs would be announced as the same thing twice. */}
+      <header
         className="shrink-0 z-50"
         style={{ backgroundColor: navBg }}
       >
@@ -136,7 +161,7 @@ export function Layout({ children }: { children: ReactNode }) {
             there and returns to 48px at xl. At 1280 and up this renders exactly
             as it did before. */}
         <div className="max-w-[1280px] mx-auto px-4 sm:px-12 lg:px-8 xl:px-12">
-          <div className="flex items-center justify-between h-14 sm:h-16">
+          <nav aria-label="Main" className="flex items-center justify-between h-14 sm:h-16">
             {/* Mobile hamburger */}
             {isMobile ? (
               <>
@@ -173,47 +198,73 @@ export function Layout({ children }: { children: ReactNode }) {
                   </SheetTrigger>
                   <SheetContent side="right" className="w-[260px] p-0 flex flex-col" style={{ backgroundColor: navBg, borderLeft: "1px solid rgba(255,255,255,0.12)" }}>
                     <SheetTitle className="sr-only">Navigation</SheetTitle>
-                    <div className="flex flex-col pt-16 px-6 gap-1 flex-1">
-                      {navItems.map((item) => {
-                        const isActive = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
+                    {/* The drawer renders in a portal outside the header, so
+                        it carries its own "Main" landmark. While it is open the
+                        dialog hides the rest of the page from assistive tech,
+                        so only one "Main" is ever exposed. */}
+                    <nav aria-label="Main" className="flex flex-col pt-16 px-6 gap-1 flex-1">
+                      {/* Home, Tools and Template. The hub tab is not a row
+                          here: its four pages are listed under their label
+                          below, which is the drawer's version of the second
+                          row. */}
+                      {navItems.filter((item) => !item.hub).map((item) => {
+                        const active = isActive(item);
                         return (
-                          <NavLink
+                          <Link
                             key={item.to}
                             to={item.to}
+                            aria-current={active ? "page" : undefined}
                             onClick={() => setMobileOpen(false)}
                             className={`font-body text-base font-medium px-4 py-3 rounded-lg transition-colors ${
-                              isActive
+                              active
                                 ? "bg-white/20 text-white"
                                 : "text-white/70 hover:text-white hover:bg-white/10"
                             }`}
                           >
                           {item.label}
-                          </NavLink>
+                          </Link>
                         );
                       })}
-                      <Link
-                        to="/policy-template"
-                        onClick={() => setMobileOpen(false)}
-                        className="font-body text-base font-medium px-4 py-3 rounded-lg transition-colors text-white/70 hover:text-white hover:bg-white/10"
-                      >
-                        Get the template →
-                      </Link>
+                      <div role="group" aria-labelledby="drawer-hub-label" className="mt-3 flex flex-col gap-1">
+                        <p
+                          id="drawer-hub-label"
+                          className="font-body text-[11px] font-semibold uppercase tracking-wide px-4 pb-1 m-0 text-white/70"
+                        >
+                          {HUB_LABEL}
+                        </p>
+                        {hubItems.map((item) => {
+                          const active = onRoute(location.pathname, item.to);
+                          return (
+                            <Link
+                              key={item.to}
+                              to={item.to}
+                              aria-current={active ? "page" : undefined}
+                              onClick={() => setMobileOpen(false)}
+                              className={`font-body text-base font-medium px-4 py-3 rounded-lg transition-colors ${
+                                active
+                                  ? "bg-white/20 text-white"
+                                  : "text-white/70 hover:text-white hover:bg-white/10"
+                              }`}
+                            >
+                              {item.label}
+                            </Link>
+                          );
+                        })}
+                      </div>
                       {SUBSTACK_LIVE && (
                         <a
                           href={SUBSTACK_URL}
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={() => setMobileOpen(false)}
-                          className="font-body text-base font-medium px-4 py-3 rounded-lg transition-colors text-white/70 hover:text-white hover:bg-white/10"
+                          className="mt-3 font-body text-base font-medium px-4 py-3 rounded-lg transition-colors text-white/70 hover:text-white hover:bg-white/10"
                         >
                           Read the Substack →
                         </a>
                       )}
-                    </div>
+                    </nav>
                     {/* The drawer's foot carries the one primary CTA, as the
-                        desktop bar does. My Stack is an ordinary row above,
-                        after AI News, because it is in navItems: a place, like
-                        the other rows, not a second button down here. */}
+                        desktop bar does. */}
                     <div className="px-6 pb-8 flex flex-col gap-3">
                       <a
                         href={WORK_WITH_ME_HREF}
@@ -244,61 +295,40 @@ export function Layout({ children }: { children: ReactNode }) {
                     />
                   )}
                   {navItems.map((item) => {
-                    const isActive = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
+                    const active = isActive(item);
                     return (
-                      <NavLink
+                      <Link
                         key={item.to}
                         to={item.to}
                         ref={(el) => { navRefs.current[item.to] = el; }}
+                        aria-current={currentFor(item)}
                         onMouseEnter={() => setHoveredItem(item.to)}
                         onMouseLeave={() => setHoveredItem(null)}
                         className={`relative z-10 font-body text-sm font-medium px-3 xl:px-4 py-1.5 rounded-[20px] whitespace-nowrap transition-colors duration-150 ${
-                          isActive
+                          active
                             ? pillText
                             : `${textColor} hover:bg-white/[0.15]`
                         }`}
                       >
                         {item.label}
-                      </NavLink>
+                      </Link>
                     );
                   })}
                 </div>
 
-                {/* CTA cluster: secondary text link, divider, primary pill */}
-                <div className="flex items-center gap-5">
-                  <div className="flex items-center gap-5">
-                    {/* "Read the Substack →" is deliberately absent from the
-                        DESKTOP bar and deliberately still present in the mobile
-                        drawer. Ruled 4 Sep 2026, and the asymmetry is the
-                        decision rather than an oversight: do not "finish the
-                        job" by removing it from the drawer too.
+                {/* The one primary CTA. "Get the template →" and the divider
+                    beside it left the bar on 13 Sep 2026, when Template became
+                    a tab.
 
-                        It came out here to make room. At 1040px, the tightest
-                        width the desktop nav renders at, there were 34px
-                        between the nav items and this cluster, and the My Stack
-                        button needs about 50 more than removing the My Stack
-                        text link gives back. Dropping this link takes the slack
-                        to roughly 145px. The drawer is a vertical list with no
-                        width pressure at all, so the same argument does not
-                        apply there.
-
-                        Nothing became unreachable: the Substack is in the
-                        footer on every route and linked in prose on
-                        /policy-template.
-
-                        Since 13 Sep the My Stack button is gone and My Stack is
-                        the last tab, which leaves 195px of slack at 1040px, so
-                        the width argument above no longer forces this link out.
-                        Whether it returns is Jasmin's call; until she makes it,
-                        the 4 Sep ruling stands. */}
-                    <Link
-                      to="/policy-template"
-                      className={`font-body text-sm font-medium whitespace-nowrap transition-colors text-primary-foreground/70 hover:text-primary-foreground`}
-                    >
-                      Get the template →
-                    </Link>
-                  </div>
-                  <span aria-hidden="true" className="w-px h-5 bg-white/15" />
+                    "Read the Substack →" stays out of the DESKTOP bar and in
+                    the mobile drawer, on Jasmin's 4 Sep ruling: the asymmetry
+                    is the decision, so do not "finish the job" by removing it
+                    from the drawer. It left the bar to make room, and the bar
+                    now has far more slack than it did, so the width argument no
+                    longer forces it out. Whether it returns is Jasmin's call.
+                    The Substack stays reachable from the footer on every route
+                    and in prose on /policy-template. */}
+                <div className="flex items-center">
                   <a
                     href={WORK_WITH_ME_HREF}
                     {...(isExternalHref(WORK_WITH_ME_HREF)
@@ -318,9 +348,45 @@ export function Layout({ children }: { children: ReactNode }) {
                 </div>
               </>
             )}
-          </div>
+          </nav>
         </div>
-      </nav>
+
+        {/* The second row, "How I work", on the four hub pages only, so never
+            on the homepage and its periwinkle blend. One row for phone and
+            desktop: it scrolls sideways when it runs out of width, the same
+            way the /tools job rail does, so there is no phone variant to drift.
+
+            Labels are cream at 75%, 5.18:1 on cobalt. The current page is full
+            cream with a 2px lime underline, which is how the board showed it.
+            The padding matches the bar's gutters and its item padding, so the
+            first label sits under the first tab. */}
+        {isHubRoute && (
+          <nav aria-label={HUB_LABEL} className="border-t border-white/10">
+            <div className="max-w-[1280px] mx-auto px-4 sm:px-12 lg:px-8 xl:px-12">
+              <ul className="flex items-center gap-1 sm:gap-2 h-10 overflow-x-auto no-scrollbar m-0 p-0 list-none">
+                {hubItems.map((item) => {
+                  const current = onRoute(location.pathname, item.to);
+                  return (
+                    <li key={item.to} className="shrink-0">
+                      <Link
+                        to={item.to}
+                        aria-current={current ? "page" : undefined}
+                        className={`inline-block font-body text-[13px] font-medium px-3 xl:px-4 py-1.5 whitespace-nowrap underline-offset-[6px] decoration-2 transition-colors duration-150 ${
+                          current
+                            ? "text-[#FAF8F4] underline decoration-[#C8F04A]"
+                            : "text-[rgba(250,248,244,0.75)] no-underline hover:text-[#FAF8F4] focus-visible:text-[#FAF8F4]"
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </nav>
+        )}
+      </header>
 
       {/* Back to top. The pattern is the consultancy site's
           (~/Developer/jasmin-aziz: scroll-top.js plus .scroll-top-btn), reused
