@@ -3,9 +3,8 @@
 > **Closed 13 September 2026. This build is complete and merged, and this file
 > is now a record, not a live plan.** Site agents that read `build-plan.md` by
 > name should not treat it as the current plan for other work. `main` went to
-> 9b3793f on Jasmin's sign-off the same evening. One thing remains, and it is
-> hers: the claims register entry for the checks line (step 1), which now
-> shows on desktop only. The pre-merge reports are
+> 9b3793f on Jasmin's sign-off the same evening, and the claims register
+> entry for the checks line, the last open item, was added on her approval. The pre-merge reports are
 > `reports/2026-09-13-review-site-map-branch.md` (safe to merge),
 > `reports/2026-09-13-gates-site-map.md`,
 > `reports/2026-09-13-design-check-hero.md` and
@@ -97,7 +96,7 @@ Not needed, and why:
 | # | Step | Blocked on | Done when | Status |
 |---|---|---|---|---|
 | 0 | Stranger baseline of today's first viewport, production, at 390 and 1280. No code; propose nothing | nothing | Report in `reports/` says what a beginner meets before scrolling | **done 13 Sep**: `reports/2026-09-13-stranger-first-viewport-baseline.md`; captures kept in the review folder |
-| 1 | The checks line on `/learning`, `/design-kit`, `/ai-news` and `/my-stack`: one shared string rendered by `CobaltZone`, the four pages pass a flag, `/radar` keeps its own | nothing: string approved 13 Sep | Renders on all four at 375 and 1280 on a cold direct load; the claims register updated by Jasmin | **built 13 Sep**, verified on 12 cold loads (four pages plus `/radar` and `/tools` as controls), in the first screen on every page at both widths. **Not done until Jasmin adds the claims register entry**. Moved into the How I work banner, from 1024 up only, in Jasmin's review (see "Ruled in Jasmin's review"); the register entry should say desktop only |
+| 1 | The checks line on `/learning`, `/design-kit`, `/ai-news` and `/my-stack`: one shared string rendered by `CobaltZone`, the four pages pass a flag, `/radar` keeps its own | nothing: string approved 13 Sep | Renders on all four at 375 and 1280 on a cold direct load; the claims register updated by Jasmin | **built 13 Sep**, verified on 12 cold loads (four pages plus `/radar` and `/tools` as controls), in the first screen on every page at both widths. Moved into the How I work banner, from 1024 up only, in Jasmin's review (see "Ruled in Jasmin's review"). **Done 13 Sep**: Jasmin approved the claims register entry, "Which pages have not been through the checks", desktop only, and the banner joined the Lives on line of "What every directory tool has been through" |
 | 2 | `?job=` on `/tools`: match by `toSlug` against `CATEGORIES`, set the chip, scroll it into view in the rail; an unknown value loads normally; tests for the matcher | nothing | Verified at 360, 768 and 1280 on a cold load, the last chip included | **done 13 Sep**: 15 cases on the dev server, cold Playwright loads, chip inside the rail and grid filtered each time; fonts re-centre proven; `?tool=` unaffected |
 | 2b | Rail end spacing below `lg`, so the last chip clears the 40px edge fade at the end of the scroll. Ruled 13 Sep | nothing | Translation clear of the fade at 360 and 768 on `?job=translation`; nothing changes from 1024 up | **done 13 Sep**: the 15 step 2 cases re-run, Translation clear of the fade at 360 and 768, every 1280 figure unchanged |
 | 3 | Nav and hub: three tabs plus the hub; the second row on hub routes; a grouped drawer; the phone second row; both "Get the template →" links out of the chrome; labelled landmarks; `aria-current` | nothing: rulings 1 and 7 settled 13 Sep | Measured at 375, 1040 and 1280; the pill is correct on every route; the CLAUDE.md nav block and link inventory rewritten in the same set of commits | **done 13 Sep**: 33 cold loads across eleven routes, all passing; drawer read on a phone; CLAUDE.md nav block, link inventory (five to three), Substack, `/radar`, breakpoint and sweep notes rewritten with measured figures. The second row and the drawer were redesigned in Jasmin's review the same evening |
