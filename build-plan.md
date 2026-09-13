@@ -1,11 +1,11 @@
 # build-plan.md: the site map build
 
-> **Closed 13 September 2026. This build is complete, and this file is now a
-> record, not a live plan.** Site agents that read `build-plan.md` by name
-> should not treat it as the current plan for other work. Two things remain,
-> both Jasmin's: her sign-off to merge `design/site-map` to `main` (asked on
-> 13 September, answered "not yet"), and the claims register entry for the
-> checks line (step 1). The pre-merge reports are
+> **Closed 13 September 2026. This build is complete and merged, and this file
+> is now a record, not a live plan.** Site agents that read `build-plan.md` by
+> name should not treat it as the current plan for other work. `main` went to
+> 9b3793f on Jasmin's sign-off the same evening. One thing remains, and it is
+> hers: the claims register entry for the checks line (step 1), which now
+> shows on desktop only. The pre-merge reports are
 > `reports/2026-09-13-review-site-map-branch.md` (safe to merge),
 > `reports/2026-09-13-gates-site-map.md`,
 > `reports/2026-09-13-design-check-hero.md` and
@@ -105,7 +105,7 @@ Not needed, and why:
 | 4b | Hero, desktop only, redefined 13 Sep and tuned the same day: today's layout kept; the hero stops being full-height, 64px stays under the type as today, and the wordmark is sized by the smaller of width and height (`min(28vw,36vh)` and `min(38vw,49vh)` inside the existing clamps); the pills still fall across the type, and some cover of the full stop is accepted; DragHint still points at the pile; 640 to 1023 checked; portrait phones unchanged | nothing | Measured at 1024, 1280, 1440 and 1920 and at 640 to 1023, with the sector lines in view reported against the tuned board (3 of 5 at 1280, 5 at 1440 and 1920); the pile measured over several runs; CLAUDE.md hero rulings rewritten, not carried | **done 13 Sep**: sector lines 3/7, 3/5, 5/5, 5/5 at 1024, 1280, 1440, 1920 (was 0); three runs each; 640 to 1023 and landscape phones clip nothing; portrait phones identical to live; Drag me re-anchored for big monitors; CLAUDE.md rewritten |
 | 6 | `/submit` out of `sitemap.xml`; the route stays. Ruled 13 Sep | nothing | The sitemap lists every live route except `/submit`, checked both ways against `App.tsx`; `/submit` still renders | **done 13 Sep**: 11 URLs, none invented, only `/submit` omitted; valid XML; `/submit` renders its h1 |
 | 5 | AI News re-point (E3): the Routine's prompt, not this repo's code | Jasmin | Outside this build | not started |
-| Merge | Fast-forward `main` and `overhaul/sector-axis` to the branch, then verify on production | Jasmin's sign-off | Live on theeditai.co.uk and verified from a cold load | **awaiting sign-off**: asked 13 Sep, "not yet". Pre-merge follow-ups done the same day: search inputs labelled, CLAUDE.md legal-pages line corrected, route matching hardened |
+| Merge | Fast-forward `main` and `overhaul/sector-axis` to the branch, then verify on production | Jasmin's sign-off | Live on theeditai.co.uk and verified from a cold load | **done 13 Sep**: signed off by Jasmin; `main` and `overhaul/sector-axis` fast-forwarded from 459757d to 9b3793f, 32 commits; PR #2 marked merged by GitHub; production deploy READY; live bundle carries the new strings; production rendered cold at 1280 and 390 (nav, homepage sector line at 704 inside the fold, hero 500 on a phone, banner and checks line on /learning at 1280, no checks line at 390) |
 
 Order from 13 September: 1, 2b, 6, 3, 4b. With 4a dropped the build is about
 two and a half days of session time.
