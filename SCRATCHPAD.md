@@ -3404,19 +3404,18 @@ entry.
 
 ### Next step
 
-1. **Jasmin: the shared tree `~/Developer/the-edit-ai` has three unpushed commits**
-   on `overhaul/sector-axis` (`36b3da1`, `8ce2640`, `e9d1742`, the planning
-   session's wrap). The remote moved to 0eb66a9 underneath them, so that tree's
-   next plain push is refused. Proposed: rebase them onto main there, correct
-   `8ce2640`'s now-stale pointer to the site-map worktree, push both refs. Awaiting
-   her yes; nothing was lost.
+1. ~~**The shared tree's three unpushed commits.**~~ Done the same night on
+   Jasmin's word: rebased onto main in `~/Developer/the-edit-ai` (now `688598d`,
+   `02d13c5`, `0eeaa63`), both end-of-file conflicts resolved by keeping both sides
+   in time order, the stale worktree pointer in CLAUDE.md corrected, pushed.
 2. **Jasmin: `claude/vibrant-fermi-ktbyx1` (12 July) contradicts CLAUDE.md.** Its one
    commit says PAT 16554137 was revoked and the Apps Script `doPost` gained dedupe;
    CLAUDE.md says the token is still in the Routine prompt and there is no dedupe.
    She checks GitHub's token list and the Apps Script; then CLAUDE.md is corrected
    and the branch deleted.
-3. **Remove the worktree** `~/Developer/the-edit-ai-site-map` and its local
-   `design/site-map` branch once she says so (it was this session's working folder).
+3. ~~**Remove the worktree.**~~ Done: `~/Developer/the-edit-ai-site-map` removed
+   and the local `design/site-map` branch deleted, after checking it was clean and
+   fully on main.
 4. **The axis audit is due Monday 14 September.** Nothing starts it but pasting the
    prompt.
 5. Carried: LinkedIn Post Inspector on the new card; whether "Read the Substack →"

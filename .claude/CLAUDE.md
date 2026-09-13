@@ -482,13 +482,13 @@ Sessions still work on `overhaul/sector-axis`. That is now habit and a shared
 convention, not a safety gate: **main is live, so anything pushed to it is
 public within three minutes.**
 
-**The site map build runs on `design/site-map`, in its own worktree at
-`~/Developer/the-edit-ai-site-map`.** Opened 13 September 2026. Its contract
-is `build-plan.md`, which exists on that branch only, with the reasoning in
-`reports/2026-09-13-sitemap-build-plan.md` and the two reports it names. Do
-not build any of it from this folder, because Cowork and other sessions share
-this tree and its checked-out branch. Nothing from that branch merges to
-`main` without Jasmin's explicit sign-off.
+**The site map build is merged and its worktree retired.** It ran on
+`design/site-map` in a separate worktree, `~/Developer/the-edit-ai-site-map`,
+from 13 September 2026, so it never touched this shared tree, and it was
+fast-forwarded to `main` and `overhaul/sector-axis` on Jasmin's sign-off the same
+night. The branch and the worktree were then deleted. `build-plan.md` is on
+`main` as the build's closed record, with every ruling; the reasoning is in
+`reports/2026-09-13-sitemap-build-plan.md` and the reports it names.
 
 ### Environment variables
 
