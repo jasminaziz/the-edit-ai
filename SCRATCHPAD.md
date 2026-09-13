@@ -3347,3 +3347,45 @@ which is the failure worth not repeating.
    platforms that do not run JS.
 
 web-build-guide stale: gates run on design/site-map (reports/2026-09-13-gates-site-map.md) confirms the 14 Aug 2026 §7/§8 theeditai.co.uk panel is out of date on Gate 1 (heading skips, duplicate h1, Subscribe/Footer labels all fixed; only the Tools/Radar search-input labels persist) and Gate 3 (307 is now a permanent 308, /toolkit canonical and homepage-OG-on-every-share both fixed, sitemap /submit removal verified); Gate 2 and Gate 4 unchanged, still open on missing recorded evidence rather than new code.
+
+## Where we got to: 13 September 2026 (night), site map build merged
+
+**Live on production.** `main` and `overhaul/sector-axis` level at `0eb66a9`,
+fast-forwarded from `459757d` on Jasmin's sign-off; PR #2 marked merged; the
+worktree branch `design/site-map` deleted on GitHub. `build-plan.md` is on main as
+a closed record of the build, with every ruling, and the four pre-merge reports are
+in `reports/2026-09-13-*` (review: safe to merge).
+
+What shipped, briefly: the nav is Home, Tools, Template, How I work; the four hub
+pages open under a section banner (title plus tiles with each page's subheading,
+subheadings single-sourced in `src/lib/links.ts`); the checks line lives in that
+banner on desktop only; the phone menu gives How I work its own panel; the desktop
+hero is capped by screen height so the sector line reaches the first screen on
+laptops (the full stop is not protected, by ruling); `?job=` deep links on /tools;
+rail end spacing; /submit out of the sitemap; header body text at 85% for AA; the
+search inputs have an accessible name. The claims register has the checks-line
+entry.
+
+### Next step
+
+1. **Jasmin: the shared tree `~/Developer/the-edit-ai` has three unpushed commits**
+   on `overhaul/sector-axis` (`36b3da1`, `8ce2640`, `e9d1742`, the planning
+   session's wrap). The remote moved to 0eb66a9 underneath them, so that tree's
+   next plain push is refused. Proposed: rebase them onto main there, correct
+   `8ce2640`'s now-stale pointer to the site-map worktree, push both refs. Awaiting
+   her yes; nothing was lost.
+2. **Jasmin: `claude/vibrant-fermi-ktbyx1` (12 July) contradicts CLAUDE.md.** Its one
+   commit says PAT 16554137 was revoked and the Apps Script `doPost` gained dedupe;
+   CLAUDE.md says the token is still in the Routine prompt and there is no dedupe.
+   She checks GitHub's token list and the Apps Script; then CLAUDE.md is corrected
+   and the branch deleted.
+3. **Remove the worktree** `~/Developer/the-edit-ai-site-map` and its local
+   `design/site-map` branch once she says so (it was this session's working folder).
+4. **The axis audit is due Monday 14 September.** Nothing starts it but pasting the
+   prompt.
+5. Carried: LinkedIn Post Inspector on the new card; whether "Read the Substack →"
+   returns to the desktop bar; the untracked 4 Sep My Stack report in the shared
+   tree; the Preview Sheets key for `geo/prerender`.
+6. Content, Jasmin's: the thin jobs (Appeals & fundraising and Translation, two tools
+   each) and Learning's mix of builder and beginner material. Evidence read at the
+   end of October.

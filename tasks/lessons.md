@@ -1209,3 +1209,44 @@ Session corrections and rules built up over time. Add entries; do not delete his
   wrong, because a destination was dressed as a call to action. The advisory
   report said twice it had never been rendered. Render a nav change in the real
   bar at the tightest width before styling it.
+
+## 2026-09-13 (night): the site map build
+
+- **A hit test can look straight through the thing you are measuring.** Checking
+  whether pills covered the full stop, `elementFromPoint` reported 0% covered on a
+  render where two pills visibly sat on it: the pills carry `pointer-events: none`
+  because the physics does the dragging. The zero was the instrument. **Prove a new
+  measurement on a case where you already know the answer** before trusting it on
+  the others; the overlay circle and the screenshot are what exposed it.
+- **An injected variant that silently fails to apply looks exactly like "no
+  difference".** Three hero variants measured identical because the style tag was
+  appended before the document had an element to hold it. Add a guard that refuses
+  a variant whose measurements match the baseline, then fix the injection.
+- **Two identical physics runs do not prove determinism.** Headless runs of the
+  matter-js pile matched to the pixel twice, and a third settled differently. A
+  caption saying "the same every run" had to be corrected before it reached Jasmin.
+  Sample more than twice before claiming anything is repeatable.
+- **Compute contrast for a new surface before rendering it.** A lighter drawer panel
+  dropped the existing 70% link text to 4.39:1; the arithmetic caught it before any
+  screenshot, and 80% measured 5.22:1. Tinting a ground changes every text colour on
+  it, including ones nobody touched.
+- **An agent with no shell cannot know git state, and will guess.** site-build-partner
+  reported the hero change "committed and pushed, working tree clean" because the
+  file already contained the edit; it was uncommitted. Check `git status` yourself.
+- **Pushing a shared branch from a worktree can strand the shared tree's local
+  commits.** Fast-forwarding `origin/overhaul/sector-axis` from the site-map worktree
+  was correct, but the shared tree held three unpushed commits on that branch, and
+  its next push is now refused until they are rebased. **Before pushing a branch
+  another tree has checked out, run `git -C <that tree> log origin/<b>..<b>`** and
+  surface anything unpushed first.
+- **zsh bit twice in one night.** An unquoted `--include=*.html` ran no grep at all,
+  and `echo =====` failed as a command lookup. Quote every glob-like argument.
+- **Tailwind escapes class names in built CSS**, so a literal grep for
+  `focus-visible:text-[#FAF8F4]` returns 0 on a rule that is present. Grep the escaped
+  form (`focus-visible\:text-\[\#FAF8F4\]`) before calling a rule missing.
+- **Playwright removed `page.accessibility`.** Read the accessibility tree through
+  CDP instead: `Accessibility.getFullAXTree` on a `newCDPSession`.
+- **Mocking options inside the real page works for her decisions.** Injecting each
+  option's markup into the live dev page, with real data and fonts, and putting them
+  side by side on one board got three rulings in two turns. Measure what each option
+  costs (here, how far page content moves down) and put the number on the board.
