@@ -85,45 +85,65 @@ Not needed, and why:
 | # | Step | Blocked on | Done when | Status |
 |---|---|---|---|---|
 | 0 | Stranger baseline of today's first viewport, production, at 390 and 1280. No code; propose nothing | nothing | Report in `reports/` says what a beginner meets before scrolling | **done 13 Sep**: `reports/2026-09-13-stranger-first-viewport-baseline.md`; captures kept in the review folder |
-| 1 | The checks line on `/learning`, `/design-kit`, `/ai-news` and `/my-stack`: one shared string rendered by `CobaltZone`, the four pages pass a flag, `/radar` keeps its own | Rulings 2 | Renders on all four at 375 and 1280 on a cold direct load; the claims register updated by Jasmin | not started |
+| 1 | The checks line on `/learning`, `/design-kit`, `/ai-news` and `/my-stack`: one shared string rendered by `CobaltZone`, the four pages pass a flag, `/radar` keeps its own | nothing: string approved 13 Sep | Renders on all four at 375 and 1280 on a cold direct load; the claims register updated by Jasmin | not started |
 | 2 | `?job=` on `/tools`: match by `toSlug` against `CATEGORIES`, set the chip, scroll it into view in the rail; an unknown value loads normally; tests for the matcher | nothing | Verified at 360, 768 and 1280 on a cold load, the last chip included | **done 13 Sep**: 15 cases on the dev server, cold Playwright loads, chip inside the rail and grid filtered each time; fonts re-centre proven; `?tool=` unaffected |
-| 3 | Nav and hub: three tabs plus the hub; the second row on hub routes; a grouped drawer; the phone second row; both "Get the template →" links out of the chrome; labelled landmarks; `aria-current` | Rulings 1 and 7 | Measured at 375, 1040 and 1280; the pill is correct on every route; the CLAUDE.md nav block and link inventory rewritten in the same set of commits | not started |
-| 4a | Homepage order (hero, checks, About, template, Go further). The checks strip reuses `ToolCard` unchanged, on the card rule; desktop row, phone sideways rail; the template block moved up with `FooterEmailCapture` skipped on `/`; compact Go further on phone | Steps 2 and 3; Rulings 3, 5 and 6 | Page length measured and reported against today's 1,834 (1280) and 2,139 (390) | not started |
-| 4b | Hero: desktop wordmark on a clamp with a px cap; the proposition above the pills layer; DragHint re-anchored; 640 to 1023 designed; the phone untouched | Ruling 4 | Measured at 1024, 1280, 1440 and 1920 and at 640 to 1023; the pile measured over several runs with rAF pumped; CLAUDE.md hero rulings rewritten, not carried | not started |
+| 2b | Rail end spacing below `lg`, so the last chip clears the 40px edge fade at the end of the scroll. Ruled 13 Sep | nothing | Translation clear of the fade at 360 and 768 on `?job=translation`; nothing changes from 1024 up | not started |
+| 3 | Nav and hub: three tabs plus the hub; the second row on hub routes; a grouped drawer; the phone second row; both "Get the template →" links out of the chrome; labelled landmarks; `aria-current` | nothing: rulings 1 and 7 settled 13 Sep | Measured at 375, 1040 and 1280; the pill is correct on every route; the CLAUDE.md nav block and link inventory rewritten in the same set of commits | not started |
+| 4a | Homepage order (hero, checks, About, template, Go further). The checks strip reuses `ToolCard` unchanged, on the card rule; desktop row, phone sideways rail; the template block moved up with `FooterEmailCapture` skipped on `/`; compact Go further on phone | n/a | n/a | **dropped 13 Sep**: the homepage keeps today's layout and section order, on Jasmin's ruling. Rulings 3 and 5 fall with it |
+| 4b | Hero, desktop only, redefined 13 Sep: today's layout kept; the hero stops being full-height and the wordmark is sized by the smaller of width and height (rendered as `min(28vw,39vh)` and `min(38vw,53vh)`), so the About heading and the sector sentence reach the first screen; the pills still fall across the type; the full stop of "Edit." clear of the pile; DragHint still points at the pile; 640 to 1023 checked; the phone untouched | nothing | Measured at 1024, 1280, 1440 and 1920 and at 640 to 1023, with the sector lines in view reported against the render (3 of 5 at 1280, 4 at 1440, 5 at 1920); the pile measured over several runs; CLAUDE.md hero rulings rewritten, not carried | not started |
+| 6 | `/submit` out of `sitemap.xml`; the route stays. Ruled 13 Sep | nothing | The sitemap lists every live route except `/submit`, checked both ways against `App.tsx`; `/submit` still renders | not started |
 | 5 | AI News re-point (E3): the Routine's prompt, not this repo's code | Jasmin | Outside this build | not started |
 
-Steps 0 and 2 can start at once. Costs are in the plan report; about four days
-of session time in all.
+Order from 13 September: 1, 2b, 6, 3, 4b. With 4a dropped the build is about
+two and a half days of session time.
 
-## Rulings needed from Jasmin
+## Rulings, settled 13 September 2026
 
-1. **Hub label**, from the shortlist in the plan report; which page the tab
-   lands on (recommended: My Stack); and whether `/learning` stays in the hub.
-2. **The checks line**, one string for four pages, and whether My Stack's
-   existing "The tools directory is the recommended list." stays beside it.
-3. **The checks-strip heading**: approve the `/tools` line for the homepage, or
-   write the homepage its own.
-4. **The hero line.** The About panel is canonical and the hero varies,
-   settled on the 29 August precedent.
-5. **The card rule.** Recommended: the two most recently checked non-Red
-   rows, then the most recently checked Red.
-6. **The AI News tile**: off the new homepage until the re-point
-   (recommended).
-7. **Reopening the 13 September nav ruling**, which signing off step 3 does.
+All seven were ruled through the question tool on 13 September, with the
+options and trade-offs on screen. Where a ruling departs from the plan report,
+this list wins.
 
-These are content questions, not code, and are raised in the plan report:
+1. **Hub label: "How I work"**, landing on **My Stack**, with `/learning`
+   inside the hub. The label came from the one-off shortlist.
+2. **The checks line: "This page hasn't been through the checks. Everything on
+   Tools has."** (candidate B1 in `reports/copy-proposals-2026-09-13-checks-line.md`).
+   My Stack's "The tools directory is the recommended list." comes out, because
+   the line now does that job on all four pages. The question noted that
+   "Tools" can link to `/tools`; the link was not ruled on separately, so it is
+   built and shown on the preview for sign-off.
+3. **The checks-strip heading: moot.** No checks strip is being built.
+4. **The hero line: moot.** The homepage keeps its layout, and the fix is to
+   bring the existing About heading and sector sentence into the first screen,
+   not to add a new line. Jasmin chose the capped wordmark from a rendered
+   board of three options (today, padding trimmed, wordmark capped) at 1280,
+   1440 and 1920, knowing it overrides her "full-screen wordmark" must-keep on
+   laptops.
+5. **The card rule: moot**, with 4a dropped. Found while pricing it, and worth
+   keeping: `last_checked` is a date only and the audit stamps in batches, so
+   "most recently checked" is mostly decided by row order in the Sheet.
+6. **The AI News tile stays** while today's layout stays. The earlier "off"
+   answer applied only to the rebuilt homepage.
+7. **The 13 September nav ruling is reopened** and step 3 goes ahead.
+
+**The homepage was reopened by Jasmin on 13 September** ("can the homepage not
+stay a similar layout to what it is now?"). Step 4a and the plan report's
+homepage order (its point 6) are superseded. Her must-keeps: the pills falling
+across the type, and the full-screen wordmark, overridden on laptops by her own
+hero choice above.
+
+Also ruled the same day: `/submit` comes out of the sitemap (step 6), and the
+rail gets end spacing (step 2b).
+
+Still open, and content rather than code:
 - the thin jobs (Appeals & fundraising and Translation, two complete tools
   each);
-- `/learning`'s mix of builder and beginner material;
-- `/submit`, which is linked from nowhere.
+- `/learning`'s mix of builder and beginner material.
 
 ## Open, outside this build
 
-- **`main` is behind.** It trails `overhaul/sector-axis` by the 13 September
-  doc commits, which touch no served file. Check with
-  `git log origin/main..overhaul/sector-axis`, and level it only on Jasmin's
-  say-so.
-- **A Sheets key for Preview** would let step 4 be reviewed on a preview, and
+- ~~**`main` is behind.**~~ Closed: checked 13 September, `origin/main` and
+  `origin/overhaul/sector-axis` are the same commit.
+- **A Sheets key for Preview** would let step 4b be reviewed on a preview, and
   would also unblock `geo/prerender`. It is a console decision, and it is
   Jasmin's.
 - **Consequences-list items 2, 3, 6 and 8**, and the end-of-October evidence
