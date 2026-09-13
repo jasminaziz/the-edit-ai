@@ -1314,9 +1314,12 @@ changed, so the F2c ruling still holds** — only the breakpoint that delivers i
 moved. Do not "restore" `sm`: it reintroduces the horizontal scroll.
 
 Consequence worth knowing before anyone reads the rail as broken on a phone: at
-360px it overflows by 756px with two chips fully visible, and at 800px by 380px.
+360px it overflows by 796px with two chips fully visible, and at 768px by 452px.
 That is the design below `lg`, and the 40px fade is present and correct as the
-affordance.
+affordance. Both figures include the 40px of end spacing (`pr-10 lg:pr-0`) added
+13 Sep 2026 on Jasmin's ruling, so that at the end of the scroll the last chip
+clears the fade rather than sitting half under it; before that they were 756 and
+412. Re-measured, not derived.
 
 Done 2026-08-28 (three commits, both code jobs ruled and copy-free):
 

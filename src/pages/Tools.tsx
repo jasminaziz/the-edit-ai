@@ -97,7 +97,7 @@ const Tools = () => {
    * value is null and the page loads with ALL.
    *
    * Setting the chip is not enough below lg, where the rail is a sideways
-   * scroller that overflows by 756px at 360 wide: Translation, the last
+   * scroller that overflows by 796px at 360 wide: Translation, the last
    * chip, would be selected but off-screen, and the reader would see a filtered
    * grid with nothing saying which filter did it. So the rail is scrolled to
    * centre the chip. From lg up the rail wraps and cannot scroll, and scrollTo
@@ -250,9 +250,14 @@ const Tools = () => {
               Below lg the rail now gets its own full-width row and keeps the
               scroller it already had at 375px. At lg and up nothing changes:
               the rail wraps and no job is hidden, which is what F2c ruled. */}
+          {/* pr-10 below lg, ruled 13 Sep 2026: 40px after the last chip, the
+              width of the edge fade below, so at the end of the scroll the last
+              chip (Translation, where ?job=translation lands) clears the fade
+              instead of sitting half under it. lg:pr-0 because from lg the rail
+              wraps and the fade is hidden. */}
           <div
             ref={railRef}
-            className="flex gap-2 flex-nowrap overflow-x-auto no-scrollbar scroll-smooth lg:flex-wrap lg:overflow-visible"
+            className="flex gap-2 flex-nowrap overflow-x-auto no-scrollbar scroll-smooth pr-10 lg:pr-0 lg:flex-wrap lg:overflow-visible"
           >
             {CATEGORIES.map((c) => (
               <button
