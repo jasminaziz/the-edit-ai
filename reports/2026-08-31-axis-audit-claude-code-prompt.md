@@ -4,7 +4,9 @@
 what Jasmin asked for: accuracy on the tools cards, verdict alerting, link rot
 on Tools and My Stack, light add/retire suggestions for design and learning.
 
-Three passes. The expensive one only runs on rows something cheap has flagged.
+Four passes. The expensive one only runs on rows something cheap has flagged.
+The fourth, added 14 September 2026, only reads what the Cowork discovery run
+already surfaced.
 
 ---
 
@@ -255,6 +257,49 @@ Always check these two mechanical consequences, they are easy to miss:
   - doesNotTrainOnInput() passes only No and No by default, so a move to
     Varies by tier drops a row OUT of the training filter silently.
 
+=== PASS 4: DISCOVERY PICKUP. Additions and retirements from Cowork. ===
+
+The monthly discovery pass runs in the Cowork trigger "The Edit's fortnightly
+axis audit" (trig_01WgEnqKWcJc2WGby5Ecn5QQ) on the 1st Monday of the month,
+and proposes additions and retirements for design_kit and learning. It stays
+there. This pass rediscovers nothing: it picks up what that run surfaced, so
+corrections and additions are decided in one sitting.
+
+1. Find the newest run of that trigger that started on a 1st Monday
+   (RemoteTrigger list_runs, then get_run_log on it). Its candidates are in
+   its final message.
+2. Skip it if an earlier reports/*-axis-audit.md already records decisions on
+   that run under "Discovery pickup", which names the run's date. Each
+   discovery run is decided once.
+3. If the run cannot be read, or its final message shows as cut short
+   ("[+N chars]"), say so and ask Jasmin to paste the notification. Never
+   reconstruct a truncated list.
+4. Verify each candidate the way Pass 1a verifies a URL, in a real browser:
+   - Addition: the URL resolves to the product named, and neither the name
+     nor the host is already on any of the four tabs. Record the final URL
+     after redirects; that is the one to use.
+   - Retirement: the named row is still at that row number, and the reason is
+     one of the three the discovery prompt allows (superseded, no longer free,
+     no longer relevant). A dead link is not a retirement reason, Pass 1a owns
+     it. A row an addition merely "displaces" is not a retirement unless the
+     run gives one of those three reasons.
+   A candidate that fails a check is reported as failed, with why. Never drop
+   one silently.
+5. Report them in section 1 under "Discovery pickup", naming the run's date,
+   one line each: tab, name, final URL, add or retire, the run's reason, and
+   your verification result. For each addition, prepare the fact cells in the
+   tab's own conventions, copying the values existing rows use (design_kit:
+   name, category, phase, group, cost, url; learning: category, type,
+   provider, time, cost, url). Leave every copy cell blank and marked as
+   Jasmin's: design_kit what_it_does, when_to_use and verdict; learning name,
+   what_it_is and why_i_recommend. The learning name is hers because that
+   tab's names are labels she writes, which is why the guard refuses
+   learning column A.
+6. This pass never writes. scripts/sheet-write.mjs edits cells and cannot add
+   or delete a row, by design. Jasmin pastes an addition once its copy is
+   written and deletes a retired row by hand. Once she has, confirm it on the
+   live page and record the decision against the candidate in the report.
+
 === WRITING ===
 
 Never write without showing the full diff and waiting for an explicit yes.
@@ -286,13 +331,15 @@ rebuild it. --rollback replays a run backwards if a write needs undoing.
 
 One line, always:
 "Axis audit, [date]: N published rows checked. M facts updated. K need your
-judgement. J unreachable."
+judgement. J unreachable. D discovery candidates."
 
 A report at reports/YYYY-MM-DD-axis-audit.md ONLY if something needs
-attention. Required sections, in this order, named here rather than inherited
-from any previous report so a newer template cannot silently drop one:
+attention. Discovery candidates always count as needing attention. Required
+sections, in this order, named here rather than inherited from any previous
+report so a newer template cannot silently drop one:
 
-  1. Needs your judgement       (first, always)
+  1. Needs your judgement       (first, always; includes "Discovery pickup"
+                                 when Pass 4 found a run to decide)
   2. Facts updated, written and confirmed
   3. Could not check
   4. Became completable         (rows that gained their last missing axis
@@ -325,6 +372,12 @@ Deleted from this file on 1 September 2026. The design_kit and learning
 discovery pass is now the Cowork task's prompt and is not run from here.
 Keeping it in two places guarantees they drift. Do not re-add it.
 
+**Since 14 September 2026 the audit reads its output (Pass 4), on Jasmin's
+instruction that corrections and additions be decided in the same pass.** That
+is not a second discovery pass: the audit rediscovers nothing, it picks up the
+Cowork run's candidates, verifies them and prepares the fact cells. The search
+and its rules stay in Cowork alone.
+
 ## What this run costs, roughly
 
 - Pass 1: scripted, exceptions-only output. Negligible.
@@ -332,6 +385,8 @@ Keeping it in two places guarantees they drift. Do not re-add it.
 - Pass 2 from 22 November: the whole 23-row cohort comes due at once. Worth
   staggering by hand before then so it does not all land in one run.
 - Pass 3: zero most fortnights.
+- Pass 4: one run log read and a browser check per candidate, at most ten, and
+  only on the first audit after a discovery run.
 
 The 30 August run cost what it did because it was a one-off catch-up across
 all 23 rows. That does not repeat.

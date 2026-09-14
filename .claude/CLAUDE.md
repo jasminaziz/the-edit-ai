@@ -221,6 +221,15 @@ The monthly discovery pass (design_kit and learning suggestions, capped, never
 writes) lives in the Cowork task alone. **It was deleted from the audit prompt
 on 2026-09-01 so the two cannot drift.** Do not re-add it here.
 
+**The audit reads its output, though, since 14 Sep 2026.** Jasmin's
+instruction: corrections and additions are decided in the same pass. Pass 4 of
+the audit prompt finds the newest 1st-Monday run of the Cowork trigger through
+`RemoteTrigger`, verifies each candidate in a real browser and prepares the
+fact cells, leaving every copy cell to her. That is pickup, not discovery: the
+search and its rules stay in Cowork, so there is still only one of them.
+Additions and retirements are still done by hand: `sheet-write.mjs` cannot add
+or delete a row, and every new row carries copy cells only Jasmin writes.
+
 `scripts/sheet-write.mjs` is the **only** path that writes to the Sheet, with 24
 tests in `scripts/sheet-write.test.mjs` as at 2026-09-01. Run them with `node
 --test scripts/sheet-write.test.mjs`; `bun test` also picks them up, so the
