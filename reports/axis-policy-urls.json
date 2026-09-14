@@ -5,13 +5,14 @@
     "3": {
       "name": "HubSpot",
       "policy": [
-        "https://legal.hubspot.com/hubspot-regional-data-hosting-policy",
+        "https://legal.hubspot.com/terms-of-service",
         "https://knowledge.hubspot.com/account-management/hubspot-ai-mode-training"
       ],
       "baseline": [
         "2026-04-14",
-        "2026-07-10"
-      ]
+        "2026-09-08"
+      ],
+      "note": "The standalone regional-data-hosting-policy page now 301s to the Terms of Service; the hosting terms are section 5.5 there, same 14 Apr 2026 date. Moved 14 Sep 2026 run, position unchanged."
     },
     "5": {
       "name": "Blotato",
@@ -44,8 +45,9 @@
       ],
       "baseline": [
         "2026-06-04",
-        "2026-07-19"
-      ]
+        "2026-08-28"
+      ],
+      "note": "Hosting page republished 28 Aug 2026 with only the date changed (diffed against the Internet Archive copy of 22 Aug). It covers Creative Cloud for enterprise only."
     },
     "29": {
       "name": "Adobe Express",
@@ -53,8 +55,9 @@
         "https://helpx.adobe.com/firefly/web/get-started/learn-the-basics/adobe-firefly-faq.html"
       ],
       "baseline": [
-        "2025-09-02"
-      ]
+        "2026-05-13"
+      ],
+      "note": "Baseline corrected 14 Sep 2026: the page reads 'Last updated on May 13, 2026'; the earlier 2025-09-02 did not match it."
     },
     "33": {
       "name": "Ideogram",
@@ -73,11 +76,11 @@
       ],
       "baseline": [
         "2026-07-08",
-        "2026-07-16"
+        "2026-09-03"
       ]
     },
     "40": {
-      "name": "NotebookLM",
+      "name": "Gemini Notebook",
       "policy": [
         "https://support.google.com/gemininotebook/answer/17004255"
       ],
@@ -92,8 +95,9 @@
         "https://docs.granola.ai/help-center/policies/privacy-policy"
       ],
       "baseline": [
-        "2026-07-24"
-      ]
+        null
+      ],
+      "note": "The policy carried 'Last updated' 24 Jul 2026 on the 30 Aug run and carries no update date at all as at 14 Sep 2026, so Pass 1b has no signal here. Read the clauses directly."
     },
     "45": {
       "name": "ElevenLabs",
@@ -142,9 +146,10 @@
         "https://privacy.claude.com/en/articles/7996890-where-are-your-servers-located-do-you-host-your-models-on-eu-servers"
       ],
       "baseline": [
-        "2026-07-08",
+        "2026-09-10",
         "2026-06-15"
-      ]
+      ],
+      "note": "Previous versions are linked from the policy ('Previous Version' at /legal/archive/...), so a change can be diffed rather than guessed. The server-location article dates itself with a bare date and no label."
     },
     "58": {
       "name": "ChatGPT",
@@ -153,9 +158,10 @@
         "https://openai.com/policies/row-privacy-policy/"
       ],
       "baseline": [
-        "2026-05-18",
+        "2026-08-25",
         "2026-02-06"
-      ]
+      ],
+      "note": "From a UK address, openai.com/policies/privacy-policy serves the EU services policy (/en-GB/), not the US one; the 30 Aug baseline of 2026-05-18 was the US document. Previous EU revisions sit at /policies/eu-services-privacy-policy/revisions/<date>/."
     },
     "59": {
       "name": "Gemini",
@@ -182,10 +188,10 @@
         "https://knowledge.workspace.google.com/admin/generative-ai/generative-ai-in-google-workspace-privacy-hub"
       ],
       "baseline": [
-        "2026-08-26",
+        null,
         "2026-08-14"
       ],
-      "note": "Business FAQ path now redirects to /admin/generative-ai/workspace-with-gemini. Use the body date, not the UTC footer."
+      "note": "Business FAQ path now redirects to /admin/generative-ai/workspace-with-gemini. Use the body date, not the UTC footer. The FAQ carries only the footer form, so it has no editorial date."
     },
     "62": {
       "name": "Gamma",
@@ -236,10 +242,13 @@
       ],
       "baseline": [
         "2026-02-10"
-      ]
+      ],
+      "note": "Dated as 'Last Update: Feb 10, 2026', which a 'last updated' regex misses."
     }
   },
-  "_trap": "Google knowledge.workspace.google.com pages carry TWO dates: an editorial 'Last updated: 14 August 2026' in the body and a site-furniture footer 'Last updated 2026-08-26 UTC'. Only the editorial one means the policy moved. Reading the footer produced a false drift flag on row 61 on the 31 Aug run. Prefer the body date where both exist.",
+  "_trap": "Google knowledge.workspace.google.com pages carry TWO dates: an editorial 'Last updated: 14 August 2026' in the body and a site-furniture footer 'Last updated 2026-08-26 UTC'. Only the editorial one means the policy moved. Reading the footer produced a false drift flag on row 61 on the 31 Aug run. Prefer the body date where both exist. Confirmed site furniture on 14 Sep 2026: the footer moved to 2026-09-10 on BOTH Google pages at once while the privacy hub's body date stayed at 14 August. The 31 Aug note that the business FAQ's footer was 'a real content timestamp' was wrong.",
   "_cloudflare": "canva.com marketing paths (/en_gb/pricing, /en_gb/nonprofits) return 403 to a real headless browser, but /policies/* serves fine, and /policies/policy-archives/ gives previous versions, which is how a Canva policy change is diffed rather than guessed.",
-  "_unreachable_from_this_machine": "helpx.adobe.com and www.adobe.com: HTTP/2 protocol error in Chromium and three 90s curl timeouts with 0 bytes received, 31 Aug 2026. Rows 28 and 29 cannot be date-checked from here."
+  "_updated": "2026-09-14",
+  "_adobe_user_agent": "Adobe is reachable from this machine. The 31 Aug 'unreachable' was a bot-block: www.adobe.com and helpx.adobe.com return ERR_HTTP2_PROTOCOL_ERROR to headless Chrome carrying its default HeadlessChrome user agent, and serve normally when a normal Chrome user agent is set. curl still times out. Use Playwright with channel 'chrome' and a normal userAgent.",
+  "_canva": "As at 14 Sep 2026 canva.com/en_gb/pricing/ serves to headless Chrome with a normal user agent; canva.com/en_gb/nonprofits/ is a 404 and canva.com/nonprofits/ serves."
 }

@@ -1,0 +1,105 @@
+{
+  "run": "2026-09-14",
+  "note": "Fact writes only. Seven last_checked stamps on rows where a check happened today and found nothing moved, and four URLs replaced with the address the vendor now redirects to. No verdict, DPIA flag, trustee note, jobs or description is touched. HubSpot (row 3) was checked and deliberately NOT stamped: its cost string describes a pricing structure HubSpot has stopped using, which is awaiting Jasmin's ruling, so a fresh date would claim a check the row does not pass. Undo with: node scripts/sheet-write.mjs reports/2026-09-14-axis-diff.json --rollback --commit",
+  "edits": [
+    {
+      "range": "tools!M28",
+      "name": "Adobe Creative Cloud",
+      "field": "last_checked",
+      "old": "25 Aug 2026",
+      "value": "14 Sep 2026",
+      "why": "Reachable again after two runs that could not reach Adobe at all. The hosting-locations page republished 28 Aug: diffed against the Internet Archive copy of 22 Aug (dated 19 Jul), the only line that changed is the date. It covers Creative Cloud for enterprise only, so H=Unclear stands. I=No reconfirmed: 'We do not analyze your content to train generative AI models'. D reconfirmed on the UK plans page: CC Standard £51.98/mo, CC Pro £66.49/mo. J: discount on CC individual memberships still offered, via TechSoup (open ruling 4, unchanged).",
+      "source": "https://www.adobe.com/trust/creative-cloud-hosting-locations.html, https://helpx.adobe.com/account/individual/terms-policies-and-regulations/content-analysis-faq.html, https://www.adobe.com/uk/creativecloud/plans.html, https://www.adobe.com/uk/nonprofits.html"
+    },
+    {
+      "range": "tools!M29",
+      "name": "Adobe Express",
+      "field": "last_checked",
+      "old": "25 Aug 2026",
+      "value": "14 Sep 2026",
+      "why": "Reachable again. I=No reconfirmed from the Firefly FAQ (last updated 13 May 2026): 'No, we don't train on any Creative Cloud subscribers' personal content.' H=Unclear stands (the only published location covers enterprise). D reconfirmed: Express Premium £9.98/mo incl. VAT. J reconfirmed: free for non-profits, up to 50 Express Premium licences.",
+      "source": "https://helpx.adobe.com/firefly/web/get-started/learn-the-basics/adobe-firefly-faq.html, https://www.adobe.com/uk/express/pricing, https://www.adobe.com/uk/nonprofits.html"
+    },
+    {
+      "range": "tools!M39",
+      "name": "Perplexity",
+      "field": "last_checked",
+      "old": "24 Aug 2026",
+      "value": "14 Sep 2026",
+      "why": "Data collection article modified 3 Sep. I='Yes unless you opt out' stands: 'For Free, Perplexity Pro and Perplexity Max users, AI Data Retention is enabled by default', with an opt-out; Enterprise data is never used. H=US stands (privacy notice unchanged since 8 Jul). D stands: Pro $20/month on the individual pricing page. J stands on the same vendor source as before (see the report on its age).",
+      "source": "https://www.perplexity.ai/help-center/en/articles/11564572-data-collection-at-perplexity, https://www.perplexity.ai/hub/pricing, https://www.perplexity.ai/hub/blog/bringing-perplexity-to-education-and-not-for-profits"
+    },
+    {
+      "range": "tools!M41",
+      "name": "Granola",
+      "field": "last_checked",
+      "old": "28 Aug 2026",
+      "value": "14 Sep 2026",
+      "why": "Checked because the privacy policy no longer carries any update date, so the date-drift check has no signal on this row. Read directly instead. H=US: 'We store your Personal Data in Amazon Web Services servers located in the U.S.' I='Yes unless you opt out': de-identified data is used for training, opt-out in account settings. D: Basic $0, Business $14 per user per month.",
+      "source": "https://docs.granola.ai/help-center/policies/privacy-policy, https://www.granola.ai/pricing"
+    },
+    {
+      "range": "tools!M57",
+      "name": "Claude",
+      "field": "last_checked",
+      "old": "24 Aug 2026",
+      "value": "14 Sep 2026",
+      "why": "Privacy policy effective 10 Sep. Diffed against Anthropic's own archived previous version (effective 8 Jul): the only changes are a Korea PIPA addendum and a new Korean domestic representative. No clause on data location or training moved. D reconfirmed: Pro £15 a month annual, £18 monthly. J reconfirmed: nonprofit Team $8 per user a month.",
+      "source": "https://www.anthropic.com/legal/privacy diffed against https://www.anthropic.com/legal/archive/21d66aa9-68f6-4356-ba01-2825b0f81805, https://claude.com/pricing, https://claude.com/solutions/nonprofits"
+    },
+    {
+      "range": "tools!M58",
+      "name": "ChatGPT",
+      "field": "last_checked",
+      "old": "24 Aug 2026",
+      "value": "14 Sep 2026",
+      "why": "The UK is served OpenAI's EU services privacy policy, updated 25 Aug. Diffed against OpenAI's own archived previous revision (4 Jun): the changes concern ads data, the removal of Sora and Atlas references, and marketing consent. No clause on data location or training moved. D reconfirmed: Plus £20/month. J reconfirmed: Business at $8 per user a month billed annually.",
+      "source": "https://openai.com/policies/privacy-policy (serves /en-GB/) diffed against https://openai.com/policies/eu-services-privacy-policy/revisions/2026-06-04/, https://chatgpt.com/pricing, https://help.openai.com/en/articles/9359041-openai-for-nonprofits"
+    },
+    {
+      "range": "tools!M61",
+      "name": "Google Workspace AI",
+      "field": "last_checked",
+      "old": "31 Aug 2026",
+      "value": "14 Sep 2026",
+      "why": "The only Green row, checked every run. Privacy hub body date still 14 Aug; the 10 Sep footer date is site furniture (it moved on both Google pages at once). H=Your tenant: 'Your interactions with Gemini stay within your organization.' I=No: 'Workspace does not use customer data for training models without customer's prior permission or instruction.' D and J reconfirmed: Workspace for Nonprofits $0, Business Standard $3.50 per user per month on a 1-year commitment, 75%+ off.",
+      "source": "https://knowledge.workspace.google.com/admin/generative-ai/generative-ai-in-google-workspace-privacy-hub, https://www.google.com/nonprofits/offerings/workspace/"
+    },
+    {
+      "range": "learning!I10",
+      "name": "Anthropic Prompt Engineering Guide",
+      "field": "url",
+      "old": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview",
+      "value": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview",
+      "why": "Anthropic moved its docs. The old address redirects here; page title 'Prompt engineering overview - Claude Platform Docs'. Same page, new host.",
+      "source": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview, HTTP 200, followed 14 Sep 2026"
+    },
+    {
+      "range": "tools!F38",
+      "name": "Flux",
+      "field": "url",
+      "old": "https://blackforestlabs.ai",
+      "value": "https://bfl.ai",
+      "why": "Black Forest Labs moved to bfl.ai. The old address redirects here; page title 'Black Forest Labs - Frontier AI Lab', h1 'FLUX 3'. Row is not published.",
+      "source": "https://bfl.ai, HTTP 200, followed 14 Sep 2026"
+    },
+    {
+      "range": "tools!F52",
+      "name": "Runway ML",
+      "field": "url",
+      "old": "https://runwayml.com",
+      "value": "https://runway.com",
+      "why": "Runway moved to runway.com. The old address redirects here; page title 'Runway | Building Real-World Intelligence'. Row is not published.",
+      "source": "https://runway.com, HTTP 200, followed 14 Sep 2026"
+    },
+    {
+      "range": "my_stack!E16",
+      "name": "ChatGPT",
+      "field": "url",
+      "old": "https://chat.openai.com",
+      "value": "https://chatgpt.com",
+      "why": "chat.openai.com redirects to chatgpt.com, which is the address tools row 58 already uses. Keeps the stack page and the directory pointing at the same host.",
+      "source": "https://chatgpt.com (redirect target of https://chat.openai.com, followed 14 Sep 2026)"
+    }
+  ]
+}

@@ -18,7 +18,12 @@ These four came out as "the audit would have coded this differently from you".
 None is vendor drift. All four will regenerate every run until ruled on.
 
 ### 1. Tier-varying positions: code the tier the reader buys?
-Rows: Gamma (62), Granola (41), Notion AI (65), Grok (64).
+Rows: Gamma (62), Granola (41), Notion AI (65), Grok (64), Perplexity (39).
+
+Perplexity (39) added 14 Sep 2026, on Jasmin's instruction that this ruling
+should cover it. Same shape: stored I is "Yes unless you opt out", which is
+right for Free, Pro and Max, while the nonprofit tier the row's J names is
+Enterprise Pro, where Perplexity says data is "never used for AI training".
 
 Where a vendor's position genuinely varies by tier, the Sheet records the
 position for the tier a small charity actually buys, not the strict "Varies by
