@@ -284,12 +284,20 @@ review. A push takes two or three minutes through Vercel and is watchable. That
 asymmetry is the reason the guards are where they are.
 
 `reports/axis-policy-urls.json` is the row-to-policy map the fortnightly audit's
-policy-date pass needs: 23 rows, 36 URLs, baseline dates, plus two recorded traps
+policy-date pass needs: 23 rows, 36 URLs, baseline dates, plus recorded traps
 worth not rediscovering. Google's `knowledge.workspace` pages carry an editorial
 date in the body and a site-furniture UTC footer, and reading the footer produces
-a false drift flag; and `canva.com/policies/*` serves fine to a real browser
-while `canva.com/en_gb/*` is Cloudflare-blocked, which is what made a policy
-archive diff possible at all.
+a false drift flag; `canva.com/policies/*` serves to a real browser and keeps a
+policy archive, which is what makes a Canva policy diff possible at all.
+
+**Adobe was never unreachable; it blocks headless Chrome's default user
+agent.** Found on the 14 Sep 2026 run, closing two runs of "could not check" on
+rows 28 and 29. `www.adobe.com` and `helpx.adobe.com` return
+`ERR_HTTP2_PROTOCOL_ERROR` to Chrome announcing itself as HeadlessChrome and
+serve normally when a normal Chrome user agent is set; `curl` still times out.
+The same run found `canva.com/en_gb/pricing/` serving to that setup, where the
+31 Aug run had it Cloudflare-blocked. The policy map's `_adobe_user_agent` and
+`_canva` keys carry the detail.
 
 **Every surface has a link checker. Only `/tools` has a fact checker.** Mapped
 1 September 2026, after `/radar` shipped and made the question unavoidable.
@@ -1397,13 +1405,12 @@ One real observation stands, unrelated to the above: `isComplete()` gates on
 `trustee_note` and `dpia_flag` but **not** on `verdict`, so a row could in
 principle render with an empty verdict. None currently does.
 
-**Row 40 is now Gemini Notebook, and the rename is only half done.** Google
-renamed NotebookLM on 16 July 2026; the audit of 31 August wrote the new name and
-URL to `tools` row 40 and `my_stack` row 12, so the directory and the stack page
-agree. **`tools!L40`, the trustee note, still names NotebookLM.** Its substance
-is intact and was reconfirmed word for word that day, including the claim that
-Google does not publish where the documents are processed. Only the name is
-stale, and it is Jasmin's to rewrite. Do not record the rename as finished.
+**Row 40 is now Gemini Notebook, and the rename is finished.** Google renamed
+NotebookLM on 16 July 2026; the audit of 31 August wrote the new name and URL to
+`tools` row 40 and `my_stack` row 12, so the directory and the stack page agree.
+Jasmin has since rewritten the trustee note, and `tools!L40` now opens "Gemini
+Notebook only ever sees the documents we choose to upload", read live 14 Sep
+2026. This paragraph said the rename was half done until that date.
 
 Branch `overhaul/sector-axis`: header-based `fetchTools` reading all fourteen
 columns; the DPIA chip, job chips with contains-matching, the three sector
