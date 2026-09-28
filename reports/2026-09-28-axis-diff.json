@@ -1,0 +1,96 @@
+{
+  "run": "2026-09-28",
+  "note": "Fact writes only, proposed and awaiting Jasmin's yes. Four last_checked stamps on rows where a check happened today and nothing moved; three cost strings moved from the US-served dollar figures to the pounds a UK visitor is now served, shape unchanged; and one optional URL change (Gemini Notebook, both tabs) that is Jasmin's call, since it chooses a public landing page over the app address. No verdict, DPIA flag, trustee note, jobs or description is touched. HubSpot (3) was checked and again not stamped: its cost string is still the open restructure. Wispr Flow (63) is not stamped: its nonprofit figure could not be reconfirmed. Undo with: node scripts/sheet-write.mjs reports/2026-09-28-axis-diff.json --rollback --commit",
+  "edits": [
+    {
+      "range": "tools!M28",
+      "name": "Adobe Creative Cloud",
+      "field": "last_checked",
+      "old": "14 Sep 2026",
+      "value": "28 Sep 2026",
+      "why": "Hosting-locations page republished 16 Sep; no archive copy to diff, so read directly: it still covers Creative Cloud for enterprise only, with content stored in the region assigned at provisioning, so H=Unclear stands for the plans a small charity buys. I=No: content-analysis FAQ unchanged, still dated 4 Jun. D reconfirmed on the UK plans page: CC Standard £51.98/mo, CC Pro £66.49/mo. J: UK nonprofit FAQ still offers CC individual memberships at a discount, administered through TechSoup (open ruling 4, unchanged).",
+      "source": "https://www.adobe.com/trust/creative-cloud-hosting-locations.html, https://www.adobe.com/uk/creativecloud/plans.html, https://www.adobe.com/uk/nonprofits.html"
+    },
+    {
+      "range": "tools!D59",
+      "name": "Gemini",
+      "field": "cost",
+      "old": "Free tier / Google AI Plus $4.99/mo / Pro $19.99/mo",
+      "value": "Free tier / Google AI Plus £4.49/mo / Pro £18.99/mo",
+      "why": "Served in GBP to this UK machine: Google AI Plus £4.49 GBP/month, Google AI Pro £18.99 GBP/month. The stored figures are the US-served dollar prices. Tier names and shape unchanged; Ultra exists and was never in the string.",
+      "source": "https://gemini.google/subscriptions/"
+    },
+    {
+      "range": "tools!M59",
+      "name": "Gemini",
+      "field": "last_checked",
+      "old": "28 Aug 2026",
+      "value": "28 Sep 2026",
+      "why": "Privacy hub dated 24 Sep; the Gemini Apps Privacy Notice inside it is still dated 29 Jun, and the new date belongs to the FAQ half, which added entries for new features. I=Yes unless you opt out: with Keep Activity on, Google uses activity 'including training generative AI models'; with it off and no feedback, future chats are not used to improve its AI models. H=Unclear: no processing location stated. J=None (open ruling 3).",
+      "source": "https://support.google.com/gemini/answer/13594961"
+    },
+    {
+      "range": "tools!M61",
+      "name": "Google Workspace AI",
+      "field": "last_checked",
+      "old": "14 Sep 2026",
+      "value": "28 Sep 2026",
+      "why": "The Green row, checked every run. Privacy hub body date still 14 Aug; the 24 Sep footer is site furniture. H=Your tenant: 'Your interactions with Gemini stay within your organization.' I=No: 'Your content is not human reviewed or otherwise used for Generative AI model training outside your domain without permission.' D and J reconfirmed: Workspace for Nonprofits $0 USD, Business Standard $3.50 USD per user per month on a 1-year commitment, 75%+ off. No fact moved.",
+      "source": "https://knowledge.workspace.google.com/admin/generative-ai/generative-ai-in-google-workspace-privacy-hub, https://www.google.com/nonprofits/offerings/workspace/"
+    },
+    {
+      "range": "tools!D62",
+      "name": "Gamma",
+      "field": "cost",
+      "old": "Free tier / Plus $12/mo, $9/mo billed annually",
+      "value": "Free tier / Plus £10/mo, £7/mo billed annually",
+      "why": "UK pricing page, read with both toggles: Plus £10 per seat per month paying monthly; £7 per seat per month paying annually (£84 per seat, billed annually). Shape unchanged.",
+      "source": "https://gamma.app/pricing"
+    },
+    {
+      "range": "tools!M62",
+      "name": "Gamma",
+      "field": "last_checked",
+      "old": "28 Aug 2026",
+      "value": "28 Sep 2026",
+      "why": "Training article 'Updated this week', diffed against the Internet Archive capture of 7 Aug: individual Free, Plus, Pro and Ultra are allowed for training with an opt-out; Enterprise, Business and Teams are always off. Same position, now naming plans. I=Yes unless you opt out (open ruling 1). Privacy policy still effective 10 Apr 2025, H=US. J=None: no charity price found.",
+      "source": "https://help.gamma.app/en/articles/12281928-does-gamma-use-my-content-to-train-its-ai-features, https://gamma.app/privacy"
+    },
+    {
+      "range": "tools!D63",
+      "name": "Wispr Flow",
+      "field": "cost",
+      "old": "Free tier / Pro $12/mo annual ($15/mo monthly)",
+      "value": "Free tier / Pro £12/mo annual (£15/mo monthly)",
+      "why": "UK pricing page, read with both toggles: Pro £12/user/mo on annual, £15/user/mo on monthly. Same figures, now served in GBP. Shape unchanged.",
+      "source": "https://wisprflow.ai/pricing"
+    },
+    {
+      "range": "tools!M40",
+      "name": "Gemini Notebook",
+      "field": "last_checked",
+      "old": "31 Aug 2026",
+      "value": "28 Sep 2026",
+      "why": "Checked because the URL sweep flagged it. I=No by default: content 'will not be used to directly train our foundational AI models, unless you choose to provide feedback', and Workspace users' content is never used to train. H=Unclear: no region stated. D=Free. J reconfirmed: Gemini Notebook 'now included in Google Workspace for Nonprofits plans at no cost'.",
+      "source": "https://support.google.com/gemininotebook/answer/17004255, https://support.google.com/nonprofits/answer/16345471"
+    },
+    {
+      "range": "tools!F40",
+      "name": "Gemini Notebook",
+      "field": "url",
+      "old": "https://notebook.google.com",
+      "value": "https://notebook.google/",
+      "why": "OPTIONAL, Jasmin's call. notebook.google.com now sends a signed-out visitor to a Google sign-in page. Google's own public landing page for the same product is notebook.google, which notebook.google.com/about and notebooklm.google both redirect to. Same product, same vendor.",
+      "source": "https://notebook.google/"
+    },
+    {
+      "range": "my_stack!E12",
+      "name": "Gemini Notebook",
+      "field": "url",
+      "old": "https://notebook.google.com",
+      "value": "https://notebook.google/",
+      "why": "OPTIONAL, paired with tools!F40 so the directory and the stack page agree.",
+      "source": "https://notebook.google/"
+    }
+  ]
+}

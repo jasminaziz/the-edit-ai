@@ -9,10 +9,10 @@
         "https://knowledge.hubspot.com/account-management/hubspot-ai-mode-training"
       ],
       "baseline": [
-        "2026-04-14",
+        "2026-09-16",
         "2026-09-08"
       ],
-      "note": "The standalone regional-data-hosting-policy page now 301s to the Terms of Service; the hosting terms are section 5.5 there, same 14 Apr 2026 date. Moved 14 Sep 2026 run, position unchanged."
+      "note": "The standalone regional-data-hosting-policy page now 301s to the Terms of Service; the hosting terms are section 5.5 there, same 14 Apr 2026 date. Moved 14 Sep 2026 run, position unchanged. Terms modified 16 Sep 2026: Commerce Hub renamed Revenue Hub and the overages definition reworded; section 5.5 identical word for word (28 Sep 2026 run, diffed against the Internet Archive capture of 15 Sep, which is served gzip-compressed and must be decompressed before comparing)."
     },
     "5": {
       "name": "Blotato",
@@ -45,9 +45,9 @@
       ],
       "baseline": [
         "2026-06-04",
-        "2026-08-28"
+        "2026-09-16"
       ],
-      "note": "Hosting page republished 28 Aug 2026 with only the date changed (diffed against the Internet Archive copy of 22 Aug). It covers Creative Cloud for enterprise only."
+      "note": "Hosting page republished 28 Aug 2026 with only the date changed (diffed against the Internet Archive copy of 22 Aug). It covers Creative Cloud for enterprise only. Republished again 16 Sep 2026 with no archive copy to diff; read directly on 28 Sep, still enterprise-only."
     },
     "29": {
       "name": "Adobe Express",
@@ -95,9 +95,9 @@
         "https://docs.granola.ai/help-center/policies/privacy-policy"
       ],
       "baseline": [
-        null
+        "2026-09-08"
       ],
-      "note": "The policy carried 'Last updated' 24 Jul 2026 on the 30 Aug run and carries no update date at all as at 14 Sep 2026, so Pass 1b has no signal here. Read the clauses directly."
+      "note": "The policy carried 'Last updated' 24 Jul 2026 on the 30 Aug run and carries no update date at all as at 14 Sep 2026, so Pass 1b has no signal here. Read the clauses directly. As at 28 Sep 2026 it reads 'Effective from 8th September 2026', so the date is back."
     },
     "45": {
       "name": "ElevenLabs",
@@ -169,8 +169,9 @@
         "https://support.google.com/gemini/answer/13594961"
       ],
       "baseline": [
-        "2026-08-10"
-      ]
+        "2026-09-24"
+      ],
+      "note": "The page carries two dates: the Gemini Apps Privacy Notice's own (29 Jun 2026) and a later one on the FAQ half (24 Sep 2026). The baseline tracks the page; the notice date is what matters for the training clauses."
     },
     "60": {
       "name": "Microsoft Copilot",
@@ -202,18 +203,20 @@
       "baseline": [
         "2025-04-10",
         null
-      ]
+      ],
+      "note": "The help article dates itself relatively ('Updated this week'); diff against the Internet Archive, which held a 7 Aug 2026 capture."
     },
     "63": {
       "name": "Wispr Flow",
       "policy": [
         "https://wisprflow.ai/privacy-policy",
-        "https://docs.wisprflow.ai/articles/4709791908-understanding-privacy-mode-and-cloud-sync"
+        "https://docs.wisprflow.ai/articles/9609615338-private-cloud-sync-and-data-sharing-preferences-in-wispr-flow"
       ],
       "baseline": [
         "2026-08-19",
         null
-      ]
+      ],
+      "note": "The docs article moved: https://docs.wisprflow.ai/articles/4709791908-understanding-privacy-mode-and-cloud-sync now redirects to the address above (28 Sep 2026). It dates itself relatively ('Last updated 2 days ago'), so read the clause, not a date."
     },
     "64": {
       "name": "Grok",
@@ -248,7 +251,7 @@
   },
   "_trap": "Google knowledge.workspace.google.com pages carry TWO dates: an editorial 'Last updated: 14 August 2026' in the body and a site-furniture footer 'Last updated 2026-08-26 UTC'. Only the editorial one means the policy moved. Reading the footer produced a false drift flag on row 61 on the 31 Aug run. Prefer the body date where both exist. Confirmed site furniture on 14 Sep 2026: the footer moved to 2026-09-10 on BOTH Google pages at once while the privacy hub's body date stayed at 14 August. The 31 Aug note that the business FAQ's footer was 'a real content timestamp' was wrong.",
   "_cloudflare": "canva.com marketing paths (/en_gb/pricing, /en_gb/nonprofits) return 403 to a real headless browser, but /policies/* serves fine, and /policies/policy-archives/ gives previous versions, which is how a Canva policy change is diffed rather than guessed.",
-  "_updated": "2026-09-14",
+  "_updated": "2026-09-28",
   "_adobe_user_agent": "Adobe is reachable from this machine. The 31 Aug 'unreachable' was a bot-block: www.adobe.com and helpx.adobe.com return ERR_HTTP2_PROTOCOL_ERROR to headless Chrome carrying its default HeadlessChrome user agent, and serve normally when a normal Chrome user agent is set. curl still times out. Use Playwright with channel 'chrome' and a normal userAgent.",
   "_canva": "As at 14 Sep 2026 canva.com/en_gb/pricing/ serves to headless Chrome with a normal user agent; canva.com/en_gb/nonprofits/ is a 404 and canva.com/nonprofits/ serves."
 }
