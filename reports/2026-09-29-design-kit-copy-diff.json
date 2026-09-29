@@ -1,0 +1,38 @@
+{
+  "run": "2026-09-29",
+  "note": "when_to_use and verdict for the two design_kit additions, drafted in chat and approved by Jasmin 29 Sep 2026 as drafted. Undo with: node scripts/sheet-write.mjs reports/2026-09-29-design-kit-copy-diff.json --rollback --commit",
+  "edits": [
+    {
+      "range": "design_kit!G45",
+      "name": "Realtime Colors",
+      "field": "when_to_use",
+      "old": "",
+      "value": "Once you have a shortlist of palettes and a font pairing. Apply them to the sample page to see how they hold up together, then export the values for your build brief.",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "design_kit!I45",
+      "name": "Realtime Colors",
+      "field": "verdict",
+      "old": "",
+      "value": "Closes the gap between a palette that looks good as swatches and one that works on a page. Seeing colour and type together makes contrast and hierarchy problems visible before anything is built.",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "design_kit!G46",
+      "name": "Haikei",
+      "field": "when_to_use",
+      "old": "",
+      "value": "When a section needs a background or shape that is not a photo or an illustration. Waves, blobs, layered gradients. Match the colours to your palette and export as SVG.",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "design_kit!I46",
+      "name": "Haikei",
+      "field": "verdict",
+      "old": "",
+      "value": "The quickest way to give a flat section some shape without it looking like stock. No sign-up and free in practice today. A Pro plan is announced but not yet priced, so check the cost before relying on it.",
+      "approved": "29 Sep 2026, in chat"
+    }
+  ]
+}
