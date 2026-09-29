@@ -1,0 +1,70 @@
+{
+  "run": "2026-09-29",
+  "note": "what_it_does for the eight published rows that had none. Drafted in chat, approved by Jasmin 29 Sep 2026 with one change (Blotato: 'and schedules them' dropped). Undo with: node scripts/sheet-write.mjs reports/2026-09-29-what-it-does-diff.json --rollback --commit",
+  "edits": [
+    {
+      "range": "tools!N5",
+      "name": "Blotato",
+      "field": "what_it_does",
+      "old": "",
+      "value": "Turns one piece of content into a batch of posts across your social channels.",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "tools!N33",
+      "name": "Ideogram",
+      "field": "what_it_does",
+      "old": "",
+      "value": "AI image generator that gets text inside images right, for posters, event graphics and quote cards.",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "tools!N41",
+      "name": "Granola",
+      "field": "what_it_does",
+      "old": "",
+      "value": "Meeting notes from your own machine. Writes up what it hears, with no bot joining the call.",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "tools!N47",
+      "name": "Submagic",
+      "field": "what_it_does",
+      "old": "",
+      "value": "Automatic captions for social video, turning a clip into a captioned, ready-to-post version in minutes.",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "tools!N49",
+      "name": "Seedance (ByteDance)",
+      "field": "what_it_does",
+      "old": "",
+      "value": "ByteDance's AI video generator. Turns a text prompt or an image into short video clips.",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "tools!N59",
+      "name": "Gemini",
+      "field": "what_it_does",
+      "old": "",
+      "value": "Google's consumer AI assistant app, with image generation, Deep Research and Gemini Live voice conversations.",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "tools!N62",
+      "name": "Gamma",
+      "field": "what_it_does",
+      "old": "",
+      "value": "Turns an outline or prompt into a designed presentation, document or website.",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "tools!N64",
+      "name": "Grok",
+      "field": "what_it_does",
+      "old": "",
+      "value": "AI assistant, free at grok.com and built into X, with current answers drawn from the web and X.",
+      "approved": "29 Sep 2026, in chat"
+    }
+  ]
+}
