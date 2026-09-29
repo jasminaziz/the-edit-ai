@@ -239,8 +239,11 @@ the audit prompt finds the newest 1st-Monday run of the Cowork trigger through
 `RemoteTrigger`, verifies each candidate in a real browser and prepares the
 fact cells, leaving every copy cell to her. That is pickup, not discovery: the
 search and its rules stay in Cowork, so there is still only one of them.
-Additions and retirements are still done by hand: `sheet-write.mjs` cannot add
-or delete a row, and every new row carries copy cells only Jasmin writes.
+`sheet-write.mjs` cannot insert or delete a row. Since 29 Sep 2026 an addition
+can be written into the first empty row below the data on Jasmin's approval of
+the exact cells, with `"oldName": ""` so the script confirms the row is still
+blank. Retirements stay by hand, and `--rollback` cannot blank a name or cost,
+so a written row is also removed by hand.
 
 `scripts/sheet-write.mjs` is the **only** path that writes to the Sheet, with 31
 tests in `scripts/sheet-write.test.mjs` as at 2026-09-29. Run them with `node
@@ -518,6 +521,12 @@ ref without touching the working tree.
 Sessions still work on `overhaul/sector-axis`. That is now habit and a shared
 convention, not a safety gate: **main is live, so anything pushed to it is
 public within three minutes.**
+
+**Standing push authority, ruled 29 Sep 2026.** A commit touching no `src/`
+file (reports, records, docs) is pushed as `HEAD:<branch>` to both branches
+straight after committing, remote refs verified, and Jasmin told afterwards. A
+`src/` commit still waits for her yes. Approving a Sheet write also approves
+committing and pushing its record file.
 
 **The site map build is merged and its worktree retired.** It ran on
 `design/site-map` in a separate worktree, `~/Developer/the-edit-ai-site-map`,
@@ -1626,7 +1635,10 @@ deleted and the shared secret added.
 - Never push to main without running the three-command gate first. The
   never-merge-before-F2 rule that stood here is spent: it merged on
   2026-08-30. What replaces it is that **main is live**, so an unbuilt or
-  unverified push is visible to the public in about three minutes
+  unverified push is visible to the public in about three minutes. **Scoped
+  29 Sep 2026:** the gate runs before any push that touches `src/`, config or
+  dependencies. A commit touching only `reports/`, `.claude/` or `tasks/`
+  cannot change the build, so it needs no gate
 - Never author or improvise visitor-facing copy — copy arrives as exact
   approved strings
 - Never write the judgement fields (dpia_flag, trustee_note, verdict) from
