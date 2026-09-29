@@ -1,0 +1,14 @@
+{
+  "run": "2026-09-29",
+  "note": "Gamma verdict: the last sentence replaced with option 2, approved by Jasmin 29 Sep 2026. The rest of the verdict unchanged. Undo with: node scripts/sheet-write.mjs reports/2026-09-29-gamma-verdict-diff.json --rollback --commit",
+  "edits": [
+    {
+      "range": "tools!E62",
+      "name": "Gamma",
+      "field": "verdict",
+      "old": "An outline becomes a presentable deck in minutes, and for internal updates, project briefings and anything where the deadline beats the design, that's real time back. Two catches. Everything it makes has a family resemblance, so give it your colours and fonts before the whole organisation's decks converge on the same look. And on the individual plans a small team would buy, it trains on your content unless you switch that off in settings, so do that on day one. No charity price, and the pricing page keeps its numbers to itself, so check what you'd pay before you commit.",
+      "value": "An outline becomes a presentable deck in minutes, and for internal updates, project briefings and anything where the deadline beats the design, that's real time back. Two catches. Everything it makes has a family resemblance, so give it your colours and fonts before the whole organisation's decks converge on the same look. And on the individual plans a small team would buy, it trains on your content unless you switch that off in settings, so do that on day one. No charity price, and every plan is charged per seat, so work out the team cost before you commit.",
+      "approved": "29 Sep 2026, in chat"
+    }
+  ]
+}
