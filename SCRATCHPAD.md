@@ -3424,3 +3424,32 @@ entry.
 6. Content, Jasmin's: the thin jobs (Appeals & fundraising and Translation, two tools
    each) and Learning's mix of builder and beginner material. Evidence read at the
    end of October.
+
+## Where we got to: 29 September 2026, axis audit and the approval route
+
+**All on `main` and `overhaul/sector-axis`, level at the last push.** No `src/`
+change this session; the parallel session's uncommitted hero work (HomeGravity,
+Layout, gravity, package.json, bun.lock) is still in the tree and not ours.
+
+- **Axis audit of 28 Sep run and recorded** (`reports/2026-09-28-axis-audit.md`).
+  Ten fact cells written and confirmed live; nothing moved on any vendor position.
+- **`sheet-write.mjs` now takes any column Jasmin approves in chat** (`04b3f2f`),
+  with `"approved": "<DD MMM YYYY>, in chat"`. Her condition: flag concerns and mark
+  opinion before she approves. First uses: eight `what_it_does` lines on `/tools`,
+  and design_kit rows 45 (Realtime Colors) and 46 (Haikei), all cells.
+- **Rows can be added** by filling the first empty row with `oldName: ""`. Not
+  deleted: that stays by hand, and `--rollback` cannot blank a name or cost.
+- **Standing push authority** for commits touching no `src/` file; a write approval
+  also covers pushing its record.
+
+### Next step
+
+1. **Jasmin: Gamma verdict (`tools!E62`)** says "the pricing page keeps its numbers
+   to itself"; the UK page now shows them. Approve wording and it can be written.
+2. **Jasmin: Wispr J63** "$8 a month annual" is unconfirmed; the FAQ gives no figure.
+3. **Jasmin: the "Why I use it" toggle** now sits over verdicts for Realtime Colors
+   and Haikei. Keep, remove the two verdicts, or rethink the shared label.
+4. **Next audit: Monday 12 October** (2nd Monday). The Cowork discovery run fires
+   Monday 5 October; Pass 4 picks it up on the 12th.
+5. Carried from 13 Sep: the July branch's PAT and dedupe claim; LinkedIn Post
+   Inspector; the Preview Sheets key for `geo/prerender`; content on the thin jobs.

@@ -1270,3 +1270,33 @@ Session corrections and rules built up over time. Add entries; do not delete his
   option's markup into the live dev page, with real data and fonts, and putting them
   side by side on one board got three rulings in two turns. Measure what each option
   costs (here, how far page content moves down) and put the number on the board.
+
+## 2026-09-28 to 29: axis audit and the approval route
+
+- **Never grep a write's output for success.** `sheet-write.mjs --commit | sed -n
+  '/OK\|.../p'` printed nothing and the ten cells had to be re-read separately.
+  Show the receipt's own tail; the script already prints OK or FAIL per cell.
+- **gcloud impersonation needs `--scopes` for a Sheets read.** Without it the token
+  mints and the read returns 403 `ACCESS_TOKEN_SCOPE_INSUFFICIENT`. The script adds
+  the scope itself; ad hoc reads must too.
+- **Internet Archive `id_` captures can arrive gzip-compressed.** The first HubSpot
+  diff reported all 385 lines removed. A diff where everything changed is a fetch
+  failure: decompress (`zlib.decompress(b, 47)`) and diff again. Then compare the
+  clauses that matter word for word, because archived HTML and rendered text split
+  paragraphs differently.
+- **Quote prices from the tool output, never from memory.** Gamma's Pro was relayed
+  as £15/£12 when the toggles read £20 monthly, £15 annual. Caught only on re-reading
+  the report against the output.
+- **Before drafting copy for a field, check what the interface prints around it.**
+  design_kit verdicts open under a toggle labelled "Why I use it", so a second-person
+  verdict still reads as Jasmin's first-person claim. Flag it before approval.
+- **Verify a toggle-hidden field by opening it, and prove the probe on a known row.**
+  The new verdicts were absent from the DOM, and so was Khroma's existing one until
+  its toggle was clicked. A zero on the new rows alone would have looked like a
+  failed write.
+- **Rollback is not symmetrical for new rows.** The guard refuses a blank name or
+  cost, so `--rollback` cannot empty cells written into a fresh row. Say so before
+  approval, not after.
+- **A permission-check denial covers the outcome, not the command.** When a guard
+  edit is blocked partway, restore the file to its committed state rather than leave
+  a half-built guard on disk, explain, and wait for Jasmin's word.

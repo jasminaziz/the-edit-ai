@@ -301,10 +301,16 @@ corrections and additions are decided in one sitting.
    what_it_is and why_i_recommend. The learning name is hers because that
    tab's names are labels she writes, which is why the guard refuses
    learning column A.
-6. This pass never writes. scripts/sheet-write.mjs edits cells and cannot add
-   or delete a row, by design. Jasmin pastes an addition once its copy is
-   written and deletes a retired row by hand. Once she has, confirm it on the
-   live page and record the decision against the candidate in the report.
+6. This pass never writes on its own findings. scripts/sheet-write.mjs cannot
+   insert or delete a row. Since 29 Sep 2026 an addition can be written into
+   the first empty row below the data, but only on Jasmin's approval of the
+   exact cells in chat: each edit carries "approved" and "oldName": "" so the
+   script confirms the row is still blank. Flag before she approves that
+   --rollback cannot blank a name or cost, so removal is by hand, and check
+   what the page prints around each field (design_kit verdicts open under
+   "Why I use it"). A retired row is still deleted by Jasmin by hand. Either
+   way, confirm it on the live page and record the decision against the
+   candidate in the report.
 
 === WRITING ===
 
