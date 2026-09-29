@@ -1,0 +1,114 @@
+{
+  "run": "2026-09-29",
+  "note": "Two design_kit additions from Jasmin's 25 Sep addendum, written into the first two empty rows (45, 46) on her approval of 29 Sep 2026. Fact cells only; what_it_does, when_to_use and verdict left blank for her. Haikei's category is Claude's suggestion, approved as shown. To remove, delete the rows by hand: the guard refuses a blank name or cost, so --rollback cannot empty these cells.",
+  "edits": [
+    {
+      "range": "design_kit!A45",
+      "name": "Realtime Colors",
+      "oldName": "",
+      "field": "name",
+      "old": "",
+      "value": "Realtime Colors",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "design_kit!B45",
+      "name": "Realtime Colors",
+      "oldName": "",
+      "field": "category",
+      "old": "",
+      "value": "Colour",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "design_kit!C45",
+      "name": "Realtime Colors",
+      "oldName": "",
+      "field": "phase",
+      "old": "",
+      "value": "Define Visual Direction",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "design_kit!D45",
+      "name": "Realtime Colors",
+      "oldName": "",
+      "field": "group",
+      "old": "",
+      "value": "Colour",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "design_kit!E45",
+      "name": "Realtime Colors",
+      "oldName": "",
+      "field": "url",
+      "old": "",
+      "value": "https://www.realtimecolors.com",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "design_kit!H45",
+      "name": "Realtime Colors",
+      "oldName": "",
+      "field": "cost",
+      "old": "",
+      "value": "Free",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "design_kit!A46",
+      "name": "Haikei",
+      "oldName": "",
+      "field": "name",
+      "old": "",
+      "value": "Haikei",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "design_kit!B46",
+      "name": "Haikei",
+      "oldName": "",
+      "field": "category",
+      "old": "",
+      "value": "Illustrations",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "design_kit!C46",
+      "name": "Haikei",
+      "oldName": "",
+      "field": "phase",
+      "old": "",
+      "value": "Build the UI",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "design_kit!D46",
+      "name": "Haikei",
+      "oldName": "",
+      "field": "group",
+      "old": "",
+      "value": "Motion and Illustration",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "design_kit!E46",
+      "name": "Haikei",
+      "oldName": "",
+      "field": "url",
+      "old": "",
+      "value": "https://haikei.app",
+      "approved": "29 Sep 2026, in chat"
+    },
+    {
+      "range": "design_kit!H46",
+      "name": "Haikei",
+      "oldName": "",
+      "field": "cost",
+      "old": "",
+      "value": "Free / Pro (TBD)",
+      "approved": "29 Sep 2026, in chat"
+    }
+  ]
+}
