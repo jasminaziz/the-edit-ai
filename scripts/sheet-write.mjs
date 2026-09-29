@@ -51,6 +51,7 @@ export const SHEET_ID = '1RIO-WY9H75gML_UgdQbHGgDl-R0MfaG3CRPUp3PtAUI';
 export const LEGAL = {
   data_location:   ['UK', 'EU', 'EU option', 'US', 'Your tenant', 'Other', 'Unclear'],
   trains_on_input: ['No', 'No by default', 'Yes unless you opt out', 'Yes', 'Varies by tier', 'Unclear'],
+  dpia_flag:       ['Green', 'Amber', 'Red'],
 };
 export const M_RE = /^(0?[1-9]|[12][0-9]|3[01]) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{4}$/;
 const URL_RE = /^https?:\/\/[^\s"<>]+$/;
@@ -64,12 +65,41 @@ export const WRITABLE = {
   learning:   { I: 'url' },
 };
 
+/** Every column on the four content tabs, by header, as read 29 Sep 2026.
+ *  Only an edit carrying `approved` may reach a column outside WRITABLE.
+ *  whats_new is absent on purpose: it belongs to the daily news pipeline. */
+export const COLUMNS = {
+  tools:      { A: 'name', B: 'category', C: 'status', D: 'cost', E: 'verdict', F: 'url', G: 'jobs',
+                H: 'data_location', I: 'trains_on_input', J: 'nonprofit_tier', K: 'dpia_flag',
+                L: 'trustee_note', M: 'last_checked', N: 'what_it_does' },
+  my_stack:   { A: 'name', B: 'category', C: 'what_it_does', D: 'pricing', E: 'url', F: 'verdict', G: 'featured' },
+  design_kit: { A: 'name', B: 'category', C: 'phase', D: 'group', E: 'url', F: 'what_it_does',
+                G: 'when_to_use', H: 'cost', I: 'verdict' },
+  learning:   { A: 'name', B: 'category', C: 'type', D: 'provider', E: 'what_it_is', F: 'why_i_recommend',
+                G: 'time', H: 'cost', I: 'url' },
+};
+
+/**
+ * Jasmin's approval, ruled 29 Sep 2026: any column on the four content tabs may
+ * be written when she has approved that exact value in chat, and the edit says
+ * so with the date, e.g. "approved": "29 Sep 2026, in chat". Her condition: the
+ * session flags any concern, and anything that is opinion rather than a checked
+ * fact, BEFORE she approves.
+ *
+ * Be clear what this is. It is a record, not a lock: nothing here can tell
+ * whether she really approved it, so an agent could set the field itself. She
+ * chose that knowingly over a terminal confirmation. The fact path without
+ * `approved` is unchanged and still enforced in full.
+ */
+const APPROVED_RE = /\b(0?[1-9]|[12][0-9]|3[01]) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{4}\b/;
+export const isApproved = edit => typeof edit?.approved === 'string' && APPROVED_RE.test(edit.approved);
+
 export const RANGE_RE = /^([a-z_]+)!([A-Z]+)([0-9]+)$/;
 export function parseRange(range) {
   const m = typeof range === 'string' ? RANGE_RE.exec(range) : null;
   return m ? { tab: m[1], col: m[2], row: Number(m[3]) } : null;
 }
-export const fieldOf = range => { const p = parseRange(range); return p ? WRITABLE[p.tab]?.[p.col] ?? null : null; };
+export const fieldOf = range => { const p = parseRange(range); return p ? COLUMNS[p.tab]?.[p.col] ?? null : null; };
 
 /**
  * The shape of a cost string, with the parts that are allowed to change removed.
@@ -96,16 +126,25 @@ export function checkEdit(edit) {
   const p = parseRange(range);
   if (!p) { errs.push(`range "${range}" is not <tab>!<COL><ROW> — refused`); return errs; }
   if (!WRITABLE[p.tab]) { errs.push(`${range}: tab "${p.tab}" is not writable by any route`); return errs; }
-  const field = WRITABLE[p.tab][p.col];
+  // Row 1 holds the headers the site reads every column by. Never written.
+  if (p.row < 2) { errs.push(`${range}: row 1 is the header row, which the site reads columns by — never written`); return errs; }
+  const approved = isApproved(edit);
+  if (edit?.approved !== undefined && !approved) {
+    errs.push(`${range}: "approved" must name the date Jasmin approved this value, as DD MMM YYYY`);
+    return errs;
+  }
+  const field = approved ? COLUMNS[p.tab][p.col] : WRITABLE[p.tab][p.col];
   if (!field) {
     const allowed = Object.keys(WRITABLE[p.tab]).join(', ');
-    errs.push(`${range}: column ${p.col} on ${p.tab} is not writable (writable: ${allowed}) — judgement and copy are never written`);
+    errs.push(approved
+      ? `${range}: column ${p.col} is not a column on ${p.tab}`
+      : `${range}: column ${p.col} on ${p.tab} is not writable (writable: ${allowed}). Judgement and copy need Jasmin's approval, recorded in "approved"`);
     return errs;
   }
   if (typeof name !== 'string' || name.trim() === '') errs.push(`${range}: no tool name given to check column A against`);
-  // A widened column list is only safe if every value is traceable. A cell with
-  // no citable source is an assertion, not a fact, so it is refused outright.
-  if (typeof edit.source !== 'string' || !/^https?:\/\//.test(edit.source.trim())) {
+  // A fact with no citable source is an assertion, so it is refused outright.
+  // An approved edit's source is Jasmin's approval, which `approved` records.
+  if (!approved && (typeof edit.source !== 'string' || !/^https?:\/\//.test(edit.source.trim()))) {
     errs.push(`${range}: no source URL. Every write must cite the page it came from.`);
   }
   if (typeof value !== 'string') { errs.push(`${range}: value must be a string`); return errs; }
@@ -117,7 +156,8 @@ export function checkEdit(edit) {
   // number, so only a substitution inside the existing shape may be written.
   // Note shape_change can only ever REFUSE: it is the agent declaring a
   // restructure, never a way to force one through.
-  if (field === 'cost') {
+  // A restructure is Jasmin's call, so her approval is exactly what permits one.
+  if (field === 'cost' && !approved) {
     if (edit.shape_change === true) {
       errs.push(`${range}: shape_change is true, so this is a pricing restructure. Flag it, do not write it.`);
     }

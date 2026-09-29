@@ -199,3 +199,54 @@ test('name is writable on my_stack and design_kit, still refused on learning', (
   assert.deepEqual(checkEdit({ range: 'design_kit!A5', name: 'X', value: 'Something', source: src }), []);
   assert.ok(checkEdit({ range: 'learning!A2', name: 'X', value: 'Claude Academy', source: src }).length > 0);
 });
+
+// ---- Jasmin's approval, ruled 29 Sep 2026 -----------------------------------
+const OK = '29 Sep 2026, in chat';
+
+test('with approved, judgement and copy columns on tools are writable', () => {
+  for (const [range, value] of [['tools!E62', 'A verdict.'], ['tools!K3', 'Amber'], ['tools!L40', 'A note.'],
+                                ['tools!N5', 'A line.'], ['tools!G5', 'Social'], ['tools!B5', 'Design'], ['tools!C5', 'in_stack']]) {
+    assert.deepEqual(checkEdit({ range, name: 'X', value, approved: OK }), [], range);
+    assert.ok(checkEdit({ range, name: 'X', value, source: 'https://x.com' }).length > 0, `${range} without approval`);
+  }
+});
+
+test('with approved, every column on the other three tabs is reachable, learning!A included', () => {
+  for (const range of ['my_stack!C4', 'my_stack!D10', 'design_kit!F2', 'design_kit!I2', 'learning!A2', 'learning!F3'])
+    assert.deepEqual(checkEdit({ range, name: 'X', value: 'Text', approved: OK }), [], range);
+});
+
+test('approved must carry a real date, or the edit is refused', () => {
+  for (const approved of ['yes', 'Jasmin said so', '', '2026-09-29', true])
+    assert.ok(checkEdit({ range: 'tools!N5', name: 'X', value: 'A line.', approved }).length > 0, String(approved));
+});
+
+test('approval does not open whats_new, row 1, or a column the tab does not have', () => {
+  assert.ok(checkEdit({ range: 'whats_new!A5', name: 'X', value: 'y', approved: OK }).length > 0);
+  assert.ok(checkEdit({ range: 'tools!N1', name: 'what_it_does', value: 'y', approved: OK }).length > 0);
+  assert.ok(checkEdit({ range: 'tools!A1', name: 'name', value: 'y', source: 'https://x.com' }).length > 0);
+  assert.ok(checkEdit({ range: 'my_stack!H3', name: 'X', value: 'y', approved: OK }).length > 0);
+});
+
+test('approval still checks legal values, including the DPIA flag', () => {
+  assert.ok(checkEdit({ range: 'tools!K3', name: 'X', value: 'Orange', approved: OK }).length > 0);
+  assert.ok(checkEdit({ range: 'tools!K3', name: 'X', value: 'green', approved: OK }).length > 0);
+  assert.ok(checkEdit({ range: 'tools!I3', name: 'X', value: 'Maybe', approved: OK }).length > 0);
+  assert.ok(checkEdit({ range: 'tools!M3', name: 'X', value: '29/09/2026', approved: OK }).length > 0);
+  assert.ok(checkEdit({ range: 'tools!J3', name: 'X', value: '', approved: OK }).length > 0);
+});
+
+test('approval permits a cost restructure, which is exactly the call it records', () => {
+  const e = { range: 'tools!D3', name: 'HubSpot', old: 'Free CRM / Marketing Starter from £18 a month',
+              value: 'Starter £18/mo/seat monthly, 500 HubSpot Credits' };
+  assert.ok(checkEdit({ ...e, source: 'https://x.com' }).length > 0);   // still refused as a fact
+  assert.deepEqual(checkEdit({ ...e, approved: OK }), []);
+});
+
+test('an approved edit is still name-checked, and its stamp still gated', () => {
+  const edits = [{ range: 'tools!N5', name: 'Blotato', value: 'A line.', approved: OK }];
+  const tools = Array(10).fill(''); tools[4] = 'Blotato';
+  assert.equal(checkNames(edits, { tools }), true);
+  tools[4] = 'Canva';
+  assert.throws(() => checkNames(edits, { tools }), /ABORTED/);
+});

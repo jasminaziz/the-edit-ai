@@ -58,7 +58,8 @@ row with any axis field blank fails `isComplete()` and does not render at all.
 Allowed values below are frozen by `reports/2026-08-23-axis-locked.md`, which
 outranks the overhaul audit on every value and definition. Do not widen them
 here. `dpia_flag`, `trustee_note` and `verdict` are Jasmin's judgement and are
-never written by automation or a code session.
+never written by automation, nor by a code session unless she has approved the
+exact value in chat (ruled 29 Sep 2026; see the write path in CLAUDE.md).
 
 | Col | Field            | Allowed values / format                                    |
 |-----|------------------|------------------------------------------------------------|

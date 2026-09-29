@@ -145,7 +145,19 @@ determines the correct value, or whether someone has to choose it.** Name, url,
 pricing, nonprofit tier, data location and training policy are
 machine-verifiable facts and may be maintained by automation with sources. The
 DPIA flag, trustee note, verdict, jobs, status and what_it_does are Jasmin's and
-are NEVER written by any automation or code session.
+are NEVER written by any automation, and never by a code session on its own
+initiative.
+
+**Changed 29 Sep 2026, on Jasmin's ruling: a code session may write any column
+on the four content tabs once she has approved that exact value in chat.** The
+edit carries `"approved": "<DD MMM YYYY>, in chat"` and goes through
+`sheet-write.mjs` like any other write. **Her condition: before she approves,
+the session flags any concern, and says which parts are opinion or unchecked
+rather than verified fact.** She chose chat approval over a terminal
+confirmation knowingly, so this is a recorded rule, not an enforced one: the
+script cannot tell a real approval from a claimed one. Automation (the audit's
+own findings, the Cowork task, the whats_new Routine) is unchanged and still
+facts-only.
 
 Widened on Jasmin's ruling 2026-08-31, from a list that had name and url as
 "never writable, by any route". A vendor renaming its product is a fact, and
@@ -230,12 +242,13 @@ search and its rules stay in Cowork, so there is still only one of them.
 Additions and retirements are still done by hand: `sheet-write.mjs` cannot add
 or delete a row, and every new row carries copy cells only Jasmin writes.
 
-`scripts/sheet-write.mjs` is the **only** path that writes to the Sheet, with 24
-tests in `scripts/sheet-write.test.mjs` as at 2026-09-01. Run them with `node
+`scripts/sheet-write.mjs` is the **only** path that writes to the Sheet, with 31
+tests in `scripts/sheet-write.test.mjs` as at 2026-09-29. Run them with `node
 --test scripts/sheet-write.test.mjs`; `bun test` also picks them up, so the
-project gate reports **96 across 5 files, 72 of them the app's and 24 these
-guards** (was 88 across 4 until 2026-09-04, when `slugify.test.ts` added
-eight). They sit outside the vitest `src/**` glob deliberately: this is a
+project gate reports **108 across 5 files, 77 of them the app's and 31 these
+guards**, read from a run on 29 Sep 2026 (was 96 across 5 with 72 and 24; the
+app side had already reached 77 before that date without this line being
+updated). They sit outside the vitest `src/**` glob deliberately: this is a
 script, not the app.
 
 The guard count moves as guards are added — it went 19 to 24 on 2026-09-01 when
@@ -246,9 +259,16 @@ is clean, say which side of the split changed.
 The guard is **per tab, never a global set of column letters**. Column I is
 `url` on `learning` and `trains_on_input` on `tools`, so a global set would
 accept "No by default" as a URL. Writable: `tools` A, D, F, H, I, J, M;
-`my_stack` A and E; `design_kit` A and E; `learning` I. Refused permanently:
+`my_stack` A and E; `design_kit` A and E; `learning` I. Refused as a fact:
 everything else, including `learning` column A, because those names are
-composite labels Jasmin wrote rather than vendor strings.
+composite labels Jasmin wrote rather than vendor strings. **An `approved` edit
+reaches every column on those four tabs** (see the judgement split above) and
+skips the source-URL and cost-shape rules, since her approval is the source and
+a restructure is exactly her call. It never reaches `whats_new` or row 1, the
+headers every fetcher reads by name, and legal values still apply, including
+Green, Amber or Red on the DPIA flag. Known cosmetic gap: the dry-run plan
+labels an approved edit "source: (none given)"; the change to print the
+approval date instead was blocked by Claude Code's permission check on 29 Sep.
 
 **Column D carries one extra rule.** Only a number or a currency symbol
 substituted inside the existing string shape may be written. A restructured
@@ -1339,7 +1359,9 @@ The re-point changes who the site speaks to, not how it sounds.
 
 Positioning and page copy are authored by Jasmin with Cowork Claude and
 arrive as exact strings (see `reports/` copy pack). Code sessions place
-strings; they never author or improvise visitor-facing copy.
+strings; they never author or improvise visitor-facing copy. They may draft it
+when Jasmin asks, for her sign-off, flagging anything unverified, and only an
+approved string is ever placed.
 
 **Closed 2026-08-28 by copy pack four, then removed entirely 1 Sep 2026.** The
 homepage counter used to read "Passed the checks", against the ruled claim. It
@@ -1608,7 +1630,8 @@ deleted and the shared secret added.
 - Never author or improvise visitor-facing copy — copy arrives as exact
   approved strings
 - Never write the judgement fields (dpia_flag, trustee_note, verdict) from
-  any automation or session — they are Jasmin's alone
+  any automation, or from a session without Jasmin's approval of the exact
+  value in chat, recorded in the edit's `approved` field — they are hers
 - Never widen the directory back toward general AI tools: the row ceiling
   is 45, and every row must serve the charity/cultural/heritage comms
   audience or be a deliberate public "judged, not recommended" entry

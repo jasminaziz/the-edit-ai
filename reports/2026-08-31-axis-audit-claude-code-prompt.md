@@ -80,8 +80,14 @@ three tabs except the ones listed above, INCLUDING learning column A, whose
 names are composite labels Jasmin wrote rather than vendor strings.
 
 E, K and L are Jasmin's judgement. G is the filter, so it is editorial. N is
-visitor-facing copy. Building a write for any of those is an abort, not a
-warning.
+visitor-facing copy. Building a write for any of those FROM THIS AUDIT'S OWN
+FINDINGS is an abort, not a warning.
+
+The one exception, ruled 29 Sep 2026: if Jasmin approves an exact value for one
+of those cells in chat, it may be written with "approved": "<DD MMM YYYY>, in
+chat" on the edit. Before she approves, flag any concern, and say which parts
+are opinion or unchecked. Never propose such a value unasked, and never set
+"approved" on anything she has not approved in this conversation.
 
 The guard is PER TAB, never a global set of column letters: column I is `url`
 on learning and `trains_on_input` on tools, so a global set would accept
@@ -323,7 +329,7 @@ only path that touches the Sheet, and it must:
   - after sending, re-read the written cells and confirm. Print a receipt.
   - never stamp M for a row whose other write did not land. That date is the
     site's claim a check happened; it is earned, not scheduled.
-scripts/sheet-write.mjs exists, with 19 tests in scripts/sheet-write.test.mjs.
+scripts/sheet-write.mjs exists, with 31 tests in scripts/sheet-write.test.mjs.
 Run `node --test scripts/sheet-write.test.mjs` before trusting it. Do not
 rebuild it. --rollback replays a run backwards if a write needs undoing.
 
