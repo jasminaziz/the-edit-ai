@@ -1549,13 +1549,14 @@ corrected; until then neither version is established.
 
 Also parked, SCRATCHPAD queue item 1: the Routine prompt still instructs
 curl dispatch and still contains PAT 16554137 (revoke it, GitHub never sees
-it, so it is exposure with no function); the Apps Script still has no dedupe
-and no shared secret, **and that understates it: its `doGet` returns the entire
-`tools` tab, unpublished rows and draft verdicts included, to anyone with the
-URL and no authentication at all** (verified 2026-08-31 with a plain curl and no
-credential). The endpoint is a read of everything, not just a write of news rows.
-The URL sits in this private repo so exposure is limited, but it is the reason
-tools writes were NOT routed through this script: making it write arbitrary cells
+it, so it is exposure with no function); the Apps Script still has no dedupe. **Shared secret: closed 4 Oct 2026.** Its
+`doGet` used to return the entire `tools` tab, unpublished rows and draft verdicts
+included, to anyone with the URL (verified 2026-08-31), and the URL sat in this
+repo, which is public, not private as this file once said. Since 4 Oct both doGet
+and doPost refuse any call without the `WHATS_NEW_TOKEN` script property as a `token`
+parameter (verified the same day: no-token GET and POST refused, token GET served).
+The endpoint can still read the whole tab for anyone holding the token, which is the
+reason tools writes are NOT routed through this script: making it write arbitrary cells
 would widen an already-open endpoint into the live directory; the duplicate 3 and 6 Jul whats_new batches need
 deleting by hand.
 
@@ -1583,9 +1584,10 @@ Apps Script web app, deployed under jasminaziz1@gmail.com. **Its exec URL is nev
 this repo**, which is public: the workflow reads it from the repository secret
 `WHATS_NEW_EXEC_URL`, and sends the shared token from `WHATS_NEW_TOKEN` as a `token`
 query parameter (both set 4 Oct 2026, Decision 056 in CHIEF OF STAFF). The script
-must refuse any call without that token, doGet included, because doGet returns the
-whole `tools` tab. Earlier URLs sit in this repo's history; each is dead only once its
-deployment is archived in Apps Script. Never reintroduce a URL to a tracked file. curl note: use
+refuses any call without that token, doGet included (`authorised_` and `refuse_` at
+the foot of Code.gs, live 4 Oct 2026 on the same deployment and URL). The URL still
+sits in this repo's history and is harmless without the token. Keep the token out of
+every tracked file, and never reintroduce the URL to one. curl note: use
 `-d @file` without `-X POST`; the 302 must be followed with GET.
 
 Schema: name, developer, date (DD MMM YYYY strict, load-bearing, drives
