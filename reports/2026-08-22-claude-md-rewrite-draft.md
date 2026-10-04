@@ -214,7 +214,7 @@ injects a scoped credential that cannot dispatch workflows. No PATs, no
 repo secrets — the repo connection is the only credential needed.
 
 Apps Script URL (deployed under jasminaziz1@gmail.com):
-`https://script.google.com/macros/s/AKfycbxGOh2fvk986AMMh_f57uZRAftaCuJGT-E9XOC_0FI36zGSCGVOF2OY81bn3LxCR0I/exec`
+`[exec URL removed 4 Oct 2026: now the WHATS_NEW_EXEC_URL repository secret]`
 Serves doGet (schema inspection) and doPost (write rows). curl note: use
 `-d @file` without `-X POST`; the 302 must be followed with GET.
 

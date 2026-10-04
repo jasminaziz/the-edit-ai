@@ -15,12 +15,20 @@ jobs:
       - name: Decode payload and POST to Apps Script
         env:
           PAYLOAD_B64: ${{ inputs.payload_b64 }}
+          # The exec URL and the shared token live in repository secrets, never in
+          # this public repo. GitHub masks both in the log.
+          EXEC_URL: ${{ secrets.WHATS_NEW_EXEC_URL }}
+          TOKEN: ${{ secrets.WHATS_NEW_TOKEN }}
         run: |
+          if [ -z "$EXEC_URL" ] || [ -z "$TOKEN" ]; then
+            echo "ERROR: the WHATS_NEW_EXEC_URL or WHATS_NEW_TOKEN repository secret is not set"
+            exit 1
+          fi
           printf '%s' "$PAYLOAD_B64" | base64 -d > /tmp/payload.json
           echo "Payload:"
           cat /tmp/payload.json
           RESPONSE=$(curl -s -L \
-            "https://script.google.com/macros/s/AKfycbxGOh2fvk986AMMh_f57uZRAftaCuJGT-E9XOC_0FI36zGSCGVOF2OY81bn3LxCR0I/exec" \
+            "${EXEC_URL}?token=${TOKEN}" \
             -H "Content-Type: application/json" \
             -d @/tmp/payload.json)
           echo "Apps Script response: $RESPONSE"

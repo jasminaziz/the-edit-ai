@@ -1571,18 +1571,21 @@ Dispatch MUST go through the GitHub MCP tool `actions_run_trigger`
 (method `run_workflow`, workflow_id `append-whats-new.yml`,
 ref `main`). Raw curl to api.github.com cannot work
 from the Routine sandbox: the proxy strips the Authorization header and
-injects a scoped credential that cannot dispatch workflows. No PATs, no
-repo secrets — the repo connection (`add_repo`) is the only credential the
-pipeline needs.
+injects a scoped credential that cannot dispatch workflows. No PATs: the
+repo connection (`add_repo`) is the only credential the Routine needs. The
+workflow itself reads two repository secrets (below), which the Routine never sees.
 
 The relay exists because the Routine sandbox blocks egress to
 script.google.com (network policy CONNECT 403, re-verified 2026-07-11). Do
 not delete it on the assumption it is redundant.
 
-Apps Script URL (deployed under jasminaziz1@gmail.com):
-`https://script.google.com/macros/s/AKfycbxGOh2fvk986AMMh_f57uZRAftaCuJGT-E9XOC_0FI36zGSCGVOF2OY81bn3LxCR0I/exec`
-Serves doGet (schema inspection) and doPost (write rows). The old URL
-(AKfycbyn23...) is dead. Never reintroduce it. curl note: use
+Apps Script web app, deployed under jasminaziz1@gmail.com. **Its exec URL is never written in
+this repo**, which is public: the workflow reads it from the repository secret
+`WHATS_NEW_EXEC_URL`, and sends the shared token from `WHATS_NEW_TOKEN` as a `token`
+query parameter (both set 4 Oct 2026, Decision 056 in CHIEF OF STAFF). The script
+must refuse any call without that token, doGet included, because doGet returns the
+whole `tools` tab. Earlier URLs sit in this repo's history; each is dead only once its
+deployment is archived in Apps Script. Never reintroduce a URL to a tracked file. curl note: use
 `-d @file` without `-X POST`; the 302 must be followed with GET.
 
 Schema: name, developer, date (DD MMM YYYY strict, load-bearing, drives
