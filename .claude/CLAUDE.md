@@ -552,6 +552,13 @@ VITE_GOOGLE_SHEETS_ID
 VITE_GOOGLE_SHEETS_API_KEY (must be this exact name)
 VITE_SUPABASE_URL
 VITE_SUPABASE_PUBLISHABLE_KEY (must be this exact name — NOT VITE_SUPABASE_ANON_KEY)
+
+# Push notifications (api/), see the whats_new automation section
+VITE_PUSH_VAPID_PUBLIC_KEY   baked into the bundle, and read by api/push-send.ts too
+PUSH_VAPID_PRIVATE_KEY       server only
+PUSH_SEND_SECRET             server only; the same value is the GitHub repository secret
+SUPABASE_URL                 server only
+SUPABASE_SERVICE_ROLE_KEY    server only; never VITE_-prefixed, never in the browser
 ```
 
 Production values live in Vercel only, never in the repo. The production
@@ -1593,6 +1600,34 @@ every tracked file, and never reintroduce the URL to one. curl note: use
 Schema: name, developer, date (DD MMM YYYY strict, load-bearing, drives
 the month parser), what_it_is, category, url. Columns A-F in that order.
 No ranges, no "Unknown".
+
+**Push notifications ride on this workflow.** Plan and rulings:
+`reports/2026-10-08-push-notifications-plan.md`. A second job, `notify`, runs
+only after `append` succeeds and posts the batch's story count to
+`/api/push-send` with the `PUSH_SEND_SECRET` repository secret. It is a separate
+job so a push failure never marks the append failed; with the secret unset it
+skips with a warning rather than failing. 409 from the function is the daily
+cap working (one send per UK date per host), not an error.
+
+- **No service worker.** The site uses Declarative Web Push on
+  `window.pushManager`, which iOS 18.4+ and Safari 18.5+ display with no worker.
+  The self-destroying `/sw.js` ruling stands. A worker at scope `/` would be
+  replaced and unregistered by `/sw.js` on the next page load, taking its
+  subscription with it, so do not "upgrade" `PushToggle.tsx` to
+  `navigator.serviceWorker.ready.pushManager`.
+- **Apple only in version 1** (ruling A): `api/_push.ts` refuses any endpoint
+  not on `web.push.apple.com`.
+- **Subscriptions live in Supabase** (`push_subscriptions`, `push_sends`, RLS on
+  with no policies, grants revoked), written only by the `api/` functions with
+  the service role key. Rows are tagged with the host they arrived on, which is
+  what keeps the test subdomain apart from production.
+- **The notification text is the template in `api/_push.ts` plus the count,
+  never caller-supplied**, so a leaked secret can at worst send one genuine-
+  looking notification.
+- Guards: `bun test api/`. The `api/` files sit outside every tsconfig; check
+  them with `bunx tsc --noEmit --strict --skipLibCheck --target es2022 --module
+  nodenext --moduleResolution nodenext --types node api/push.ts
+  api/push-send.ts api/_push.ts`.
 
 Planned changes, still outstanding (see audit): the Routine's extraction rule
 re-points to sector-relevant stories only (zero-story days are correct

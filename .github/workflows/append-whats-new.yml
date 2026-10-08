@@ -38,3 +38,37 @@ jobs:
             echo "ERROR: Apps Script did not return success: $RESPONSE"
             exit 1
           fi
+
+  # One push notification per batch, sent only after the append succeeded.
+  # A separate job, so a push failure never marks the append itself as failed.
+  # Plan and rulings: reports/2026-10-08-push-notifications-plan.md.
+  notify:
+    needs: append
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send the AI News push notification
+        env:
+          PAYLOAD_B64: ${{ inputs.payload_b64 }}
+          PUSH_SEND_SECRET: ${{ secrets.PUSH_SEND_SECRET }}
+        run: |
+          if [ -z "$PUSH_SEND_SECRET" ]; then
+            echo "::warning::PUSH_SEND_SECRET is not set, so no notification was sent"
+            exit 0
+          fi
+          COUNT=$(printf '%s' "$PAYLOAD_B64" | base64 -d | jq '.rows | length')
+          if [ "$COUNT" -lt 1 ]; then
+            echo "No stories in this batch, so no notification"
+            exit 0
+          fi
+          RESPONSE=$(curl -s -w '\n%{http_code}' -X POST "https://theeditai.co.uk/api/push-send" \
+            -H "Authorization: Bearer ${PUSH_SEND_SECRET}" \
+            -H "Content-Type: application/json" \
+            -d "{\"count\": ${COUNT}}")
+          STATUS=$(printf '%s' "$RESPONSE" | tail -n 1)
+          echo "Push send response (${STATUS}): $(printf '%s' "$RESPONSE" | sed '$d')"
+          # 409 is the daily cap working: today's notification has already gone.
+          if [ "$STATUS" = "200" ] || [ "$STATUS" = "409" ]; then
+            exit 0
+          fi
+          echo "ERROR: the push send failed. The rows were appended; only the notification is missing."
+          exit 1
