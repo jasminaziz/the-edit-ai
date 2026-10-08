@@ -204,34 +204,34 @@ The four limits that need a ruling are decisions C to F below.
 **A. Version 1 is Apple only.** Android and desktop Chrome get no control,
 because reaching them needs a service worker. Recommended: yes.
 
-Ruling:
+Ruling: accepted as recommended, 8 Oct 2026, in chat.
 
 **B. The site gets its first `api/` server code.** Two functions, a Supabase
 table pair and one new repository secret. Recommended: yes; there is no route to
 push without it.
 
-Ruling:
+Ruling: accepted as recommended, 8 Oct 2026, in chat.
 
 **C. Phones older than iOS 18.4.** Recommended: show them nothing.
 
-Ruling:
+Ruling: accepted as recommended, 8 Oct 2026, in chat.
 
 **D. A badge count on the home-screen icon.** Recommended: not in version 1.
 The `app_badge` field crashed Safari 18.6 and moved to the top level of the
 payload in Safari 26, so it carries version risk for little gain.
 
-Ruling:
+Ruling: accepted as recommended, 8 Oct 2026, in chat.
 
 **E. The notification body: count only, or name the lead story too.**
 Recommended: count only. Naming the story puts Routine-extracted text on
 phones, which is the same text `/ai-news` already shows but a different place
 to be wrong in.
 
-Ruling:
+Ruling: accepted as recommended, 8 Oct 2026, in chat.
 
 **F. The daily cap of one notification per UK calendar day.** Recommended: yes.
 
-Ruling:
+Ruling: accepted as recommended, 8 Oct 2026, in chat.
 
 **G. Privacy policy:** the lawful basis, and whether a push address is
 personal data (section 6).
