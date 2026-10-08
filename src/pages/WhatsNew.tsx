@@ -8,6 +8,7 @@ import { hubSubheading } from "@/lib/links";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { LeadCard, GridCard, monthYearKey, parseDate } from "@/components/WhatsNewCard";
 import { SEO } from "@/components/SEO";
+import { PushToggle } from "@/components/PushToggle";
 
 function groupByMonth(items: WhatsNew[]): { month: string; items: WhatsNew[] }[] {
   const sorted = [...items].sort((a, b) => {
@@ -188,6 +189,10 @@ const WhatsNewPage = () => {
 
       <section className="bg-background py-10 px-6 sm:px-12">
         <div className="max-w-[1280px] mx-auto">
+          {/* Outside the loading and error states on purpose: opting in must
+              work even when the feed fails, and on the test subdomain it is
+              always empty. Renders nothing where push is unavailable. */}
+          <PushToggle />
           {loading ? (
             <LoadingSpinner />
           ) : error ? (

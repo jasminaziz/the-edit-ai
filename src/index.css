@@ -299,4 +299,26 @@
   .lime-link:focus-visible {
     text-decoration-thickness: 2px;
   }
+
+  /* The AI News notification toggle (PushToggle.tsx). Same cobalt pill as the
+     template download, with the ruled ink hover. Cream on cobalt measures
+     8.03:1 and cream on ink well above that. */
+  .push-toggle {
+    display: inline-block;
+    background: #2D35C9;
+    color: #FAF8F4;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: 20px;
+    padding: 14px 24px;
+    transition: background 200ms ease-out;
+  }
+  .push-toggle:hover,
+  .push-toggle:focus-visible {
+    background: #1A1510;
+  }
+  .push-toggle:disabled {
+    cursor: progress;
+    opacity: 0.7;
+  }
 }
