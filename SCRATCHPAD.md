@@ -3481,3 +3481,59 @@ tree. Neither branch is merged; Jasmin merges.
   `.form-input` rules and a `float-down` keyframe) never ships either.
 
 web-build-guide stale: theeditai.co.uk §7/§8 predate the 30 Aug overhaul: apex 308 enforced, Submit form replaced by mailto, OG card 1200x630 40KB; open: empty-shell prerender unmerged (67 behind main), bare-wildcard robots, 3 client-side redirects returning 200, Sheet-fetch failures unreported (see reports/site-gates-2026-10-09.md)
+
+### 2026-10-09 manual checks (gates 1.6, 2.6, 3.9, 4.3)
+
+All against **production** (`main` at `1235918`, neither branch merged), so
+these are the pre-merge baseline. Re-run after the merges.
+
+**PageSpeed Insights, mobile, 9 Oct 2026** (keyless API quota was exhausted, so
+run through pagespeed.web.dev; report links last about a month):
+
+| Route | Perf | A11y | BP | SEO | FCP | LCP | TBT | CLS | Report |
+|---|---|---|---|---|---|---|---|---|---|
+| `/` (17:03) | 74 | 95 | 100 | 100 | 3.3 s | 4.6 s | 0 ms | 0 | `pagespeed.web.dev/analysis/https-theeditai-co-uk/vvqkc7yx1k` |
+| `/tools` (17:11) | 78 | 100 | 100 | 100 | 3.2 s | 4.1 s | 0 ms | 0 | `.../https-theeditai-co-uk-tools/6db267gnv2` |
+| `/my-stack` (17:11) | 77 | 100 | 100 | 100 | 3.4 s | 4.1 s | 0 ms | 0 | `.../https-theeditai-co-uk-my-stack/tq7r6jeab0` |
+| `/radar` (18:08) | 80 | 100 | 100 | 100 | 3.1 s | 4.0 s | 0 ms | 0.01 | `.../https-theeditai-co-uk-radar/nutthh2ym3` |
+
+Gate 2 still fails: Performance under 90 and LCP over 2.5 s on every route; CLS
+and TBT pass. No field data yet (CrUX has none for the site). The homepage's
+only accessibility deduction is colour contrast on the periwinkle header and
+the lime "Menu" label (`Layout.tsx:175`), which is the named exception ruled
+the same day. Lighthouse accessibility on the other templates (`/design-kit`,
+`/learning`, `/ai-news`, `/policy-template`, `/submit`, a legal page, the 404)
+**not run**: pagespeed.web.dev stopped returning results after four runs.
+
+**axe: not run.** `axe-core` is not installed and was not downloaded. Jasmin's,
+in axe DevTools.
+
+**Keyboard pass, scripted in Chrome against a local build of `geo/crawl-meta`,
+9 Oct 2026.**
+- Phone drawer (375 wide, `/` and `/tools`): passes. Menu reachable by Tab,
+  focus moves into the drawer, stays inside across 25 Tabs, Escape closes it,
+  focus returns to Menu.
+- `/tools` at 375: no Tab stop hidden behind the sticky filter bar.
+- **`/tools` at 1280: fails WCAG 2.2 AA 2.4.11 (Focus Not Obscured).** 21 of 160
+  Tab stops, all card name links, land entirely behind the sticky filter bar.
+  Proven two ways: a hit test at the focused link's centre returns the bar, and
+  a screenshot shows Adobe Express selected with its name under the bar (pane at
+  1,139px, link at y 86 to 112, bar 64 to 197). Cause: in the three-column
+  grid, once a row has scrolled under the bar, the next card's name is already
+  "in view" to the browser, so focus does not scroll it. Every focused element
+  showed a ring. **Not fixed.** Candidate, untested: a `scroll-padding-top` on
+  `#app-scroll` equal to the bar's height at `lg` (measured 133px at 1280 that
+  day; CLAUDE.md records 149px, so measure before choosing a value).
+
+**VoiceOver on `/` and `/tools`: not run.** Needs a person listening. Jasmin's.
+
+**Open Graph, as a scraper reads it, 9 Oct 2026.** Production: `/`, `/tools`,
+`/my-stack`, `/policy-template` and `/learning` all serve the homepage
+`og:title` and no `og:url`, because the shell is the same on every route; the
+card image serves (200, `image/png`, 40,383 bytes). The `geo/prerender-2026-10`
+preview serves each route's own `og:title`, except the three legal pages,
+whose titles live on `geo/crawl-meta`. opengraph.xyz itself is worth running
+after the merge, not before.
+
+**Search Console and an uptime monitor: Jasmin's**, under hello@jasminaziz.co.uk.
+Not done as at this entry.
