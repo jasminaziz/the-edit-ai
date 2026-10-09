@@ -834,7 +834,8 @@ parameterised; the directory is one page. Any audit claiming the site "cannot
 cite a single tool page" is describing pages that do not exist, and the
 achievable goal is that `/tools` carries all 23 tools' text in its served HTML.
 
-**The fix lives on branch `geo/prerender`, not merged.** Build-time
+**The fix lives on branch `geo/prerender-2026-10`, not merged** (the September
+branch `geo/prerender` rebased onto `main`; the old branch is superseded). Build-time
 prerendering with a headless browser: `scripts/prerender.mjs` serves the built
 `dist`, drives each route in Chromium so the effects run and the Sheet
 responds, and writes the resulting HTML beside the bundle. **No file in `src/`
@@ -852,17 +853,49 @@ Four things that will otherwise be rediscovered the hard way:
 - **Vercel needs `@sparticuz/chromium`.** The build image carries none of
   Chromium's shared libraries and fails on `libnspr4.so`; `--with-deps` cannot
   rescue it because it shells out to apt while the image is Amazon Linux.
-- **Preview URLs cannot be curled.** Deployment protection is SSO,
-  `all_except_custom_domains`, so a fetch returns an auth wall with a 200 and a
-  full body. Build logs are still readable through the Vercel API, which is
-  what made both diagnoses possible without fetching the site.
+- **Preview URLs cannot be curled bare.** Deployment protection is SSO,
+  `all_except_custom_domains`, so a plain fetch returns an auth wall with a 200
+  and a full body. What works, 9 Oct 2026: the Vercel connector's
+  `get_access_to_vercel_url` share link, opened once with curl into a cookie
+  jar, then every route curled with that jar. Check each body for the real page
+  and for "Log in to Vercel": the jar stopped working within the hour and
+  started returning a "Protected by Vercel Authentication" body. Build logs are
+  readable through the Vercel API.
 
-**Blocked on one dashboard setting:** `VITE_GOOGLE_SHEETS_API_KEY` is absent
-from Vercel's **Preview** environment, so the data-driven routes prerender
-their empty state there. Vite bakes `VITE_` variables in at build time, so a
-missing key ships a request with no key rather than raising an error. The
-branch's build is **red on purpose** until that is set: the prerender refuses
-to write pages that would look finished and say nothing.
+**The Preview build is green as of 9 Oct 2026, and the blocker recorded here
+was never the cause.** This paragraph said `VITE_GOOGLE_SHEETS_API_KEY` was
+absent from Vercel's Preview environment. It was not: the CLI lists it for
+Preview, and the failed preview built the same bundle hash as production. The
+fault was the Referer override, which Chromium ignores under
+`route.continue`, so Google saw `localhost:8080` and refused the production
+key; the script now sends that request from Node (`37b1193`). The guard still
+refuses to write pages that would look finished and say nothing, and was
+proven to fire.
+
+**Proven by curl on the preview, 9 Oct 2026:** nine routes carry their body
+text, own `<title>`, own `og:title` and canonical in the served HTML; the three
+legal pages carry text and canonical, and get their titles from
+`geo/crawl-meta`. Unknown paths get the prerendered NotFound page as
+`404.html` with `noindex` and a **real 404 status**, because `vercel.json` has
+no catch-all on that branch any more (`b039f0f`). The cost: its rewrites are a
+third route list to keep in step with `App.tsx` and the script's `ROUTES`.
+Curled on the preview: `/nope-xyz`, `/tools/nope` and `/Tools` return 404
+with `noindex`; every route, `/tools/` and `?tool=` links return 200; the
+three legacy paths return 308; `robots.txt`, `sitemap.xml`, the `.docx` and
+the manifest serve as their own types. Case variants such as `/Tools` now 404
+for a crawler, while the app, whose router ignores case, still renders them
+for a reader once it boots.
+
+**Merge `geo/crawl-meta` first, or both together, never the prerender
+alone.** The prerender branch carries crawl-meta's three 308 redirects byte
+for byte, but the two `vercel.json` files still conflict over the catch-all;
+when merging the prerender after crawl-meta, take its `vercel.json` whole.
+
+**A content flash comes with it, measured on the preview:** the app mounts with
+`createRoot`, not hydrate, so on a cold load of `/tools` the prerendered cards
+paint at about 80ms, React replaces them with the loading spinner at about
+130ms, and the cards return when the Sheet responds. That last step could not
+be watched on a preview, which 403s on Sheets data.
 
 **Accepted trade, ruled 2026-09-04:** prerendered HTML freezes a Sheet snapshot
 at build time. Readers still get live data on every visit; a non-JS crawler
@@ -879,6 +912,8 @@ both crossing a stated constraint: expand during prerender (cards visibly
 collapse on load, changing what a reader sees) or render always and toggle
 visibility (an app change, visually identical, better for find-in-page and
 screen readers). The second is the better answer and is Jasmin's call.
+**Ruled 9 Oct 2026: left for now.** Re-confirmed that day by curl on the
+prerendered `/tools`: 23 "Honest verdict" toggles, 0 verdicts, 0 trustee notes.
 
 **Two things are NOT levers and must never be recommended as GEO work**, on the
 evidence table in `CONSULTING/CONSULTANCY_GEO-Audit-Product_v1.html`: **schema
