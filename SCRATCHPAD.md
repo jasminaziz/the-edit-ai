@@ -3472,3 +3472,12 @@ tree. Neither branch is merged; Jasmin merges.
   before. Measured from `bun run build` on 9 Oct 2026. Every route checked in
   Chrome afterwards: same rendered text as before, and Home to Tools stays a
   client-side navigation that fetches the Tools chunk on demand.
+- **Housekeeping (gates 3.5 note, 1.2).** `src/vercel.json` deleted: Vercel only
+  reads the root file, nothing referenced this copy, and it was identical to
+  `main`'s root `vercel.json`, so it would have misled whoever edited it. The
+  dead `.form-input::placeholder` rule (`#9A8F82`, 2.99:1) deleted from
+  `src/App.css`; no file uses `.form-input`. Found doing it, not acted on:
+  **nothing imports `src/App.css` at all**, so the rest of that file (the other
+  `.form-input` rules and a `float-down` keyframe) never ships either.
+
+web-build-guide stale: theeditai.co.uk §7/§8 predate the 30 Aug overhaul: apex 308 enforced, Submit form replaced by mailto, OG card 1200x630 40KB; open: empty-shell prerender unmerged (67 behind main), bare-wildcard robots, 3 client-side redirects returning 200, Sheet-fetch failures unreported (see reports/site-gates-2026-10-09.md)
