@@ -1121,6 +1121,20 @@ Colours (hex only, never names):
   disappears and the wordmark falls to 1.37:1. No periwinkle satisfies both. It
   was put to Jasmin with the numbers twice and she ruled for the colour.
 
+  **A named exception on Gate 1, ruled 9 Oct 2026** (gates finding 1.1 of
+  `reports/site-gates-2026-10-09.md`), chosen over a cobalt bar and a darker
+  nav-only periwinkle. A gates run reports these as the named exception, not as
+  open failures. Measured that day on `#7B7FD4` against 4.5:1: cream links
+  3.40, inactive tabs and drawer rows at `text-white/70` **2.59**, the drawer's
+  How I work links at `white/80` on their cream-8% panel **2.63**, lime "Menu"
+  2.75; and the cobalt wordmark on the hero 2.37 against 3:1. The two
+  white-alpha figures were never in the "three failures" above, so the
+  exception is five, not three. It covers the homepage only: on cobalt the same
+  classes measure 4.97 and 5.22. Correction to the paragraph above,
+  measured the same day: `#4E53C6` clears cream (5.86) and lime (4.74) but not
+  the inactive tabs at `white/70` (3.95); every nav text clears only at
+  `#3F45C1`, 2.05:1 away from the hero.
+
   **Scoped to the homepage. `--secondary` stays `#9B9EDE`**, which is what keeps
   the legal and policy `h1`s passing at 3.38:1. Do not "finish the job" by
   reverting the token: that breaks four pages nobody asked about.
