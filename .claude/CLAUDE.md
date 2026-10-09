@@ -395,6 +395,21 @@ of 5 and 5. The ceiling still stands where this file sets it, on the directory.
 Decision 3 in the audit prompt is therefore narrower than it was: it now only
 asks about `learning`, and nothing currently enforces a ceiling there either.
 
+**The directory watchdog reads the Sheet and never writes to it.** Ruled 9 Oct
+2026 as the alert path for gates finding 4.1, over client error capture and an
+uptime check alone. `.github/workflows/directory-watchdog.yml` runs
+`scripts/check-directory.ts` every six hours from `main`: it reads the `tools`
+tab with the www referer the site uses, counts rows with the app's own
+`parseToolRows` and `isComplete` rather than restating them, and fails below
+20 complete rows, which sends GitHub's failure email. It catches a key that
+loses a referrer host, a revoked key and a renamed header, all of which empty
+`/tools` with nothing else reaching Jasmin. **It needs a `SHEETS_API_KEY`
+repository secret**, the same value as Vercel's `VITE_GOOGLE_SHEETS_API_KEY`,
+and does nothing until it reaches `main`. Same caveat as the whats_new
+watchdog: GitHub pauses schedules after 60 days without repo activity. The
+browser side of the same failure is a `console.error` in each fetcher,
+naming the status and `values/<tab>`, never the key.
+
 ## Tech stack
 
 - Build environment: Claude Code — local edits in `~/Developer/the-edit-ai`
@@ -1076,6 +1091,15 @@ Three things about it that are not obvious:
   compacted rail by 37 to 40px at 375, 63 to 64px at 768, and 32 to 48px at
   1280 and 1440. **Measure a scroll landing after the page settles**, by
   sampling until nothing moves, never in the frame after the scroll.
+- **`under-rail` on the content section of `/tools` and `/radar` is
+  load-bearing, not an unused class.** Added 9 Oct 2026 (`fee4926`): every link
+  and button inside it carries the card's `scroll-margin-top` (208px, 160px
+  from `lg`), which is what stops keyboard focus landing behind the sticky
+  filter rail. Without it, Tab hid up to 21 card names at 1280 and Shift+Tab hid
+  controls on both pages at every width (WCAG 2.2 AA 2.4.11). It sits on the
+  section, not the scroll pane, because padding on the pane would add to the
+  card's own margin and push `?tool=` deep links down. Re-check with a Tab and
+  Shift+Tab sweep if either page's layout changes.
 
 `stripEmoji` in `src/lib/sheets.ts` applies to all text fields parsed from
 the Sheet. Preserve it in any fetcher change.
@@ -1682,15 +1706,19 @@ deleted and the shared secret added.
 - Before editing, state what must not be touched
 - Structure before styling; hex codes and pixel values, never vague
   adjectives
-- **The gate before every commit is three commands, not two:**
-  `bunx tsc --noEmit`, `bun test`, and **`bun run build`**. Added 2026-08-26
+- **The gate before every commit is four commands:** `bunx tsc --noEmit`,
+  `bun test`, **`bun run build`** and **`bun run lint`**. Lint joined on 9 Oct
+  2026, once `13a8f7a` cleared the two errors that had it failing on `main`; it
+  exits 0 with four old warnings, so a new error is now visible. The build was
+  added 2026-08-26
   after a code session ran the build for the first time and found that
   `tsc --noEmit` does not exercise the same path: Vite resolves imports,
   assets and plugin config at bundle time and can fail on things tsc passes.
   Vercel runs the build, and **Vercel build failures are silent** — it keeps
   serving the last good deploy — so a build nobody ran locally is a deploy
-  that dies quietly. The chunk-size warning is the known matter-js debt and
-  is not a failure.
+  that dies quietly. The chunk-size warning stopped printing when the routes
+  were split (`dd8f141`, main chunk 472 kB); if it comes back, something large
+  has landed in the main chunk.
 - Verify with vitest or the local dev server first, then on the production
   URL after a deploy lands (branch work: vitest and preview only)
 - Never assume the production Sheets key resolves locally — it is
@@ -1709,7 +1737,7 @@ deleted and the shared secret added.
 
 ## What Claude must not do
 
-- Never push to main without running the three-command gate first. The
+- Never push to main without running the four-command gate first. The
   never-merge-before-F2 rule that stood here is spent: it merged on
   2026-08-30. What replaces it is that **main is live**, so an unbuilt or
   unverified push is visible to the public in about three minutes. **Scoped
