@@ -1063,11 +1063,19 @@ Three things about it that are not obvious:
   regardless. Nothing needs a frame to settle first: the reveal wrappers animate
   transform and opacity, neither of which reflows.
 - **`.tool-card` carries a `scroll-margin-top` and it is two values.** The
-  sticky filter rail is 188px below `lg` and 149px at `lg` and up, so a single
-  offset lands the card's own name behind the rail on half the devices. Verified
-  at 375, 768 and 1280: the name clears the rail by 36, 62 and 31px. A deep link
-  that opens the right verdict but hides which tool it belongs to is not
-  finished.
+  sticky filter rail is 188px below `lg` and 149px at `lg` and up at rest, and
+  compacts to 173px and 133px once scrolled, so a single offset lands the
+  card's own name behind the rail on half the devices. A deep link that opens
+  the right verdict but hides which tool it belongs to is not finished.
+  **The scroll is computed from `offsetTop`, not `scrollIntoView`, since 9 Oct
+  2026.** The figures this bullet used to quote (36, 62 and 31px) were real but
+  were measured in the first frame after the scroll. The card was still in its
+  hidden reveal state (32px lower, 94% scale) and the rail had not compacted,
+  so within half a second the name settled 21 to 29px **under** the rail at
+  every width. Re-measured after the fix, at rest: the name clears the
+  compacted rail by 37 to 40px at 375, 63 to 64px at 768, and 32 to 48px at
+  1280 and 1440. **Measure a scroll landing after the page settles**, by
+  sampling until nothing moves, never in the frame after the scroll.
 
 `stripEmoji` in `src/lib/sheets.ts` applies to all text fields parsed from
 the Sheet. Preserve it in any fetcher change.

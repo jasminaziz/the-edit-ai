@@ -66,28 +66,39 @@ const Tools = () => {
   /**
    * Scroll the deep-linked card into view once the grid exists.
    *
-   * `block: "start"` plus a `scroll-margin-top` on `.tool-card` in index.css,
-   * rather than `block: "center"`. Centring an expanded card puts its own name
-   * above the fold, so the reader arrives at a verdict with nothing saying
-   * which tool it belongs to. The margin clears the sticky filter rail: the
-   * card top lands at 212px, which is the scroller's own 64px offset plus the
-   * 148px margin, with the name clear of the rail bottom at 197px. Measured on
-   * the dev server rather than derived.
+   * Start-aligned with the card's own `scroll-margin-top` from index.css, read
+   * here so the number lives in one place, rather than centred. Centring an
+   * expanded card puts its own name above the fold, so the reader arrives at a
+   * verdict with nothing saying which tool it belongs to.
+   *
+   * The position comes from layout (`offsetTop`), not from `scrollIntoView`,
+   * since 9 Oct 2026. `scrollIntoView` aims at the card as drawn, and at that
+   * moment its reveal wrapper is still in its hidden state, 32px lower and at
+   * 94% scale, which drops the top of a tall expanded card a further 3% of
+   * its height. When the reveal eased to rest the card rose about 59px, and
+   * the filter rail compacting on scroll took another 16, so the name ended
+   * up under the rail at every width (29px under at 1280). `offsetTop`
+   * ignores transforms and scroll, so the target is where the card will be
+   * once it settles. Measured after the fix: the name clears the compacted
+   * rail at 375, 768 and 1280 (figures in CLAUDE.md, deep-linkable verdicts).
    *
    * No `behavior: "smooth"`, deliberately. A smooth scroll is driven by
    * requestAnimationFrame, so it does not run in a background tab and stalls
    * part-way through wherever frames are not being produced. An instant scroll
    * lands correctly regardless, which is also what an anchor link would do.
-   * Nothing here needs a frame to settle first: the reveal wrappers animate
-   * transform and opacity only, neither of which reflows, so the card's
-   * position is final as soon as the grid commits (verified: the card's offset
-   * is identical at rest and after scrolling).
    */
   useEffect(() => {
     if (!deepLinkedName) return;
-    document
-      .querySelector(`[data-tool="${toSlug(deepLinkedName)}"]`)
-      ?.scrollIntoView({ block: "start" });
+    const card = document.querySelector<HTMLElement>(`[data-tool="${toSlug(deepLinkedName)}"]`);
+    const pane = document.getElementById("app-scroll");
+    if (!card || !pane) return;
+    const layoutTop = (el: HTMLElement | null) => {
+      let y = 0;
+      for (; el; el = el.offsetParent as HTMLElement | null) y += el.offsetTop;
+      return y;
+    };
+    const margin = parseFloat(getComputedStyle(card).scrollMarginTop) || 0;
+    pane.scrollTop = layoutTop(card) - layoutTop(pane) - margin;
   }, [deepLinkedName]);
 
   /**
