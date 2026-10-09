@@ -151,7 +151,7 @@ function PhaseSection({
               {number}
             </span>
             <div>
-              <span
+              <h2
                 className="font-heading"
                 style={{
                   display: "block",
@@ -163,7 +163,7 @@ function PhaseSection({
                 }}
               >
                 {phase.name}
-              </span>
+              </h2>
               {phase.explainer && (
                 <span
                   className="font-body"
@@ -171,7 +171,7 @@ function PhaseSection({
                     display: "block",
                     fontSize: 16,
                     fontWeight: 400,
-                    color: "rgba(255,255,255,0.65)",
+                    color: "rgba(255,255,255,0.70)",
                     marginTop: 6,
                     textWrap: "pretty",
                   }}

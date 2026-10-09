@@ -40,7 +40,12 @@ import { LegalPage } from "@/components/LegalPage";
  */
 export default function PrivacyPolicy() {
   return (
-    <LegalPage title="Privacy Policy." lastUpdated="September 2026">
+    <LegalPage
+      title="Privacy Policy."
+      seoTitle="Privacy policy | The Edit"
+      description="What happens to your data when you use The Edit, the AI tools directory for charity, cultural and heritage comms teams. No cookies, no analytics, UK GDPR."
+      lastUpdated="September 2026"
+    >
       <h2>1. Who we are.</h2>
       <p>
         The Edit (theeditai.co.uk) is run by Jasmin Aziz, the strategic communications consultancy at jasminaziz.co.uk, based in Brighton, UK. This policy explains what happens to your data when you use the site. We operate under UK GDPR.

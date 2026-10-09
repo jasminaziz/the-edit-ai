@@ -13,7 +13,11 @@ import { LegalPage } from "@/components/LegalPage";
  */
 export default function CookiePolicy() {
   return (
-    <LegalPage title="Cookies.">
+    <LegalPage
+      title="Cookies."
+      seoTitle="Cookies | The Edit"
+      description="The Edit sets no cookies. This page exists so you can check."
+    >
       <h2>1. The short version.</h2>
       <p>
         The Edit sets no cookies. This page exists so you can check.

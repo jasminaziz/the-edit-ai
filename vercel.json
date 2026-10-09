@@ -1,5 +1,25 @@
 {
+  "redirects": [
+    {
+      "source": "/stack",
+      "destination": "/tools",
+      "permanent": true
+    },
+    {
+      "source": "/whats-new",
+      "destination": "/ai-news",
+      "permanent": true
+    },
+    {
+      "source": "/subscribe",
+      "destination": "/policy-template",
+      "permanent": true
+    }
+  ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
