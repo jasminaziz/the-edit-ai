@@ -886,6 +886,21 @@ markup / JSON-LD** (1,885 treated pages against 4,000 controls, no uplift and a
 4.6% decline in AI Overviews) and **llms.txt** (137,210 domains, 97% received
 zero requests). Neither has been added and neither should be.
 
+**Gate 3's Organization schema check is exempt on this property. Ruled 9 Oct
+2026**, on the recommendation Jasmin delegated, closing gates finding 3.3 of
+`reports/site-gates-2026-10-09.md`. The Web Build Guide asks for Person and
+Organization JSON-LD on the homepage; this site keeps the `WebSite` block with
+its `Person` author and adds no `Organization`, for three reasons. Schema is not
+a GEO lever on the evidence table above, so the node would buy nothing it is
+usually added for. The entity link it would make is already carried by
+`WebSite.author.url`, which points at `https://www.jasminaziz.co.uk` and reaches
+the served HTML once `geo/prerender` merges. And The Edit is not a registered
+organisation (site-geo, 9 Oct 2026, found no Companies House entry), so an
+`Organization` node, under a name that differs from the domain's "The Edit AI",
+would be a small overclaim on a site whose premise is honest labelling. A gates
+run should report this item as exempt, not failed. Reopen it only if The Edit
+becomes a legal entity.
+
 ## Codebase conventions
 
 **ToolCard colour lives in `src/index.css` under `.tool-card`, not in the
