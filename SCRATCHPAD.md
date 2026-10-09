@@ -3537,3 +3537,36 @@ after the merge, not before.
 
 **Search Console and an uptime monitor: Jasmin's**, under hello@jasminaziz.co.uk.
 Not done as at this entry.
+
+### 2026-10-09 (later): "action all"
+
+Jasmin's instruction after the summary. Done, each on its branch, pushed and
+verified:
+
+- **`vercel.json` reconciled on `geo/prerender-2026-10`** (`1df09bd`): it carries
+  crawl-meta's three 308s byte for byte. `git merge-tree` still reports a
+  conflict on `vercel.json` over the catch-all; merging the prerender after
+  crawl-meta, take the prerender's file whole.
+- **Real 404** (`b039f0f`): catch-all removed, NotFound prerendered as
+  `404.html`. Curled on the preview: unknown paths 404 with `noindex`, routes
+  200, legacy paths 308, static files their own types.
+- **Focus fix** (`fee4926`, `src/`): `under-rail` on the section below the rail
+  on `/tools` and `/radar`, and its links and buttons carry the card's
+  scroll-margin. The sweep found the defect wider than first recorded: Shift+Tab
+  hid up to 17 controls on both pages at every width. After: zero hidden stops
+  forward and backward at 375, 1024, 1280 and 1440 on both pages.
+- **Lint errors cleared** (`13a8f7a`): `bun run lint` now exits 0 (4 old
+  warnings). CSS byte-identical; one counter statement differs in the JS.
+- **CLAUDE.md Crawlability corrected** (`892af4d`).
+
+**Found, not fixed, pre-existing: `?tool=` deep links land with the tool's name
+under the rail.** Gamma measured 24px under at 375 and 29px under at 1280
+(2px clear at 768), confirmed by screenshot at 1280 with no transform on any
+ancestor; identical before and after the focus fix. CLAUDE.md records 36, 62
+and 31px of clearance from the original fix, so something moved since; not
+diagnosed. `scroll-margin-top` on `.tool-card` is the place to start.
+
+**Lighthouse accessibility on `/design-kit`, `/learning`, `/ai-news`,
+`/policy-template`, `/submit`, a legal page and the 404: still not run.**
+pagespeed.web.dev stalled again on the first of them. Chrome DevTools'
+Lighthouse runs locally with no quota.
