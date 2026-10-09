@@ -515,7 +515,7 @@ const Tools = () => {
 
       {filterBar}
 
-      <section className="bg-background py-10 px-6 sm:px-12 pb-[72px]">
+      <section className="under-rail bg-background py-10 px-6 sm:px-12 pb-[72px]">
         <div className="max-w-[1280px] mx-auto">
           {/* Above the grid from sm up only. Ruled 1 Sep: on a phone this
               cannot sit at the top, because it takes the first screen away

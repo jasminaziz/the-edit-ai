@@ -176,6 +176,27 @@
       scroll-margin-top: 160px;
     }
   }
+  /* The same clearance for keyboard focus, added 9 Oct 2026. Tabbing across
+     the three-column grid at 1280 put 21 card name links entirely behind the
+     sticky rail (WCAG 2.2 AA 2.4.11): once a row had scrolled under the rail,
+     the next card's name counted as already in view, so the browser did not
+     scroll to it. A focused element's scroll-margin widens the area the
+     browser keeps clear when it scrolls focus into view. The rail measured at
+     most 173px below lg and 133px from lg up, scrolled, so the card's own two
+     values clear it. `under-rail` marks the section below the rail on /tools
+     and /radar, so this also covers the template card and the radar
+     signposts, which sit outside any card. Shift+Tab hid controls on both
+     pages at every width before this. Set on the controls rather than the
+     pane, because padding on the pane would add to the card's margin and push
+     ?tool= deep links about 150px further down. */
+  .under-rail :is(a, button) {
+    scroll-margin-top: 208px;
+  }
+  @media (min-width: 1024px) {
+    .under-rail :is(a, button) {
+      scroll-margin-top: 160px;
+    }
+  }
   .tool-card[data-dimmed] {
     opacity: 0.7;
     transform: scale(0.98);

@@ -295,7 +295,7 @@ const Radar = () => {
         </div>
       </section>
 
-      <section className="bg-background py-10 px-6 sm:px-12 pb-[72px]">
+      <section className="under-rail bg-background py-10 px-6 sm:px-12 pb-[72px]">
         <div className="max-w-[1280px] mx-auto">
           {/* Approved copy. Sits above the grid, matching where /tools puts its
               DPIA definition: it is the page's honesty statement, so it reads
