@@ -3559,8 +3559,8 @@ verified:
   warnings). CSS byte-identical; one counter statement differs in the JS.
 - **CLAUDE.md Crawlability corrected** (`892af4d`).
 
-**Found, not fixed, pre-existing: `?tool=` deep links land with the tool's name
-under the rail.** Gamma measured 24px under at 375 and 29px under at 1280
+**Fixed later the same day (`c475d50`), see below. Found pre-existing: `?tool=`
+deep links land with the tool's name under the rail.** Gamma measured 24px under at 375 and 29px under at 1280
 (2px clear at 768), confirmed by screenshot at 1280 with no transform on any
 ancestor; identical before and after the focus fix. CLAUDE.md records 36, 62
 and 31px of clearance from the original fix, so something moved since; not
@@ -3570,3 +3570,11 @@ diagnosed. `scroll-margin-top` on `.tool-card` is the place to start.
 `/policy-template`, `/submit`, a legal page and the 404: still not run.**
 pagespeed.web.dev stalled again on the first of them. Chrome DevTools'
 Lighthouse runs locally with no quota.
+
+**Deep-link landing fixed (`c475d50`).** The cause was not the margin values:
+`scrollIntoView` aimed at the card while its reveal wrapper was still in its
+hidden state (32px lower, 94% scale), and the card rose about 59px when the
+reveal settled, plus 16 when the rail compacted. Now scrolled by `offsetTop`.
+At rest the name clears the rail by 37 to 40px at 375, 63 to 64px at 768 and
+32 to 48px at 1280 and 1440. The prompt for the next code thread is
+`reports/2026-10-09-next-thread-prompt.md`.
