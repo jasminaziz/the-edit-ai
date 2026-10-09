@@ -33,14 +33,16 @@
  * of readable text against 0 before. Proven on Vercel: the browser launches and
  * the build completes.
  *
- * KNOWN BROKEN ON VERCEL: the Sheets fetch fails there, so the seven
- * data-driven routes prerender their empty state. The five static routes came
- * back byte-identical to the local run, which is what isolates the fault to the
- * fetch rather than to the browser or the capture. The likely cause is
- * VITE_GOOGLE_SHEETS_API_KEY being absent from the environment being built,
- * since Vite bakes VITE_ variables in at build time and an absent key yields a
- * request with no key rather than an error. That is an account setting and has
- * not been confirmed from here.
+ * WHY IT FAILED ON VERCEL, FOUND 9 OCT 2026. The Sheets fetch failed there, so
+ * the seven data-driven routes prerendered their empty state. The cause was
+ * not a missing VITE_GOOGLE_SHEETS_API_KEY, as first suspected: Vercel lists it
+ * for Preview, and the failed preview built the same bundle hash as production.
+ * It was the Referer. The override used `route.continue({ headers })`, and
+ * Chromium drops a Referer set that way, so Google saw http://localhost:8080/
+ * and refused the production key. Proven locally with the localhost-scoped
+ * key, which curl shows returning 403 to a www referer: under route.continue a
+ * www override still loaded the data, so the header never left the browser.
+ * The fix is below, at PRERENDER_REFERER.
  *
  * ALSO NOT VERIFIED: Vercel's own routing of the rewrites below, because
  * preview URLs sit behind SSO protection (`all_except_custom_domains`) and
@@ -207,12 +209,19 @@ async function main() {
    * on. Left off by default because the local key is scoped to localhost:8080
    * and overriding the header there would break the very fetch it is meant to
    * enable.
+   *
+   * The request is made from Node with `route.fetch` and handed back to the
+   * page with `route.fulfill`, not passed on with `route.continue`. Chromium
+   * silently ignores a Referer set through `route.continue`, which is what kept
+   * this build red. Proven both ways on 9 Oct 2026 with the localhost key: a
+   * www referer now empties every data route, and a localhost one fills them.
    */
   const referer = process.env.PRERENDER_REFERER;
   if (referer) {
-    await context.route("**://sheets.googleapis.com/**", (route) =>
-      route.continue({ headers: { ...route.request().headers(), referer } }),
-    );
+    await context.route("**://sheets.googleapis.com/**", async (route) => {
+      const response = await route.fetch({ headers: { ...route.request().headers(), referer } });
+      await route.fulfill({ response });
+    });
   }
 
   const results = [];
