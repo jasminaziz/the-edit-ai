@@ -1,4 +1,21 @@
 {
+  "redirects": [
+    {
+      "source": "/stack",
+      "destination": "/tools",
+      "permanent": true
+    },
+    {
+      "source": "/whats-new",
+      "destination": "/ai-news",
+      "permanent": true
+    },
+    {
+      "source": "/subscribe",
+      "destination": "/policy-template",
+      "permanent": true
+    }
+  ],
   "buildCommand": "bun run build && PRERENDER_REFERER=https://www.theeditai.co.uk/ node scripts/prerender.mjs",
   "rewrites": [
     {
