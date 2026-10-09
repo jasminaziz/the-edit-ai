@@ -61,10 +61,6 @@
     {
       "source": "/cookie-policy",
       "destination": "/cookie-policy/index.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/app.html"
     }
   ]
 }

@@ -150,10 +150,10 @@ const ROUTES = [
   { path: "/cookie-policy", minChars: 570 },
   /**
    * Not a route: any path App.tsx does not know, captured as the NotFound page
-   * and written to app.html, which vercel.json's catch-all serves. Added 9 Oct
-   * 2026. Before this, app.html was the bare shell, so every unknown URL gave a
-   * crawler status 200, no text and no noindex, because the noindex is set by
-   * JavaScript. The floor is the same 400 as MIN_TEXT_LENGTH (the page measured
+   * and written to 404.html, which Vercel serves with a 404 status for any path
+   * that matches no file and no rewrite. Added 9 Oct 2026. Before this, unknown
+   * URLs fell to a catch-all serving the bare shell, so a crawler got status
+   * 200, no text and no noindex, because the noindex is set by JavaScript. The floor is the same 400 as MIN_TEXT_LENGTH (the page measured
    * 588); the check that matters is the robots noindex tag, which is asserted
    * by element below rather than by length.
    */
@@ -199,13 +199,15 @@ async function main() {
   const shellHtml = await readFile(join(DIST, "index.html"), "utf8");
 
   /**
-   * vercel.json's catch-all points at app.html, never at index.html: index.html
-   * carries the prerendered homepage, so every unknown URL would otherwise serve
-   * homepage copy to a crawler, a soft duplicate of the front page. app.html is
-   * written at the end of the run as the prerendered NotFound page (the
-   * `notFound` entry in ROUTES), so an unknown URL carries text and a noindex.
-   * It still returns 200: a real 404 status needs the catch-all replaced, which
-   * waits on the redirects in vercel.json being reconciled with this branch.
+   * vercel.json has no catch-all, deliberately, since 9 Oct 2026. Every route
+   * in ROUTES has its own rewrite, the three legacy paths have 308 redirects,
+   * and anything else gets 404.html, the prerendered NotFound page (the
+   * `notFound` entry in ROUTES), with a real 404 status. The app still boots on
+   * it, so a reader sees the same NotFound page they always did.
+   *
+   * THE COST: vercel.json's rewrites are now a third list to keep in step with
+   * App.tsx and ROUTES. A route added to App.tsx without a rewrite returns 404
+   * to a crawler, though the app still renders it for a reader once it boots.
    */
 
   const server = serve(shellHtml);
@@ -301,17 +303,17 @@ async function main() {
 
     if (route.notFound) {
       if (!/<meta[^>]*name="robots"[^>]*content="noindex/.test(html)) {
-        throw new Error(`Prerender: ${routePath} has no robots noindex tag, so app.html would invite indexing of every unknown URL. Refusing to write it.`);
+        throw new Error(`Prerender: ${routePath} has no robots noindex tag, so 404.html would invite indexing of every unknown URL. Refusing to write it.`);
       }
       // NotFound's canonical is built from the path it was rendered at, which
       // here is the placeholder. Left in, every unknown URL would point
       // crawlers at /__not-found. The app sets the right one once it runs.
       const page404 = html.replace(/<link[^>]*rel="canonical"[^>]*>/g, "");
       if (page404.includes('rel="canonical"')) {
-        throw new Error(`Prerender: could not remove the canonical from ${routePath}. Refusing to write app.html.`);
+        throw new Error(`Prerender: could not remove the canonical from ${routePath}. Refusing to write 404.html.`);
       }
-      await writeFile(join(DIST, "app.html"), page404, "utf8");
-      results.push({ route: `${routePath} (app.html)`, chars, cards, bytes: Buffer.byteLength(page404) });
+      await writeFile(join(DIST, "404.html"), page404, "utf8");
+      results.push({ route: `${routePath} (404.html)`, chars, cards, bytes: Buffer.byteLength(page404) });
       continue;
     }
 
@@ -328,7 +330,7 @@ async function main() {
   for (const r of results) {
     console.log(`  ${r.route.padEnd(20)} ${String(r.chars).padStart(6)} chars   ${String(r.cards).padStart(3)} cards   ${String(r.bytes).padStart(7)} bytes`);
   }
-  console.log(`\n${results.length} pages written. The NotFound page is dist/app.html.\n`);
+  console.log(`\n${results.length} pages written. The NotFound page is dist/404.html.\n`);
 }
 
 main().catch((err) => {
