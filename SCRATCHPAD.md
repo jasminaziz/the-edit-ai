@@ -3453,3 +3453,22 @@ Layout, gravity, package.json, bun.lock) is still in the tree and not ours.
    Monday 5 October; Pass 4 picks it up on the 12th.
 5. Carried from 13 Sep: the July branch's PAT and dedupe claim; LinkedIn Post
    Inspector; the Preview Sheets key for `geo/prerender`; content on the thin jobs.
+
+## 2026-10-09 session: gates and GEO follow-ups, on `geo/crawl-meta` and `geo/prerender-2026-10`
+
+Worked in its own worktree (`~/Developer/the-edit-ai-geo`), never the shared
+tree. Neither branch is merged; Jasmin merges.
+
+- **The Preview Sheets key was never the prerender's blocker.** Vercel lists
+  `VITE_GOOGLE_SHEETS_API_KEY` for Preview, and the failed preview built the same
+  bundle hash as production. The cause was the Referer override in
+  `scripts/prerender.mjs`, which Chromium ignored under `route.continue`. Fixed on
+  `geo/prerender-2026-10` (`37b1193`) with `route.fetch` and `route.fulfill`.
+  This retires item 5's "the Preview Sheets key for `geo/prerender`" above.
+- **Main chunk, route-level `lazy()` (gates 2.2).** Before: **534.01 kB** (gzip
+  171.73) on production's `main` build today, 535.37 kB on this branch with the
+  Sheet-logging commit. After: **471.99 kB** (gzip 154.46), under Vite's 500 kB
+  warning, which no longer prints. `HomeGravity` stays 221.59 kB and lazy as
+  before. Measured from `bun run build` on 9 Oct 2026. Every route checked in
+  Chrome afterwards: same rendered text as before, and Home to Tools stays a
+  client-side navigation that fetches the Tools chunk on demand.
