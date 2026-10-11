@@ -3578,3 +3578,48 @@ reveal settled, plus 16 when the rail compacted. Now scrolled by `offsetTop`.
 At rest the name clears the rail by 37 to 40px at 375, 63 to 64px at 768 and
 32 to 48px at 1280 and 1440. The prompt for the next code thread is
 `reports/2026-10-09-next-thread-prompt.md`.
+
+## 2026-10-11: both geo branches merged and proven on production
+
+On Jasmin's instruction ("merge if safe"), from a detached worktree off
+`origin/main`, never the shared tree. `geo/crawl-meta` fast-forwarded (`87a1ed3`),
+then `geo/prerender-2026-10` merged (`7132687`) with its `vercel.json` taken whole:
+the three 308s byte-identical to crawl-meta's, the prerender `buildCommand`, 11
+rewrites matching `App.tsx` and the script's `ROUTES`, no catch-all. Gate on the
+merge: build clean (main chunk 471.99 kB), lint 0 errors and the 4 known warnings,
+77 tests, tsc 0. The prerender could not run locally (Playwright's headless
+shell is not downloaded on this Mac), so the merge went first to
+`geo/merge-2026-10-10`, whose Vercel preview built green (13 pages written,
+`/radar` 44 cards) and passed every curl check below, before `main` and
+`overhaul/sector-axis` were fast-forwarded to `7132687`, refs verified.
+
+**Rulings taken before the push, 11 Oct 2026, in chat:**
+- The three legal-page titles and descriptions: **approved as drafted**, after
+  two concerns were raised (privacy ends on the fragment "UK GDPR."; the terms
+  description names dated checks and assessing tools yourself, which the Terms
+  body does not say).
+- The cold-load content flash on `/tools` (prerendered cards, then the spinner,
+  then cards): **accepted, ship it**.
+
+**Production, curled with no JavaScript, 11 Oct 2026 10:50 BST:**
+1. All 12 sitemap-and-route URLs 200 with body text inside `#root`, their own
+   `<title>`, `og:title` and bare-domain canonical. `/tools` 10,306 characters
+   and 23 cards; the legal pages carry "Privacy policy | The Edit", "Terms | The
+   Edit" and "Cookies | The Edit".
+2. `/nope-xyz`, `/tools/nope` and `/Tools` 404 with `noindex, follow`. `/stack`,
+   `/whats-new` and `/subscribe` 308 to `/tools`, `/ai-news`, `/policy-template`.
+3. `robots.txt` text/plain (names OAI-SearchBot), `sitemap.xml`
+   application/xml, the manifest application/manifest+json, the `.docx`
+   wordprocessingml at 21,711 bytes.
+4. `under-rail` is in the live CSS (`index-CqYxmtj6.css`), which only the merge
+   introduced.
+5. `/sw.js` is the 608-byte worker and contains `unregister`.
+
+In a real browser on `/tools?tool=gamma` the app booted, made one Sheets request
+and rendered 23 cards with no spinner left. The pane was hidden (0x0 viewport),
+so nothing about layout was read from it.
+
+**Still open, from the 9 Oct prompt:** the directory watchdog waits on the
+`SHEETS_API_KEY` repository secret (not added as at 11 Oct); PageSpeed re-run on
+`/`, `/tools`, `/my-stack`; Lighthouse accessibility on the seven unmeasured
+templates; whether to run site-geo again now there is HTML to score.

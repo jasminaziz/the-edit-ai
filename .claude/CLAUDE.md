@@ -491,16 +491,18 @@ naming the status and `values/<tab>`, never the key.
   navigation to a route rendering no `<SEO>` now removes the adopted tags,
   because helmet unmounts and cleans up what it owns. A direct load of that URL
   is unaffected, which is what crawlers do.
-- **`/privacy-policy`, `/terms-of-service` and `/cookie-policy` carry a
-  canonical and no title or description; the 404 carries none of the three.**
-  The legal pages render through `LegalPage.tsx`, which since 31 Aug 2026 mounts
-  a `Helmet` with the canonical only. Because helmet reconciles every tag type
-  it owns, that also removes the static fallback description, so these pages
-  have none rather than the homepage's. `NotFound.tsx` imports only react and
-  react-router-dom. All three legal routes are in `sitemap.xml`. Titles and
-  descriptions are copy and are Jasmin's. Corrected 13 Sep 2026: this line said
-  the legal pages had no `Helmet` and no canonical, which the 31 Aug fix had
-  already made untrue; the gates audit found it.
+- **`/privacy-policy`, `/terms-of-service` and `/cookie-policy` carry their own
+  title, description and canonical since 11 Oct 2026.** `LegalPage.tsx` passes
+  `seoTitle` and `description` through `SEO`, like every other route. The six
+  strings were drafted on `geo/crawl-meta` and **approved by Jasmin as drafted,
+  11 Oct 2026, in chat**, with two concerns raised first and set aside by that
+  approval: the privacy description ends on the fragment "UK GDPR.", and the
+  terms description names dated checks and assessing tools yourself, which the
+  Terms page body does not say. Until then the pages carried a canonical only,
+  which (helmet reconciling every tag type it owns) also stripped the static
+  fallback description. Unknown paths serve the prerendered `404.html`: a real
+  404 status, the title "Page Not Found | The Edit", `noindex, follow`, no
+  canonical (curled on production 11 Oct 2026).
 - **Icons and share card, ruled 12 Sep 2026.** `public/favicon.svg` is the
   single source: the same three lime capsules on cobalt, redrawn so every edge
   lands on a whole pixel at 16px. `assets-src/render-icons.py` draws every
@@ -836,20 +838,22 @@ you want a size check, and treat content-type as the durable signal.
 
 ## Crawlability and GEO
 
-**The live site serves nothing to a crawler that does not run JavaScript.**
-Verified against production 2026-09-04: every route returns an identical
-4,380-byte shell whose entire body is `<div id="root"></div>`. No heading, no
-copy, no verdicts, no footer, no attribution to Jasmin. Googlebot renders and
-so sees the site; OAI-SearchBot and PerplexityBot most likely do not, which is
-a factual gate on being cited at all rather than a ranking signal. **This is
-still true on `main`.**
+**Since 11 Oct 2026 the live site serves real HTML to a crawler that does not
+run JavaScript.** Until then it served nothing: verified against production
+2026-09-04, every route returned an identical 4,380-byte shell whose entire
+body was `<div id="root"></div>`. Googlebot renders and so saw the site;
+OAI-SearchBot and PerplexityBot most likely did not, which is a factual gate on
+being cited at all rather than a ranking signal. Curled on production 11 Oct
+2026 after the merge: every sitemap route carries its own body text, title,
+`og:title` and canonical, and `/tools` carries 23 cards.
 
 **There is no such thing as a tool page here.** Twelve routes, none
 parameterised; the directory is one page. Any audit claiming the site "cannot
 cite a single tool page" is describing pages that do not exist, and the
 achievable goal is that `/tools` carries all 23 tools' text in its served HTML.
 
-**The fix lives on branch `geo/prerender-2026-10`, not merged** (the September
+**The fix came from branch `geo/prerender-2026-10`, merged to `main` on 11 Oct
+2026 after `geo/crawl-meta`** (the September
 branch `geo/prerender` rebased onto `main`; the old branch is superseded). Build-time
 prerendering with a headless browser: `scripts/prerender.mjs` serves the built
 `dist`, drives each route in Chromium so the effects run and the Sheet
@@ -910,7 +914,8 @@ when merging the prerender after crawl-meta, take its `vercel.json` whole.
 `createRoot`, not hydrate, so on a cold load of `/tools` the prerendered cards
 paint at about 80ms, React replaces them with the loading spinner at about
 130ms, and the cards return when the Sheet responds. That last step could not
-be watched on a preview, which 403s on Sheets data.
+be watched on a preview, which 403s on Sheets data. **Accepted by Jasmin, 11
+Oct 2026, in chat**, when she approved the merge: shipped as is.
 
 **Accepted trade, ruled 2026-09-04:** prerendered HTML freezes a Sheet snapshot
 at build time. Readers still get live data on every visit; a non-JS crawler
