@@ -3720,3 +3720,17 @@ worktree; each commit gated (build, lint 0 errors, 77 tests, tsc).
   under 0.1: a 48px move on `/ai-news` when rows arrive, and a 0.011 font swap.
 
 Branch `fix/footer-link-cls` deleted after both commits reached `main`.
+
+### Next (as at 11 Oct 2026, end of session)
+
+The 9 Oct prompt is closed. Open, all Jasmin's unless she hands them over:
+1. `/radar` serves internal working notes to readers ("GAP add, June 2026."
+   twice, "GAP: this directory has...", "graduates from the watch list this
+   run") and a broken Postman sentence. Sheet copy: her edit, or approved text
+   written through `sheet-write.mjs`.
+2. site-geo's top edit: a named external quotation (the ICO) on
+   `/policy-template` and `/tools`. Copy.
+3. axe's alt-text item: the rule name from the extension, if she wants it
+   pinned; nothing on the site is an image.
+4. GitHub notification settings, so a failed watchdog run reaches her inbox.
+5. Optional: the `/ai-news` 48px residual shift (CLS 0.019, under 0.1).

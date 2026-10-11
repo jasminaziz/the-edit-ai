@@ -1330,3 +1330,31 @@ Session corrections and rules built up over time. Add entries; do not delete his
   exhausted.** pagespeed.web.dev still works if started in the in-app browser and
   read in headless Chrome; the hidden pane itself renders nothing (0 frames, 0x0).
 
+
+## 2026-10-11 (geo merges, footer link, layout shift)
+
+- **In Playwright the route handler registered last wins.** A delay route added
+  before a serve-everything route never fired, and the "held back" chunk arrived
+  at 212ms. Put the delay inside the serving handler, and confirm it from the
+  request timings before reading any result.
+- **A "before" build must come from the commit before the change.** The baseline
+  was built after the footer fix was committed, so its "before" already passed.
+  Production was the real before. Name the commit each side was built from.
+- **Lighthouse with a curl cookie jar audited Vercel's login page.** The jar was
+  empty and the share cookie never reached Lighthouse; the final-URL check in the
+  loop caught it. For a protected preview, open the share link in Playwright and
+  run axe there (`axe.min.js` arrives with Lighthouse in the bun cache).
+- **`git branch -d` judges "merged" against the checked-out branch**, which in
+  this shared tree is behind, so it refuses branches that are in `main`. Prove it
+  with `git merge-base --is-ancestor <branch> origin/main`, then `-D`.
+- **`preview_start` reads `.claude/launch.json` from the session folder**, so
+  here it would serve the shared tree and another session's uncommitted code. To
+  test a worktree's build without a dev server, serve `dist` from inside
+  Playwright with `page.route` and `route.fulfill`, SPA fallback to `index.html`.
+- **One Lighthouse CLS number is one roll of a race.** Record every frame and
+  every layout-shift source on a cold load, hold a chunk back to force the race,
+  and strip the prerendered body to test whether the prerender is the cause.
+  Newly inserted elements never count, so `createRoot` replacing the prerender
+  is free; a React-owned footer moving out of view is not.
+- **Lighthouse refuses a page with a 404 status.** That is the real 404 working.
+  Score `/404.html` by its file URL, which returns 200.
