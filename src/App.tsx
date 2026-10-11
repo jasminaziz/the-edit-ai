@@ -35,7 +35,12 @@ const App = () => (
     <TooltipProvider>
       <BrowserRouter>
         <Layout>
-          <Suspense fallback={null}>
+          {/* The fallback holds a screen's height, since 11 Oct 2026. With
+              `null`, a route whose chunk arrived after the main bundle left
+              <main> empty, the footer rose into view, and the page pushed it
+              back out when the chunk landed: a 0.408 layout shift on
+              /privacy-policy, reproduced by holding that chunk back. */}
+          <Suspense fallback={<div className="min-h-screen" />}>
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/tools" element={<Tools />} />
