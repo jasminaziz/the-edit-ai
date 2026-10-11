@@ -986,6 +986,21 @@ into the byline's style block; it would beat the hover rule, which is precisely
 what the old `onMouseEnter`/`onMouseLeave` pair existed to work around. Hover
 and `:focus-visible` share one rule, because the mouse-only version left the
 single outbound link on the homepage with no visible state under the keyboard.
+The footer email in `Layout.tsx` was the third, 11 Oct 2026: it now uses
+`.lime-link` (underlined at rest) after Lighthouse failed it on WCAG 1.4.1.
+
+**Loading states hold a screen's height. Do not shorten them.** Since 11 Oct
+2026 `LoadingSpinner` is `min-h-screen` with the spinner where it always sat,
+and the route `<Suspense>` fallback is a `min-h-screen` div, not `null`. Either
+one short let the footer rise into view mid-load and then get pushed off the
+screen, which is a layout shift: 0.332 on `/ai-news` and 0.111 on `/my-stack`
+from the spinner (older than the prerender), 0.408 on `/privacy-policy` from
+the null fallback whenever a route chunk landed after the main bundle (a race
+the route-level `lazy()` opened). After, on production: 0 everywhere except
+`/ai-news` at 0.019, where a block still moves 48px when the rows arrive, left
+alone as under the 0.1 line. **Measure CLS frame by frame on a cold load and
+hold a chunk back to force the race**; a single Lighthouse run catches it only
+when the race happens to go the wrong way.
 
 **`FooterEmailCapture` renders from `Layout.tsx:366`, so it is on every route.**
 Anything it names is multiplied across the whole site, and on a page that also

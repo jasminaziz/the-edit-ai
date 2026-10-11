@@ -3695,3 +3695,28 @@ day: `/radar` serves internal working notes to readers ("GAP add, June 2026."
 twice, "GAP: this directory has three other app builders...", "It graduates
 from the watch list this run"), and "Say this to your board" occurs 0 times in
 the served `/tools`. Those notes are Sheet copy and Jasmin's.
+
+## 2026-10-11 (later): footer link and layout shift, both live
+
+On Jasmin's yes to each, in chat. Worked on `fix/footer-link-cls` in its own
+worktree; each commit gated (build, lint 0 errors, 77 tests, tsc).
+
+- **Footer email underlined at rest** (`75fed65`, live). axe
+  `link-in-text-block`: production failed it before (the footer mailto, no
+  decoration), the branch preview and then production passed after. A
+  Lighthouse run against the preview audited Vercel's login page instead; the
+  final-URL check in the loop caught it and the run was discarded.
+- **Layout shift fixed** (`a7a2d55`, live). Diagnosed with a Playwright probe on
+  system Chrome at 412x823 recording every frame and every layout-shift source.
+  Two causes, both the footer entering the viewport mid-load then being pushed
+  out: the 192px `LoadingSpinner` (0.332 `/ai-news`, 0.111 `/my-stack`, 0.037
+  `/design-kit`; identical with the prerendered body stripped, so pre-merge),
+  and `<Suspense fallback={null}>` when a route chunk lands late (0.408
+  `/privacy-policy`, reproduced by holding the chunk 1.5s). Both now hold a
+  screen's height. Spinner position unchanged (603px in both builds,
+  screenshots compared). **Production, 11 Oct 13:51 BST:** `/ai-news` 0.019,
+  `/my-stack`, `/design-kit`, `/learning`, `/tools`, `/privacy-policy` 0, and
+  `/privacy-policy` with its chunk held back 0. Residuals left alone, both
+  under 0.1: a 48px move on `/ai-news` when rows arrive, and a 0.011 font swap.
+
+Branch `fix/footer-link-cls` deleted after both commits reached `main`.
