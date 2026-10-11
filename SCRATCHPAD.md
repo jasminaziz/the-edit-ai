@@ -3623,3 +3623,75 @@ so nothing about layout was read from it.
 `SHEETS_API_KEY` repository secret (not added as at 11 Oct); PageSpeed re-run on
 `/`, `/tools`, `/my-stack`; Lighthouse accessibility on the seven unmeasured
 templates; whether to run site-geo again now there is HTML to score.
+
+## 2026-10-11 (afternoon): closing the 9 Oct prompt
+
+**Directory watchdog: live and proven both ways.** Jasmin added the
+`SHEETS_API_KEY` repository secret (12:09 UTC). Manual run 38139466895 on `main`
+printed `OK: 23 complete rows of 67.` Forced failures, run locally from `main`:
+a wrong key gives `FAIL: HTTP 400` and exit 1, a missing key gives the
+must-be-set message and exit 1. Not verified: that a failed run actually emails
+Jasmin, which depends on her GitHub notification settings.
+
+**Branches deleted** (remote and local), each first proven contained in `main`:
+`geo/crawl-meta`, `geo/prerender-2026-10`, `geo/merge-2026-10-10`, and the
+September `geo/prerender`, whose four commits all have equivalent patches on
+`main` (`git cherry`). No `geo/` branches remain.
+
+**Jasmin's manual checks, 11 Oct 2026, as she reported them:**
+- Search Console (hello@): sitemap submitted, Success; URL Inspection done.
+- Uptime: UptimeRobot **HTTP** monitor (URL only, not keyword), email and SMS.
+- VoiceOver on `/` and `/tools`: all fine.
+- axe DevTools: homepage colour contrast (the ruled nav exception) and "images
+  need alt text" on other pages. **The alt-text item is not reproduced**: no
+  route serves an `<img>` or `role="img"`, and Lighthouse's axe reports
+  `image-alt`, `svg-img-alt` as not applicable on all nine routes measured. The
+  rule name from the extension would settle what it saw.
+
+**Lighthouse 13.5.0, run locally (headless Chrome on the Mac, mobile 412px,
+simulated throttling), 11 Oct 2026 ~13:30 BST.** The PageSpeed API and
+pagespeed.web.dev were both out of quota, so these are **not like for like**
+with the 9 Oct PageSpeed baseline: compare CLS and accessibility, not the
+performance score or LCP.
+
+| Route | Perf | A11y | FCP | LCP | TBT | CLS | A11y fails |
+|---|---|---|---|---|---|---|---|
+| `/` | 71 | 95 | 3.4 s | 5.6 s | 10 ms | 0 | color-contrast (ruled) |
+| `/tools` | 74 | 100 | 3.5 s | 4.8 s | 0 ms | 0 | |
+| `/my-stack` | 71 | 100 | 3.4 s | 5.2 s | 0 ms | 0.111 | |
+| `/design-kit` | 82 | 100 | 2.6 s | 3.0 s | 0 ms | 0.189 | |
+| `/learning` | 73 | 100 | 3.6 s | 3.7 s | 10 ms | 0.152 | |
+| `/ai-news` | 75 | 100 | 2.6 s | 2.9 s | 40 ms | 0.332 | |
+| `/policy-template` | 85 | 100 | 3.3 s | 3.3 s | 0 ms | 0 | |
+| `/submit` | 85 | 95 | 3.3 s | 3.3 s | 0 ms | 0 | link-in-text-block |
+| `/privacy-policy` | 71 | 100 | 2.4 s | 3.2 s | 0 ms | 0.42 | |
+| 404 (`/404.html`) | | 100 | | | | | |
+
+Lighthouse refuses to score a page that returns 404, which is the real 404
+status working; the 404 page was scored by its file URL, which returns 200.
+
+Two findings, neither acted on:
+- **`/submit` link-in-text-block (WCAG 1.4.1).** The footer email at
+  `Layout.tsx:486`, lime `#C8F04A` beside white text, 1.31:1, underlined only on
+  mouse hover through `onMouseEnter`/`onMouseLeave`. The footer is on every
+  route; Lighthouse failed it on `/submit` only. Candidate fix: underline at
+  rest via a class in `index.css`, as `.about-byline` was. `src/`, waits for
+  Jasmin.
+- **CLS above 0.1 on five routes**, where the 9 Oct PageSpeed runs measured 0
+  on `/`, `/tools`, `/my-stack` and `/radar`. Lighthouse puts most of it on the
+  footer moving (`/privacy-policy` 0.408, `/my-stack` 0.111, `/ai-news` 0.133)
+  and on `/ai-news` the content container (0.332). Leading suspect, not
+  diagnosed: the prerendered page paints, then `createRoot` and the route's
+  `lazy()` fallback replace it before the real content returns, the same
+  mechanism as the accepted `/tools` flash, plus a font swap on early-painted
+  text (Lighthouse attributes `/privacy-policy`'s footer shift to the Plus
+  Jakarta Sans load). Jasmin accepted the flash before this cost was known.
+
+**site-geo re-run, 11 Oct 2026**: `reports/site-geo-2026-10-11.md`. Every
+priority page now scores; quotations 0 on all five, statistics and cited sources
+0 or 1, prose and stuffing mostly 2. Its one recommended edit: a named external
+quotation (the ICO) on `/policy-template` and `/tools`. Verified by curl the same
+day: `/radar` serves internal working notes to readers ("GAP add, June 2026."
+twice, "GAP: this directory has three other app builders...", "It graduates
+from the watch list this run"), and "Say this to your board" occurs 0 times in
+the served `/tools`. Those notes are Sheet copy and Jasmin's.
