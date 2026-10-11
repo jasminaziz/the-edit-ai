@@ -403,9 +403,14 @@ tab with the www referer the site uses, counts rows with the app's own
 `parseToolRows` and `isComplete` rather than restating them, and fails below
 20 complete rows, which sends GitHub's failure email. It catches a key that
 loses a referrer host, a revoked key and a renamed header, all of which empty
-`/tools` with nothing else reaching Jasmin. **It needs a `SHEETS_API_KEY`
-repository secret**, the same value as Vercel's `VITE_GOOGLE_SHEETS_API_KEY`,
-and does nothing until it reaches `main`. Same caveat as the whats_new
+`/tools` with nothing else reaching Jasmin. **Live since 11 Oct 2026.**
+Jasmin added the `SHEETS_API_KEY` repository secret (the same value as
+Vercel's `VITE_GOOGLE_SHEETS_API_KEY`) that day. Manual run 38139466895 printed
+`OK: 23 complete rows of 67.`, and a wrong key and a missing key were each
+forced and exit 1. Not verified: that a failed run reaches her inbox, which
+depends on her GitHub notification settings. Alongside it, an UptimeRobot HTTP
+monitor (URL only, not keyword; email and SMS) covers the site going down.
+Same caveat as the whats_new
 watchdog: GitHub pauses schedules after 60 days without repo activity. The
 browser side of the same failure is a `console.error` in each fetcher,
 naming the status and `values/<tab>`, never the key.
