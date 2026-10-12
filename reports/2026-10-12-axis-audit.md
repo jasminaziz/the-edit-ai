@@ -5,9 +5,9 @@ your judgement. 0 unreachable. 3 discovery candidates.
 
 **Decided the same day.** Jasmin approved all three requests on 12 Oct 2026 in
 chat. Written: the four stamps, the Anthropic course (learning row 28) and
-WebAIM (design_kit row 47). **Held: the Digital Culture Network row**, because
-its learning `type` was left for her to choose and "yes to all" did not choose
-it. The six rejected courses are recorded in `reports/axis-rulings.md`.
+WebAIM (design_kit row 47). The Digital Culture Network row was held until
+she chose its learning `type`, which "yes to all" had not; she chose
+Publication the same day and it was written to learning row 29. The six rejected courses are recorded in `reports/axis-rulings.md`.
 
 Run in Claude Code on the 2nd Monday, an audit-due day, from the shared tree,
 which was 32 commits behind `origin/overhaul/sector-axis`. None of those commits
@@ -253,8 +253,12 @@ cells, learning 9 (row 28), design_kit 9 (row 47), my_stack none.
 | `tools!M64` | last_checked | 28 Aug 2026 | 12 Oct 2026 |
 | `learning!A28:I28` | new row | (blank) | Building Effective Human-Agent Teams, as drafted in section 1 |
 | `design_kit!A47:I47` | new row | (blank) | WebAIM Contrast Checker, as drafted in section 1 |
+| `learning!A29:I29` | new row | (blank) | Digital Culture Network, as drafted in section 1, type Publication |
 
-The two rows are in `reports/2026-10-12-discovery-additions-diff.json`, each
+The Digital Culture Network row is in `reports/2026-10-12-dcn-addition-diff.json`,
+written later the same day: 9/9 re-read, no other learning cell changed, and
+`/learning` shows it once with its "Why I recommend:" line and link. The first
+two rows are in `reports/2026-10-12-discovery-additions-diff.json`, each
 cell carrying `"approved": "12 Oct 2026, in chat"`. Checked live: `/learning`
 shows the course once, with its "Why I recommend:" line and link;
 `/design-kit` shows WebAIM once, with `when_to_use` on the card and the verdict
