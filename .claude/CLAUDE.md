@@ -159,6 +159,14 @@ script cannot tell a real approval from a claimed one. Automation (the audit's
 own findings, the Cowork task, the whats_new Routine) is unchanged and still
 facts-only.
 
+**A delegated approval is recorded as delegated. Ruled 12 Oct 2026.** When
+Jasmin hands the choice over ("go ahead with your best recommendations"), the
+edit carries `"approved": "<DD MMM YYYY>, in chat (delegated: Jasmin authorised
+Claude to choose the value)"`, never the plain form, so the record never shows
+her approving a value she did not see. The script's date check accepts both.
+Delegation does not reach what stays by hand: row deletions go back to her as
+an exact list.
+
 Widened on Jasmin's ruling 2026-08-31, from a list that had name and url as
 "never writable, by any route". A vendor renaming its product is a fact, and
 facts should not queue behind a sign-off. What did not move: a URL that now
@@ -239,6 +247,10 @@ the audit prompt finds the newest 1st-Monday run of the Cowork trigger through
 `RemoteTrigger`, verifies each candidate in a real browser and prepares the
 fact cells, leaving every copy cell to her. That is pickup, not discovery: the
 search and its rules stay in Cowork, so there is still only one of them.
+**The Cowork run's "not already listed" check cannot be trusted**: through the
+Drive connector it sees about six sample rows per tab (its own 5 Oct message
+said so). The audit's duplicate check across all four tabs, by name and by URL
+without scheme, `www` or trailing slash, is the one that counts.
 `sheet-write.mjs` cannot insert or delete a row. Since 29 Sep 2026 an addition
 can be written into the first empty row below the data on Jasmin's approval of
 the exact cells, with `"oldName": ""` so the script confirms the row is still
@@ -1045,6 +1057,10 @@ Three things about it that are not obvious and cost real time:
   transient supplementary content and must not hold interactive or substantial
   content. `src/components/ui/tooltip.tsx` survives in the tree and is the
   wrong primitive here. Do not reach for it.
+- **The answer renders only while the bubble is open** (`{open && ...}` in
+  `CobaltZone.tsx`), so nothing inside it reaches the served or prerendered
+  HTML. It cannot carry anything meant for a crawler: the 12 Oct GEO quotation
+  went on `/policy-template` for that reason, among others.
 - **The section drops `overflow-hidden` when a bubble is present**, because it
   would clip the open panel. Safe only because the routes relying on that
   overflow pass an illustration or the rotating `rightBadge`, and none passes a
