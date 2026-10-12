@@ -1,0 +1,263 @@
+{
+  "run": "2026-10-12",
+  "note": "Corrections authorised by Jasmin on 12 Oct 2026 in chat, with Claude choosing each value ('make all changes directly' for section 1; 'go ahead with your best recommendations' for sections 2 and 3). Every approved edit says so in its approved field: these are delegated values, not ones she saw before writing. Rows recommended for removal (tools 16 Windsurf, tools 35 Smartmockups, learning 15 GradeMyPrompt) are not here: the script cannot delete rows. Undo with: node scripts/sheet-write.mjs reports/2026-10-12-corrections-diff.json --rollback --commit",
+  "edits": [
+    {
+      "range": "tools!E22",
+      "name": "Gemini CLI",
+      "field": "verdict",
+      "old": "The open-source answer to Claude Code, and the one to reach for when cost is the constraint. The free tier runs 1,000 requests a day on a Google sign-in, no card. It streams the terminal state rather than asking permission before each change, so it moves faster but watches you less closely. Keep Claude Code for production work where verification matters, and run Gemini CLI for cheap one-shot passes over a large codebase. Worth knowing both. GAP add, June 2026.",
+      "value": "The open-source answer to Claude Code, and the one to reach for when cost is the constraint. The free tier runs 1,000 requests a day on a Google sign-in, no card. It streams the terminal state rather than asking permission before each change, so it moves faster but watches you less closely. Keep Claude Code for production work where verification matters, and run Gemini CLI for cheap one-shot passes over a large codebase. Worth knowing both.",
+      "why": "Internal working note removed.",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)"
+    },
+    {
+      "range": "tools!E23",
+      "name": "Dify",
+      "field": "verdict",
+      "old": "The low-code AI app builder for people who don't want to touch code. Drag nodes onto a canvas, wire in Claude or GPT, point it at your documents and it handles the chunking and embedding itself with no manual tuning. That automatic knowledge base is the real differentiator. The self-hosted version is free with no meaningful limits. If n8n is the automation workhorse, Dify is where a non-technical team ships a working agent in an afternoon. GAP add, June 2026.",
+      "value": "The low-code AI app builder for people who don't want to touch code. Drag nodes onto a canvas, wire in Claude or GPT, point it at your documents and it handles the chunking and embedding itself with no manual tuning. That automatic knowledge base is the real differentiator. The self-hosted version is free with no meaningful limits. If n8n is the automation workhorse, Dify is where a non-technical team ships a working agent in an afternoon.",
+      "why": "Internal working note removed.",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)"
+    },
+    {
+      "range": "tools!E67",
+      "name": "Floot",
+      "field": "verdict",
+      "old": "GAP: this directory has three other app builders and has never had the one reviewers keep holding up as the direct Lovable comparison. Floot builds and hosts a complete app, backend, database, and authentication included, from a single conversation, and the all-in credit model means you are not juggling separate hosting and database bills the way you can with Lovable. It has real traction: 623 upvotes and a 4.9-star rating on Product Hunt, and reviewers consistently flag stronger error handling and fewer stuck-in-a-loop moments than competitors. It has been quietly building a reputation since 2025, so this is a gap the directory should have closed sooner, not a new arrival. The trade-off is a single all-in Pro tier at £19 a month rather than Lovable's cheaper entry point, and less granular control once you need something genuinely custom.",
+      "value": "The app builder reviewers keep holding up as the direct Lovable comparison. Floot builds and hosts a complete app, backend, database, and authentication included, from a single conversation, and the all-in credit model means you are not juggling separate hosting and database bills the way you can with Lovable. Reviewers consistently flag stronger error handling and fewer stuck-in-a-loop moments than competitors. The trade-off is a single all-in Pro tier at £19 a month rather than Lovable's cheaper entry point, and less granular control once you need something genuinely custom.",
+      "why": "Internal working notes removed: the GAP framing, unverified Product Hunt figures, and the note about the directory.",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)"
+    },
+    {
+      "range": "tools!E68",
+      "name": "Zo Computer",
+      "field": "verdict",
+      "old": "A personal AI cloud computer: your own always-on server with an agent that manages files, runs code, and hosts small apps and sites from a single chat interface. It graduates from the watch list this run on the strength of a genuine Product Hunt listing, 202 upvotes and a five-star rating from three reviews, alongside its original There's an AI for That mention, the second independent source it was missing last time. The free tier includes 100GB storage and one hosted project; paid tiers start from £13/mo. The pitch is real ownership: your data and tools live on infrastructure you control rather than scattered across five subscriptions, and it sits in the same territory as Manus and OpenClaw, an AI that runs your digital life rather than just answering questions. It suits someone comfortable enough with the idea of a personal server to appreciate what that buys them; it is not yet a one-click product for a non-technical reader. Worth trying if you want a genuinely personal AI infrastructure layer rather than another chat window.",
+      "value": "A personal AI cloud computer: your own always-on server with an agent that manages files, runs code, and hosts small apps and sites from a single chat interface. The free tier includes 100GB storage and one hosted project; paid tiers start from £13/mo. The pitch is real ownership: your data and tools live on infrastructure you control rather than scattered across five subscriptions, and it sits in the same territory as Manus and OpenClaw, an AI that runs your digital life rather than just answering questions. It suits someone comfortable enough with the idea of a personal server to appreciate what that buys them; it is not yet a one-click product for a non-technical reader. Worth trying if you want a genuinely personal AI infrastructure layer rather than another chat window.",
+      "why": "Internal audit note removed.",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)"
+    },
+    {
+      "range": "tools!E20",
+      "name": "Postman",
+      "field": "verdict",
+      "old": "The industry-standard tool for working directly with APIs. Testing endpoints, inspecting responses, building integrations without writing code first. Learning Postman is a genuine step up from I use Make.com to I can work with APIs directly. The free Postman Student Expert certification at academy.postman.com is about three hours and a useful credential to have.",
+      "value": "The industry-standard tool for working directly with APIs. Testing endpoints, inspecting responses, building integrations without writing code first. Learning Postman is a genuine step up from automating with Make.com to working with APIs directly. The free Postman Student Expert certification at academy.postman.com is about three hours and a useful credential to have.",
+      "why": "Broken sentence repaired.",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)"
+    },
+    {
+      "range": "tools!E21",
+      "name": "Replit",
+      "field": "verdict",
+      "old": "The Lovable alternative for people who want to build in a browser without touching a local environment. The free Starter plan is a genuine test drive. The catch: Replit's credit model means costs can escalate fast with heavy Agent use — budget carefully before committing to a paid plan.",
+      "value": "The Lovable alternative for people who want to build in a browser without touching a local environment. The free Starter plan is a genuine test drive. The catch: Replit's credit model means costs can escalate fast with heavy Agent use, so budget carefully before committing to a paid plan.",
+      "why": "Em dash removed.",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)"
+    },
+    {
+      "range": "learning!A2",
+      "name": "Anthropic Academy — AI Fluency Track",
+      "field": "name",
+      "old": "Anthropic Academy — AI Fluency Track",
+      "value": "Anthropic Academy: AI Fluency Track",
+      "why": "Em dash removed from the label.",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)"
+    },
+    {
+      "range": "learning!A3",
+      "name": "Anthropic Academy — Nonprofit Track",
+      "field": "name",
+      "old": "Anthropic Academy — Nonprofit Track",
+      "value": "Anthropic Academy: Nonprofit Track",
+      "why": "Em dash removed from the label.",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)"
+    },
+    {
+      "range": "learning!A4",
+      "name": "Anthropic Academy — Full Course Catalogue",
+      "field": "name",
+      "old": "Anthropic Academy — Full Course Catalogue",
+      "value": "Anthropic Academy: Full Course Catalogue",
+      "why": "Em dash removed from the label.",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)"
+    },
+    {
+      "range": "learning!A5",
+      "name": "Anthropic Academy — Claude Code in Action",
+      "field": "name",
+      "old": "Anthropic Academy — Claude Code in Action",
+      "value": "Anthropic Academy: Claude Code in Action",
+      "why": "Em dash removed from the label.",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)"
+    },
+    {
+      "range": "tools!F32",
+      "name": "Nano Banana",
+      "field": "url",
+      "old": "https://deepmind.google/technologies/imagen-4",
+      "value": "https://deepmind.google/models/gemini-image/",
+      "why": "Old Imagen 4 page is a 404; this is Google DeepMind's page for Gemini Image (Nano Banana).",
+      "source": "https://deepmind.google/models/gemini-image/"
+    },
+    {
+      "range": "tools!D60",
+      "name": "Microsoft Copilot",
+      "field": "cost",
+      "old": "Copilot Chat included with M365 / add-on £23.10/user/mo billed annually, £24.26 monthly",
+      "value": "Copilot Chat included with M365 / add-on £23.10/user/mo billed annually",
+      "why": "Unverified monthly figure removed on Jasmin's instruction; £23.10 paid yearly confirmed 12 Oct 2026.",
+      "source": "https://www.microsoft.com/en-gb/microsoft-365-copilot/pricing/enterprise",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)"
+    },
+    {
+      "range": "tools!M60",
+      "name": "Microsoft Copilot",
+      "field": "last_checked",
+      "old": "24 Aug 2026",
+      "value": "12 Oct 2026",
+      "why": "H, I (EDP page 18 Aug, unchanged), J (Business Basic free to 300 users; Copilot add-on $25.50, 15% off $30) and the corrected D all confirmed today.",
+      "source": "https://learn.microsoft.com/en-us/microsoft-365/copilot/enterprise-data-protection, https://www.microsoft.com/en-gb/microsoft-365-copilot/pricing/enterprise, https://www.microsoft.com/en-us/nonprofits/offers-for-nonprofits"
+    },
+    {
+      "range": "tools!D3",
+      "name": "HubSpot",
+      "field": "cost",
+      "old": "Free CRM / Marketing Starter £18 per seat a month",
+      "value": "Free CRM / paid plans priced per seat",
+      "why": "Unverified string removed on Jasmin's instruction. HubSpot shows only a limited-time offer (Starter £7 or £9 a seat, 65% or 50% off) with no list price or end date, so no figure is written.",
+      "source": "https://www.hubspot.com/pricing/marketing",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)"
+    },
+    {
+      "range": "tools!M3",
+      "name": "HubSpot",
+      "field": "last_checked",
+      "old": "24 Aug 2026",
+      "value": "12 Oct 2026",
+      "why": "H: Terms still dated 16 Sep (section 5.5 diffed 28 Sep). I: AI training article still 8 Sep. J=None confirmed for the UK: the discount is only for Australia, New Zealand, the USA and Canada.",
+      "source": "https://legal.hubspot.com/terms-of-service, https://knowledge.hubspot.com/account-management/hubspot-ai-mode-training, https://www.hubspot.com/nonprofit-eligibility-criteria"
+    },
+    {
+      "range": "tools!F29",
+      "name": "Adobe Express",
+      "field": "url",
+      "old": "https://firefly.adobe.com",
+      "value": "https://www.adobe.com/express/",
+      "why": "The row is Adobe Express but linked Firefly; this is Adobe Express's own page.",
+      "source": "https://www.adobe.com/express/"
+    },
+    {
+      "range": "tools!J39",
+      "name": "Perplexity",
+      "field": "nonprofit_tier",
+      "old": "Enterprise Pro for not-for-profits, $30 a seat",
+      "value": "Enterprise Pro discount for not-for-profits, on request",
+      "why": "Perplexity confirms not-for-profit discounts after eligibility checks but no longer states the $30 a seat figure.",
+      "source": "https://www.perplexity.ai/help-center/en/articles/10352986-enterprise-pricing-and-billing-frequently-asked-questions"
+    },
+    {
+      "range": "tools!J28",
+      "name": "Adobe Creative Cloud",
+      "field": "nonprofit_tier",
+      "old": "Charity Digital Exchange: CC All Apps at a discount",
+      "value": "TechSoup: Creative Cloud individual one-year memberships at a discount",
+      "why": "Adobe UK: 'Access to Creative Cloud is administered through our programme partner TechSoup.' Charity Digital's discounted-software list no longer carries Adobe. Closes ruling 4.",
+      "source": "https://www.adobe.com/uk/nonprofits.html"
+    },
+    {
+      "range": "tools!E28",
+      "name": "Adobe Creative Cloud",
+      "field": "verdict",
+      "old": "Worth it if someone in the building already knows these tools, and hard to justify if nobody does. For exhibition graphics, print, or anything where typography has to be right, there's still no substitute, and the generative features inside Photoshop and Illustrator sit in the workflow rather than sending you somewhere else. Charity Digital Exchange is the route to the discount and it's a meaningful one. If your output is mostly social and mostly fast, Canva will serve you better and cost you nothing.",
+      "value": "Worth it if someone in the building already knows these tools, and hard to justify if nobody does. For exhibition graphics, print, or anything where typography has to be right, there's still no substitute, and the generative features inside Photoshop and Illustrator sit in the workflow rather than sending you somewhere else. TechSoup is the route to the discount and it's a meaningful one. If your output is mostly social and mostly fast, Canva will serve you better and cost you nothing.",
+      "why": "Follows the J28 correction.",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)"
+    },
+    {
+      "range": "design_kit!A41",
+      "name": "Canva Mockups",
+      "field": "name",
+      "old": "Smartmockups",
+      "value": "Canva Mockups",
+      "why": "smartmockups.com now redirects to Canva Mockups; row moved to the product it points at.",
+      "source": "https://www.canva.com/mockups/",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)",
+      "oldName": "Smartmockups"
+    },
+    {
+      "range": "design_kit!E41",
+      "name": "Canva Mockups",
+      "field": "url",
+      "old": "https://smartmockups.com",
+      "value": "https://www.canva.com/mockups/",
+      "why": "smartmockups.com now redirects to Canva Mockups; row moved to the product it points at.",
+      "source": "https://www.canva.com/mockups/",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)",
+      "oldName": "Smartmockups"
+    },
+    {
+      "range": "design_kit!F41",
+      "name": "Canva Mockups",
+      "field": "what_it_does",
+      "old": "Strong library of room and lifestyle scene mockups. Interiors, wall art, apparel, and print. More room-context options than Mockuuups.",
+      "value": "Canva's free mockup tool, where Smartmockups now redirects. Drop a design into device, print and product scenes, or turn your own photo into a mockup template.",
+      "why": "smartmockups.com now redirects to Canva Mockups; row moved to the product it points at.",
+      "source": "https://www.canva.com/mockups/",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)",
+      "oldName": "Smartmockups"
+    },
+    {
+      "range": "design_kit!G41",
+      "name": "Canva Mockups",
+      "field": "when_to_use",
+      "old": "When you need to show work in a lifestyle or room scene rather than a device frame. Interior settings, wall art, apparel, and print.",
+      "value": "When you need to show a design in use, on a screen, a printed piece or a product, without arranging a photoshoot.",
+      "why": "smartmockups.com now redirects to Canva Mockups; row moved to the product it points at.",
+      "source": "https://www.canva.com/mockups/",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)",
+      "oldName": "Smartmockups"
+    },
+    {
+      "range": "design_kit!H41",
+      "name": "Canva Mockups",
+      "field": "cost",
+      "old": "Free / £9/mo",
+      "value": "Free / Pro available",
+      "why": "smartmockups.com now redirects to Canva Mockups; row moved to the product it points at.",
+      "source": "https://www.canva.com/mockups/",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)",
+      "oldName": "Smartmockups"
+    },
+    {
+      "range": "design_kit!I41",
+      "name": "Canva Mockups",
+      "field": "verdict",
+      "old": "The specific job is lifestyle and room scenes. If you are presenting brand identity or print work in a physical context, this is the right tool.",
+      "value": "Smartmockups lives inside Canva now, so if your team already works there this is the quickest route from a design to a mockup. Some of the editing tools need Canva Pro.",
+      "why": "smartmockups.com now redirects to Canva Mockups; row moved to the product it points at.",
+      "source": "https://www.canva.com/mockups/",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)",
+      "oldName": "Smartmockups"
+    },
+    {
+      "range": "design_kit!F45",
+      "name": "Realtime Colors",
+      "field": "what_it_does",
+      "old": "",
+      "value": "Previews a colour palette and font pairing on a real page layout, then exports the values as CSS, Tailwind or SCSS.",
+      "why": "Empty since the 29 Sep addition.",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)"
+    },
+    {
+      "range": "design_kit!F46",
+      "name": "Haikei",
+      "field": "what_it_does",
+      "old": "",
+      "value": "Browser tool for generating SVG shapes and backgrounds, such as waves, blobs and layered gradients, with no sign-up.",
+      "why": "Empty since the 29 Sep addition.",
+      "approved": "12 Oct 2026, in chat (delegated: Jasmin authorised Claude to choose the value)"
+    }
+  ]
+}

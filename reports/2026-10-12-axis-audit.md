@@ -311,3 +311,56 @@ locale). Per-cell sources are in the diff file.
 7. Playwright's bundled browser isn't installed for the repo's current version,
    so the installed Chrome was used (`channel: 'chrome'`). Nothing was
    downloaded.
+
+## Addendum: corrections authorised later the same day
+
+Jasmin authorised these on 12 Oct 2026 in chat: section 1 of the open-actions
+list "directly", and sections 2 and 3 "with your best recommendations". Every
+value below was chosen by Claude under that delegation, and each Sheet edit's
+`approved` field says so; none is a value she saw before it was written.
+
+**Written to the Sheet**, 27 cells, all re-read; a full re-read of the four tabs
+found no other cell changed. Diff: `reports/2026-10-12-corrections-diff.json`.
+
+- `/radar` working notes removed: Gemini CLI (22) and Dify (23) "GAP add, June
+  2026."; Floot (67) the GAP opening, the Product Hunt figures and the note
+  about the directory; Zo Computer (68) the watch-list sentence. Postman (20)
+  broken sentence repaired. Replit (21) em dash removed.
+- Learning rows 2 to 5: the em dash in each Anthropic Academy name became a
+  colon.
+- Nano Banana (32) linked to Google DeepMind's Gemini Image page; the Imagen 4
+  page is a 404.
+- Copilot (60): the unconfirmed "£24.26 monthly" removed; row stamped.
+- HubSpot (3): cost now "Free CRM / paid plans priced per seat". HubSpot shows
+  only a limited-time offer with no list price or end date, so no figure was
+  written. J stays None: the nonprofit discount is "currently only available to
+  eligible nonprofits in Australia, New Zealand, the USA and Canada". Row
+  stamped.
+- Adobe Express (29) linked to Adobe Express rather than Firefly.
+- Perplexity (39) J: "Enterprise Pro discount for not-for-profits, on request".
+  Perplexity confirms the discount exists but no longer states $30 a seat. The
+  row stays in the nonprofit filter.
+- Adobe Creative Cloud (28) J and verdict: TechSoup, not Charity Digital
+  Exchange (ruling 4).
+- design_kit 41: Smartmockups became Canva Mockups, where its link now lands,
+  with what_it_does, when_to_use, cost and verdict rewritten for that product.
+- design_kit 45 and 46: what_it_does filled.
+
+**Rulings recorded** in `reports/axis-rulings.md`, all four now settled: the
+tier convention adopted; Grok's H is US on xAI's own UK-facing addendum;
+Gemini's None deliberate; Adobe's channel TechSoup.
+
+**Code:** the ICO's definition of a DPIA, quoted verbatim and linked, under the
+DPIA explainer on `/policy-template` (`53b550b`). Not added to `/tools`: the
+1 Sep ruling took the DPIA explanation out of that page's body. The ICO marks
+its DPIA guidance as under review after the Data (Use and Access) Act.
+
+**Held, and why:**
+
+- `AboutPanel.tsx` items (GEO in the consultancy line; "charity price"): another
+  session has uncommitted edits to that file that delete the consultancy
+  paragraph, so editing it would contradict that work and block its pull.
+- Row deletions, which the write script cannot make and which stay by hand:
+  tools 16 Windsurf (now Devin Desktop, a developer IDE outside the comms brief),
+  tools 35 Smartmockups (now Canva Mockups; Canva is already row 27) and
+  learning 15 GradeMyPrompt (domain gone, no successor found).
