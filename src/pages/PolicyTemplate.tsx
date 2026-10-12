@@ -227,6 +227,53 @@ export default function PolicyTemplate() {
           >
             A Data Protection Impact Assessment is the structured look your organisation takes before using personal data in a way that could put people at risk. It's something you do, not something a tool has. It matters here because supporter and beneficiary data is exactly the kind that raises the stakes, and because your board will ask. The template walks you through when one's needed and what to write down.
           </p>
+          {/* The ICO's own definition, quoted verbatim with the source named
+              beside it: site-geo's top edit of 11 Oct 2026 (a direct quotation
+              from a named source). Placed by Jasmin's delegation, 12 Oct 2026.
+              Here only, not on /tools: the 1 Sep ruling took the DPIA
+              explanation out of that page's body. The ICO marks this guidance
+              as under review after the Data (Use and Access) Act, so recheck
+              the wording when it is updated. */}
+          <blockquote
+            className="font-body"
+            style={{
+              margin: 0,
+              marginTop: 20,
+              paddingLeft: 16,
+              borderLeft: "3px solid #2D35C9",
+            }}
+          >
+            <p
+              style={{
+                fontWeight: 400,
+                fontSize: 17,
+                lineHeight: 1.7,
+                color: "#1A1510",
+                margin: 0,
+              }}
+            >
+              “A DPIA is a process designed to help you systematically analyse, identify and minimise the data protection risks of a project or plan.”
+            </p>
+            <footer
+              style={{
+                fontSize: 15,
+                lineHeight: 1.6,
+                color: "hsl(var(--text-secondary))",
+                marginTop: 8,
+              }}
+            >
+              <cite style={{ fontStyle: "normal" }}>
+                <a
+                  href="https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/accountability-and-governance/data-protection-impact-assessments-dpias/what-is-a-dpia/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="lime-link"
+                >
+                  Information Commissioner's Office, What is a DPIA?
+                </a>
+              </cite>
+            </footer>
+          </blockquote>
         </div>
       </section>
     </>
