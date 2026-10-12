@@ -14,6 +14,11 @@
 // Consultancy website — live.
 export const WORK_WITH_ME_HREF = "https://www.jasminaziz.co.uk/";
 
+// The consultancy's contact page. The homepage About panel's "Get in touch"
+// points here, ruled 12 Oct 2026: a contact label should land on the contact
+// page, not the consultancy's homepage. "Work with me" keeps the homepage.
+export const CONTACT_HREF = "https://www.jasminaziz.co.uk/contact";
+
 // Flip to `true` once the Substack is live to restore all Substack CTAs
 // (top nav desktop + mobile, footer link, and the "Or read the Substack"
 // section on the Subscribe page).

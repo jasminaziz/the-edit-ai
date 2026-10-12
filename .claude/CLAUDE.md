@@ -983,16 +983,24 @@ starts at roughly 59px in a 608px column, and the 30px floor is what keeps the
 phone out of it below an 804px viewport.
 
 **Interaction states go in `index.css`, not in mouse handlers.**
-`.about-byline` is the second component to move, after ToolCard's
+The homepage byline link was the second component to move, after ToolCard's
 `data-selected`, and the mechanism is the same both times: **an inline `style`
 declaration outranks the stylesheet**, so an inline property is what forces a
-component into JS handlers in the first place. Do not put `textDecoration` back
-into the byline's style block; it would beat the hover rule, which is precisely
-what the old `onMouseEnter`/`onMouseLeave` pair existed to work around. Hover
-and `:focus-visible` share one rule, because the mouse-only version left the
-single outbound link on the homepage with no visible state under the keyboard.
-The footer email in `Layout.tsx` was the third, 11 Oct 2026: it now uses
-`.lime-link` (underlined at rest) after Lighthouse failed it on WCAG 1.4.1.
+component into JS handlers in the first place. Never put `textDecoration` into
+a link's inline style block; it beats the hover rule, which is precisely what
+the old `onMouseEnter`/`onMouseLeave` pair existed to work around. Hover and
+`:focus-visible` share one rule, because a mouse-only state leaves a link with
+nothing visible under the keyboard. The footer email in `Layout.tsx` was the
+third, 11 Oct 2026: it now uses `.lime-link` (underlined at rest) after
+Lighthouse failed it on WCAG 1.4.1.
+
+**The About close was rewritten 12 Oct 2026** (copywriter candidate 3,
+`reports/copy-proposals-2026-10-12-about-close.md`, chosen by Jasmin). The
+byline is now plain text, "Curated by Jasmin Aziz", with no link, so its
+`.about-byline` rule was deleted. The title "strategic communications
+consultant", which the positioning statement keeps on that panel, moved into
+the body sentence, and "Get in touch" now goes to the consultancy's contact
+page through `CONTACT_HREF` in `src/lib/links.ts`.
 
 **Loading states hold a screen's height. Do not shorten them.** Since 11 Oct
 2026 `LoadingSpinner` is `min-h-screen` with the spinner where it always sat,
@@ -1445,8 +1453,8 @@ rediscovered as accidents.
   Substack", both using the new `.lime-link` rule in `index.css`. Its intro is
   three paragraphs rather than one 93-word block of eight sentences; **no word
   changed**, only the tag boundaries.
-- **`.about-byline` is underlined at rest**, with hover and focus thickening
-  rather than introducing it.
+- **The byline was underlined at rest** from this pass until 12 Oct 2026,
+  when it stopped being a link (see Interaction states above).
 - **The `my_stack` featured card's header row is `pr-[52px]` below `sm`.** The
   48px Claude mark is absolutely positioned so it reserves no space, and 37px of
   the pricing string sat underneath it. The 52 is derived from the two constants
