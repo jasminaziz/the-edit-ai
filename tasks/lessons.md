@@ -1358,3 +1358,35 @@ Session corrections and rules built up over time. Add entries; do not delete his
   is free; a React-owned footer moving out of view is not.
 - **Lighthouse refuses a page with a 404 status.** That is the real 404 working.
   Score `/404.html` by its file URL, which returns 200.
+
+## 2026-10-12 (axis audit, corrections, About close)
+
+- **A subagent reading a stale shared tree reports fixed bugs as live.** The
+  copywriter read `src/lib/links.ts` from a tree 36 commits behind and said the
+  link had no `www`, a fault fixed on 9 Oct. When the tree is behind, hand the
+  agent origin's file (`git show origin/main:<path>` to a scratch file) and say
+  so, then check its code claims against origin before relaying them.
+- **`HelpBubble` renders its answer only when open**, so nothing inside it
+  reaches the served or prerendered HTML. Content meant for crawlers (the GEO
+  quotation) cannot go there. Check a component's render condition before
+  placing anything for a crawler.
+- **The Internet Archive can be offline for a whole run.** Read the clauses
+  directly and say so; where a vendor links its own previous version (xAI's
+  `/legal/privacy-policy/previous-YYYY-MM-DD`) diff that instead. Recorded in
+  the policy map.
+- **Playwright's bundled browser is not installed for the repo's version.**
+  Launch with `channel: 'chrome'` rather than downloading one.
+- **Element screenshots clip outside the viewport here**, because the site
+  scrolls an inner pane. Use a viewport tall enough for the target, assert it
+  sits inside `innerHeight`, then clip the page screenshot to it.
+- **A find-and-replace anchor can straddle a markdown line break.** "not a /
+  processing location" failed to match; asserting every count before writing
+  is what stopped a half-applied edit.
+- **A promo-only price is not a cost figure.** HubSpot showed only a
+  limited-time Starter price with no list price or end date, so the string
+  records the structure, not the number.
+- **The Cowork discovery run sees six sample rows per tab** through the Drive
+  connector, so its "not already listed" check is unreliable. The audit's own
+  duplicate check across all four tabs is the one that counts.
+- **zsh again:** an unquoted `===` separator killed a `&&` chain. The global
+  rule already covers it; quote separators every time.

@@ -3734,3 +3734,43 @@ The 9 Oct prompt is closed. Open, all Jasmin's unless she hands them over:
    pinned; nothing on the site is an image.
 4. GitHub notification settings, so a failed watchdog run reaches her inbox.
 5. Optional: the `/ai-news` 48px residual shift (CLS 0.019, under 0.1).
+
+### 12 Oct 2026: axis audit, delegated corrections, About close
+
+Done, all live and on both branches (18647c9, d2d3fcc, 53b550b, 91a6360,
+e4501b6):
+- Axis audit for the 12 Oct slot (`reports/2026-10-12-axis-audit.md`, with an
+  addendum for the corrections). Four stamps; three discovery additions
+  (learning 28 and 29, design_kit 47); six rejected courses in
+  `reports/axis-rulings.md`.
+- 27 Sheet corrections under Jasmin's delegation
+  (`reports/2026-10-12-corrections-diff.json`), including the /radar working
+  notes from item 1 of the 11 Oct list. All four axis rulings settled.
+- She deleted tools Windsurf and Smartmockups and learning GradeMyPrompt by
+  hand. tools is 65 rows, learning 28, design_kit 46 (read live 12 Oct).
+- ICO DPIA quotation on /policy-template (item 2 of the 11 Oct list, done
+  there only; /tools left by the 1 Sep ruling).
+- Homepage About close rewritten (copywriter candidate 3,
+  `reports/copy-proposals-2026-10-12-about-close.md`).
+
+Next, all Jasmin's:
+1. GitHub notification settings, so a failed watchdog run reaches her inbox.
+2. whats_new: check GitHub's token list and the Apps Script (records disagree
+   on PAT 16554137 and dedupe); delete the duplicate 3 and 6 Jul batches.
+3. A `SELECT` on Supabase `subscribers` to confirm the privacy page's
+   "dormant since June" claim.
+4. Export the corrected template PDF from Word and relink it.
+5. One real-device first visit with an empty profile.
+6. Unruled copy: "whether there's a charity price" at `AboutPanel.tsx`
+   paragraph 1, and audience naming on the hub and legal pages.
+7. Copywriter flags on the new About close, not acted on: the consultancy
+   line is still the lightest text in the section; "AI work" folds two
+   services; the consultancy site's title is "Strategic marketing and
+   communications consultant".
+8. 22 Nov: the whole published cohort reaches 90 days at once; spread some
+   checks across the 26 Oct run.
+9. Optional: axe alt-text rule name; `/ai-news` 0.019 shift.
+
+The shared tree holds another session's uncommitted `AboutPanel.tsx` edit
+(deletes the old consultancy paragraph); it is obsolete since e4501b6 and
+must be discarded before that tree can pull.
