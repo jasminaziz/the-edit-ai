@@ -1,0 +1,168 @@
+{
+  "run": "2026-10-12",
+  "note": "Two discovery additions from the 5 Oct Cowork run and the 11 Oct course review, every cell as drafted in reports/2026-10-12-axis-audit.md and approved by Jasmin 12 Oct 2026 in chat. Written into the first empty row of each tab. The Digital Culture Network row is held: its type was left for Jasmin to choose. To remove, delete the rows by hand: the guard refuses a blank name or cost, so --rollback cannot empty these cells.",
+  "edits": [
+    {
+      "range": "learning!A28",
+      "name": "Building Effective Human-Agent Teams",
+      "oldName": "",
+      "field": "name",
+      "old": "",
+      "value": "Building Effective Human-Agent Teams",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "learning!B28",
+      "name": "Building Effective Human-Agent Teams",
+      "oldName": "",
+      "field": "category",
+      "old": "",
+      "value": "Learn",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "learning!C28",
+      "name": "Building Effective Human-Agent Teams",
+      "oldName": "",
+      "field": "type",
+      "old": "",
+      "value": "Course",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "learning!D28",
+      "name": "Building Effective Human-Agent Teams",
+      "oldName": "",
+      "field": "provider",
+      "old": "",
+      "value": "Anthropic",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "learning!E28",
+      "name": "Building Effective Human-Agent Teams",
+      "oldName": "",
+      "field": "what_it_is",
+      "old": "",
+      "value": "Short course on moving a team from using AI one person at a time to working alongside a shared agent: clear roles, gradual release, and what the agent can see. No technical background needed.",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "learning!F28",
+      "name": "Building Effective Human-Agent Teams",
+      "oldName": "",
+      "field": "why_i_recommend",
+      "old": "",
+      "value": "I'd put this in front of any team lead whose organisation already uses AI and is starting to hand work to an agent. It's short, and it's about roles and access rather than the tool. It's in beta, so expect it to change. If your team is newer to AI, do the Nonprofit Track first.",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "learning!G28",
+      "name": "Building Effective Human-Agent Teams",
+      "oldName": "",
+      "field": "time",
+      "old": "",
+      "value": "45 min",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "learning!H28",
+      "name": "Building Effective Human-Agent Teams",
+      "oldName": "",
+      "field": "cost",
+      "old": "",
+      "value": "Free (beta)",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "learning!I28",
+      "name": "Building Effective Human-Agent Teams",
+      "oldName": "",
+      "field": "url",
+      "old": "",
+      "value": "https://academy.claude.com/courses/building-effective-human-agent-teams",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "design_kit!A47",
+      "name": "WebAIM Contrast Checker",
+      "oldName": "",
+      "field": "name",
+      "old": "",
+      "value": "WebAIM Contrast Checker",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "design_kit!B47",
+      "name": "WebAIM Contrast Checker",
+      "oldName": "",
+      "field": "category",
+      "old": "",
+      "value": "Accessibility",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "design_kit!C47",
+      "name": "WebAIM Contrast Checker",
+      "oldName": "",
+      "field": "phase",
+      "old": "",
+      "value": "Check Before You Ship",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "design_kit!D47",
+      "name": "WebAIM Contrast Checker",
+      "oldName": "",
+      "field": "group",
+      "old": "",
+      "value": "Check",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "design_kit!E47",
+      "name": "WebAIM Contrast Checker",
+      "oldName": "",
+      "field": "url",
+      "old": "",
+      "value": "https://webaim.org/resources/contrastchecker/",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "design_kit!F47",
+      "name": "WebAIM Contrast Checker",
+      "oldName": "",
+      "field": "what_it_does",
+      "old": "",
+      "value": "Enter a text colour and a background colour and it gives the contrast ratio, with a pass or fail against WCAG AA and AAA for normal text, large text and interface components. Free, no account. From WebAIM, a non-profit at Utah State University.",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "design_kit!G47",
+      "name": "WebAIM Contrast Checker",
+      "oldName": "",
+      "field": "when_to_use",
+      "old": "",
+      "value": "When you're checking one colour pair, a button on a brand colour or text over an image, and want a result you can quote. Each check has a permalink you can send to a designer or supplier.",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "design_kit!H47",
+      "name": "WebAIM Contrast Checker",
+      "oldName": "",
+      "field": "cost",
+      "old": "",
+      "value": "Free",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "design_kit!I47",
+      "name": "WebAIM Contrast Checker",
+      "oldName": "",
+      "field": "verdict",
+      "old": "",
+      "value": "WebAIM is a long-standing accessibility non-profit, so a result from its checker carries weight with a designer or supplier. It checks one pair at a time; for a whole palette, Delphitools is quicker.",
+      "approved": "12 Oct 2026, in chat"
+    }
+  ]
+}

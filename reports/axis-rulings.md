@@ -81,3 +81,19 @@ techsoup.global returned 403.
 ## Settled
 
 (none yet)
+
+---
+
+## Discovery: rejected, do not re-suggest
+
+Ruled by Jasmin, 12 Oct 2026, in chat, from the 11 Oct course review. All six
+are coding or developer courses outside the comms-team brief. A discovery run
+must not propose any of them again for `learning`.
+
+- LangSmith Fleet: Build No-Code Agents (LangChain Academy). No-code, but it
+  teaches a developer-ecosystem product nothing on the tools tab supports.
+- LangChain Essentials (Python)
+- Claude Platform 101 (Anthropic)
+- Model Context Protocol: Advanced Topics (Anthropic)
+- Develop an agent with integrated tools (Microsoft timed lab)
+- Building AI Agents with MongoDB

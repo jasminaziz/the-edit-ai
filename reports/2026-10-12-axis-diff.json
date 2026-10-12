@@ -1,0 +1,42 @@
+{
+  "run": "2026-10-12",
+  "note": "Fact writes only, proposed and awaiting Jasmin's yes. Four last_checked stamps on rows where every fact field was reconfirmed from the vendor today and nothing moved. No cost, data location, training or nonprofit value changed on any row, so no H, I or J write and no filter movement. No verdict, DPIA flag, trustee note, jobs or description is touched. Microsoft Copilot (60) is not stamped: its stored monthly figure is not on Microsoft's page. The Internet Archive was offline throughout, so changed policies were read directly, except Grok, diffed against xAI's own previous version. Undo with: node scripts/sheet-write.mjs reports/2026-10-12-axis-diff.json --rollback --commit",
+  "edits": [
+    {
+      "range": "tools!M45",
+      "name": "ElevenLabs",
+      "field": "last_checked",
+      "old": "24 Aug 2026",
+      "value": "12 Oct 2026",
+      "why": "Privacy policy updated 9 Oct 2026 and moved from /privacy to /privacy-policy. No archive copy available, so read directly. H=US holds: 'Wherever you are, your personal information will be transferred to the United States for storage.' I=Yes unless you opt out holds: personal information is used to 'research, build, train and improve our AI models', with an opt-out under Data use in Terms and Privacy. J holds: the Impact Program page offers 'free access to ElevenLabs technology for nonprofit organizations', by application, with a museum route. D holds: Starter $6 per month, served in USD to this UK machine.",
+      "source": "https://elevenlabs.io/privacy-policy, https://elevenlabs.io/impact, https://elevenlabs.io/pricing"
+    },
+    {
+      "range": "tools!M61",
+      "name": "Google Workspace AI",
+      "field": "last_checked",
+      "old": "28 Sep 2026",
+      "value": "12 Oct 2026",
+      "why": "Green row, always checked. Privacy hub body date moved from 14 Aug to 6 Oct 2026; the page's own change log says the 6 Oct update added one question, on Gemini's guardrails when files are shared with external users (an out-of-domain banner, and cross-app grounding off by default on externally shared files). I=No holds: 'Workspace does not use customer data for training models without customer's prior permission or instruction.' H=Your tenant holds. D and J hold: Google for Nonprofits still offers Workspace for Nonprofits at $0 and Business Standard at '75%+ off standard pricing'. No fact moved, so the Green-row escalation does not fire.",
+      "source": "https://knowledge.workspace.google.com/admin/generative-ai/generative-ai-in-google-workspace-privacy-hub, https://www.google.com/nonprofits/offerings/workspace/"
+    },
+    {
+      "range": "tools!M63",
+      "name": "Wispr Flow",
+      "field": "last_checked",
+      "old": "24 Aug 2026",
+      "value": "12 Oct 2026",
+      "why": "Docs article 'Manage data sharing, cloud storage and local history' updated about 9 Oct (dated relatively). I=Yes unless you opt out holds: 'Improve the model for everyone' is on by default unless restricted. H=US holds: privacy policy still dated 19 Aug 2026. J now reconfirmed, closing the 28 Sep open item: the non-profits page says 'Flow Pro for just $8/mo (on the annual plan)'. D holds: Pro £12/user/mo annual, £15 monthly, both toggles read; a new Growth tier (£18 annual, £23 monthly) sits above Pro and was never in the string.",
+      "source": "https://docs.wisprflow.ai/articles/9609615338-private-cloud-sync-and-data-sharing-preferences-in-wispr-flow, https://wisprflow.ai/privacy-policy, https://wisprflow.ai/for-non-profits, https://wisprflow.ai/pricing"
+    },
+    {
+      "range": "tools!M64",
+      "name": "Grok",
+      "field": "last_checked",
+      "old": "28 Aug 2026",
+      "value": "12 Oct 2026",
+      "why": "Privacy policy updated 11 Oct 2026; diffed sentence by sentence against xAI's own previous version (24 Aug 2026), both sides 312 sentences. 14 sentences changed: navigation, the date, payment wording, and the removal of 'We ask that you do NOT include personal information in your prompts'. Nothing on training, opt-outs or location moved, so H=US (open ruling 2) and I=Yes unless you opt out hold. D holds: Free $0, SuperGrok $30/month (served in USD), X Premium 8.00 GBP a month in the UK. J=None holds: the pricing page offers business volume discounts, no nonprofit programme.",
+      "source": "https://x.ai/legal/privacy-policy, https://x.ai/legal/privacy-policy/previous-2026-08-24, https://x.ai/pricing, https://help.x.com/en/using-x/x-premium"
+    }
+  ]
+}
