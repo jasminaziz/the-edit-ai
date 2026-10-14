@@ -64,10 +64,17 @@ its own decision with its own evidence, not part of this plan.
 ## 1. Opting in and opting out
 
 - **Opt in:** one control in the `/ai-news` header, outside the data-loading
-  part of the page so it works even when the feed fails. It appears only where
-  `window.pushManager` exists. A tap asks iOS for permission (Apple requires a
-  tap), subscribes, and sends the subscription to `POST /api/push`. No worker
-  is registered.
+  part of the page so it works even when the feed fails. It appears where
+  `window.pushManager` exists and, on an iPhone or iPad, only inside the
+  home-screen app. A tap asks iOS for permission (Apple requires a tap),
+  subscribes, and sends the subscription to `POST /api/push`. No worker is
+  registered.
+
+  **Corrected 14 Oct 2026.** This said the button appears wherever
+  `window.pushManager` exists. On Jasmin's iPhone the Safari tab exposed it
+  too, the button showed there, and tapping it crashed the page. Fixed on
+  `feature/push` in `0cda6b2`: a tab on an iPhone or iPad now gets the install
+  hint.
 - **State:** read from `pushManager.getSubscription()` on load. No
   localStorage, no cookie.
 - **iPhone in a Safari tab:** push does not work there, so the control is
@@ -165,11 +172,18 @@ notification's source label is the existing manifest `short_name`, "The Edit".
 
 1. Build on its own branch in its own worktree, as the site map build was, so
    this shared tree is never touched.
-2. Assign that branch a test subdomain of `theeditai.co.uk`. Deployment
-   protection is `all_except_custom_domains` (confirmed 8 October), so a custom
-   domain skips the login wall. That matters because the home-screen app does
-   not share Safari's login cookie. Adding the subdomain is console work for
-   Jasmin.
+2. Assign that branch a test subdomain of `theeditai.co.uk`. The home-screen
+   app does not share Safari's login cookie, so the subdomain must be reachable
+   without Vercel's login.
+
+   **Corrected 9 and 14 Oct 2026.** This said a custom domain skips the login
+   wall because protection is `all_except_custom_domains`. The setting was read
+   correctly; the inference was wrong. It exempts custom domains serving
+   production only, and `push-test.theeditai.co.uk` redirected to
+   `vercel.com/sso-api`. The test ran with Vercel Authentication switched off
+   by Jasmin for the session, to be switched back on afterwards. The subdomain
+   was added through the Vercel CLI and its CNAME at GoDaddy through `gddy`, not
+   by hand.
 3. It is a separate origin, so it gets its own install and subscription. Its
    rows are tagged as test and production sends never reach them. The feed will
    be empty there because the Sheets key is not scoped to it; the test does not
