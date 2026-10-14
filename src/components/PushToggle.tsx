@@ -11,10 +11,14 @@ import { useEffect, useState } from "react";
  * scope / is replaced and unregistered by /sw.js on the next page load, and
  * its subscription goes with it.
  *
- * Shown only where `window.pushManager` exists: iPhone and iPad home-screen
- * apps on iOS 18.4 and later, and Safari 18.5 on a Mac (ruling A: Apple only;
- * ruling C: older iOS sees nothing). State is read from the browser's own
- * subscription, so nothing is kept in localStorage or a cookie.
+ * Shown where `window.pushManager` exists AND, on an iPhone or iPad, the page
+ * is running as a home-screen app: iOS 18.4 and later installed, and Safari
+ * 18.5 on a Mac (ruling A: Apple only; ruling C: older iOS sees nothing).
+ * `window.pushManager` alone is not enough. iOS exposes it in an ordinary
+ * Safari tab too, where push is not delivered, and calling subscribe() there
+ * crashed the page on Jasmin's iPhone on 14 Oct 2026. A tab gets the install
+ * hint instead. State is read from the browser's own subscription, so nothing
+ * is kept in localStorage or a cookie.
  */
 
 // Placeholder strings. Jasmin writes these (plan section 5). Replace only
@@ -55,6 +59,20 @@ function shouldHintInstall(): boolean {
   return nav.standalone === false && version !== null && version >= 18.04;
 }
 
+/**
+ * True for an iPhone or iPad running in a browser tab rather than from the
+ * home screen. iPads report a Mac user agent, so touch points are what tell
+ * them apart from a Mac, which has none. Exported for tests.
+ */
+export function isAppleTouchTab(userAgent: string, maxTouchPoints: number, installed: boolean): boolean {
+  return maxTouchPoints > 1 && /iPhone|iPad|iPod|Macintosh/.test(userAgent) && !installed;
+}
+
+function runningInstalled(): boolean {
+  const nav = navigator as Navigator & { standalone?: boolean };
+  return nav.standalone === true || window.matchMedia("(display-mode: standalone)").matches;
+}
+
 function base64UrlToBytes(value: string): Uint8Array {
   const base64 = value.replace(/-/g, "+").replace(/_/g, "/").padEnd(Math.ceil(value.length / 4) * 4, "=");
   return Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
@@ -70,7 +88,7 @@ export function PushToggle() {
   useEffect(() => {
     if (!VAPID_PUBLIC_KEY) return;
     const pushManager = windowPushManager();
-    if (!pushManager) {
+    if (!pushManager || isAppleTouchTab(navigator.userAgent, navigator.maxTouchPoints, runningInstalled())) {
       if (shouldHintInstall()) setState("install");
       return;
     }

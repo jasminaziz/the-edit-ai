@@ -1617,6 +1617,12 @@ cap working (one send per UK date per host), not an error.
   `navigator.serviceWorker.ready.pushManager`.
 - **Apple only in version 1** (ruling A): `api/_push.ts` refuses any endpoint
   not on `web.push.apple.com`.
+- **`window.pushManager` existing does not mean push works.** iOS exposes it
+  in an ordinary Safari tab too, where push is not delivered, and calling
+  `subscribe()` there crashed the page on Jasmin's iPhone (14 Oct 2026). So on
+  an iPhone or iPad the button shows only in the home-screen app;
+  `isAppleTouchTab()` in `PushToggle.tsx` sends a tab to the install hint.
+  iPads report a Mac user agent, so touch points tell them from a Mac.
 - **Subscriptions live in Supabase** (`push_subscriptions`, `push_sends`, RLS on
   with no policies, grants revoked), written only by the `api/` functions with
   the service role key. Rows are tagged with the host they arrived on, which is
