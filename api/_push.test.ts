@@ -16,6 +16,7 @@ import {
   parseCount,
   parseEndpoint,
   parseSubscription,
+  subscriptionGone,
   ukDate,
 } from "./_push.js";
 
@@ -87,4 +88,20 @@ test("the send token must match exactly, and an unset secret refuses everything"
   assert.equal(authorised(null, "s3cret"), false);
   assert.equal(authorised("Bearer ", ""), false);
   assert.equal(authorised("Bearer anything", undefined), false);
+});
+
+test("a subscription is gone on 404, 410, or Apple's BadWebPushToken", () => {
+  assert.equal(subscriptionGone(404, ""), true);
+  assert.equal(subscriptionGone(410, ""), true);
+  // the reply Apple gave a fake device address on 8 Oct 2026
+  assert.equal(subscriptionGone(400, '{"reason":"BadWebPushToken"}'), true);
+});
+
+test("every other failure keeps the row, so a payload bug cannot wipe the list", () => {
+  assert.equal(subscriptionGone(400, '{"reason":"PayloadTooLarge"}'), false);
+  assert.equal(subscriptionGone(400, "not json"), false);
+  assert.equal(subscriptionGone(400, ""), false);
+  assert.equal(subscriptionGone(403, '{"reason":"BadJwtToken"}'), false);
+  assert.equal(subscriptionGone(429, '{"reason":"TooManyRequests"}'), false);
+  assert.equal(subscriptionGone(undefined, undefined), false); // encryption failed before sending
 });

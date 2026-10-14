@@ -103,6 +103,22 @@ export function db() {
   return createClient(url, serviceKey, { auth: { persistSession: false } });
 }
 
+// Whether a failed send means the subscription itself is dead, so its row can
+// be deleted. 404 and 410 are the standard answers. Apple also answers 400
+// with reason BadWebPushToken for a device address that can never be
+// delivered to (seen on 8 Oct 2026). Only that exact reason counts: any other
+// 400 may be a fault in our own payload, and treating it as gone would delete
+// every subscriber in one send.
+export function subscriptionGone(statusCode: number | undefined, body: string | undefined): boolean {
+  if (statusCode === 404 || statusCode === 410) return true;
+  if (statusCode !== 400 || !body) return false;
+  try {
+    return (JSON.parse(body) as { reason?: unknown }).reason === "BadWebPushToken";
+  } catch {
+    return false;
+  }
+}
+
 export function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
 }

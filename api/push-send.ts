@@ -8,10 +8,11 @@
  *   notification, and the daily cap stops even that the second time.
  * - At most one send per UK calendar day per host (ruling F). The cap is the
  *   primary key on push_sends: the insert fails before anything is sent.
- * - Subscriptions Apple reports as gone (404 or 410) are deleted.
+ * - Subscriptions Apple reports as gone are deleted: 404, 410, or 400 with
+ *   reason BadWebPushToken (see subscriptionGone in _push.ts).
  */
 import webpush from "web-push";
-import { PUSH_TTL_SECONDS, authorised, buildPayload, db, json, parseCount, ukDate } from "./_push.js";
+import { PUSH_TTL_SECONDS, authorised, buildPayload, db, json, parseCount, subscriptionGone, ukDate } from "./_push.js";
 
 export async function POST(request: Request): Promise<Response> {
   if (!authorised(request.headers.get("authorization"), process.env.PUSH_SEND_SECRET)) {
@@ -68,8 +69,8 @@ export async function POST(request: Request): Promise<Response> {
   results.forEach((result, i) => {
     if (result.status === "fulfilled") delivered++;
     else {
-      const status = (result.reason as { statusCode?: number }).statusCode;
-      if (status === 404 || status === 410) gone.push(subscriptions![i].endpoint);
+      const { statusCode, body } = result.reason as { statusCode?: number; body?: string };
+      if (subscriptionGone(statusCode, body)) gone.push(subscriptions![i].endpoint);
     }
   });
   if (gone.length) await supabase.from("push_subscriptions").delete().in("endpoint", gone);
