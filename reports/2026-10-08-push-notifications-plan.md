@@ -252,6 +252,100 @@ personal data (section 6).
 
 Ruling:
 
+## 10. Phone test, 14 October 2026
+
+Run on Jasmin's iPhone against `push-test.theeditai.co.uk` (branch
+`feature/push`), with Vercel Authentication switched off by Jasmin for the
+session and restored afterwards to `all_except_custom_domains`, read back and
+checked by the subdomain redirecting to Vercel's login again.
+
+| Step | Result |
+|---|---|
+| Opt in from the home-screen app | Apple subscription stored, tagged `push-test` |
+| First push (3 stories) | Apple accepted, delivered 1; Jasmin received it |
+| Close and reopen the app three times | Second push accepted, delivered 1, removed 0: the subscription survives the self-destroying `/sw.js` (the unproven point in section 0) |
+| Opt out | Row deleted from Supabase |
+| Opt in again | New row stored |
+| Safari tab (before the fix) | Button showed and the tap crashed the page; fixed in `0cda6b2` |
+
+Also fixed after the test: a subscription Apple answers with
+`400 BadWebPushToken` is now deleted (`993278d`); any other 400 still is not.
+
+`PUSH_SEND_SECRET` was regenerated on 14 Oct and set in GitHub and in the
+branch's Preview settings. A separate production VAPID key pair was generated
+the same day; the production values sit in `~/.the-edit-push/` on Jasmin's Mac
+for her to add to Vercel's Production settings, because writing production
+secrets was refused by Claude Code's permission check.
+
+Not yet tested: Safari on a Mac (ruling A keeps the button there).
+
+## 11. Drafts for sign-off: the eight strings and ruling G
+
+Drafted by the code session on Jasmin's instruction of 14 Oct 2026 ("action
+the other items based on your best recommendation"). **Drafts, not placed.**
+Only an approved string goes into the code. Write `Approved:` with the final
+wording, or a correction.
+
+**The eight strings** (section 5). UK English, contractions, no em dashes.
+"Stories" is the word from the original brief ("tell me when new stories
+land").
+
+| Placeholder | Draft |
+|---|---|
+| `PUSH_OPTIN` | Notify me when new stories land |
+| `PUSH_OPTOUT` | Turn off notifications |
+| `PUSH_DENIED` | Notifications are off for The Edit. To turn them on, go to Settings, then Notifications, then The Edit. |
+| `PUSH_INSTALL_HINT` | Want a notification when new stories land? Add this site to your Home Screen first (Share, then Add to Home Screen), then open it from the icon. |
+| `PUSH_ERROR` | That didn't work. Try again in a minute. |
+| `NOTIFY_TITLE` | AI News |
+| `NOTIFY_BODY_ONE` | A new story's up. Tap to read it. |
+| `NOTIFY_BODY_MANY` | {count} new stories are up. Tap to read them. |
+
+Concerns, flagged as asked:
+
+- `PUSH_DENIED` gives the iPhone route. It is unchecked whether The Edit is
+  listed under that name in iPhone Settings, and on a Mac the route is
+  different, so a Mac visitor who refused would get iPhone directions.
+- The notification already shows "The Edit" as its source, so `NOTIFY_TITLE`
+  names the page rather than repeating the site.
+- `{count}` must stay exactly as written; the code replaces it with the number.
+
+Approved:
+
+**Ruling G, recommended: consent, and treat the push address as personal
+data.** Opting in is a deliberate tap plus the iOS prompt, it can be withdrawn
+at any time, and nothing else is offered in exchange, which is the shape of
+consent. A push address identifies one browser on one device, so treating it
+as personal data is the safe reading. This is a recommendation, not legal
+advice; the `governance-assessor` agent can test it if wanted.
+
+Ruling:
+
+**Draft privacy policy section**, to go after section 2 as a new section 3,
+renumbering 3 to 5 as 4 to 6, with "Last updated" moved to October 2026:
+
+> **3. Notifications on AI News.**
+> If you've added The Edit to your Home Screen and turned on notifications, we
+> store the push address Apple gives your device, the two encryption keys that
+> come with it, and the date you turned them on. Nothing else: no name, no
+> email. We use it only to send one notification when new stories are added to
+> AI News, at most once a day. It's held in Supabase in the EU (Ireland) and
+> passes through Vercel, which runs the site, also in Ireland. Apple delivers
+> the notification: the message is encrypted, but Apple can see that one went
+> to your device and when. Our lawful basis is your consent. Turning
+> notifications off with the button on AI News deletes the address straight
+> away. If you remove the site from your Home Screen, we delete it the next
+> time a notification can't be delivered.
+
+Checked against the build: Supabase eu-west-1, functions pinned to `dub1`
+(Dublin), at most one send per UK day, opt-out deletes the row (tested 14
+Oct). **Unchecked:** whether switching notifications off in iPhone Settings
+makes Apple report the address as gone, so the draft deliberately says
+nothing about deletion by that route. Section 4's "The site sets no cookies
+and runs no analytics" stays true.
+
+Approved:
+
 ## Sources
 
 Read 8 October 2026.
