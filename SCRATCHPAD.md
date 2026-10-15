@@ -3774,3 +3774,36 @@ Next, all Jasmin's:
 The shared tree holds another session's uncommitted `AboutPanel.tsx` edit
 (deletes the old consultancy paragraph); it is obsolete since e4501b6 and
 must be discarded before that tree can pull.
+
+## Where we got to: 15 October 2026, push notifications live
+
+**Live on production at `aa2098e`** (main and overhaul/sector-axis). AI News
+offers a notification when a new batch lands: the button shows in installed
+Apple home-screen apps and Safari on a Mac, an iPhone Safari tab gets the
+install hint. The privacy policy has a new section 3. Plan, rulings, phone
+test and approved copy: `reports/2026-10-08-push-notifications-plan.md`.
+
+Verified on production 15 Oct: approved strings and a production-only VAPID
+key in the AI News chunk, the privacy section served, opt-in stored, a send
+without the secret refused, a send with it accepted by Apple (fake device
+address, so the BadWebPushToken rule deleted the row). Production then held 0
+subscriptions and 0 sends.
+
+## Next step
+
+1. **Jasmin installs theeditai.co.uk from Safari on her iPhone and opts in.**
+   Her current home-screen app is the push-test one, which production never
+   sends to.
+2. **Check the first live send** after the next morning batch: the `notify`
+   job in the Append whats_new rows run, and the `push_sends` row for
+   `theeditai.co.uk` with its delivered count.
+3. **Then retire the test setup:** `push-test.theeditai.co.uk` (Vercel domain
+   and GoDaddy CNAME), the five Preview settings scoped to `feature/push`, the
+   branch and the `~/Developer/the-edit-ai-push` worktree, and the test
+   subscription row.
+4. **Claims register:** add the privacy facts (Supabase eu-west-1, functions in
+   dub1, Apple delivery, one send per UK day) to
+   `~/.claude/steward/claims-the-edit-ai.md`.
+5. Unchecked, for whenever: whether switching notifications off in iPhone
+   Settings makes Apple report the subscription gone (the privacy text
+   deliberately says nothing about that route).

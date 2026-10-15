@@ -1390,3 +1390,33 @@ Session corrections and rules built up over time. Add entries; do not delete his
   duplicate check across all four tabs is the one that counts.
 - **zsh again:** an unquoted `===` separator killed a `&&` chain. The global
   rule already covers it; quote separators every time.
+
+## 2026-10-08 to 15 (push notifications)
+
+- **`window.pushManager` existing does not mean push works.** iOS exposes it in
+  an ordinary Safari tab, where push is never delivered, and calling
+  `subscribe()` there crashed the page on a real iPhone. Gate on the page
+  running as an installed app as well. Only a real device found this; no stub
+  can tell you what iOS exposes.
+- **`all_except_custom_domains` exempts only custom domains serving
+  production.** A custom subdomain assigned to a preview branch still
+  redirects to `vercel.com/sso-api`. The plan stated the opposite as confirmed
+  because the setting was read correctly and its meaning was inferred.
+- **`bun test` runs vitest files with Bun's own runner**: no `vi.stubEnv`, no
+  DOM. A component render test cannot sit in the gate. Test a pure function the
+  component calls, and prove it by forcing the old behaviour back in.
+- **A fake push subscription needs a well-formed p256dh key.** A filler key
+  fails encryption on our side, so the send reads `failed` and never reaches
+  Apple. Use a real curve point; Apple then answers `BadWebPushToken`, which
+  proves the VAPID signature was accepted.
+- **The session scratchpad is cleared within days.** Generated secrets kept
+  there were gone a week later and the send secret had to be rotated. Put
+  anything a later session needs in a private home-folder file or the password
+  manager in the same session.
+- **An empty grep pattern counts every line.** Twice: a pattern read from a
+  file that no longer existed, and one that captured a node error message.
+  Print the pattern's length inside the same check.
+- **The Vercel connector refused env, domain and project writes (403)**; the
+  CLI's `vercel api` and `vercel env add` worked. Claude Code's permission check
+  refused turning deployment protection off and writing production secrets:
+  those are hers, in the dashboard.
