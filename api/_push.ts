@@ -17,11 +17,11 @@ export const MAX_STORIES = 20;
 // gets the morning's batch but never yesterday's.
 export const PUSH_TTL_SECONDS = 12 * 60 * 60;
 
-// Placeholder strings. Jasmin writes these (plan section 5). Replace only
-// with approved copy.
-export const NOTIFY_TITLE = "[NOTIFY_TITLE]";
-export const NOTIFY_BODY_ONE = "[NOTIFY_BODY_ONE]";
-export const NOTIFY_BODY_MANY = "[NOTIFY_BODY_MANY {count}]";
+// Approved by Jasmin, 15 Oct 2026, in chat (plan report section 11). Change
+// only with her approval of the exact wording. {count} is replaced by the number.
+export const NOTIFY_TITLE = "AI News";
+export const NOTIFY_BODY_ONE = "A new story's up. Tap to read it.";
+export const NOTIFY_BODY_MANY = "{count} new stories are up. Tap to read them.";
 
 export type StoredSubscription = { endpoint: string; p256dh: string; auth: string };
 

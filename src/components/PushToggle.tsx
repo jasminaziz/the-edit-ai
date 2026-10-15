@@ -21,14 +21,15 @@ import { useEffect, useState } from "react";
  * is kept in localStorage or a cookie.
  */
 
-// Placeholder strings. Jasmin writes these (plan section 5). Replace only
-// with approved copy.
+// Approved by Jasmin, 15 Oct 2026, in chat (plan report section 11). Change
+// only with her approval of the exact wording.
 const COPY = {
-  optIn: "[PUSH_OPTIN]",
-  optOut: "[PUSH_OPTOUT]",
-  denied: "[PUSH_DENIED]",
-  installHint: "[PUSH_INSTALL_HINT]",
-  error: "[PUSH_ERROR]",
+  optIn: "Notify me when new stories land",
+  optOut: "Turn off notifications",
+  denied: "Notifications are off for The Edit. To turn them on, go to Settings, then Notifications, then The Edit.",
+  installHint:
+    "Want a notification when new stories land? Add this site to your Home Screen first (Share, then Add to Home Screen), then open it from the icon.",
+  error: "That didn't work. Try again in a minute.",
 };
 
 const VAPID_PUBLIC_KEY = import.meta.env.VITE_PUSH_VAPID_PUBLIC_KEY as string | undefined;
