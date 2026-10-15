@@ -1,0 +1,39 @@
+# Watchdog for the live directory, ruled 9 Oct 2026 (gates 4.1).
+#
+# The site reads the Sheet in the visitor's browser and shows an empty state
+# when that fails, so a key that loses a referrer host, or a renamed header in
+# the tools tab, empties /tools with nothing reaching Jasmin. This runs
+# scripts/check-directory.ts, which reads the tools tab the way the site does
+# and fails if fewer than 20 rows would render. A failed scheduled run sends
+# GitHub's failure email.
+#
+# Needs one repository secret, SHEETS_API_KEY: the production Sheets key, the
+# same value Vercel holds as VITE_GOOGLE_SHEETS_API_KEY. That key is
+# referrer-locked, so the script sends the www referer the site uses. The key
+# already ships in the public bundle; the secret keeps it out of this file.
+#
+# Scheduled workflows only run from the default branch, so this does nothing
+# until it reaches main. Same caveat as the whats_new watchdog: GitHub pauses
+# schedules after 60 days of repo inactivity and emails a warning first.
+
+name: directory watchdog
+
+on:
+  schedule:
+    - cron: '17 */6 * * *' # every six hours, off the hour
+  workflow_dispatch: {} # allows a manual test run
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Fail if the tools tab would not fill /tools
+        env:
+          SHEETS_API_KEY: ${{ secrets.SHEETS_API_KEY }}
+          SHEETS_ID: 1RIO-WY9H75gML_UgdQbHGgDl-R0MfaG3CRPUp3PtAUI
+        run: bun scripts/check-directory.ts

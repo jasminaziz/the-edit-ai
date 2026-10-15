@@ -1300,3 +1300,93 @@ Session corrections and rules built up over time. Add entries; do not delete his
 - **A permission-check denial covers the outcome, not the command.** When a guard
   edit is blocked partway, restore the file to its committed state rather than leave
   a half-built guard on disk, explain, and wait for Jasmin's word.
+
+## 2026-10-09 (geo branches)
+
+- **A blocker written in CLAUDE.md is a hypothesis until a cheap falsifier has
+  run.** "The Preview key is missing" stood for five weeks and was about to be
+  handed to Jasmin as a dashboard job. `vercel env list` (names only) showed it
+  set, and the failed preview's bundle hash matched production's, which a
+  missing `VITE_` key cannot do. Check the listing and the hash before asking
+  anyone to change a setting.
+- **Playwright's `route.continue({ headers })` does not change the Referer in
+  Chromium.** Send the request from Node with `route.fetch` and hand it back with
+  `route.fulfill`. Prove a header change with a falsifiable test: a key that
+  should refuse the new header has to start failing.
+- **`scrollIntoView` aims at the element as drawn, transforms included.** A card
+  inside a reveal wrapper still in its hidden state (32px lower, 94% scale) landed
+  about 59px off once the reveal settled. Scroll by `offsetTop`, and measure a
+  landing only after sampling until nothing moves, never in the frame after the
+  scroll. The figures once recorded here were first-frame figures.
+- **Sweep keyboard focus in both directions.** Forward Tab found 21 hidden stops on
+  one page; Shift+Tab found more, on both pages, at every width.
+- **A hit test must exclude the obscurer's own children.** The first "focus hidden
+  behind the bar" hit was the search box inside the bar. Prove a new probe on a
+  case you know before trusting it.
+- **A protected Vercel preview can be curled with a share link and a cookie jar**
+  (the connector's `get_access_to_vercel_url`), but the jar stopped working within
+  the hour. Check every body for the real page and for "Log in to Vercel".
+- **The keyless PageSpeed API shares one daily quota with everyone and was
+  exhausted.** pagespeed.web.dev still works if started in the in-app browser and
+  read in headless Chrome; the hidden pane itself renders nothing (0 frames, 0x0).
+
+
+## 2026-10-11 (geo merges, footer link, layout shift)
+
+- **In Playwright the route handler registered last wins.** A delay route added
+  before a serve-everything route never fired, and the "held back" chunk arrived
+  at 212ms. Put the delay inside the serving handler, and confirm it from the
+  request timings before reading any result.
+- **A "before" build must come from the commit before the change.** The baseline
+  was built after the footer fix was committed, so its "before" already passed.
+  Production was the real before. Name the commit each side was built from.
+- **Lighthouse with a curl cookie jar audited Vercel's login page.** The jar was
+  empty and the share cookie never reached Lighthouse; the final-URL check in the
+  loop caught it. For a protected preview, open the share link in Playwright and
+  run axe there (`axe.min.js` arrives with Lighthouse in the bun cache).
+- **`git branch -d` judges "merged" against the checked-out branch**, which in
+  this shared tree is behind, so it refuses branches that are in `main`. Prove it
+  with `git merge-base --is-ancestor <branch> origin/main`, then `-D`.
+- **`preview_start` reads `.claude/launch.json` from the session folder**, so
+  here it would serve the shared tree and another session's uncommitted code. To
+  test a worktree's build without a dev server, serve `dist` from inside
+  Playwright with `page.route` and `route.fulfill`, SPA fallback to `index.html`.
+- **One Lighthouse CLS number is one roll of a race.** Record every frame and
+  every layout-shift source on a cold load, hold a chunk back to force the race,
+  and strip the prerendered body to test whether the prerender is the cause.
+  Newly inserted elements never count, so `createRoot` replacing the prerender
+  is free; a React-owned footer moving out of view is not.
+- **Lighthouse refuses a page with a 404 status.** That is the real 404 working.
+  Score `/404.html` by its file URL, which returns 200.
+
+## 2026-10-12 (axis audit, corrections, About close)
+
+- **A subagent reading a stale shared tree reports fixed bugs as live.** The
+  copywriter read `src/lib/links.ts` from a tree 36 commits behind and said the
+  link had no `www`, a fault fixed on 9 Oct. When the tree is behind, hand the
+  agent origin's file (`git show origin/main:<path>` to a scratch file) and say
+  so, then check its code claims against origin before relaying them.
+- **`HelpBubble` renders its answer only when open**, so nothing inside it
+  reaches the served or prerendered HTML. Content meant for crawlers (the GEO
+  quotation) cannot go there. Check a component's render condition before
+  placing anything for a crawler.
+- **The Internet Archive can be offline for a whole run.** Read the clauses
+  directly and say so; where a vendor links its own previous version (xAI's
+  `/legal/privacy-policy/previous-YYYY-MM-DD`) diff that instead. Recorded in
+  the policy map.
+- **Playwright's bundled browser is not installed for the repo's version.**
+  Launch with `channel: 'chrome'` rather than downloading one.
+- **Element screenshots clip outside the viewport here**, because the site
+  scrolls an inner pane. Use a viewport tall enough for the target, assert it
+  sits inside `innerHeight`, then clip the page screenshot to it.
+- **A find-and-replace anchor can straddle a markdown line break.** "not a /
+  processing location" failed to match; asserting every count before writing
+  is what stopped a half-applied edit.
+- **A promo-only price is not a cost figure.** HubSpot showed only a
+  limited-time Starter price with no list price or end date, so the string
+  records the structure, not the number.
+- **The Cowork discovery run sees six sample rows per tab** through the Drive
+  connector, so its "not already listed" check is unreliable. The audit's own
+  duplicate check across all four tabs is the one that counts.
+- **zsh again:** an unquoted `===` separator killed a `&&` chain. The global
+  rule already covers it; quote separators every time.

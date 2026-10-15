@@ -3453,3 +3453,324 @@ Layout, gravity, package.json, bun.lock) is still in the tree and not ours.
    Monday 5 October; Pass 4 picks it up on the 12th.
 5. Carried from 13 Sep: the July branch's PAT and dedupe claim; LinkedIn Post
    Inspector; the Preview Sheets key for `geo/prerender`; content on the thin jobs.
+
+## 2026-10-09 session: gates and GEO follow-ups, on `geo/crawl-meta` and `geo/prerender-2026-10`
+
+Worked in its own worktree (`~/Developer/the-edit-ai-geo`), never the shared
+tree. Neither branch is merged; Jasmin merges.
+
+- **The Preview Sheets key was never the prerender's blocker.** Vercel lists
+  `VITE_GOOGLE_SHEETS_API_KEY` for Preview, and the failed preview built the same
+  bundle hash as production. The cause was the Referer override in
+  `scripts/prerender.mjs`, which Chromium ignored under `route.continue`. Fixed on
+  `geo/prerender-2026-10` (`37b1193`) with `route.fetch` and `route.fulfill`.
+  This retires item 5's "the Preview Sheets key for `geo/prerender`" above.
+- **Main chunk, route-level `lazy()` (gates 2.2).** Before: **534.01 kB** (gzip
+  171.73) on production's `main` build today, 535.37 kB on this branch with the
+  Sheet-logging commit. After: **471.99 kB** (gzip 154.46), under Vite's 500 kB
+  warning, which no longer prints. `HomeGravity` stays 221.59 kB and lazy as
+  before. Measured from `bun run build` on 9 Oct 2026. Every route checked in
+  Chrome afterwards: same rendered text as before, and Home to Tools stays a
+  client-side navigation that fetches the Tools chunk on demand.
+- **Housekeeping (gates 3.5 note, 1.2).** `src/vercel.json` deleted: Vercel only
+  reads the root file, nothing referenced this copy, and it was identical to
+  `main`'s root `vercel.json`, so it would have misled whoever edited it. The
+  dead `.form-input::placeholder` rule (`#9A8F82`, 2.99:1) deleted from
+  `src/App.css`; no file uses `.form-input`. Found doing it, not acted on:
+  **nothing imports `src/App.css` at all**, so the rest of that file (the other
+  `.form-input` rules and a `float-down` keyframe) never ships either.
+
+web-build-guide stale: theeditai.co.uk §7/§8 predate the 30 Aug overhaul: apex 308 enforced, Submit form replaced by mailto, OG card 1200x630 40KB; open: empty-shell prerender unmerged (67 behind main), bare-wildcard robots, 3 client-side redirects returning 200, Sheet-fetch failures unreported (see reports/site-gates-2026-10-09.md)
+
+### 2026-10-09 manual checks (gates 1.6, 2.6, 3.9, 4.3)
+
+All against **production** (`main` at `1235918`, neither branch merged), so
+these are the pre-merge baseline. Re-run after the merges.
+
+**PageSpeed Insights, mobile, 9 Oct 2026** (keyless API quota was exhausted, so
+run through pagespeed.web.dev; report links last about a month):
+
+| Route | Perf | A11y | BP | SEO | FCP | LCP | TBT | CLS | Report |
+|---|---|---|---|---|---|---|---|---|---|
+| `/` (17:03) | 74 | 95 | 100 | 100 | 3.3 s | 4.6 s | 0 ms | 0 | `pagespeed.web.dev/analysis/https-theeditai-co-uk/vvqkc7yx1k` |
+| `/tools` (17:11) | 78 | 100 | 100 | 100 | 3.2 s | 4.1 s | 0 ms | 0 | `.../https-theeditai-co-uk-tools/6db267gnv2` |
+| `/my-stack` (17:11) | 77 | 100 | 100 | 100 | 3.4 s | 4.1 s | 0 ms | 0 | `.../https-theeditai-co-uk-my-stack/tq7r6jeab0` |
+| `/radar` (18:08) | 80 | 100 | 100 | 100 | 3.1 s | 4.0 s | 0 ms | 0.01 | `.../https-theeditai-co-uk-radar/nutthh2ym3` |
+
+Gate 2 still fails: Performance under 90 and LCP over 2.5 s on every route; CLS
+and TBT pass. No field data yet (CrUX has none for the site). The homepage's
+only accessibility deduction is colour contrast on the periwinkle header and
+the lime "Menu" label (`Layout.tsx:175`), which is the named exception ruled
+the same day. Lighthouse accessibility on the other templates (`/design-kit`,
+`/learning`, `/ai-news`, `/policy-template`, `/submit`, a legal page, the 404)
+**not run**: pagespeed.web.dev stopped returning results after four runs.
+
+**axe: not run.** `axe-core` is not installed and was not downloaded. Jasmin's,
+in axe DevTools.
+
+**Keyboard pass, scripted in Chrome against a local build of `geo/crawl-meta`,
+9 Oct 2026.**
+- Phone drawer (375 wide, `/` and `/tools`): passes. Menu reachable by Tab,
+  focus moves into the drawer, stays inside across 25 Tabs, Escape closes it,
+  focus returns to Menu.
+- `/tools` at 375: no Tab stop hidden behind the sticky filter bar.
+- **`/tools` at 1280: fails WCAG 2.2 AA 2.4.11 (Focus Not Obscured).** 21 of 160
+  Tab stops, all card name links, land entirely behind the sticky filter bar.
+  Proven two ways: a hit test at the focused link's centre returns the bar, and
+  a screenshot shows Adobe Express selected with its name under the bar (pane at
+  1,139px, link at y 86 to 112, bar 64 to 197). Cause: in the three-column
+  grid, once a row has scrolled under the bar, the next card's name is already
+  "in view" to the browser, so focus does not scroll it. Every focused element
+  showed a ring. **Not fixed.** Candidate, untested: a `scroll-padding-top` on
+  `#app-scroll` equal to the bar's height at `lg` (measured 133px at 1280 that
+  day; CLAUDE.md records 149px, so measure before choosing a value).
+
+**VoiceOver on `/` and `/tools`: not run.** Needs a person listening. Jasmin's.
+
+**Open Graph, as a scraper reads it, 9 Oct 2026.** Production: `/`, `/tools`,
+`/my-stack`, `/policy-template` and `/learning` all serve the homepage
+`og:title` and no `og:url`, because the shell is the same on every route; the
+card image serves (200, `image/png`, 40,383 bytes). The `geo/prerender-2026-10`
+preview serves each route's own `og:title`, except the three legal pages,
+whose titles live on `geo/crawl-meta`. opengraph.xyz itself is worth running
+after the merge, not before.
+
+**Search Console and an uptime monitor: Jasmin's**, under hello@jasminaziz.co.uk.
+Not done as at this entry.
+
+### 2026-10-09 (later): "action all"
+
+Jasmin's instruction after the summary. Done, each on its branch, pushed and
+verified:
+
+- **`vercel.json` reconciled on `geo/prerender-2026-10`** (`1df09bd`): it carries
+  crawl-meta's three 308s byte for byte. `git merge-tree` still reports a
+  conflict on `vercel.json` over the catch-all; merging the prerender after
+  crawl-meta, take the prerender's file whole.
+- **Real 404** (`b039f0f`): catch-all removed, NotFound prerendered as
+  `404.html`. Curled on the preview: unknown paths 404 with `noindex`, routes
+  200, legacy paths 308, static files their own types.
+- **Focus fix** (`fee4926`, `src/`): `under-rail` on the section below the rail
+  on `/tools` and `/radar`, and its links and buttons carry the card's
+  scroll-margin. The sweep found the defect wider than first recorded: Shift+Tab
+  hid up to 17 controls on both pages at every width. After: zero hidden stops
+  forward and backward at 375, 1024, 1280 and 1440 on both pages.
+- **Lint errors cleared** (`13a8f7a`): `bun run lint` now exits 0 (4 old
+  warnings). CSS byte-identical; one counter statement differs in the JS.
+- **CLAUDE.md Crawlability corrected** (`892af4d`).
+
+**Fixed later the same day (`c475d50`), see below. Found pre-existing: `?tool=`
+deep links land with the tool's name under the rail.** Gamma measured 24px under at 375 and 29px under at 1280
+(2px clear at 768), confirmed by screenshot at 1280 with no transform on any
+ancestor; identical before and after the focus fix. CLAUDE.md records 36, 62
+and 31px of clearance from the original fix, so something moved since; not
+diagnosed. `scroll-margin-top` on `.tool-card` is the place to start.
+
+**Lighthouse accessibility on `/design-kit`, `/learning`, `/ai-news`,
+`/policy-template`, `/submit`, a legal page and the 404: still not run.**
+pagespeed.web.dev stalled again on the first of them. Chrome DevTools'
+Lighthouse runs locally with no quota.
+
+**Deep-link landing fixed (`c475d50`).** The cause was not the margin values:
+`scrollIntoView` aimed at the card while its reveal wrapper was still in its
+hidden state (32px lower, 94% scale), and the card rose about 59px when the
+reveal settled, plus 16 when the rail compacted. Now scrolled by `offsetTop`.
+At rest the name clears the rail by 37 to 40px at 375, 63 to 64px at 768 and
+32 to 48px at 1280 and 1440. The prompt for the next code thread is
+`reports/2026-10-09-next-thread-prompt.md`.
+
+## 2026-10-11: both geo branches merged and proven on production
+
+On Jasmin's instruction ("merge if safe"), from a detached worktree off
+`origin/main`, never the shared tree. `geo/crawl-meta` fast-forwarded (`87a1ed3`),
+then `geo/prerender-2026-10` merged (`7132687`) with its `vercel.json` taken whole:
+the three 308s byte-identical to crawl-meta's, the prerender `buildCommand`, 11
+rewrites matching `App.tsx` and the script's `ROUTES`, no catch-all. Gate on the
+merge: build clean (main chunk 471.99 kB), lint 0 errors and the 4 known warnings,
+77 tests, tsc 0. The prerender could not run locally (Playwright's headless
+shell is not downloaded on this Mac), so the merge went first to
+`geo/merge-2026-10-10`, whose Vercel preview built green (13 pages written,
+`/radar` 44 cards) and passed every curl check below, before `main` and
+`overhaul/sector-axis` were fast-forwarded to `7132687`, refs verified.
+
+**Rulings taken before the push, 11 Oct 2026, in chat:**
+- The three legal-page titles and descriptions: **approved as drafted**, after
+  two concerns were raised (privacy ends on the fragment "UK GDPR."; the terms
+  description names dated checks and assessing tools yourself, which the Terms
+  body does not say).
+- The cold-load content flash on `/tools` (prerendered cards, then the spinner,
+  then cards): **accepted, ship it**.
+
+**Production, curled with no JavaScript, 11 Oct 2026 10:50 BST:**
+1. All 12 sitemap-and-route URLs 200 with body text inside `#root`, their own
+   `<title>`, `og:title` and bare-domain canonical. `/tools` 10,306 characters
+   and 23 cards; the legal pages carry "Privacy policy | The Edit", "Terms | The
+   Edit" and "Cookies | The Edit".
+2. `/nope-xyz`, `/tools/nope` and `/Tools` 404 with `noindex, follow`. `/stack`,
+   `/whats-new` and `/subscribe` 308 to `/tools`, `/ai-news`, `/policy-template`.
+3. `robots.txt` text/plain (names OAI-SearchBot), `sitemap.xml`
+   application/xml, the manifest application/manifest+json, the `.docx`
+   wordprocessingml at 21,711 bytes.
+4. `under-rail` is in the live CSS (`index-CqYxmtj6.css`), which only the merge
+   introduced.
+5. `/sw.js` is the 608-byte worker and contains `unregister`.
+
+In a real browser on `/tools?tool=gamma` the app booted, made one Sheets request
+and rendered 23 cards with no spinner left. The pane was hidden (0x0 viewport),
+so nothing about layout was read from it.
+
+**Still open, from the 9 Oct prompt:** the directory watchdog waits on the
+`SHEETS_API_KEY` repository secret (not added as at 11 Oct); PageSpeed re-run on
+`/`, `/tools`, `/my-stack`; Lighthouse accessibility on the seven unmeasured
+templates; whether to run site-geo again now there is HTML to score.
+
+## 2026-10-11 (afternoon): closing the 9 Oct prompt
+
+**Directory watchdog: live and proven both ways.** Jasmin added the
+`SHEETS_API_KEY` repository secret (12:09 UTC). Manual run 38139466895 on `main`
+printed `OK: 23 complete rows of 67.` Forced failures, run locally from `main`:
+a wrong key gives `FAIL: HTTP 400` and exit 1, a missing key gives the
+must-be-set message and exit 1. Not verified: that a failed run actually emails
+Jasmin, which depends on her GitHub notification settings.
+
+**Branches deleted** (remote and local), each first proven contained in `main`:
+`geo/crawl-meta`, `geo/prerender-2026-10`, `geo/merge-2026-10-10`, and the
+September `geo/prerender`, whose four commits all have equivalent patches on
+`main` (`git cherry`). No `geo/` branches remain.
+
+**Jasmin's manual checks, 11 Oct 2026, as she reported them:**
+- Search Console (hello@): sitemap submitted, Success; URL Inspection done.
+- Uptime: UptimeRobot **HTTP** monitor (URL only, not keyword), email and SMS.
+- VoiceOver on `/` and `/tools`: all fine.
+- axe DevTools: homepage colour contrast (the ruled nav exception) and "images
+  need alt text" on other pages. **The alt-text item is not reproduced**: no
+  route serves an `<img>` or `role="img"`, and Lighthouse's axe reports
+  `image-alt`, `svg-img-alt` as not applicable on all nine routes measured. The
+  rule name from the extension would settle what it saw.
+
+**Lighthouse 13.5.0, run locally (headless Chrome on the Mac, mobile 412px,
+simulated throttling), 11 Oct 2026 ~13:30 BST.** The PageSpeed API and
+pagespeed.web.dev were both out of quota, so these are **not like for like**
+with the 9 Oct PageSpeed baseline: compare CLS and accessibility, not the
+performance score or LCP.
+
+| Route | Perf | A11y | FCP | LCP | TBT | CLS | A11y fails |
+|---|---|---|---|---|---|---|---|
+| `/` | 71 | 95 | 3.4 s | 5.6 s | 10 ms | 0 | color-contrast (ruled) |
+| `/tools` | 74 | 100 | 3.5 s | 4.8 s | 0 ms | 0 | |
+| `/my-stack` | 71 | 100 | 3.4 s | 5.2 s | 0 ms | 0.111 | |
+| `/design-kit` | 82 | 100 | 2.6 s | 3.0 s | 0 ms | 0.189 | |
+| `/learning` | 73 | 100 | 3.6 s | 3.7 s | 10 ms | 0.152 | |
+| `/ai-news` | 75 | 100 | 2.6 s | 2.9 s | 40 ms | 0.332 | |
+| `/policy-template` | 85 | 100 | 3.3 s | 3.3 s | 0 ms | 0 | |
+| `/submit` | 85 | 95 | 3.3 s | 3.3 s | 0 ms | 0 | link-in-text-block |
+| `/privacy-policy` | 71 | 100 | 2.4 s | 3.2 s | 0 ms | 0.42 | |
+| 404 (`/404.html`) | | 100 | | | | | |
+
+Lighthouse refuses to score a page that returns 404, which is the real 404
+status working; the 404 page was scored by its file URL, which returns 200.
+
+Two findings, neither acted on:
+- **`/submit` link-in-text-block (WCAG 1.4.1).** The footer email at
+  `Layout.tsx:486`, lime `#C8F04A` beside white text, 1.31:1, underlined only on
+  mouse hover through `onMouseEnter`/`onMouseLeave`. The footer is on every
+  route; Lighthouse failed it on `/submit` only. Candidate fix: underline at
+  rest via a class in `index.css`, as `.about-byline` was. `src/`, waits for
+  Jasmin.
+- **CLS above 0.1 on five routes**, where the 9 Oct PageSpeed runs measured 0
+  on `/`, `/tools`, `/my-stack` and `/radar`. Lighthouse puts most of it on the
+  footer moving (`/privacy-policy` 0.408, `/my-stack` 0.111, `/ai-news` 0.133)
+  and on `/ai-news` the content container (0.332). Leading suspect, not
+  diagnosed: the prerendered page paints, then `createRoot` and the route's
+  `lazy()` fallback replace it before the real content returns, the same
+  mechanism as the accepted `/tools` flash, plus a font swap on early-painted
+  text (Lighthouse attributes `/privacy-policy`'s footer shift to the Plus
+  Jakarta Sans load). Jasmin accepted the flash before this cost was known.
+
+**site-geo re-run, 11 Oct 2026**: `reports/site-geo-2026-10-11.md`. Every
+priority page now scores; quotations 0 on all five, statistics and cited sources
+0 or 1, prose and stuffing mostly 2. Its one recommended edit: a named external
+quotation (the ICO) on `/policy-template` and `/tools`. Verified by curl the same
+day: `/radar` serves internal working notes to readers ("GAP add, June 2026."
+twice, "GAP: this directory has three other app builders...", "It graduates
+from the watch list this run"), and "Say this to your board" occurs 0 times in
+the served `/tools`. Those notes are Sheet copy and Jasmin's.
+
+## 2026-10-11 (later): footer link and layout shift, both live
+
+On Jasmin's yes to each, in chat. Worked on `fix/footer-link-cls` in its own
+worktree; each commit gated (build, lint 0 errors, 77 tests, tsc).
+
+- **Footer email underlined at rest** (`75fed65`, live). axe
+  `link-in-text-block`: production failed it before (the footer mailto, no
+  decoration), the branch preview and then production passed after. A
+  Lighthouse run against the preview audited Vercel's login page instead; the
+  final-URL check in the loop caught it and the run was discarded.
+- **Layout shift fixed** (`a7a2d55`, live). Diagnosed with a Playwright probe on
+  system Chrome at 412x823 recording every frame and every layout-shift source.
+  Two causes, both the footer entering the viewport mid-load then being pushed
+  out: the 192px `LoadingSpinner` (0.332 `/ai-news`, 0.111 `/my-stack`, 0.037
+  `/design-kit`; identical with the prerendered body stripped, so pre-merge),
+  and `<Suspense fallback={null}>` when a route chunk lands late (0.408
+  `/privacy-policy`, reproduced by holding the chunk 1.5s). Both now hold a
+  screen's height. Spinner position unchanged (603px in both builds,
+  screenshots compared). **Production, 11 Oct 13:51 BST:** `/ai-news` 0.019,
+  `/my-stack`, `/design-kit`, `/learning`, `/tools`, `/privacy-policy` 0, and
+  `/privacy-policy` with its chunk held back 0. Residuals left alone, both
+  under 0.1: a 48px move on `/ai-news` when rows arrive, and a 0.011 font swap.
+
+Branch `fix/footer-link-cls` deleted after both commits reached `main`.
+
+### Next (as at 11 Oct 2026, end of session)
+
+The 9 Oct prompt is closed. Open, all Jasmin's unless she hands them over:
+1. `/radar` serves internal working notes to readers ("GAP add, June 2026."
+   twice, "GAP: this directory has...", "graduates from the watch list this
+   run") and a broken Postman sentence. Sheet copy: her edit, or approved text
+   written through `sheet-write.mjs`.
+2. site-geo's top edit: a named external quotation (the ICO) on
+   `/policy-template` and `/tools`. Copy.
+3. axe's alt-text item: the rule name from the extension, if she wants it
+   pinned; nothing on the site is an image.
+4. GitHub notification settings, so a failed watchdog run reaches her inbox.
+5. Optional: the `/ai-news` 48px residual shift (CLS 0.019, under 0.1).
+
+### 12 Oct 2026: axis audit, delegated corrections, About close
+
+Done, all live and on both branches (18647c9, d2d3fcc, 53b550b, 91a6360,
+e4501b6):
+- Axis audit for the 12 Oct slot (`reports/2026-10-12-axis-audit.md`, with an
+  addendum for the corrections). Four stamps; three discovery additions
+  (learning 28 and 29, design_kit 47); six rejected courses in
+  `reports/axis-rulings.md`.
+- 27 Sheet corrections under Jasmin's delegation
+  (`reports/2026-10-12-corrections-diff.json`), including the /radar working
+  notes from item 1 of the 11 Oct list. All four axis rulings settled.
+- She deleted tools Windsurf and Smartmockups and learning GradeMyPrompt by
+  hand. tools is 65 rows, learning 28, design_kit 46 (read live 12 Oct).
+- ICO DPIA quotation on /policy-template (item 2 of the 11 Oct list, done
+  there only; /tools left by the 1 Sep ruling).
+- Homepage About close rewritten (copywriter candidate 3,
+  `reports/copy-proposals-2026-10-12-about-close.md`).
+
+Next, all Jasmin's:
+1. GitHub notification settings, so a failed watchdog run reaches her inbox.
+2. whats_new: check GitHub's token list and the Apps Script (records disagree
+   on PAT 16554137 and dedupe); delete the duplicate 3 and 6 Jul batches.
+3. A `SELECT` on Supabase `subscribers` to confirm the privacy page's
+   "dormant since June" claim.
+4. Export the corrected template PDF from Word and relink it.
+5. One real-device first visit with an empty profile.
+6. Unruled copy: "whether there's a charity price" at `AboutPanel.tsx`
+   paragraph 1, and audience naming on the hub and legal pages.
+7. Copywriter flags on the new About close, not acted on: the consultancy
+   line is still the lightest text in the section; "AI work" folds two
+   services; the consultancy site's title is "Strategic marketing and
+   communications consultant".
+8. 22 Nov: the whole published cohort reaches 90 days at once; spread some
+   checks across the 26 Oct run.
+9. Optional: axe alt-text rule name; `/ai-news` 0.019 shift.
+
+The shared tree holds another session's uncommitted `AboutPanel.tsx` edit
+(deletes the old consultancy paragraph); it is obsolete since e4501b6 and
+must be discarded before that tree can pull.

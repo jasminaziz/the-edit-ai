@@ -2,7 +2,12 @@ import { LegalPage } from "@/components/LegalPage";
 
 export default function TermsOfService() {
   return (
-    <LegalPage title="Terms." lastUpdated="April 2026">
+    <LegalPage
+      title="Terms."
+      seoTitle="Terms | The Edit"
+      description="The terms for using theeditai.co.uk: the verdicts are opinion, the checks are dated, and the tools are yours to assess before you use them."
+      lastUpdated="April 2026"
+    >
       <h2>1. Acceptance</h2>
       <p>
         By using theeditai.co.uk, you agree to these terms.

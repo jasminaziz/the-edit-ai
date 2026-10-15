@@ -94,7 +94,7 @@ const Index = () => {
             // This is the one link that ties The Edit to the consultancy for
             // anything building an entity graph, which is the whole reason the
             // author block is here.
-            url: "https://jasminaziz.co.uk",
+            url: "https://www.jasminaziz.co.uk",
             jobTitle: "Strategic Communications Consultant",
             email: "hello@jasminaziz.co.uk",
           },

@@ -220,10 +220,14 @@ export function isDpiaGreen(tool: Tool): boolean {
 export async function fetchTools(): Promise<Tool[]> {
   try {
     const res = await fetch(sheetsUrl('tools'));
-    if (!res.ok) return [];
+    if (!res.ok) {
+      console.error(`[sheets] fetch failed: HTTP ${res.status} on values/tools`);
+      return [];
+    }
     const data = await res.json();
     return parseToolRows(data.values || []);
-  } catch {
+  } catch (err) {
+    console.error('[sheets] fetch failed on values/tools:', err instanceof Error ? err.message : err);
     return [];
   }
 }
@@ -231,7 +235,10 @@ export async function fetchTools(): Promise<Tool[]> {
 export async function fetchWhatsNew(): Promise<WhatsNew[]> {
   try {
     const res = await fetch(sheetsUrl('whats_new'));
-    if (!res.ok) return [];
+    if (!res.ok) {
+      console.error(`[sheets] fetch failed: HTTP ${res.status} on values/whats_new`);
+      return [];
+    }
     const data = await res.json();
     const rows: string[][] = data.values || [];
     if (rows.length < 2) return [];
@@ -243,7 +250,8 @@ export async function fetchWhatsNew(): Promise<WhatsNew[]> {
       category: stripEmoji(r[4] || ''),
       url: r[5] || '',
     }));
-  } catch {
+  } catch (err) {
+    console.error('[sheets] fetch failed on values/whats_new:', err instanceof Error ? err.message : err);
     return [];
   }
 }
@@ -262,7 +270,10 @@ export interface DesignKitItem {
 export async function fetchDesignKit(): Promise<DesignKitItem[]> {
   try {
     const res = await fetch(sheetsUrl('design_kit'));
-    if (!res.ok) return [];
+    if (!res.ok) {
+      console.error(`[sheets] fetch failed: HTTP ${res.status} on values/design_kit`);
+      return [];
+    }
     const data = await res.json();
     const rows: string[][] = data.values || [];
     if (rows.length < 2) return [];
@@ -315,7 +326,8 @@ export async function fetchDesignKit(): Promise<DesignKitItem[]> {
         cost: stripEmoji(cell(r, iCost)),
         verdict: stripEmoji(cell(r, iVerdict)),
       }));
-  } catch {
+  } catch (err) {
+    console.error('[sheets] fetch failed on values/design_kit:', err instanceof Error ? err.message : err);
     return [];
   }
 }
@@ -335,7 +347,10 @@ export interface LearningItem {
 export async function fetchLearning(): Promise<LearningItem[]> {
   try {
     const res = await fetch(sheetsUrl('learning'));
-    if (!res.ok) return [];
+    if (!res.ok) {
+      console.error(`[sheets] fetch failed: HTTP ${res.status} on values/learning`);
+      return [];
+    }
     const data = await res.json();
     const rows: string[][] = data.values || [];
     if (rows.length < 2) return [];
@@ -350,7 +365,8 @@ export async function fetchLearning(): Promise<LearningItem[]> {
       cost: stripEmoji(r[7] || ''),
       url: r[8] || '',
     }));
-  } catch {
+  } catch (err) {
+    console.error('[sheets] fetch failed on values/learning:', err instanceof Error ? err.message : err);
     return [];
   }
 }
@@ -368,7 +384,10 @@ export interface MyStackItem {
 export async function fetchMyStack(): Promise<MyStackItem[]> {
   try {
     const res = await fetch(sheetsUrl('my_stack'));
-    if (!res.ok) return [];
+    if (!res.ok) {
+      console.error(`[sheets] fetch failed: HTTP ${res.status} on values/my_stack`);
+      return [];
+    }
     const data = await res.json();
     const rows: (string | boolean)[][] = data.values || [];
     if (rows.length < 2) return [];
@@ -414,7 +433,8 @@ export async function fetchMyStack(): Promise<MyStackItem[]> {
       });
     }
     return items;
-  } catch {
+  } catch (err) {
+    console.error('[sheets] fetch failed on values/my_stack:', err instanceof Error ? err.message : err);
     return [];
   }
 }

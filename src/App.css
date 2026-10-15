@@ -10,9 +10,6 @@
   outline: none;
   transition: border-color 150ms, box-shadow 150ms;
 }
-.form-input::placeholder {
-  color: #9A8F82;
-}
 .form-input:focus {
   border-color: #2D35C9;
   box-shadow: 0 0 0 3px rgba(45,53,201,0.12);

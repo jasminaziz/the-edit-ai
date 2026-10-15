@@ -1,0 +1,87 @@
+{
+  "run": "2026-10-12",
+  "note": "The Digital Culture Network row held from the morning's additions, written once Jasmin chose its type (Publication, 12 Oct 2026, in chat). Every other cell as drafted in reports/2026-10-12-axis-audit.md and approved the same day. To remove, delete the row by hand: --rollback cannot blank a name or cost.",
+  "edits": [
+    {
+      "range": "learning!A29",
+      "name": "Digital Culture Network",
+      "oldName": "",
+      "field": "name",
+      "old": "",
+      "value": "Digital Culture Network",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "learning!B29",
+      "name": "Digital Culture Network",
+      "oldName": "",
+      "field": "category",
+      "old": "",
+      "value": "Reference",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "learning!C29",
+      "name": "Digital Culture Network",
+      "oldName": "",
+      "field": "type",
+      "old": "",
+      "value": "Publication",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "learning!D29",
+      "name": "Digital Culture Network",
+      "oldName": "",
+      "field": "provider",
+      "old": "",
+      "value": "Arts Council England",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "learning!E29",
+      "name": "Digital Culture Network",
+      "oldName": "",
+      "field": "what_it_is",
+      "old": "",
+      "value": "Free digital support for creative and cultural organisations in England: one-to-one sessions with specialist Tech Champions, events, a podcast and a Knowledge Hub of guides.",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "learning!F29",
+      "name": "Digital Culture Network",
+      "oldName": "",
+      "field": "why_i_recommend",
+      "old": "",
+      "value": "If you work in an arts organisation, museum or library in England, this is free expert time most teams don't know they can book, on social media, email, websites, accessibility and data. One-to-one support is only for organisations that get, or could get, Arts Council funding. Everyone else can still use the Knowledge Hub.",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "learning!G29",
+      "name": "Digital Culture Network",
+      "oldName": "",
+      "field": "time",
+      "old": "",
+      "value": "As needed",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "learning!H29",
+      "name": "Digital Culture Network",
+      "oldName": "",
+      "field": "cost",
+      "old": "",
+      "value": "Free",
+      "approved": "12 Oct 2026, in chat"
+    },
+    {
+      "range": "learning!I29",
+      "name": "Digital Culture Network",
+      "oldName": "",
+      "field": "url",
+      "old": "",
+      "value": "https://digitalculturenetwork.org.uk",
+      "approved": "12 Oct 2026, in chat"
+    }
+  ]
+}

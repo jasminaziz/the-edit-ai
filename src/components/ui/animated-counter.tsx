@@ -135,7 +135,7 @@ function Numeral({
   height: number;
 }) {
   const y = useTransform(mv, (latest) => {
-    let offset = (10 + number - latest) % 10;
+    const offset = (10 + number - latest) % 10;
     let memo = offset * height;
     if (offset > 5) memo -= 10 * height;
     return memo;

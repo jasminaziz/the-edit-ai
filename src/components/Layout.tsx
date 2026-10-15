@@ -481,11 +481,16 @@ export function Layout({ children }: { children: ReactNode }) {
                 style={{ fontWeight: 500, color: "#FFFFFF", margin: 0 }}
               >
                 Curated by Jasmin Aziz ·{" "}
+                {/* Underlined at rest through `.lime-link` in index.css, since
+                    11 Oct 2026. It was underlined only on mouse hover, so beside
+                    the white text it was told apart by colour alone (1.31:1),
+                    which fails WCAG 1.4.1; Lighthouse flagged it on /submit.
+                    The colour stays inline: the hover rule only thickens the
+                    underline, so an inline colour cannot outrank it. */}
                 <a
                   href={`mailto:${CONTACT_EMAIL}`}
-                  style={{ color: "#C8F04A", textDecoration: "none" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.textDecoration = "underline")}
-                  onMouseLeave={(e) => (e.currentTarget.style.textDecoration = "none")}
+                  className="lime-link"
+                  style={{ color: "#C8F04A" }}
                 >
                   {CONTACT_EMAIL}
                 </a>
@@ -525,23 +530,23 @@ export function Layout({ children }: { children: ReactNode }) {
             <div className="flex items-center gap-4 sm:gap-5 flex-wrap justify-center sm:justify-end border-t border-white/5 pt-3">
               <Link
                 to="/privacy-policy"
-                className="font-body text-[12px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+                className="font-body text-[12px] text-primary-foreground/60 hover:text-primary-foreground transition-colors"
               >
                 Privacy
               </Link>
               <Link
                 to="/terms-of-service"
-                className="font-body text-[12px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+                className="font-body text-[12px] text-primary-foreground/60 hover:text-primary-foreground transition-colors"
               >
                 Terms
               </Link>
               <Link
                 to="/cookie-policy"
-                className="font-body text-[12px] text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+                className="font-body text-[12px] text-primary-foreground/60 hover:text-primary-foreground transition-colors"
               >
                 Cookies
               </Link>
-              <span className="font-body text-[12px] text-primary-foreground/40">
+              <span className="font-body text-[12px] text-primary-foreground/60">
                 © 2026
               </span>
             </div>

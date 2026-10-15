@@ -35,8 +35,11 @@ is Enterprise-only, so H reads US.
 **Ruling needed:** is this a standing convention? If yes, one line here closes
 all four permanently.
 
-**Ruling:**
-**Date:**
+**Ruling:** Yes, a standing convention. Where a vendor's position varies by
+tier, record the position for the tier a small charity actually buys, and the
+verdict names the difference. Rows 62, 41, 65, 64 and 39 are settled as stored.
+Reopen a row only if the position for that tier moves.
+**Date:** 12 Oct 2026, delegated: Jasmin authorised Claude in chat to rule on her behalf with its best recommendation
 
 ---
 
@@ -47,8 +50,12 @@ processed. Stored H is US. A strict reading of the value set makes an
 undisclosed location Unclear; a company's country of incorporation is not a
 processing location.
 
-**Ruling:**
-**Date:**
+**Ruling:** US, settled on evidence rather than preference. xAI's Europe
+Privacy Policy Addendum, which applies to UK users, says: "We process all of
+your personal information in the United States, where we maintain our primary
+data centers." (https://x.ai/legal/europe-privacy-policy-addendum, read 12 Oct
+2026.)
+**Date:** 12 Oct 2026, delegated: Jasmin authorised Claude in chat to rule on her behalf with its best recommendation
 
 ---
 
@@ -60,8 +67,9 @@ already resolves it. Moving J here would also pull the consumer row into the
 
 Recorded as almost certainly settled; confirm and the audit stops raising it.
 
-**Ruling:**
-**Date:**
+**Ruling:** None is deliberate. The consumer Gemini row stays out of the
+nonprofit filter; the Google for Nonprofits programme is carried on row 61.
+**Date:** 12 Oct 2026, delegated: Jasmin authorised Claude in chat to rule on her behalf with its best recommendation
 
 ---
 
@@ -73,11 +81,33 @@ global-page-versus-UK-delivery artefact rather than a change. Could not be
 confirmed: charitydigital.org.uk is robots-disallowed to the fetcher and
 techsoup.global returned 403.
 
-**Ruling:**
-**Date:**
+**Ruling:** TechSoup. Adobe's UK nonprofit page says "Access to Creative Cloud
+is administered through our programme partner TechSoup", and Charity Digital's
+discounted-software list no longer carries Adobe (both read 12 Oct 2026).
+tools!J28 and the verdict sentence naming the route were corrected the same day
+(reports/2026-10-12-corrections-diff.json).
+**Date:** 12 Oct 2026, delegated: Jasmin authorised Claude in chat to rule on her behalf with its best recommendation
 
 ---
 
 ## Settled
 
-(none yet)
+All four items above were ruled on 12 Oct 2026 and are settled; they stay in
+place so their reasoning travels with them. The audit no longer raises them
+unless the underlying fact moves.
+
+---
+
+## Discovery: rejected, do not re-suggest
+
+Ruled by Jasmin, 12 Oct 2026, in chat, from the 11 Oct course review. All six
+are coding or developer courses outside the comms-team brief. A discovery run
+must not propose any of them again for `learning`.
+
+- LangSmith Fleet: Build No-Code Agents (LangChain Academy). No-code, but it
+  teaches a developer-ecosystem product nothing on the tools tab supports.
+- LangChain Essentials (Python)
+- Claude Platform 101 (Anthropic)
+- Model Context Protocol: Advanced Topics (Anthropic)
+- Develop an agent with integrated tools (Microsoft timed lab)
+- Building AI Agents with MongoDB

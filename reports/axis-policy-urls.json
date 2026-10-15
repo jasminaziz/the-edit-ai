@@ -102,11 +102,12 @@
     "45": {
       "name": "ElevenLabs",
       "policy": [
-        "https://elevenlabs.io/privacy"
+        "https://elevenlabs.io/privacy-policy"
       ],
       "baseline": [
-        "2026-05-20"
-      ]
+        "2026-10-09"
+      ],
+      "note": "Moved: elevenlabs.io/privacy now redirects to /privacy-policy (12 Oct 2026). Updated 9 Oct 2026; no archive copy (Internet Archive offline that day), read directly: storage in the US, trains unless opted out under Data use."
     },
     "46": {
       "name": "Descript",
@@ -161,7 +162,7 @@
         "2026-08-25",
         "2026-02-06"
       ],
-      "note": "From a UK address, openai.com/policies/privacy-policy serves the EU services policy (/en-GB/), not the US one; the 30 Aug baseline of 2026-05-18 was the US document. Previous EU revisions sit at /policies/eu-services-privacy-policy/revisions/<date>/."
+      "note": "From a UK address, openai.com/policies/privacy-policy serves the EU services policy (/en-GB/), not the US one; the 30 Aug baseline of 2026-05-18 was the US document. Previous EU revisions sit at /policies/eu-services-privacy-policy/revisions/<date>/. The row-privacy-policy page sometimes serves a Cloudflare challenge (403) to headless Chrome and loads on a retry (12 Oct 2026); one 403 is not a failure."
     },
     "59": {
       "name": "Gemini",
@@ -190,9 +191,9 @@
       ],
       "baseline": [
         null,
-        "2026-08-14"
+        "2026-10-06"
       ],
-      "note": "Business FAQ path now redirects to /admin/generative-ai/workspace-with-gemini. Use the body date, not the UTC footer. The FAQ carries only the footer form, so it has no editorial date."
+      "note": "Business FAQ path now redirects to /admin/generative-ai/workspace-with-gemini. Use the body date, not the UTC footer. The FAQ carries only the footer form, so it has no editorial date. Body date moved to 6 Oct 2026; the hub's own Updates table names the change (one question added on external-collaboration guardrails), so read that table before diffing anything."
     },
     "62": {
       "name": "Gamma",
@@ -216,7 +217,7 @@
         "2026-08-19",
         null
       ],
-      "note": "The docs article moved: https://docs.wisprflow.ai/articles/4709791908-understanding-privacy-mode-and-cloud-sync now redirects to the address above (28 Sep 2026). It dates itself relatively ('Last updated 2 days ago'), so read the clause, not a date."
+      "note": "The docs article moved: https://docs.wisprflow.ai/articles/4709791908-understanding-privacy-mode-and-cloud-sync now redirects to the address above (28 Sep 2026). It dates itself relatively ('Last updated 2 days ago'), so read the clause, not a date. As at 12 Oct 2026 the non-profit discount is confirmed at https://wisprflow.ai/for-non-profits ($8/mo annual); /nonprofits is still a 404."
     },
     "64": {
       "name": "Grok",
@@ -224,8 +225,9 @@
         "https://x.ai/legal/privacy-policy"
       ],
       "baseline": [
-        "2026-08-24"
-      ]
+        "2026-10-11"
+      ],
+      "note": "xAI links each superseded version from the policy ('previous version'), e.g. /legal/privacy-policy/previous-2026-08-24, so a change can be diffed without the Internet Archive. 11 Oct 2026 revision: no change to training, opt-outs or location."
     },
     "65": {
       "name": "Notion AI",
@@ -251,7 +253,7 @@
   },
   "_trap": "Google knowledge.workspace.google.com pages carry TWO dates: an editorial 'Last updated: 14 August 2026' in the body and a site-furniture footer 'Last updated 2026-08-26 UTC'. Only the editorial one means the policy moved. Reading the footer produced a false drift flag on row 61 on the 31 Aug run. Prefer the body date where both exist. Confirmed site furniture on 14 Sep 2026: the footer moved to 2026-09-10 on BOTH Google pages at once while the privacy hub's body date stayed at 14 August. The 31 Aug note that the business FAQ's footer was 'a real content timestamp' was wrong.",
   "_cloudflare": "canva.com marketing paths (/en_gb/pricing, /en_gb/nonprofits) return 403 to a real headless browser, but /policies/* serves fine, and /policies/policy-archives/ gives previous versions, which is how a Canva policy change is diffed rather than guessed.",
-  "_updated": "2026-09-28",
+  "_updated": "2026-10-12",
   "_adobe_user_agent": "Adobe is reachable from this machine. The 31 Aug 'unreachable' was a bot-block: www.adobe.com and helpx.adobe.com return ERR_HTTP2_PROTOCOL_ERROR to headless Chrome carrying its default HeadlessChrome user agent, and serve normally when a normal Chrome user agent is set. curl still times out. Use Playwright with channel 'chrome' and a normal userAgent.",
   "_canva": "As at 14 Sep 2026 canva.com/en_gb/pricing/ serves to headless Chrome with a normal user agent; canva.com/en_gb/nonprofits/ is a 404 and canva.com/nonprofits/ serves."
 }

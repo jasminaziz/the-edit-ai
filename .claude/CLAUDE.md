@@ -159,6 +159,14 @@ script cannot tell a real approval from a claimed one. Automation (the audit's
 own findings, the Cowork task, the whats_new Routine) is unchanged and still
 facts-only.
 
+**A delegated approval is recorded as delegated. Ruled 12 Oct 2026.** When
+Jasmin hands the choice over ("go ahead with your best recommendations"), the
+edit carries `"approved": "<DD MMM YYYY>, in chat (delegated: Jasmin authorised
+Claude to choose the value)"`, never the plain form, so the record never shows
+her approving a value she did not see. The script's date check accepts both.
+Delegation does not reach what stays by hand: row deletions go back to her as
+an exact list.
+
 Widened on Jasmin's ruling 2026-08-31, from a list that had name and url as
 "never writable, by any route". A vendor renaming its product is a fact, and
 facts should not queue behind a sign-off. What did not move: a URL that now
@@ -239,6 +247,10 @@ the audit prompt finds the newest 1st-Monday run of the Cowork trigger through
 `RemoteTrigger`, verifies each candidate in a real browser and prepares the
 fact cells, leaving every copy cell to her. That is pickup, not discovery: the
 search and its rules stay in Cowork, so there is still only one of them.
+**The Cowork run's "not already listed" check cannot be trusted**: through the
+Drive connector it sees about six sample rows per tab (its own 5 Oct message
+said so). The audit's duplicate check across all four tabs, by name and by URL
+without scheme, `www` or trailing slash, is the one that counts.
 `sheet-write.mjs` cannot insert or delete a row. Since 29 Sep 2026 an addition
 can be written into the first empty row below the data on Jasmin's approval of
 the exact cells, with `"oldName": ""` so the script confirms the row is still
@@ -395,6 +407,26 @@ of 5 and 5. The ceiling still stands where this file sets it, on the directory.
 Decision 3 in the audit prompt is therefore narrower than it was: it now only
 asks about `learning`, and nothing currently enforces a ceiling there either.
 
+**The directory watchdog reads the Sheet and never writes to it.** Ruled 9 Oct
+2026 as the alert path for gates finding 4.1, over client error capture and an
+uptime check alone. `.github/workflows/directory-watchdog.yml` runs
+`scripts/check-directory.ts` every six hours from `main`: it reads the `tools`
+tab with the www referer the site uses, counts rows with the app's own
+`parseToolRows` and `isComplete` rather than restating them, and fails below
+20 complete rows, which sends GitHub's failure email. It catches a key that
+loses a referrer host, a revoked key and a renamed header, all of which empty
+`/tools` with nothing else reaching Jasmin. **Live since 11 Oct 2026.**
+Jasmin added the `SHEETS_API_KEY` repository secret (the same value as
+Vercel's `VITE_GOOGLE_SHEETS_API_KEY`) that day. Manual run 38139466895 printed
+`OK: 23 complete rows of 67.`, and a wrong key and a missing key were each
+forced and exit 1. Not verified: that a failed run reaches her inbox, which
+depends on her GitHub notification settings. Alongside it, an UptimeRobot HTTP
+monitor (URL only, not keyword; email and SMS) covers the site going down.
+Same caveat as the whats_new
+watchdog: GitHub pauses schedules after 60 days without repo activity. The
+browser side of the same failure is a `console.error` in each fetcher,
+naming the status and `values/<tab>`, never the key.
+
 ## Tech stack
 
 - Build environment: Claude Code — local edits in `~/Developer/the-edit-ai`
@@ -476,16 +508,18 @@ asks about `learning`, and nothing currently enforces a ceiling there either.
   navigation to a route rendering no `<SEO>` now removes the adopted tags,
   because helmet unmounts and cleans up what it owns. A direct load of that URL
   is unaffected, which is what crawlers do.
-- **`/privacy-policy`, `/terms-of-service` and `/cookie-policy` carry a
-  canonical and no title or description; the 404 carries none of the three.**
-  The legal pages render through `LegalPage.tsx`, which since 31 Aug 2026 mounts
-  a `Helmet` with the canonical only. Because helmet reconciles every tag type
-  it owns, that also removes the static fallback description, so these pages
-  have none rather than the homepage's. `NotFound.tsx` imports only react and
-  react-router-dom. All three legal routes are in `sitemap.xml`. Titles and
-  descriptions are copy and are Jasmin's. Corrected 13 Sep 2026: this line said
-  the legal pages had no `Helmet` and no canonical, which the 31 Aug fix had
-  already made untrue; the gates audit found it.
+- **`/privacy-policy`, `/terms-of-service` and `/cookie-policy` carry their own
+  title, description and canonical since 11 Oct 2026.** `LegalPage.tsx` passes
+  `seoTitle` and `description` through `SEO`, like every other route. The six
+  strings were drafted on `geo/crawl-meta` and **approved by Jasmin as drafted,
+  11 Oct 2026, in chat**, with two concerns raised first and set aside by that
+  approval: the privacy description ends on the fragment "UK GDPR.", and the
+  terms description names dated checks and assessing tools yourself, which the
+  Terms page body does not say. Until then the pages carried a canonical only,
+  which (helmet reconciling every tag type it owns) also stripped the static
+  fallback description. Unknown paths serve the prerendered `404.html`: a real
+  404 status, the title "Page Not Found | The Edit", `noindex, follow`, no
+  canonical (curled on production 11 Oct 2026).
 - **Icons and share card, ruled 12 Sep 2026.** `public/favicon.svg` is the
   single source: the same three lime capsules on cobalt, redrawn so every edge
   lands on a whole pixel at 16px. `assets-src/render-icons.py` draws every
@@ -828,20 +862,23 @@ you want a size check, and treat content-type as the durable signal.
 
 ## Crawlability and GEO
 
-**The live site serves nothing to a crawler that does not run JavaScript.**
-Verified against production 2026-09-04: every route returns an identical
-4,380-byte shell whose entire body is `<div id="root"></div>`. No heading, no
-copy, no verdicts, no footer, no attribution to Jasmin. Googlebot renders and
-so sees the site; OAI-SearchBot and PerplexityBot most likely do not, which is
-a factual gate on being cited at all rather than a ranking signal. **This is
-still true on `main`.**
+**Since 11 Oct 2026 the live site serves real HTML to a crawler that does not
+run JavaScript.** Until then it served nothing: verified against production
+2026-09-04, every route returned an identical 4,380-byte shell whose entire
+body was `<div id="root"></div>`. Googlebot renders and so saw the site;
+OAI-SearchBot and PerplexityBot most likely did not, which is a factual gate on
+being cited at all rather than a ranking signal. Curled on production 11 Oct
+2026 after the merge: every sitemap route carries its own body text, title,
+`og:title` and canonical, and `/tools` carries 23 cards.
 
 **There is no such thing as a tool page here.** Twelve routes, none
 parameterised; the directory is one page. Any audit claiming the site "cannot
 cite a single tool page" is describing pages that do not exist, and the
 achievable goal is that `/tools` carries all 23 tools' text in its served HTML.
 
-**The fix lives on branch `geo/prerender`, not merged.** Build-time
+**The fix came from branch `geo/prerender-2026-10`, merged to `main` on 11 Oct
+2026 after `geo/crawl-meta`** (the September
+branch `geo/prerender` rebased onto `main`; the old branch is superseded). Build-time
 prerendering with a headless browser: `scripts/prerender.mjs` serves the built
 `dist`, drives each route in Chromium so the effects run and the Sheet
 responds, and writes the resulting HTML beside the bundle. **No file in `src/`
@@ -859,17 +896,50 @@ Four things that will otherwise be rediscovered the hard way:
 - **Vercel needs `@sparticuz/chromium`.** The build image carries none of
   Chromium's shared libraries and fails on `libnspr4.so`; `--with-deps` cannot
   rescue it because it shells out to apt while the image is Amazon Linux.
-- **Preview URLs cannot be curled.** Deployment protection is SSO,
-  `all_except_custom_domains`, so a fetch returns an auth wall with a 200 and a
-  full body. Build logs are still readable through the Vercel API, which is
-  what made both diagnoses possible without fetching the site.
+- **Preview URLs cannot be curled bare.** Deployment protection is SSO,
+  `all_except_custom_domains`, so a plain fetch returns an auth wall with a 200
+  and a full body. What works, 9 Oct 2026: the Vercel connector's
+  `get_access_to_vercel_url` share link, opened once with curl into a cookie
+  jar, then every route curled with that jar. Check each body for the real page
+  and for "Log in to Vercel": the jar stopped working within the hour and
+  started returning a "Protected by Vercel Authentication" body. Build logs are
+  readable through the Vercel API.
 
-**Blocked on one dashboard setting:** `VITE_GOOGLE_SHEETS_API_KEY` is absent
-from Vercel's **Preview** environment, so the data-driven routes prerender
-their empty state there. Vite bakes `VITE_` variables in at build time, so a
-missing key ships a request with no key rather than raising an error. The
-branch's build is **red on purpose** until that is set: the prerender refuses
-to write pages that would look finished and say nothing.
+**The Preview build is green as of 9 Oct 2026, and the blocker recorded here
+was never the cause.** This paragraph said `VITE_GOOGLE_SHEETS_API_KEY` was
+absent from Vercel's Preview environment. It was not: the CLI lists it for
+Preview, and the failed preview built the same bundle hash as production. The
+fault was the Referer override, which Chromium ignores under
+`route.continue`, so Google saw `localhost:8080` and refused the production
+key; the script now sends that request from Node (`37b1193`). The guard still
+refuses to write pages that would look finished and say nothing, and was
+proven to fire.
+
+**Proven by curl on the preview, 9 Oct 2026:** nine routes carry their body
+text, own `<title>`, own `og:title` and canonical in the served HTML; the three
+legal pages carry text and canonical, and get their titles from
+`geo/crawl-meta`. Unknown paths get the prerendered NotFound page as
+`404.html` with `noindex` and a **real 404 status**, because `vercel.json` has
+no catch-all on that branch any more (`b039f0f`). The cost: its rewrites are a
+third route list to keep in step with `App.tsx` and the script's `ROUTES`.
+Curled on the preview: `/nope-xyz`, `/tools/nope` and `/Tools` return 404
+with `noindex`; every route, `/tools/` and `?tool=` links return 200; the
+three legacy paths return 308; `robots.txt`, `sitemap.xml`, the `.docx` and
+the manifest serve as their own types. Case variants such as `/Tools` now 404
+for a crawler, while the app, whose router ignores case, still renders them
+for a reader once it boots.
+
+**Merge `geo/crawl-meta` first, or both together, never the prerender
+alone.** The prerender branch carries crawl-meta's three 308 redirects byte
+for byte, but the two `vercel.json` files still conflict over the catch-all;
+when merging the prerender after crawl-meta, take its `vercel.json` whole.
+
+**A content flash comes with it, measured on the preview:** the app mounts with
+`createRoot`, not hydrate, so on a cold load of `/tools` the prerendered cards
+paint at about 80ms, React replaces them with the loading spinner at about
+130ms, and the cards return when the Sheet responds. That last step could not
+be watched on a preview, which 403s on Sheets data. **Accepted by Jasmin, 11
+Oct 2026, in chat**, when she approved the merge: shipped as is.
 
 **Accepted trade, ruled 2026-09-04:** prerendered HTML freezes a Sheet snapshot
 at build time. Readers still get live data on every visit; a non-JS crawler
@@ -886,12 +956,29 @@ both crossing a stated constraint: expand during prerender (cards visibly
 collapse on load, changing what a reader sees) or render always and toggle
 visibility (an app change, visually identical, better for find-in-page and
 screen readers). The second is the better answer and is Jasmin's call.
+**Ruled 9 Oct 2026: left for now.** Re-confirmed that day by curl on the
+prerendered `/tools`: 23 "Honest verdict" toggles, 0 verdicts, 0 trustee notes.
 
 **Two things are NOT levers and must never be recommended as GEO work**, on the
 evidence table in `CONSULTING/CONSULTANCY_GEO-Audit-Product_v1.html`: **schema
 markup / JSON-LD** (1,885 treated pages against 4,000 controls, no uplift and a
 4.6% decline in AI Overviews) and **llms.txt** (137,210 domains, 97% received
 zero requests). Neither has been added and neither should be.
+
+**Gate 3's Organization schema check is exempt on this property. Ruled 9 Oct
+2026**, on the recommendation Jasmin delegated, closing gates finding 3.3 of
+`reports/site-gates-2026-10-09.md`. The Web Build Guide asks for Person and
+Organization JSON-LD on the homepage; this site keeps the `WebSite` block with
+its `Person` author and adds no `Organization`, for three reasons. Schema is not
+a GEO lever on the evidence table above, so the node would buy nothing it is
+usually added for. The entity link it would make is already carried by
+`WebSite.author.url`, which points at `https://www.jasminaziz.co.uk` and reaches
+the served HTML once `geo/prerender` merges. And The Edit is not a registered
+organisation (site-geo, 9 Oct 2026, found no Companies House entry), so an
+`Organization` node, under a name that differs from the domain's "The Edit AI",
+would be a small overclaim on a site whose premise is honest labelling. A gates
+run should report this item as exempt, not failed. Reopen it only if The Edit
+becomes a legal entity.
 
 ## Codebase conventions
 
@@ -915,14 +1002,37 @@ starts at roughly 59px in a 608px column, and the 30px floor is what keeps the
 phone out of it below an 804px viewport.
 
 **Interaction states go in `index.css`, not in mouse handlers.**
-`.about-byline` is the second component to move, after ToolCard's
+The homepage byline link was the second component to move, after ToolCard's
 `data-selected`, and the mechanism is the same both times: **an inline `style`
 declaration outranks the stylesheet**, so an inline property is what forces a
-component into JS handlers in the first place. Do not put `textDecoration` back
-into the byline's style block; it would beat the hover rule, which is precisely
-what the old `onMouseEnter`/`onMouseLeave` pair existed to work around. Hover
-and `:focus-visible` share one rule, because the mouse-only version left the
-single outbound link on the homepage with no visible state under the keyboard.
+component into JS handlers in the first place. Never put `textDecoration` into
+a link's inline style block; it beats the hover rule, which is precisely what
+the old `onMouseEnter`/`onMouseLeave` pair existed to work around. Hover and
+`:focus-visible` share one rule, because a mouse-only state leaves a link with
+nothing visible under the keyboard. The footer email in `Layout.tsx` was the
+third, 11 Oct 2026: it now uses `.lime-link` (underlined at rest) after
+Lighthouse failed it on WCAG 1.4.1.
+
+**The About close was rewritten 12 Oct 2026** (copywriter candidate 3,
+`reports/copy-proposals-2026-10-12-about-close.md`, chosen by Jasmin). The
+byline is now plain text, "Curated by Jasmin Aziz", with no link, so its
+`.about-byline` rule was deleted. The title "strategic communications
+consultant", which the positioning statement keeps on that panel, moved into
+the body sentence, and "Get in touch" now goes to the consultancy's contact
+page through `CONTACT_HREF` in `src/lib/links.ts`.
+
+**Loading states hold a screen's height. Do not shorten them.** Since 11 Oct
+2026 `LoadingSpinner` is `min-h-screen` with the spinner where it always sat,
+and the route `<Suspense>` fallback is a `min-h-screen` div, not `null`. Either
+one short let the footer rise into view mid-load and then get pushed off the
+screen, which is a layout shift: 0.332 on `/ai-news` and 0.111 on `/my-stack`
+from the spinner (older than the prerender), 0.408 on `/privacy-policy` from
+the null fallback whenever a route chunk landed after the main bundle (a race
+the route-level `lazy()` opened). After, on production: 0 everywhere except
+`/ai-news` at 0.019, where a block still moves 48px when the rows arrive, left
+alone as under the 0.1 line. **Measure CLS frame by frame on a cold load and
+hold a chunk back to force the race**; a single Lighthouse run catches it only
+when the race happens to go the wrong way.
 
 **`FooterEmailCapture` renders from `Layout.tsx:366`, so it is on every route.**
 Anything it names is multiplied across the whole site, and on a page that also
@@ -954,6 +1064,10 @@ Three things about it that are not obvious and cost real time:
   transient supplementary content and must not hold interactive or substantial
   content. `src/components/ui/tooltip.tsx` survives in the tree and is the
   wrong primitive here. Do not reach for it.
+- **The answer renders only while the bubble is open** (`{open && ...}` in
+  `CobaltZone.tsx`), so nothing inside it reaches the served or prerendered
+  HTML. It cannot carry anything meant for a crawler: the 12 Oct GEO quotation
+  went on `/policy-template` for that reason, among others.
 - **The section drops `overflow-hidden` when a bubble is present**, because it
   would clip the open panel. Safe only because the routes relying on that
   overflow pass an illustration or the rotating `rightBadge`, and none passes a
@@ -1020,11 +1134,28 @@ Three things about it that are not obvious:
   regardless. Nothing needs a frame to settle first: the reveal wrappers animate
   transform and opacity, neither of which reflows.
 - **`.tool-card` carries a `scroll-margin-top` and it is two values.** The
-  sticky filter rail is 188px below `lg` and 149px at `lg` and up, so a single
-  offset lands the card's own name behind the rail on half the devices. Verified
-  at 375, 768 and 1280: the name clears the rail by 36, 62 and 31px. A deep link
-  that opens the right verdict but hides which tool it belongs to is not
-  finished.
+  sticky filter rail is 188px below `lg` and 149px at `lg` and up at rest, and
+  compacts to 173px and 133px once scrolled, so a single offset lands the
+  card's own name behind the rail on half the devices. A deep link that opens
+  the right verdict but hides which tool it belongs to is not finished.
+  **The scroll is computed from `offsetTop`, not `scrollIntoView`, since 9 Oct
+  2026.** The figures this bullet used to quote (36, 62 and 31px) were real but
+  were measured in the first frame after the scroll. The card was still in its
+  hidden reveal state (32px lower, 94% scale) and the rail had not compacted,
+  so within half a second the name settled 21 to 29px **under** the rail at
+  every width. Re-measured after the fix, at rest: the name clears the
+  compacted rail by 37 to 40px at 375, 63 to 64px at 768, and 32 to 48px at
+  1280 and 1440. **Measure a scroll landing after the page settles**, by
+  sampling until nothing moves, never in the frame after the scroll.
+- **`under-rail` on the content section of `/tools` and `/radar` is
+  load-bearing, not an unused class.** Added 9 Oct 2026 (`fee4926`): every link
+  and button inside it carries the card's `scroll-margin-top` (208px, 160px
+  from `lg`), which is what stops keyboard focus landing behind the sticky
+  filter rail. Without it, Tab hid up to 21 card names at 1280 and Shift+Tab hid
+  controls on both pages at every width (WCAG 2.2 AA 2.4.11). It sits on the
+  section, not the scroll pane, because padding on the pane would add to the
+  card's own margin and push `?tool=` deep links down. Re-check with a Tab and
+  Shift+Tab sweep if either page's layout changes.
 
 `stripEmoji` in `src/lib/sheets.ts` applies to all text fields parsed from
 the Sheet. Preserve it in any fetcher change.
@@ -1112,6 +1243,20 @@ Colours (hex only, never names):
   clear 4.5:1 at `#4E53C6`, which sits close enough to cobalt that the blend
   disappears and the wordmark falls to 1.37:1. No periwinkle satisfies both. It
   was put to Jasmin with the numbers twice and she ruled for the colour.
+
+  **A named exception on Gate 1, ruled 9 Oct 2026** (gates finding 1.1 of
+  `reports/site-gates-2026-10-09.md`), chosen over a cobalt bar and a darker
+  nav-only periwinkle. A gates run reports these as the named exception, not as
+  open failures. Measured that day on `#7B7FD4` against 4.5:1: cream links
+  3.40, inactive tabs and drawer rows at `text-white/70` **2.59**, the drawer's
+  How I work links at `white/80` on their cream-8% panel **2.63**, lime "Menu"
+  2.75; and the cobalt wordmark on the hero 2.37 against 3:1. The two
+  white-alpha figures were never in the "three failures" above, so the
+  exception is five, not three. It covers the homepage only: on cobalt the same
+  classes measure 4.97 and 5.22. Correction to the paragraph above,
+  measured the same day: `#4E53C6` clears cream (5.86) and lime (4.74) but not
+  the inactive tabs at `white/70` (3.95); every nav text clears only at
+  `#3F45C1`, 2.05:1 away from the hero.
 
   **Scoped to the homepage. `--secondary` stays `#9B9EDE`**, which is what keeps
   the legal and policy `h1`s passing at 3.38:1. Do not "finish the job" by
@@ -1331,8 +1476,8 @@ rediscovered as accidents.
   Substack", both using the new `.lime-link` rule in `index.css`. Its intro is
   three paragraphs rather than one 93-word block of eight sentences; **no word
   changed**, only the tag boundaries.
-- **`.about-byline` is underlined at rest**, with hover and focus thickening
-  rather than introducing it.
+- **The byline was underlined at rest** from this pass until 12 Oct 2026,
+  when it stopped being a link (see Interaction states above).
 - **The `my_stack` featured card's header row is `pr-[52px]` below `sm`.** The
   48px Claude mark is absolutely positioned so it reserves no space, and 37px of
   the pricing string sat underneath it. The 52 is derived from the two constants
@@ -1651,15 +1796,19 @@ deleted and the shared secret added.
 - Before editing, state what must not be touched
 - Structure before styling; hex codes and pixel values, never vague
   adjectives
-- **The gate before every commit is three commands, not two:**
-  `bunx tsc --noEmit`, `bun test`, and **`bun run build`**. Added 2026-08-26
+- **The gate before every commit is four commands:** `bunx tsc --noEmit`,
+  `bun test`, **`bun run build`** and **`bun run lint`**. Lint joined on 9 Oct
+  2026, once `13a8f7a` cleared the two errors that had it failing on `main`; it
+  exits 0 with four old warnings, so a new error is now visible. The build was
+  added 2026-08-26
   after a code session ran the build for the first time and found that
   `tsc --noEmit` does not exercise the same path: Vite resolves imports,
   assets and plugin config at bundle time and can fail on things tsc passes.
   Vercel runs the build, and **Vercel build failures are silent** — it keeps
   serving the last good deploy — so a build nobody ran locally is a deploy
-  that dies quietly. The chunk-size warning is the known matter-js debt and
-  is not a failure.
+  that dies quietly. The chunk-size warning stopped printing when the routes
+  were split (`dd8f141`, main chunk 472 kB); if it comes back, something large
+  has landed in the main chunk.
 - Verify with vitest or the local dev server first, then on the production
   URL after a deploy lands (branch work: vitest and preview only)
 - Never assume the production Sheets key resolves locally — it is
@@ -1678,7 +1827,7 @@ deleted and the shared secret added.
 
 ## What Claude must not do
 
-- Never push to main without running the three-command gate first. The
+- Never push to main without running the four-command gate first. The
   never-merge-before-F2 rule that stood here is spent: it merged on
   2026-08-30. What replaces it is that **main is live**, so an unbuilt or
   unverified push is visible to the public in about three minutes. **Scoped

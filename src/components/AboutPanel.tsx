@@ -1,4 +1,4 @@
-import { WORK_WITH_ME_HREF } from "@/lib/links";
+import { CONTACT_HREF } from "@/lib/links";
 
 /**
  * The homepage's single "what this is" block.
@@ -93,10 +93,13 @@ export const AboutPanel = () => {
               (a third beat restating the two locked clauses before it); and
               "a strategic communications consultant" from the body.
 
-              **That last cut has a dependency.** The credential now lives only
-              in the "Curated by Jasmin Aziz | Strategic Communications
-              Consultant" byline directly below. If that byline ever moves or
-              goes, the title has to come back into this paragraph.
+              **That last cut had a dependency, and it has now been paid.** The
+              credential lived only in the "Curated by Jasmin Aziz | Strategic
+              Communications Consultant" byline. On 12 Oct 2026 the byline became
+              the name alone, so the title came back into the body, in the
+              third paragraph below. If it ever leaves that sentence, it has to
+              reappear somewhere on this panel: the positioning statement keeps
+              "strategic communications consultant" on it.
 
               Kept, and deliberately: the four questions. The cards demonstrate
               them 23 times as instances, but this is the only surface that
@@ -142,27 +145,31 @@ export const AboutPanel = () => {
               marginTop: 16,
             }}
           >
-            I'm Jasmin. I work with exactly these teams. This is the resource I wanted to hand them, so I made it.
+            I work with these teams as a strategic communications consultant. This is the resource I wanted to hand them, so I made it.
           </p>
-          {/* The route back to the consultancy. Approved by Jasmin 4 Sep 2026
-              (copywriter candidate C, reports/2026-09-04-copy-candidates-
-              privacy-and-conversion.md), chosen over two warmer drafts.
+          {/* The close, rewritten 12 Oct 2026: copywriter candidate 3 in
+              reports/copy-proposals-2026-10-12-about-close.md, chosen by
+              Jasmin. It had opened "I'm Jasmin", switched to the third person
+              for "Jasmin also runs a consultancy" and named her again in a
+              linked byline, so it spoke in three voices and named her three
+              times in sixty words. Now it is first person throughout, names
+              her once and has one link. The title moved into the paragraph
+              above, which is what the dependency note further up requires.
 
-              Here rather than on /tools, in the footer, or in a section of its
-              own: /tools is the site's highest-trust surface and already has a
-              documented history of CTA crowding, the footer renders on every
-              route and has had wording cut from it for that same reason, and a
-              CobaltZone section would give the hand-off the same visual weight
-              as the checks system and read as an advert bolted onto a resource.
+              The consultancy hand-off stays here rather than on /tools, in the
+              footer, or in a section of its own: /tools is the site's
+              highest-trust surface and already has a documented history of CTA
+              crowding, the footer renders on every route and has had wording
+              cut from it for that same reason, and a CobaltZone section would
+              give the hand-off the same visual weight as the checks system and
+              read as an advert bolted onto a resource.
 
-              It sits before the byline, not instead of it. The byline is locked
-              by the positioning statement's own ruling.
-
-              Note "Get in touch" is the consultancy's own CTA phrasing and is
-              deliberately not "Work with me", the label every other outbound
-              link on this site uses. That is Jasmin's call, signalling a
-              lighter link than the standing nav CTA, and it means the
-              five-identical-labels rule in CLAUDE.md is untouched by it. */}
+              "Get in touch" is deliberately not "Work with me", the label every
+              other outbound link on this site uses: a lighter link than the
+              standing nav CTA, Jasmin's call of 4 Sep 2026, so the
+              identical-labels rule in CLAUDE.md is untouched by it. Since
+              12 Oct it goes to the consultancy's contact page (CONTACT_HREF),
+              because a contact label should land on one. */}
           <p
             className="font-body"
             style={{
@@ -174,9 +181,9 @@ export const AboutPanel = () => {
               marginTop: 16,
             }}
           >
-            Jasmin also runs a consultancy: comms audits, brand and positioning, campaign strategy, content systems, and AI, trust and communications.{" "}
+            My consultancy covers communications audits, brand and positioning, campaign strategy, content systems and AI work.{" "}
             <a
-              href={WORK_WITH_ME_HREF}
+              href={CONTACT_HREF}
               target="_blank"
               rel="noopener noreferrer"
               className="lime-link"
@@ -185,6 +192,8 @@ export const AboutPanel = () => {
             </a>
             .
           </p>
+          {/* Plain text since 12 Oct 2026: the name alone, no link, no arrow.
+              The title it used to carry is in the body above. */}
           <p
             className="font-body"
             style={{
@@ -195,30 +204,7 @@ export const AboutPanel = () => {
               marginTop: 16,
             }}
           >
-            <a
-              href={WORK_WITH_ME_HREF}
-              target="_blank"
-              rel="noopener noreferrer"
-              // The lime underline lives in index.css under `.about-byline`,
-              // where hover and focus-visible are one rule. It was a pair of
-              // mouse handlers here, which meant the keyboard never saw it.
-              // `textDecoration` cannot come back into this style block: an
-              // inline declaration outranks the stylesheet and would win over
-              // the hover rule, which is what the handlers were working around.
-              className="about-byline"
-              style={{
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: 400,
-                fontSize: 14,
-                color: "#1A1510",
-                margin: 0,
-                cursor: "pointer",
-                transition: "text-decoration-color 0.2s ease",
-              }}
-            >
-              Curated by Jasmin Aziz | Strategic Communications Consultant{" "}
-              <span style={{ color: "#C8F04A" }}>→</span>
-            </a>
+            Curated by Jasmin Aziz
           </p>
         </div>
       </div>
