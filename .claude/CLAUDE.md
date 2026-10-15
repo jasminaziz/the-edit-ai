@@ -815,7 +815,9 @@ Four things that will otherwise be relitigated:
 - **Supabase behind a serverless function was rejected against two advisers'
   advice.** It is the better design and the wrong answer here: the site's first
   `api/` endpoint, needing Vercel KV or Upstash, priced at four to five days
-  against an admin-week constraint and a non-technical owner.
+  against an admin-week constraint and a non-technical owner. **`api/` now
+  exists for push notifications (15 Oct 2026), without KV or Upstash; this
+  ruling about email capture stands, because push changed nothing about email.**
 - **Condition, load-bearing.** The honest ask, telling people where to send
   corrections when the law under the template moves, depends on a currency
   watcher that is **Not started**, over clauses partly resting on
@@ -1558,6 +1560,11 @@ and sits outside every copy inventory the project keeps: an audit that greps
 
 ## Current state (as at 2026-08-31)
 
+**Latest, 15 October 2026: AI News push notifications are live** (`aa2098e`).
+Plan, rulings A to G, the phone test and the approved copy are in
+`reports/2026-10-08-push-notifications-plan.md`; how it works is under the
+whats_new automation section below.
+
 **Latest, 13 September 2026: the site map build is live.** Merged on Jasmin's
 sign-off: the four-item nav with the How I work hub and its section banner, the
 checks line in that banner on desktop only, the phone menu panel, the desktop
@@ -1843,7 +1850,9 @@ deleted and the shared secret added.
   is 45, and every row must serve the charity/cultural/heritage comms
   audience or be a deliberate public "judged, not recommended" entry
 - Never suggest deviating from the locked architecture (Claude Code +
-  GitHub + Vercel + Google Sheets; Supabase is legacy capture only)
+  GitHub + Vercel + Google Sheets). Supabase holds the legacy `subscribers`
+  list and, since 15 Oct 2026, the push notification tables, written only by
+  `api/`; it is never the content layer
 - Never confuse Supabase with the content layer — Google Sheets is content
 - Never reintroduce DM Mono; never use electric lime as a category colour
   or badge; never rely on colour alone to carry meaning
