@@ -3807,3 +3807,22 @@ subscriptions and 0 sends.
 5. Unchecked, for whenever: whether switching notifications off in iPhone
    Settings makes Apple report the subscription gone (the privacy text
    deliberately says nothing about that route).
+
+## 22 October 2026: push notifications confirmed working
+
+Steps 1 and 2 of the 15 October list are done. Read from `push_sends` and the
+Append whats_new rows runs on 22 Oct: live sends on 16, 20, 21 and 22 Oct, each
+5 stories, delivered 1 (Jasmin's phone), removed 0, failed 0, and every
+`notify` job green. No send on 17 to 19 Oct, when no batch ran.
+
+Still open:
+
+1. **Retire the test setup**: `push-test.theeditai.co.uk` (Vercel domain and
+   GoDaddy CNAME), the five Preview settings scoped to `feature/push`, the
+   branch and the `~/Developer/the-edit-ai-push` worktree, the test
+   subscription row and its 14 Oct send record. Jasmin's call when.
+2. **Claims register exception**, Jasmin's ruling: the "no script stores
+   anything in the browser" claim is no longer strictly true for a visitor who
+   opts in. Proposed wording is in the 15 Oct wrap; not written.
+3. Unchecked: whether switching notifications off in iPhone Settings makes
+   Apple report the subscription gone.
