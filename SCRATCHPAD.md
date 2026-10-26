@@ -3846,13 +3846,13 @@ the live design and dropped; the 9 Oct gates and GEO reports committed
 
 Next:
 
-1. **SVG Repo (design_kit 31)**: Jasmin opens `https://www.svgrepo.com` by
-   hand. If it loads, record it in `reports/axis-rulings.md` as a known bot
-   check, escalated only if the failure changes (404 or a dead domain).
+1. ~~SVG Repo~~ **done 26 Oct**: Jasmin opened it, it loads; recorded in
+   `reports/axis-rulings.md` as a known bot check.
 2. **Next audit Monday 9 Nov** (2nd Monday); discovery run 2 Nov.
 3. **Stagger the age cliff:** eleven rows come due between 22 Nov and 13 Dec
    (Blotato, Canva, Adobe Express, Ideogram, Granola, Descript, Submagic,
    Seedance, Claude, ChatGPT, DeepSeek).
 4. Still open from 22 Oct: retire the push test setup; the claims register
    exception for push storage.
-5. Delete the backup folder when happy (Jasmin's call).
+5. ~~Delete the backup folder~~ **done 26 Oct**: moved to the macOS Trash on
+   Jasmin's word, recoverable until the Trash is emptied.

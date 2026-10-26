@@ -5,8 +5,7 @@ your judgement. 1 unreachable. 0 discovery candidates.
 
 **Decided the same day.** Jasmin approved both stamps on 26 Oct 2026 in chat,
 and both are written and confirmed (section 6). She then ruled on section 1:
-items 1 to 3 are settled and written (see "Rulings, 26 Oct 2026" at the end);
-item 4, SVG Repo, waits on her opening the site by hand.
+all four are settled and recorded (see "Rulings, 26 Oct 2026" at the end).
 
 Run in Claude Code on the 4th Monday, an audit-due day, from a detached
 worktree at `origin/overhaul/sector-axis` (`4e5568c`), not the shared tree. The
@@ -242,9 +241,11 @@ from options laid out with the facts and opinion marked.
 2. **Perplexity (37) cost:** "Free tier / Pro $17/mo billed annually".
 3. **Notion AI (63) cost:** "AI trial on Plus / full AI on Business
    £16.50/member/mo billed annually, £19.50 monthly".
-4. **SVG Repo (design_kit 31): open.** Jasmin opens `https://www.svgrepo.com`
-   by hand; if it loads, it goes in `reports/axis-rulings.md` as a known bot
-   check, escalated only if the failure changes (a 404 or a dead domain).
+4. **SVG Repo (design_kit 31): a known bot check.** Jasmin opened
+   `https://www.svgrepo.com` by hand later the same day and it loaded
+   normally. Recorded in `reports/axis-rulings.md` under "Known bot checks",
+   escalated only if the failure changes (a 404, a DNS failure or a redirect
+   to a different host).
 
 Written from `reports/2026-10-26-cost-rulings-diff.json`, each cost edit
 carrying `"approved": "26 Oct 2026, in chat"`, each with its row's stamp, since

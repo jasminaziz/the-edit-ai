@@ -111,3 +111,21 @@ must not propose any of them again for `learning`.
 - Model Context Protocol: Advanced Topics (Anthropic)
 - Develop an agent with integrated tools (Microsoft timed lab)
 - Building AI Agents with MongoDB
+
+---
+
+## Known bot checks: Pass 1a and Pass 1d do not escalate these
+
+A URL here is blocked to automated checks but loads for a person. It is not a
+finding and does not count towards Pass 1d's two-failure rule while it fails
+the same way. **Escalate it if the failure changes**: a 404, a DNS failure, or
+a redirect to a different host.
+
+### SVG Repo (design_kit, by name)
+`https://www.svgrepo.com` returns a Vercel Security Checkpoint (429) to curl
+and to headless Chrome with a normal user agent, on 12 Oct and 26 Oct 2026.
+
+**Ruling:** known bot check. Jasmin opened it by hand on 26 Oct 2026 and it
+loaded normally: "SVG Repo - Search, explore, edit and share open-licensed SVG
+vectors", "500.000+ Open-licensed SVG Vector and Icons".
+**Date:** 26 Oct 2026, in chat
