@@ -1,0 +1,24 @@
+{
+  "run": "2026-10-26",
+  "note": "Fact writes only, proposed and awaiting Jasmin's yes. Two last_checked stamps on rows where every fact field was reconfirmed from the vendor today and nothing moved. No cost, data location, training or nonprofit value changed on any row, so no H, I or J write and no filter movement. No verdict, DPIA flag, trustee note, jobs or description is touched. Perplexity (37) and Notion AI (63) are not stamped: each cost string needs a ruling before it can be reconfirmed. Row numbers are today's: two tools rows (Windsurf, Smartmockups) were deleted by hand after 12 Oct, so every row from 17 down sits one or two higher than in earlier reports. Undo with: node scripts/sheet-write.mjs reports/2026-10-26-axis-diff.json --rollback --commit",
+  "edits": [
+    {
+      "range": "tools!M57",
+      "name": "Gemini",
+      "field": "last_checked",
+      "old": "28 Sep 2026",
+      "value": "26 Oct 2026",
+      "why": "The Gemini Apps Privacy Notice moved from 29 Jun to 13 Oct 2026 and the hub to 23 Oct. Diffed in full (collapsed sections included) against the Internet Archive capture of 11 Oct: 414 sentences unchanged, 33 out, 50 in. The changes rename Gemini Spark to Tasks in Gemini and add Memory summary and browser and app permission settings. I='Yes unless you opt out' holds and widens slightly in the same direction: with Keep Activity on, 'transcripts of your Live chats and uploads you share with Gemini Live are used to improve Google services, including AI models'. The verdict's claims still stand word for word: 'Human reviewers ... review some of the data' and 'Retained for up to 3 years'. H=Unclear holds: no storage-location sentence changed. J=None is settled (axis-rulings.md, ruling 3). D holds: Google AI Plus £4.49 GBP/month, Google AI Pro £18.99 GBP/month, served to this UK machine.",
+      "source": "https://support.google.com/gemini/answer/13594961, https://web.archive.org/web/20261011013344/https://support.google.com/gemini/answer/13594961, https://gemini.google/subscriptions/"
+    },
+    {
+      "range": "tools!M59",
+      "name": "Google Workspace AI",
+      "field": "last_checked",
+      "old": "12 Oct 2026",
+      "value": "26 Oct 2026",
+      "why": "Green row, always checked. Privacy hub body date still 6 Oct 2026, unchanged since the last stamp; the business FAQ's 2026-10-22 is the UTC footer form, which is site furniture (axis-policy-urls.json _trap). H=Your tenant holds: 'Your interactions with Gemini stay within your organization.' I=No holds: 'Your content is not human reviewed or otherwise used for Generative AI model training outside your domain without permission.' J and D hold: 'Google Workspace for Nonprofits $0 USD / user / month' and Business Standard '$3.50 USD per user / month, 1 year commitment, 75%+ off standard pricing' (served in USD). No fact moved, so the Green-row escalation does not fire.",
+      "source": "https://knowledge.workspace.google.com/admin/generative-ai/generative-ai-in-google-workspace-privacy-hub, https://www.google.com/nonprofits/offerings/workspace/"
+    }
+  ]
+}

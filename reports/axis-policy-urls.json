@@ -25,7 +25,7 @@
         "2026-05-18"
       ]
     },
-    "27": {
+    "26": {
       "name": "Canva",
       "policy": [
         "https://www.canva.com/policies/privacy-policy/",
@@ -37,7 +37,7 @@
       ],
       "note": "Diff against https://www.canva.com/policies/policy-archives/ rather than trusting the date alone."
     },
-    "28": {
+    "27": {
       "name": "Adobe Creative Cloud",
       "policy": [
         "https://helpx.adobe.com/account/individual/terms-policies-and-regulations/content-analysis-faq.html",
@@ -49,7 +49,7 @@
       ],
       "note": "Hosting page republished 28 Aug 2026 with only the date changed (diffed against the Internet Archive copy of 22 Aug). It covers Creative Cloud for enterprise only. Republished again 16 Sep 2026 with no archive copy to diff; read directly on 28 Sep, still enterprise-only."
     },
-    "29": {
+    "28": {
       "name": "Adobe Express",
       "policy": [
         "https://helpx.adobe.com/firefly/web/get-started/learn-the-basics/adobe-firefly-faq.html"
@@ -59,7 +59,7 @@
       ],
       "note": "Baseline corrected 14 Sep 2026: the page reads 'Last updated on May 13, 2026'; the earlier 2025-09-02 did not match it."
     },
-    "33": {
+    "32": {
       "name": "Ideogram",
       "policy": [
         "https://ideogram.ai/legal/privacy"
@@ -68,18 +68,19 @@
         "2025-01-15"
       ]
     },
-    "39": {
+    "37": {
       "name": "Perplexity",
       "policy": [
         "https://www.perplexity.ai/hub/legal/privacy-notice",
         "https://www.perplexity.ai/help-center/en/articles/11564572-data-collection-at-perplexity"
       ],
       "baseline": [
-        "2026-07-08",
-        "2026-09-03"
-      ]
+        "2026-10-23",
+        "2026-08-31"
+      ],
+      "note": "23 Oct 2026 revision diffed against the Internet Archive capture of 17 Oct: self-service export and deletion steps added, contact section rewritten, and the whole EU-U.S. Data Privacy Framework section (UK Extension included) removed. Transfers now cite Standard Contractual Clauses only. No training, location or nonprofit sentence changed. The help article baseline was 2026-09-03 and is corrected to 2026-08-31: the page reads 'Last modified on August 31, 2026' (26 Oct 2026 run). Pricing pages show Pro only as 'US$17 /month or equivalent, when billed annually', with no monthly figure."
     },
-    "40": {
+    "38": {
       "name": "Gemini Notebook",
       "policy": [
         "https://support.google.com/gemininotebook/answer/17004255"
@@ -89,7 +90,7 @@
       ],
       "note": "Renamed: support.google.com/notebooklm/* now 301s to support.google.com/gemininotebook/*."
     },
-    "41": {
+    "39": {
       "name": "Granola",
       "policy": [
         "https://docs.granola.ai/help-center/policies/privacy-policy"
@@ -99,7 +100,7 @@
       ],
       "note": "The policy carried 'Last updated' 24 Jul 2026 on the 30 Aug run and carries no update date at all as at 14 Sep 2026, so Pass 1b has no signal here. Read the clauses directly. As at 28 Sep 2026 it reads 'Effective from 8th September 2026', so the date is back."
     },
-    "45": {
+    "43": {
       "name": "ElevenLabs",
       "policy": [
         "https://elevenlabs.io/privacy-policy"
@@ -109,7 +110,7 @@
       ],
       "note": "Moved: elevenlabs.io/privacy now redirects to /privacy-policy (12 Oct 2026). Updated 9 Oct 2026; no archive copy (Internet Archive offline that day), read directly: storage in the US, trains unless opted out under Data use."
     },
-    "46": {
+    "44": {
       "name": "Descript",
       "policy": [
         "https://descript.com/privacy",
@@ -120,7 +121,7 @@
         null
       ]
     },
-    "47": {
+    "45": {
       "name": "Submagic",
       "policy": [
         "https://submagic.co/privacy"
@@ -129,7 +130,7 @@
         null
       ]
     },
-    "49": {
+    "47": {
       "name": "Seedance (ByteDance)",
       "policy": [
         "https://dreamina.capcut.com/clause/dreamina-privacy-policy",
@@ -140,7 +141,7 @@
         null
       ]
     },
-    "57": {
+    "55": {
       "name": "Claude",
       "policy": [
         "https://www.anthropic.com/legal/privacy",
@@ -152,7 +153,7 @@
       ],
       "note": "Previous versions are linked from the policy ('Previous Version' at /legal/archive/...), so a change can be diffed rather than guessed. The server-location article dates itself with a bare date and no label."
     },
-    "58": {
+    "56": {
       "name": "ChatGPT",
       "policy": [
         "https://openai.com/policies/privacy-policy",
@@ -164,17 +165,17 @@
       ],
       "note": "From a UK address, openai.com/policies/privacy-policy serves the EU services policy (/en-GB/), not the US one; the 30 Aug baseline of 2026-05-18 was the US document. Previous EU revisions sit at /policies/eu-services-privacy-policy/revisions/<date>/. The row-privacy-policy page sometimes serves a Cloudflare challenge (403) to headless Chrome and loads on a retry (12 Oct 2026); one 403 is not a failure."
     },
-    "59": {
+    "57": {
       "name": "Gemini",
       "policy": [
         "https://support.google.com/gemini/answer/13594961"
       ],
       "baseline": [
-        "2026-09-24"
+        "2026-10-23"
       ],
-      "note": "The page carries two dates: the Gemini Apps Privacy Notice's own (29 Jun 2026) and a later one on the FAQ half (24 Sep 2026). The baseline tracks the page; the notice date is what matters for the training clauses."
+      "note": "The page carries two dates: the hub's (23 Oct 2026) and the Gemini Apps Privacy Notice's own (13 Oct 2026, was 29 Jun). The notice date is what matters for the training clauses. The notice body sits in collapsed sections that innerText does not return: read textContent, or a diff compares headings only (26 Oct 2026 run). 13 Oct revision: Spark renamed Tasks in Gemini, Memory summary and permission settings added, and uploads shared with Gemini Live joined Live transcripts as training data when Keep Activity is on."
     },
-    "60": {
+    "58": {
       "name": "Microsoft Copilot",
       "policy": [
         "https://learn.microsoft.com/en-us/microsoft-365/copilot/enterprise-data-protection"
@@ -183,7 +184,7 @@
         "2026-08-18"
       ]
     },
-    "61": {
+    "59": {
       "name": "Google Workspace AI",
       "policy": [
         "https://knowledge.workspace.google.com/admin/generative-ai/workspace-with-gemini/gemini-for-google-workspace-faq-business",
@@ -193,9 +194,9 @@
         null,
         "2026-10-06"
       ],
-      "note": "Business FAQ path now redirects to /admin/generative-ai/workspace-with-gemini. Use the body date, not the UTC footer. The FAQ carries only the footer form, so it has no editorial date. Body date moved to 6 Oct 2026; the hub's own Updates table names the change (one question added on external-collaboration guardrails), so read that table before diffing anything."
+      "note": "Business FAQ path now redirects to /admin/generative-ai/workspace-with-gemini. Use the body date, not the UTC footer. The FAQ carries only the footer form, so it has no editorial date. Body date moved to 6 Oct 2026; the hub's own Updates table names the change (one question added on external-collaboration guardrails), so read that table before diffing anything. The FAQ's footer read 2026-10-22 on 26 Oct 2026 while the hub body stayed at 6 Oct: furniture again."
     },
-    "62": {
+    "60": {
       "name": "Gamma",
       "policy": [
         "https://gamma.app/privacy",
@@ -203,11 +204,11 @@
       ],
       "baseline": [
         "2025-04-10",
-        null
+        "2026-09-24"
       ],
-      "note": "The help article dates itself relatively ('Updated this week'); diff against the Internet Archive, which held a 7 Aug 2026 capture."
+      "note": "The help article now carries an absolute date, 24 Sep 2026 (26 Oct 2026 run); it used to date itself relatively. Diff against the Internet Archive, which held a 7 Aug 2026 capture."
     },
-    "63": {
+    "61": {
       "name": "Wispr Flow",
       "policy": [
         "https://wisprflow.ai/privacy-policy",
@@ -219,7 +220,7 @@
       ],
       "note": "The docs article moved: https://docs.wisprflow.ai/articles/4709791908-understanding-privacy-mode-and-cloud-sync now redirects to the address above (28 Sep 2026). It dates itself relatively ('Last updated 2 days ago'), so read the clause, not a date. As at 12 Oct 2026 the non-profit discount is confirmed at https://wisprflow.ai/for-non-profits ($8/mo annual); /nonprofits is still a 404."
     },
-    "64": {
+    "62": {
       "name": "Grok",
       "policy": [
         "https://x.ai/legal/privacy-policy"
@@ -229,7 +230,7 @@
       ],
       "note": "xAI links each superseded version from the policy ('previous version'), e.g. /legal/privacy-policy/previous-2026-08-24, so a change can be diffed without the Internet Archive. 11 Oct 2026 revision: no change to training, opt-outs or location."
     },
-    "65": {
+    "63": {
       "name": "Notion AI",
       "policy": [
         "https://www.notion.com/help/data-residency",
@@ -238,9 +239,10 @@
       "baseline": [
         null,
         null
-      ]
+      ],
+      "note": "trust.notion.com has a Latest Updates feed whose dates are announcements, not policy changes: 19 Oct 2026 was a Workers (beta) security white paper. Read the item before treating a feed date as drift. Neither page carries a policy date, so the 90-day clock is the backstop (26 Oct 2026 run)."
     },
-    "66": {
+    "64": {
       "name": "DeepSeek",
       "policy": [
         "https://cdn.deepseek.com/policies/en-US/deepseek-privacy-policy.html"
@@ -253,7 +255,8 @@
   },
   "_trap": "Google knowledge.workspace.google.com pages carry TWO dates: an editorial 'Last updated: 14 August 2026' in the body and a site-furniture footer 'Last updated 2026-08-26 UTC'. Only the editorial one means the policy moved. Reading the footer produced a false drift flag on row 61 on the 31 Aug run. Prefer the body date where both exist. Confirmed site furniture on 14 Sep 2026: the footer moved to 2026-09-10 on BOTH Google pages at once while the privacy hub's body date stayed at 14 August. The 31 Aug note that the business FAQ's footer was 'a real content timestamp' was wrong.",
   "_cloudflare": "canva.com marketing paths (/en_gb/pricing, /en_gb/nonprofits) return 403 to a real headless browser, but /policies/* serves fine, and /policies/policy-archives/ gives previous versions, which is how a Canva policy change is diffed rather than guessed.",
-  "_updated": "2026-10-12",
+  "_updated": "2026-10-26",
   "_adobe_user_agent": "Adobe is reachable from this machine. The 31 Aug 'unreachable' was a bot-block: www.adobe.com and helpx.adobe.com return ERR_HTTP2_PROTOCOL_ERROR to headless Chrome carrying its default HeadlessChrome user agent, and serve normally when a normal Chrome user agent is set. curl still times out. Use Playwright with channel 'chrome' and a normal userAgent.",
-  "_canva": "As at 14 Sep 2026 canva.com/en_gb/pricing/ serves to headless Chrome with a normal user agent; canva.com/en_gb/nonprofits/ is a 404 and canva.com/nonprofits/ serves."
+  "_canva": "As at 14 Sep 2026 canva.com/en_gb/pricing/ serves to headless Chrome with a normal user agent; canva.com/en_gb/nonprofits/ is a 404 and canva.com/nonprofits/ serves.",
+  "_row_shift": "Re-keyed 26 Oct 2026 by name against the live tools tab. Windsurf (16) and Smartmockups (35) were deleted by hand after 12 Oct, so rows 17 to 35 moved up one and rows 36 onwards moved up two. Keys are today's rows; always match on name, never trust a key alone."
 }
