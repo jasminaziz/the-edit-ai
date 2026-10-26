@@ -311,6 +311,10 @@ Four guards, each because the failure it prevents is silent:
 `--rollback` replays a run backwards, matching on the post-write name so a
 rename can be undone too.
 
+The Sheet's revision history can't be read from a code session: the Drive API
+is not enabled on the-edit-490220 (26 Oct 2026). A hand deletion is confirmed
+by Jasmin.
+
 **There is no service account key and there must not be one.** The org enforces
 `iam.disableServiceAccountKeyCreation`, which is correct and was deliberately not
 switched off. Writes run as:
@@ -1586,11 +1590,16 @@ stood here until 31 August said the live site was the unchanged old-brief site
 and that nothing from the overhaul had reached it; that was true until the
 merge and is now the opposite of the truth.
 
-Sheet: `tools` is 67 rows with headers A-N. The seven axis columns G-M are
+Sheet: `tools` is 65 rows with headers A-N. The seven axis columns G-M are
 populated and column N (`what_it_does`) was added and filled on 2026-08-26.
-**23 rows are complete and render**; the other 44 fail `isComplete()` and are
+**23 rows are complete and render**; the other 42 fail `isComplete()` and are
 invisible to the site, which is the radar working as designed. Verified against
-live Sheet data 2026-08-29, which clears the ten-row merge floor with room.
+live Sheet data 2026-08-29, which clears the ten-row merge floor with room;
+row count re-read 26 Oct 2026.
+
+**Row numbers moved on 26 Oct 2026:** Windsurf (16) and Smartmockups (35) were
+deleted by hand, so rows 17 to 35 sit one higher and rows 36 onwards two higher
+than any earlier reference here or in a report. Match on name.
 
 **Judgement coverage: complete, checked 2026-08-30.** All 23 rendering rows
 have their judgement fields on file. Fifteen are in
@@ -1610,10 +1619,11 @@ One real observation stands, unrelated to the above: `isComplete()` gates on
 `trustee_note` and `dpia_flag` but **not** on `verdict`, so a row could in
 principle render with an empty verdict. None currently does.
 
-**Row 40 is now Gemini Notebook, and the rename is finished.** Google renamed
+**Row 38 is now Gemini Notebook, and the rename is finished.** Google renamed
 NotebookLM on 16 July 2026; the audit of 31 August wrote the new name and URL to
-`tools` row 40 and `my_stack` row 12, so the directory and the stack page agree.
-Jasmin has since rewritten the trustee note, and `tools!L40` now opens "Gemini
+`tools` row 40 (row 38 since the 26 Oct row shift) and `my_stack` row 12, so the
+directory and the stack page agree.
+Jasmin has since rewritten the trustee note, and `tools!L38` now opens "Gemini
 Notebook only ever sees the documents we choose to upload", read live 14 Sep
 2026. This paragraph said the rename was half done until that date.
 
@@ -1831,6 +1841,10 @@ deleted and the shared secret added.
 
 - Build failures are silent; Vercel serves the last successful deploy.
   Check the Deployments tab if a change has not appeared in 5 minutes.
+- Pushing both branches at once queues the production build behind the
+  `overhaul/sector-axis` preview, so production can lag the push by a few
+  minutes. Check the deployment's state (QUEUED, BUILDING, ERROR) before
+  reading a lag as a failure.
 - New routes need a React Router entry only.
 - New Sheets tabs need a fetch function in `src/lib/sheets.ts` plus a
   component to render them.
