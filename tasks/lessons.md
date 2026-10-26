@@ -1420,3 +1420,41 @@ Session corrections and rules built up over time. Add entries; do not delete his
   CLI's `vercel api` and `vercel env add` worked. Claude Code's permission check
   refused turning deployment protection off and writing production secrets:
   those are hers, in the dashboard.
+
+## 2026-10-26 (axis audit, rulings, shared-tree cleanup)
+
+- **A "is it live" check must fail on the old build before it can pass on the
+  new one.** The first deploy check grepped the live bundle for
+  `flex-1 min-h-0 overflow-y-auto` and reported the menu fix live on attempt 1.
+  The old bundle already carried that string on the `#app-scroll` container;
+  production was still on the previous deploy and the menu still clipped. The
+  replacement, `pt-16 px-6 gap-1 flex-1 min-h-0 overflow-y-auto`, measured 0 in
+  the old build and 1 in the new before it was trusted.
+- **Pushing both branches at once queues the production build behind the
+  branch preview.** `list_deployments` showed production QUEUED while the
+  `overhaul/sector-axis` preview built; it went live about two minutes later.
+  A lag is a queue until the deployment state says ERROR.
+- **Row numbers on the Sheet move when Jasmin deletes rows by hand, and nothing
+  records it.** Three deletions after 12 Oct made the audit's fixed-row check
+  fail on 27 of 30 references. Key every check by name; the audit prompt now
+  does. The revision history can't be read either: the Drive API is off on
+  the-edit-490220.
+- **`innerText` misses collapsed accordion sections.** Google's Gemini privacy
+  page returned only its question headings, so the first diff compared headings.
+  `textContent` (scripts and styles stripped) returned the full notice, 59,901
+  characters against 8,669.
+- **The Internet Archive's availability API rate-limits (429)** after a few
+  calls. Loading `web.archive.org/web/<YYYYMMDDhhmmss>/<url>` in Chrome still
+  redirects to the nearest capture.
+- **Render a design change from two local builds with no server.** Playwright's
+  `route` can answer every `http://localhost:8080` request from a `dist` folder,
+  and the page still fetches the live Sheet from a localhost origin the key's
+  referrer list accepts. This avoids editing the tracked `launch.json` to point
+  a dev server at another worktree.
+- **Before applying old uncommitted work, check it against what the remote has
+  since done.** The 25 Sep `package.json` predated `web-push`,
+  `@sparticuz/chromium` and `playwright-core`; copying it over would have
+  deleted them. The cleanup was redone with `bun remove` on the remote's file.
+- **A code comment's "Ruled <date>" is a claim, not a record.** The 25 Sep hub
+  strip said it was ruled; the only trace was the request in that session's
+  list, not an approval of the result. Jasmin then dropped it.

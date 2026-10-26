@@ -3826,3 +3826,33 @@ Still open:
    opts in. Proposed wording is in the 15 Oct wrap; not written.
 3. Unchecked: whether switching notifications off in iPhone Settings makes
    Apple report the subscription gone.
+
+## Where we got to: 26 October 2026, axis audit, rulings and the tree cleared
+
+**The axis audit for the 26 Oct slot is done and its rulings are written.**
+Report `reports/2026-10-26-axis-audit.md`, run from a detached worktree at the
+remote tip because this tree was 53 behind with stale rulings. Four rows
+stamped (Gemini 57, Google Workspace AI 59, Perplexity 37, Notion AI 63); the
+last two with new cost strings Jasmin chose. The audit prompt now checks the
+edit pack by name, because three hand deletions (Windsurf, Smartmockups,
+GradeMyPrompt, all hers) moved every row from 17 down.
+
+**This tree is clean and level with the remote at `d28ba2a`**, first time since
+September. Its month-old uncommitted work was ruled piece by piece: dependency
+cleanup and the phone menu scroll fix shipped (`4899e0b`, `66fd120`, live and
+verified); the desktop pill fill and the phone hub strip were rendered against
+the live design and dropped; the 9 Oct gates and GEO reports committed
+(`6dd7dc0`). Old edits backed up at `~/the-edit-ai-shared-tree-backup-2026-10-26/`.
+
+Next:
+
+1. **SVG Repo (design_kit 31)**: Jasmin opens `https://www.svgrepo.com` by
+   hand. If it loads, record it in `reports/axis-rulings.md` as a known bot
+   check, escalated only if the failure changes (404 or a dead domain).
+2. **Next audit Monday 9 Nov** (2nd Monday); discovery run 2 Nov.
+3. **Stagger the age cliff:** eleven rows come due between 22 Nov and 13 Dec
+   (Blotato, Canva, Adobe Express, Ideogram, Granola, Descript, Submagic,
+   Seedance, Claude, ChatGPT, DeepSeek).
+4. Still open from 22 Oct: retire the push test setup; the claims register
+   exception for push storage.
+5. Delete the backup folder when happy (Jasmin's call).
