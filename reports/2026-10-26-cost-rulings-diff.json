@@ -1,0 +1,44 @@
+{
+  "run": "2026-10-26",
+  "note": "Two cost strings Jasmin chose in chat on 26 Oct 2026 from the options in the axis audit's section 1, each with the row's last_checked stamp. Every other fact on both rows was reconfirmed from the vendor that day (reports/2026-10-26-axis-audit.md, section 1, items 2 and 3). Undo with: node scripts/sheet-write.mjs reports/2026-10-26-cost-rulings-diff.json --rollback --commit",
+  "edits": [
+    {
+      "range": "tools!D37",
+      "name": "Perplexity",
+      "field": "cost",
+      "old": "Free tier / Pro $20/mo",
+      "value": "Free tier / Pro $17/mo billed annually",
+      "why": "Perplexity's pricing hub and /pro show Pro only as 'US$17 /month or equivalent, when billed annually' and publish no monthly price anywhere. Free is US$0. Served in USD to a UK machine. Form follows Copilot's 'billed annually'.",
+      "source": "https://www.perplexity.ai/hub/pricing, https://www.perplexity.ai/pro",
+      "approved": "26 Oct 2026, in chat"
+    },
+    {
+      "range": "tools!M37",
+      "name": "Perplexity",
+      "field": "last_checked",
+      "old": "14 Sep 2026",
+      "value": "26 Oct 2026",
+      "why": "Privacy notice revised 23 Oct 2026, diffed against the Internet Archive capture of 17 Oct: no training, location or nonprofit sentence changed (the Data Privacy Framework section was removed; transfers now cite Standard Contractual Clauses). H=US, I=Yes unless you opt out (data-collection article, last modified 31 Aug) and J (enterprise pricing FAQ: non-profit discount after eligibility checks) all hold. D written in the same batch.",
+      "source": "https://www.perplexity.ai/hub/legal/privacy-notice, https://www.perplexity.ai/help-center/en/articles/11564572-data-collection-at-perplexity, https://www.perplexity.ai/help-center/en/articles/10352986-enterprise-pricing-and-billing-frequently-asked-questions"
+    },
+    {
+      "range": "tools!D63",
+      "name": "Notion AI",
+      "field": "cost",
+      "old": "AI included in paid plans / full AI on Business $20/member/mo",
+      "value": "AI trial on Plus / full AI on Business £16.50/member/mo billed annually, £19.50 monthly",
+      "why": "Notion's UK pricing page: Plus includes only a 'Trial of Notion AI' (as it already did in the Internet Archive capture of 23 Aug); Business is £16.50 per seat a month paying yearly, £19.50 paying monthly. Served in GBP.",
+      "source": "https://www.notion.com/pricing",
+      "approved": "26 Oct 2026, in chat"
+    },
+    {
+      "range": "tools!M63",
+      "name": "Notion AI",
+      "field": "last_checked",
+      "old": "24 Aug 2026",
+      "value": "26 Oct 2026",
+      "why": "H=US holds: workspace data stays 'hosted in the United States' unless an Enterprise plan requests migration (tier convention, axis-rulings.md ruling 1). I=No by default holds: 'By default, your customer data is not used to train models.' J holds: '50% off our Business Plan'. D written in the same batch.",
+      "source": "https://www.notion.com/help/data-residency, https://www.notion.com/help/notion-ai-security-practices, https://www.notion.com/nonprofits"
+    }
+  ]
+}

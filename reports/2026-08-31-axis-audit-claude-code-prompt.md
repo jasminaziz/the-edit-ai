@@ -169,9 +169,19 @@ src/lib/sheets.ts EXACTLY, including that normaliseDpiaFlag lower-cases before
 matching, so a K reading "green" counts. The current spec is stricter than the
 site and would drop such a row.
 
-Verify row numbering before trusting it: every cell reference in
-reports/2026-08-28-sheet-edit-pack.md must land on the row your parse gives.
-Abort if any disagree.
+Verify row numbering BY NAME before trusting it. Every tool named in
+reports/2026-08-28-sheet-edit-pack.md must appear exactly once in column A of
+the tools tab (Seedance is "Seedance (ByteDance)"). Then:
+  - a name at a different row from the pack's is a move: report it, and key
+    everything this run does by name, never by a remembered row number.
+  - a name that has vanished is a finding in section 1: say which row went and
+    ask Jasmin to confirm the deletion was hers, because the Sheet keeps no
+    record a code session can read.
+  - a name that appears twice is an abort: positions can't be trusted.
+Ruled 26 Oct 2026. The fixed-row check this replaces failed on every run once
+Windsurf, Smartmockups and GradeMyPrompt were deleted by hand after 12 Oct.
+Writes are guarded separately: scripts/sheet-write.mjs re-reads column A
+before sending.
 
 Legal values. Writing anything else corrupts the row silently.
   H: UK | EU | EU option | US | Your tenant | Other | Unclear

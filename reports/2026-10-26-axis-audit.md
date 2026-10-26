@@ -4,8 +4,9 @@ Axis audit, 26 Oct 2026: 4 published rows checked. 2 facts updated. 4 need
 your judgement. 1 unreachable. 0 discovery candidates.
 
 **Decided the same day.** Jasmin approved both stamps on 26 Oct 2026 in chat,
-and both are written and confirmed (section 6). The four judgement items in
-section 1 are still open.
+and both are written and confirmed (section 6). She then ruled on section 1:
+items 1 to 3 are settled and written (see "Rulings, 26 Oct 2026" at the end);
+item 4, SVG Repo, waits on her opening the site by hand.
 
 Run in Claude Code on the 4th Monday, an audit-due day, from a detached
 worktree at `origin/overhaul/sector-axis` (`4e5568c`), not the shared tree. The
@@ -224,3 +225,42 @@ Per-cell sources are in the diff file.
 8. Playwright 1.59.1 was loaded read-only from the shared tree's
    `node_modules` and drove the installed Chrome. Nothing was installed or
    downloaded.
+
+## Rulings, 26 Oct 2026
+
+Jasmin ruled on section 1 the same day, in chat, choosing each value herself
+from options laid out with the facts and opinion marked.
+
+1. **The deletions were hers.** Windsurf (tools 16), Smartmockups (tools 35)
+   and GradeMyPrompt (learning 15) were deleted by hand after 12 Oct, as that
+   report held. The Sheet's revision history could not be read from a code
+   session: the Drive API is not enabled on the audit account's project, and
+   enabling it was not done for this. **The row-number check is replaced by a
+   check by name** in `reports/2026-08-31-axis-audit-claude-code-prompt.md`:
+   every pack name must appear exactly once, moves are reported, a vanished
+   name becomes a finding, a duplicate aborts.
+2. **Perplexity (37) cost:** "Free tier / Pro $17/mo billed annually".
+3. **Notion AI (63) cost:** "AI trial on Plus / full AI on Business
+   £16.50/member/mo billed annually, £19.50 monthly".
+4. **SVG Repo (design_kit 31): open.** Jasmin opens `https://www.svgrepo.com`
+   by hand; if it loads, it goes in `reports/axis-rulings.md` as a known bot
+   check, escalated only if the failure changes (a 404 or a dead domain).
+
+Written from `reports/2026-10-26-cost-rulings-diff.json`, each cost edit
+carrying `"approved": "26 Oct 2026, in chat"`, each with its row's stamp, since
+every other fact on both rows was reconfirmed that day:
+
+| Cell | Field | Old | New |
+|---|---|---|---|
+| `tools!D37` | cost | Free tier / Pro $20/mo | Free tier / Pro $17/mo billed annually |
+| `tools!M37` | last_checked | 14 Sep 2026 | 26 Oct 2026 |
+| `tools!D63` | cost | AI included in paid plans / full AI on Business $20/member/mo | AI trial on Plus / full AI on Business £16.50/member/mo billed annually, £19.50 monthly |
+| `tools!M63` | last_checked | 24 Aug 2026 | 26 Oct 2026 |
+
+4/4 re-read by the script. A full re-read of all four tabs found exactly these
+four cells changed since the morning's stamps. On production `/tools`, 23 cards
+rendered, each new string on its own card, and "26 Oct 2026" on four cards
+(Perplexity, Gemini, Google Workspace AI, Notion AI). Both rows leave the
+22 Nov age cohort, which is now eleven rows.
+
+To undo: `node scripts/sheet-write.mjs reports/2026-10-26-cost-rulings-diff.json --rollback --commit`
