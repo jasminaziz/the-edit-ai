@@ -199,7 +199,14 @@ export function Layout({ children }: { children: ReactNode }) {
                         it carries its own "Main" landmark. While it is open the
                         dialog hides the rest of the page from assistive tech,
                         so only one "Main" is ever exposed. */}
-                    <nav aria-label="Main" className="flex flex-col pt-16 px-6 gap-1 flex-1">
+                    {/* overflow-y-auto + min-h-0: on a short viewport (360x600
+                        and below) Home/Tools/Template + the How I work panel
+                        + the Substack link are taller than the drawer, and
+                        with no scroll container here the footer CTA below was
+                        clipped past the bottom of the screen with no way to
+                        reach it. min-h-0 is required alongside flex-1 for a
+                        flex child to be allowed to shrink and scroll at all. */}
+                    <nav aria-label="Main" className="flex flex-col pt-16 px-6 gap-1 flex-1 min-h-0 overflow-y-auto">
                       {/* Home, Tools and Template. The hub tab is not a row
                           here: its four pages are listed under their label
                           below, which is the drawer's version of the second
@@ -274,8 +281,9 @@ export function Layout({ children }: { children: ReactNode }) {
                       )}
                     </nav>
                     {/* The drawer's foot carries the one primary CTA, as the
-                        desktop bar does. */}
-                    <div className="px-6 pb-8 flex flex-col gap-3">
+                        desktop bar does. shrink-0 keeps it pinned outside the
+                        scrolling nav above rather than being squeezed by it. */}
+                    <div className="shrink-0 px-6 pb-8 flex flex-col gap-3">
                       <a
                         href={WORK_WITH_ME_HREF}
                         {...(isExternalHref(WORK_WITH_ME_HREF)
