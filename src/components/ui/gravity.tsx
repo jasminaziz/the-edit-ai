@@ -9,7 +9,10 @@ import {
   useRef,
   useState,
 } from "react";
-import { debounce } from "lodash";
+// Subpath import, not `import { debounce } from "lodash"`: a named import
+// from the CJS package can pull the whole library into this chunk for one
+// function. This imports only the debounce module itself.
+import debounce from "lodash/debounce";
 import Matter, {
   Bodies,
   Common,
