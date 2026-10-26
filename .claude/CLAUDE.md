@@ -1199,10 +1199,16 @@ because purging is content-scanned and `tsc` cannot see it.
 
 Deliberately left: `supabase/` (its `migrations/` is the only local record of
 what was applied to a project that still hosts the ops-dashboard tables),
-`@supabase/supabase-js` and the orphaned radix packages in `package.json`
-(removing them means a lockfile re-resolve, which is its own job with its own
-verification), and `lovable-tagger`, which is **not** dead — `vite.config.ts:4`
-imports it.
+`@supabase/supabase-js`, and `lovable-tagger`, which is **not** dead —
+`vite.config.ts:4` imports it.
+
+**The orphaned packages went on 26 Oct 2026** (`4899e0b`), as their own job
+with the lockfile re-resolved and gated: 38 dependencies nothing imports,
+including the leftover radix set, `zod`, `recharts` and `sonner`. Same lesson
+as above: the main bundle and the CSS did not move, because nothing was
+reaching them. The one real saving came with it: `gravity.tsx` imports
+`lodash/debounce` rather than `{ debounce }` from `lodash`, and the
+`HomeGravity` chunk fell from 221.59 kB to 150.51 kB (gzip 78.49 to 52.45).
 
 Badge states: only IN MY STACK renders (forest green `#2D6A4F`,
 `status === "in_stack"`, ToolCard.tsx). `on_radar` is live data but nothing
