@@ -91,6 +91,26 @@ const FeaturedCard = ({ tool }: { tool: MyStackItem }) => {
             </p>
           )}
 
+          {/* The Agent Office line (MS1), signed 3 Nov 2026 in OPSDASH_Placement-Audit_v1.md.
+              Only on the Claude entry, at its end, set apart from the tool list. */}
+          {/claude/i.test(tool.name) && (
+            <p
+              className="font-body mt-3"
+              style={{ fontSize: "14px", color: "#FFFFFF", lineHeight: 1.55, opacity: 0.95 }}
+            >
+              The agents I've built with Claude are on show at the{" "}
+              <a
+                href="https://ops.jasminaziz.co.uk"
+                target="_blank"
+                rel="noopener"
+                style={{ color: "#C8F04A", fontWeight: 600, textDecoration: "underline", textUnderlineOffset: "3px" }}
+              >
+                Agent Office<span aria-hidden="true"> ↗</span>
+              </a>
+              , each at its desk.
+            </p>
+          )}
+
           <AnimatePresence initial={false}>
             {open && tool.verdict && (
               <motion.div
