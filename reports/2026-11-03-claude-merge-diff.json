@@ -1,0 +1,36 @@
+{
+  "run": "2026-11-03",
+  "note": "Three my_stack copy cells updated for Anthropic's merger of Claude chat and Cowork (16 Sep 2026), each built from the live cell text by one exact replacement and approved by Jasmin in chat. my_stack has no last_checked column, so nothing is stamped. Undo with: node scripts/sheet-write.mjs reports/2026-11-03-claude-merge-diff.json --rollback --commit",
+  "edits": [
+    {
+      "range": "my_stack!C15",
+      "name": "Claude",
+      "field": "what_it_does",
+      "old": "Primary AI for thinking, writing, strategy, analysis, ghostwriting, and building. The full ecosystem: Claude.ai with Projects and Skills (chat), Claude Code (terminal agent that reads and edits your actual codebase), Cowork (desktop tool across local and Google Drive), Claude Design (on-brand visual generation), and custom skills for repeatable workflows, and scheduled Claude Code automations (which have replaced Make in this stack)",
+      "value": "Primary AI for thinking, writing, strategy, analysis, ghostwriting, and building. The full ecosystem: Claude.ai, where chat and Cowork are now one conversation, with Projects, Skills, and work across local files and Google Drive, Claude Code (terminal agent that reads and edits your actual codebase), Claude Design (on-brand visual generation), and custom skills for repeatable workflows, and scheduled Claude Code automations (which have replaced Make in this stack)",
+      "why": "Anthropic merged Claude chat and Cowork into one Claude from 16 Sep 2026; this text described them as separate. Wording drafted in chat and approved by Jasmin.",
+      "source": "https://claude.com/blog/cowork-is-now-claude, https://support.claude.com/en/articles/16761823-claude-cowork-and-chat-are-one-claude",
+      "approved": "03 Nov 2026, in chat"
+    },
+    {
+      "range": "my_stack!F15",
+      "name": "Claude",
+      "field": "verdict",
+      "old": "My primary tool and the one I would keep if I could keep one. But the more important point is this: most people are using Claude at surface level, basic prompts, generic outputs, no context. That is not what this tool is. The breadth is real but the depth is where it gets interesting, and building that depth takes deliberate effort. I have spent time learning how Projects and Skills work, how to write system prompts, how to set up an architecture that carries context across sessions. Claude Code is a different tool entirely: it reads your actual codebase and executes changes, the right escalation path when a Lovable prompt is not enough. Cowork sits across my drives so Claude has context on active projects without me re-explaining everything. Claude Design handles on-brand visual generation. Each of these required learning how it actually works rather than how the marketing describes it. That is the argument for going deep on one tool rather than skimming ten. Pick the tool that has the most surface area, understand its full architecture, and build your workflow around it. Claude has more surface area than anything else in this stack.",
+      "value": "My primary tool and the one I would keep if I could keep one. But the more important point is this: most people are using Claude at surface level, basic prompts, generic outputs, no context. That is not what this tool is. The breadth is real but the depth is where it gets interesting, and building that depth takes deliberate effort. I have spent time learning how Projects and Skills work, how to write system prompts, how to set up an architecture that carries context across sessions. Claude Code is a different tool entirely: it reads your actual codebase and executes changes, the right escalation path when a Lovable prompt is not enough. Since chat and Cowork became one Claude, the same conversation sits across my drives, so Claude has context on active projects without me re-explaining everything. Claude Design handles on-brand visual generation. Each of these required learning how it actually works rather than how the marketing describes it. That is the argument for going deep on one tool rather than skimming ten. Pick the tool that has the most surface area, understand its full architecture, and build your workflow around it. Claude has more surface area than anything else in this stack.",
+      "why": "Anthropic merged Claude chat and Cowork into one Claude from 16 Sep 2026; this text described them as separate. Wording drafted in chat and approved by Jasmin.",
+      "source": "https://claude.com/blog/cowork-is-now-claude, https://support.claude.com/en/articles/16761823-claude-cowork-and-chat-are-one-claude",
+      "approved": "03 Nov 2026, in chat"
+    },
+    {
+      "range": "my_stack!F19",
+      "name": "Google Workspace AI",
+      "field": "verdict",
+      "old": "Most useful in Sheets, where the AI features handle cell-by-cell editing jobs that would otherwise take forever, standardising data formats, cleaning inconsistent entries, reformatting columns. The Gemini side panel in Docs is genuinely useful for pulling in live data from Gmail or a connected spreadsheet without leaving the document. I use it to organise Drive for personal projects, which pairs well with Claude Cowork running across the same Drive. It is not the most powerful AI in the stack but it removes friction inside tools I am already living in.",
+      "value": "Most useful in Sheets, where the AI features handle cell-by-cell editing jobs that would otherwise take forever, standardising data formats, cleaning inconsistent entries, reformatting columns. The Gemini side panel in Docs is genuinely useful for pulling in live data from Gmail or a connected spreadsheet without leaving the document. I use it to organise Drive for personal projects, which pairs well with Claude working across the same Drive. It is not the most powerful AI in the stack but it removes friction inside tools I am already living in.",
+      "why": "Anthropic merged Claude chat and Cowork into one Claude from 16 Sep 2026; this text described them as separate. Wording drafted in chat and approved by Jasmin.",
+      "source": "https://claude.com/blog/cowork-is-now-claude, https://support.claude.com/en/articles/16761823-claude-cowork-and-chat-are-one-claude",
+      "approved": "03 Nov 2026, in chat"
+    }
+  ]
+}
