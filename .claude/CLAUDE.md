@@ -1529,6 +1529,16 @@ The re-point changes who the site speaks to, not how it sounds.
 - Sector precision is credibility: a DPIA is something an organisation
   does, not something a tool "needs" — the flag means typical comms use is
   likely to trigger one
+- Lines from another property: a line placed here that describes another
+  of Jasmin's properties (the Agent Office, the consultancy), or a line on
+  another property that mentions The Edit, is searched before it is offered
+  against the host page's captured text and the other property's locked terms.
+  "The checks" is The Edit's tool vetting; a word it shares with the host page
+  ("checks", "gate", "board", "governance", "agents") and uses in a different
+  sense is cut, or its object is named. Ratified 3 Nov 2026 from the Agent
+  Office placement audit, where a placement line used "checks" for the
+  office's gates on a page that already says "the same checks" for The Edit's
+  tool vetting.
 
 Positioning and page copy are authored by Jasmin with Cowork Claude and
 arrive as exact strings (see `reports/` copy pack). Code sessions place
