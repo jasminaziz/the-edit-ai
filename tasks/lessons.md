@@ -1458,3 +1458,4 @@ Session corrections and rules built up over time. Add entries; do not delete his
 - **A code comment's "Ruled <date>" is a claim, not a record.** The 25 Sep hub
   strip said it was ruled; the only trace was the request in that session's
   list, not an approval of the result. Jasmin then dropped it.
+- **A watchdog's schedule comes from the producer's schedule, read off the trigger, not from a comment about it.** The 30 Aug fix trusted "appends land Tue-Sat"; the Routine's cron is Mon-Fri, so Saturday kept failing for eight weeks. Replay the check against the run history before and after changing it.

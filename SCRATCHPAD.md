@@ -3856,3 +3856,7 @@ Next:
    exception for push storage.
 5. ~~Delete the backup folder~~ **done 26 Oct**: moved to the macOS Trash on
    Jasmin's word, recoverable until the Trash is emptied.
+6. **Watchdog fixed 6 Nov (`17dc179`):** whats_new watchdog now Tue-Fri. Check
+   no run appears Sat 7 Nov. Open: change 2 (empty `status=success` API result
+   caused the 22 Oct and 15 Sep false alarms) and why the Rundown email gap ran
+   27 Oct to 5 Nov (unverified).
