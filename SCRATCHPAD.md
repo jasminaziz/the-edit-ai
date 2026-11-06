@@ -3881,3 +3881,9 @@ The project CLAUDE.md was cut under 200 lines (Decision 087); the pre-cut file i
 9. **The audience-profile read** (Search Console, LinkedIn engagement and hello@ enquiries together) was due at the end of October 2026; no record of it is in the repo on 6 November. It also fires the 29 August `/policy-template` title tripwire.
 10. **The corrected PDF export from Word**, then re-link it. The template ships Word-only until then.
 11. **The homepage strip and `featured`:** whether "What I'm running" should honour the `featured` flag `/my-stack` sorts on is an open ruling.
+
+## 6 November 2026: CLAUDE.md cut applied, push worktree removed
+
+- The CLAUDE.md cut is live (`5860cca`, Decision 108 in CHIEF OF STAFF): resident file 83 lines, topic rules in `.claude/rules/`, the old file frozen at `.claude/history/CLAUDE-md_2026-11-06.md`.
+- **Push authority scoped on Jasmin's ruling:** `scripts/`, `api/`, `.github/workflows/` and config wait for her yes and the four-command gate, like `src/`; only reports, records, docs, `.claude/`, `tasks/` and this file push straight after.
+- **Retiring the push test setup, progress:** the `~/Developer/the-edit-ai-push` worktree is removed (clean, fully merged; its one untracked value, `VITE_PUSH_VAPID_PUBLIC_KEY`, kept at `~/the-edit-ai-push_env.local_2026-11-06`). Still open, Jasmin's call when: `push-test.theeditai.co.uk` (Vercel domain and GoDaddy CNAME), the five Preview settings scoped to `feature/push`, the `feature/push` branch (local and on origin), and the test subscription row with its 14 Oct send record.
