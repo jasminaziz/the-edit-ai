@@ -1749,8 +1749,14 @@ deleting by hand.
 
 Claude Code Routine (trig_01288KFUKoGh4wWrewE7JqC2) fires Mon-Fri at 09:00
 London (read from the trigger, 6 Nov 2026), never on a Saturday or Sunday. The
-watchdog therefore runs Tue-Fri only.
-Reads Gmail (news@daily.therundown.ai), extracts up to 5 stories,
+watchdog therefore runs Tue-Fri only. Model: Sonnet 5.5 (was Sonnet 4.6 until
+6 Nov 2026).
+Reads Gmail with the search `from:news@daily.therundown.ai newer_than:1d`
+(Step 2 of the Routine prompt; changed 6 Nov 2026). The earlier search took the
+latest email in the inbox, kept returning the 26 Oct issue, judged it stale and
+stopped without dispatching, which caused the 27 Oct to 5 Nov gap. If it returns
+no thread, the Routine reports no fresh newsletter and does not dispatch.
+Extracts up to 5 stories,
 dispatches `.github/workflows/append-whats-new.yml`
 (workflow_dispatch, one input `payload_b64`, base64-encoded JSON), which POSTs to the Apps Script,
 which appends rows to the `whats_new` tab.

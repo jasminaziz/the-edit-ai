@@ -3860,3 +3860,8 @@ Next:
    no run appears Sat 7 Nov. Open: change 2 (empty `status=success` API result
    caused the 22 Oct and 15 Sep false alarms) and why the Rundown email gap ran
    27 Oct to 5 Nov (unverified).
+   **Rundown gap 27 Oct to 5 Nov: verified, cause found and fixed 6 Nov.** The
+   Routine's Gmail search kept picking the 26 Oct newsletter as the latest,
+   judged it stale and stopped without dispatching. Fixed in the Routine itself:
+   Step 2 now searches `from:news@daily.therundown.ai newer_than:1d`, and the
+   model is Sonnet 5.5 (was Sonnet 4.6).
