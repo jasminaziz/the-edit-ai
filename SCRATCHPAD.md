@@ -3865,3 +3865,19 @@ Next:
    judged it stale and stopped without dispatching. Fixed in the Routine itself:
    Step 2 now searches `from:news@daily.therundown.ai newer_than:1d`, and the
    model is Sonnet 5.5 (was Sonnet 4.6).
+
+## Open items carried out of CLAUDE.md, 6 November 2026
+
+The project CLAUDE.md was cut under 200 lines (Decision 087); the pre-cut file is frozen at `.claude/history/CLAUDE-md_2026-11-06.md`. These were open items recorded only there, so they move to this queue. None is blocking.
+
+1. **Dry-run label for approved edits.** `scripts/sheet-write.mjs` prints `source: (none given)` for an approved edit in the dry-run plan; it should print the approval. The change was blocked by a permission check on 29 Sep 2026.
+2. **Verdicts are not in the prerendered HTML** (0 verdicts, 0 trustee notes on `/tools`, re-checked 9 Oct 2026). Render always and toggle visibility is the better fix; Jasmin ruled "left for now" on 9 Oct.
+3. **The Submit page's form code** is unreachable but still inside `src/pages/Submit.tsx`, a live route.
+4. **The Routine's extraction rule** is to re-point to sector-relevant stories only (zero-story days are correct behaviour).
+5. **Per-route share card:** parked until the prerender landed, which it did on 11 Oct 2026; not revisited.
+6. **Unverified since 13 Sep 2026:** branch `claude/vibrant-fermi-ktbyx1` (one commit, 12 July, never merged) says PAT 16554137 was revoked and the Apps Script `doPost` gained dedupe and validation. Jasmin checks GitHub's token list and the Apps Script before either record is corrected.
+7. **Duplicate 3 and 6 July whats_new batches** still need deleting by hand.
+8. **Copy questions on approved pack copy** (from `reports/2026-09-13-audience-profile-consequences.md`): "whether there's a charity price" in `AboutPanel.tsx`, and no audience naming on `/my-stack`, `/design-kit`, `/learning`, `/ai-news` and the legal pages since the footer string changed. Neither is a defect until Jasmin rules it one.
+9. **The audience-profile read** (Search Console, LinkedIn engagement and hello@ enquiries together) was due at the end of October 2026; no record of it is in the repo on 6 November. It also fires the 29 August `/policy-template` title tripwire.
+10. **The corrected PDF export from Word**, then re-link it. The template ships Word-only until then.
+11. **The homepage strip and `featured`:** whether "What I'm running" should honour the `featured` flag `/my-stack` sorts on is an open ruling.
