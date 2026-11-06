@@ -1747,7 +1747,9 @@ deleting by hand.
 
 ## whats_new automation
 
-Daily Claude Code Routine (trig_01288KFUKoGh4wWrewE7JqC2) fires at 8am UK.
+Claude Code Routine (trig_01288KFUKoGh4wWrewE7JqC2) fires Mon-Fri at 09:00
+London (read from the trigger, 6 Nov 2026), never on a Saturday or Sunday. The
+watchdog therefore runs Tue-Fri only.
 Reads Gmail (news@daily.therundown.ai), extracts up to 5 stories,
 dispatches `.github/workflows/append-whats-new.yml`
 (workflow_dispatch, one input `payload_b64`, base64-encoded JSON), which POSTs to the Apps Script,
